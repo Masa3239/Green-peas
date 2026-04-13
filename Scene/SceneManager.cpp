@@ -15,7 +15,7 @@ void SceneManager::Init() {
 
 	m_pScene = new SceneSelection();
 	m_pScene->Init();
-
+	Pad::Init();
 }
 
 void SceneManager::End() {

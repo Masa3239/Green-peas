@@ -148,8 +148,12 @@
     <ClCompile Include="Personal\Asai\SceneTestAsai.cpp" />
     <ClCompile Include="Personal\Kimura\SceneTestKimura.cpp" />
     <ClCompile Include="Personal\Osawa\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="Personal\Osawa\Enemy\EnemyManager.cpp" />
+    <ClCompile Include="Personal\Osawa\Enemy\EnemyTest.cpp" />
     <ClCompile Include="Personal\Osawa\Scene\SceneSelection.cpp" />
     <ClCompile Include="Personal\Osawa\Scene\SceneTestOsawa.cpp" />
+    <ClCompile Include="Personal\Syoguti\HpHealItem.cpp" />
+    <ClCompile Include="Personal\Syoguti\ItemBase.cpp" />
     <ClCompile Include="Personal\Syoguti\SceneTestSyoguti.cpp" />
     <ClCompile Include="Personal\Takagi\Player.cpp" />
     <ClCompile Include="Personal\Takagi\SceneTestTakagi.cpp" />
@@ -178,9 +182,13 @@
     <ClInclude Include="Personal\Kimura\SceneTestKimura.h" />
     <ClInclude Include="Personal\Osawa\deleteThis3.h" />
     <ClInclude Include="Personal\Osawa\Enemy\EnemyBase.h" />
+    <ClInclude Include="Personal\Osawa\Enemy\EnemyManager.h" />
+    <ClInclude Include="Personal\Osawa\Enemy\EnemyTest.h" />
     <ClInclude Include="Personal\Osawa\Scene\SceneSelection.h" />
     <ClInclude Include="Personal\Osawa\Scene\SceneTestOsawa.h" />
     <ClInclude Include="Personal\Syoguti\deleteThis4.h" />
+    <ClInclude Include="Personal\Syoguti\HpHealItem.h" />
+    <ClInclude Include="Personal\Syoguti\ItemBase.h" />
     <ClInclude Include="Personal\Syoguti\SceneTestSyoguti.h" />
     <ClInclude Include="Personal\Takagi\deleteThis5.h" />
     <ClInclude Include="Personal\Takagi\Player.h" />
