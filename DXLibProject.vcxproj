@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Personal\Asai\Camera.cpp" />
     <ClCompile Include="Chara\AnimationController.cpp" />
     <ClCompile Include="Chara\Collision.cpp" />
     <ClCompile Include="main.cpp">
@@ -157,6 +158,7 @@
     <Image Include="Image\Cloud.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Personal\Asai\Camera.h" />
     <ClInclude Include="Chara\Animation.h" />
     <ClInclude Include="Chara\AnimationController.h" />
     <ClInclude Include="Chara\Collision.h" />
