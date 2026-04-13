@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "../Personal/Osawa/Scene/SceneSelection.h"
 #include "../Utility/Input.h"
+#include "../System/InputPad.h"
 
 SceneManager::SceneManager() {
 
@@ -31,6 +32,7 @@ void SceneManager::Update() {
 
 	// 入力更新
 	Input::Update();
+	Pad::Update();
 
 	// 確認処理
 	assert(m_pScene);
