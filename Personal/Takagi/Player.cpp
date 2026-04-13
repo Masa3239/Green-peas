@@ -37,6 +37,7 @@ void Player::Move()
 	if (!inputAmount)return;
 	// スティック入力の角度
 	float angle = Pad::AnalogAngle(Pad::Joystick::Left);
+	angle *= MyMath::ToRadian;
 	// 移動量の初期化
 	m_moveVector = { 0,0,0 };
 	// 入力角度からX,Y方向の移動量を計算
