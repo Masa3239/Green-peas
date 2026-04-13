@@ -139,15 +139,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="InputKey.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Chara\AnimationController.cpp" />
+    <ClCompile Include="Chara\Collision.cpp" />
+    <ClCompile Include="main.cpp">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneBase.cpp" />
+    <ClCompile Include="Scene\SceneManager.cpp" />
+    <ClCompile Include="Scene\SceneTest.cpp" />
+    <ClCompile Include="System\SoundManager.cpp" />
+    <ClCompile Include="Utility\GameSetting.cpp" />
+    <ClCompile Include="Utility\Input.cpp" />
+    <ClCompile Include="Utility\MyRandom.cpp" />
+    <ClCompile Include="Utility\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Image\Cloud.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="InputKey.h" />
-    <ClInclude Include="Literal.h" />
+    <ClInclude Include="Chara\Animation.h" />
+    <ClInclude Include="Chara\AnimationController.h" />
+    <ClInclude Include="Chara\Collision.h" />
+    <ClInclude Include="Scene\SceneBase.h" />
+    <ClInclude Include="Scene\SceneManager.h" />
+    <ClInclude Include="Scene\SceneTest.h" />
+    <ClInclude Include="System\SoundManager.h" />
+    <ClInclude Include="Utility\Color.h" />
+    <ClInclude Include="Utility\Game.h" />
+    <ClInclude Include="Utility\GameSetting.h" />
+    <ClInclude Include="Utility\Input.h" />
+    <ClInclude Include="Utility\MyMath.h" />
+    <ClInclude Include="Utility\MyRandom.h" />
+    <ClInclude Include="Utility\Transform.h" />
+    <ClInclude Include="Utility\Vector3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
