@@ -1,0 +1,12 @@
+ファイル	PascalCase
+型		PascalCase
+変数		
+・メンバ変数	m_camelCase
+・ローカル変数	camelCase
+・静的変数	camelCase
+定数		kPascalCase
+名前空間	PascalCase
+列挙型		PascalCase
+
+座標管理　Transform
+管理系 〇〇Manager
