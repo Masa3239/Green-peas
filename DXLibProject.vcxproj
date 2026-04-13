@@ -142,6 +142,8 @@
     <ClCompile Include="Personal\Asai\Camera.cpp" />
     <ClCompile Include="Chara\AnimationController.cpp" />
     <ClCompile Include="Chara\Collision.cpp" />
+    <ClCompile Include="Personal\Syoguti\HpHealItem.cpp" />
+    <ClCompile Include="Personal\Syoguti\ItemBase.cpp" />
     <ClCompile Include="main.cpp">
       <DeploymentContent>true</DeploymentContent>
     </ClCompile>
@@ -172,6 +174,10 @@
     <ClInclude Include="Chara\Animation.h" />
     <ClInclude Include="Chara\AnimationController.h" />
     <ClInclude Include="Chara\Collision.h" />
+<<<<<<< HEAD
+    <ClInclude Include="Personal\Syoguti\HpHealItem.h" />
+    <ClInclude Include="Personal\Syoguti\ItemBase.h" />
+=======
     <ClInclude Include="Personal\Asai\deleteThis1.h" />
     <ClInclude Include="Personal\Asai\SceneTestAsai.h" />
     <ClInclude Include="Personal\Kimura\deleteThis2.h" />
@@ -185,6 +191,7 @@
     <ClInclude Include="Personal\Takagi\deleteThis5.h" />
     <ClInclude Include="Personal\Takagi\Player.h" />
     <ClInclude Include="Personal\Takagi\SceneTestTakagi.h" />
+>>>>>>> 8c169e76f4d0ecab93d4db378af48d6a349be743
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Scene\SceneTest.h" />
