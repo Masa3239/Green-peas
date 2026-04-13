@@ -1,16 +1,13 @@
 #pragma once
 
-#include <memory>
-#include "../Scene/SceneBase.h"
+#include "EnemyBase.h"
 
-class EnemyManager;
-
-class SceneTestOsawa : public SceneBase
+class EnemyTest : public EnemyBase
 {
 public:
 
-	SceneTestOsawa();
-	~SceneTestOsawa();
+	EnemyTest();
+	virtual ~EnemyTest();
 
 	/// <summary>
 	/// ‰Šú‰»ˆ—
@@ -25,15 +22,10 @@ public:
 	/// <summary>
 	/// XVˆ—
 	/// </summary>
-	/// <returns></returns>
-	SceneBase* Update() override;
+	void UpdateEnemy() override;
 
 	/// <summary>
 	/// •`‰æˆ—
 	/// </summary>
 	void Draw() override;
-
-private:
-
-	std::unique_ptr<EnemyManager> m_enemyMgr;
 };
