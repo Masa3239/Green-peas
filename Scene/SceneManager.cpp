@@ -1,6 +1,6 @@
 #include <cassert>
 #include "SceneManager.h"
-#include "SceneTest.h"
+#include "../Personal/Osawa/Scene/SceneSelection.h"
 #include "../Utility/Input.h"
 
 SceneManager::SceneManager() {
@@ -12,7 +12,7 @@ SceneManager::~SceneManager() {}
 
 void SceneManager::Init() {
 
-	m_pScene = new SceneTest;
+	m_pScene = new SceneSelection();
 	m_pScene->Init();
 
 }
