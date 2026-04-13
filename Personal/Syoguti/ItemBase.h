@@ -21,7 +21,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	virtual void Init() = 0;
+	virtual void Init(int graphHandle) = 0;
 
 	/// <summary>
 	/// 終了
@@ -45,8 +45,13 @@ public:
 
 protected:
 
-	int m_posX;
-	int m_posY;
+	float m_posX;
+	float m_posY;
 
+	int m_sizeX;
+	int m_sizeY;
+
+	int m_graphHandle;
+	float m_scale;
 };
 
