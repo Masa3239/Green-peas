@@ -53,39 +53,39 @@ namespace Pad {
 	/// </summary>
 	/// <param name="key">入力されたキー</param>
 	/// <returns>入力結果 押されていたらtrue</returns>
-	bool IsDown(Pad::Button key, const Pad::Player padNum);
+	bool IsDown(Pad::Button key, const Pad::Player padNum = Pad::Player::P1);
 
 	/// <summary>
 	/// キーが押されているかどうかを調べる
 	/// </summary>
 	/// <param name="key">入力されたキー</param>
 	/// <returns>入力結果 押された瞬間だったらtrue</returns>
-	bool IsPressed(Pad::Button key, const Pad::Player padNum);
+	bool IsPressed(Pad::Button key, const Pad::Player padNum = Pad::Player::P1);
 
 	/// <summary>
 	/// キーが押されているかどうかを調べる
 	/// </summary>
 	/// <param name="key">入力されたキー</param>
 	/// <returns>入力結果 離された瞬間だったらtrue</returns>
-	bool IsReleased(Pad::Button key, const Pad::Player padNum);
+	bool IsReleased(Pad::Button key, const Pad::Player padNum = Pad::Player::P1);
 
 	/// <summary>
 	/// キーが長押しされているかどうか調べる
 	/// </summary>
 	/// <param name="key">入力されたキー</param>
 	/// <returns>入力結果 長押しされていたらtrue</returns>
-	bool Hold(Pad::Button key, const Pad::Player padNum);
+	bool Hold(Pad::Button key, const Pad::Player padNum = Pad::Player::P1);
 
 	/// <summary>
 	/// アナログレバーの入力角度を調べる
 	/// </summary>
 	/// <returns>入力角度のデグリー角</returns>
-	float AnalogAngle(const Pad::Joystick stick, const Pad::Player padNum);
+	float AnalogAngle(const Pad::Joystick stick, const Pad::Player padNum = Pad::Player::P1);
 	/// <summary>
 	/// アナログレバーの入力量を調べる
 	/// </summary>
 	/// <returns>レバーをどれだけ倒しているか,0～1</returns>
-	float PadAnalogAmount(const Pad::Joystick stick, const Pad::Player padNum);
+	float PadAnalogAmount(const Pad::Joystick stick, const Pad::Player padNum = Pad::Player::P1);
 
 	/// <summary>
 	/// デバッグ処理
