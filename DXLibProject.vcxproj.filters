@@ -48,10 +48,14 @@
     <ClCompile Include="Chara\Collision.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Personal\Syoguti\ItemBase.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Personal\Syoguti\HpHealItem.cpp">
+=======
+    <ClCompile Include="Personal\Asai\Camera.cpp">
+>>>>>>> 8c169e76f4d0ecab93d4db378af48d6a349be743
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -106,10 +110,14 @@
     <ClInclude Include="Chara\Collision.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Personal\Syoguti\ItemBase.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Personal\Syoguti\HpHealItem.h">
+=======
+    <ClInclude Include="Personal\Asai\Camera.h">
+>>>>>>> 8c169e76f4d0ecab93d4db378af48d6a349be743
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
