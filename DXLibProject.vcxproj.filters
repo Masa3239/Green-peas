@@ -48,14 +48,49 @@
     <ClCompile Include="Chara\Collision.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="Personal\Syoguti\ItemBase.cpp">
+    <ClCompile Include="Personal\Asai\Camera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\SceneTestAsai.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Kimura\SceneTestKimura.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\Enemy\EnemyBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\Scene\SceneSelection.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\Scene\SceneTestOsawa.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Syoguti\SceneTestSyoguti.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\SceneTestTakagi.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\InputPad.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Time.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\Enemy\EnemyManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\Enemy\EnemyTest.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Personal\Syoguti\HpHealItem.cpp">
-=======
-    <ClCompile Include="Personal\Asai\Camera.cpp">
->>>>>>> 8c169e76f4d0ecab93d4db378af48d6a349be743
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Syoguti\ItemBase.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -110,14 +145,64 @@
     <ClInclude Include="Chara\Collision.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="Personal\Syoguti\ItemBase.h">
+    <ClInclude Include="Personal\Asai\Camera.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\deleteThis1.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\SceneTestAsai.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Kimura\deleteThis2.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Kimura\SceneTestKimura.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\deleteThis3.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Enemy\EnemyBase.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Scene\SceneSelection.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Scene\SceneTestOsawa.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Syoguti\deleteThis4.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Syoguti\SceneTestSyoguti.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\deleteThis5.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\SceneTestTakagi.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\InputPad.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Time.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Enemy\EnemyManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Enemy\EnemyTest.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Personal\Syoguti\HpHealItem.h">
-=======
-    <ClInclude Include="Personal\Asai\Camera.h">
->>>>>>> 8c169e76f4d0ecab93d4db378af48d6a349be743
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Syoguti\ItemBase.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
