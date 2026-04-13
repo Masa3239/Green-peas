@@ -145,13 +145,23 @@
     <ClCompile Include="main.cpp">
       <DeploymentContent>true</DeploymentContent>
     </ClCompile>
+    <ClCompile Include="Personal\Asai\SceneTestAsai.cpp" />
+    <ClCompile Include="Personal\Kimura\SceneTestKimura.cpp" />
+    <ClCompile Include="Personal\Osawa\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="Personal\Osawa\Scene\SceneSelection.cpp" />
+    <ClCompile Include="Personal\Osawa\Scene\SceneTestOsawa.cpp" />
+    <ClCompile Include="Personal\Syoguti\SceneTestSyoguti.cpp" />
+    <ClCompile Include="Personal\Takagi\Player.cpp" />
+    <ClCompile Include="Personal\Takagi\SceneTestTakagi.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Scene\SceneTest.cpp" />
+    <ClCompile Include="System\InputPad.cpp" />
     <ClCompile Include="System\SoundManager.cpp" />
     <ClCompile Include="Utility\GameSetting.cpp" />
     <ClCompile Include="Utility\Input.cpp" />
     <ClCompile Include="Utility\MyRandom.cpp" />
+    <ClCompile Include="Utility\Time.cpp" />
     <ClCompile Include="Utility\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,9 +172,23 @@
     <ClInclude Include="Chara\Animation.h" />
     <ClInclude Include="Chara\AnimationController.h" />
     <ClInclude Include="Chara\Collision.h" />
+    <ClInclude Include="Personal\Asai\deleteThis1.h" />
+    <ClInclude Include="Personal\Asai\SceneTestAsai.h" />
+    <ClInclude Include="Personal\Kimura\deleteThis2.h" />
+    <ClInclude Include="Personal\Kimura\SceneTestKimura.h" />
+    <ClInclude Include="Personal\Osawa\deleteThis3.h" />
+    <ClInclude Include="Personal\Osawa\Enemy\EnemyBase.h" />
+    <ClInclude Include="Personal\Osawa\Scene\SceneSelection.h" />
+    <ClInclude Include="Personal\Osawa\Scene\SceneTestOsawa.h" />
+    <ClInclude Include="Personal\Syoguti\deleteThis4.h" />
+    <ClInclude Include="Personal\Syoguti\SceneTestSyoguti.h" />
+    <ClInclude Include="Personal\Takagi\deleteThis5.h" />
+    <ClInclude Include="Personal\Takagi\Player.h" />
+    <ClInclude Include="Personal\Takagi\SceneTestTakagi.h" />
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Scene\SceneTest.h" />
+    <ClInclude Include="System\InputPad.h" />
     <ClInclude Include="System\SoundManager.h" />
     <ClInclude Include="Utility\Color.h" />
     <ClInclude Include="Utility\Game.h" />
@@ -172,6 +196,7 @@
     <ClInclude Include="Utility\Input.h" />
     <ClInclude Include="Utility\MyMath.h" />
     <ClInclude Include="Utility\MyRandom.h" />
+    <ClInclude Include="Utility\Time.h" />
     <ClInclude Include="Utility\Transform.h" />
     <ClInclude Include="Utility\Vector3.h" />
   </ItemGroup>

@@ -4,6 +4,11 @@
 
 namespace MyMath {
 
+	// ラジアン角に変更する定数
+	constexpr float ToRadian = DX_PI_F / 180.0f;
+	// デグリー角に変更する定数
+	constexpr float ToDegree= 180.0f / DX_PI_F;
+
 	/// <summary>
 	/// デグリー角度からラジアン角度へ変換
 	/// </summary>
@@ -56,5 +61,13 @@ namespace MyMath {
 		return value;
 	}
 
-
+	/// <summary>
+	/// 最大値からの割合を返す
+	/// </summary>
+	/// <param name="value">調べたい値</param>
+	/// <param name="Max">最大値</param>
+	/// <returns></returns>
+	constexpr float Rate(float value, float max) {
+		return value / max;
+	}
 }
