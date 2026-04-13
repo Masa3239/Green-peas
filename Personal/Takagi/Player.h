@@ -35,6 +35,8 @@ public:
 	/// プレイヤー移動の更新処理
 	/// </summary>
 	void Move();
+	void MoveAmount();
+	void SpeedUpdate();
 	void Draw();
 
 private:
@@ -56,6 +58,13 @@ private:
 
 	// プレイヤーが向いている方向(左右)
 	int m_direction;
+
+	// 移動速度
+	float m_speed;
+	// 速さの割合
+	float m_accel;
+	// 
+	float m_deltaTime;
 
 	// プレイヤーの移動量
 	Vector3 m_moveVector;
