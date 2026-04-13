@@ -1,7 +1,8 @@
 #include <cassert>
 #include "SceneManager.h"
-#include "SceneTest.h"
+#include "../Personal/Osawa/Scene/SceneSelection.h"
 #include "../Utility/Input.h"
+#include "../System/InputPad.h"
 
 SceneManager::SceneManager() {
 
@@ -12,9 +13,9 @@ SceneManager::~SceneManager() {}
 
 void SceneManager::Init() {
 
-	m_pScene = new SceneTest;
+	m_pScene = new SceneSelection();
 	m_pScene->Init();
-
+	Pad::Init();
 }
 
 void SceneManager::End() {
@@ -31,6 +32,7 @@ void SceneManager::Update() {
 
 	// 入力更新
 	Input::Update();
+	Pad::Update();
 
 	// 確認処理
 	assert(m_pScene);

@@ -4,6 +4,7 @@
 #include "Utility/GameSetting.h"
 #include "Scene/SceneManager.h"
 #include "../Utility/MyRandom.h"
+#include "../Utility/Time.h"
 
 //========================================================
 // WinMain関数　ここからプログラムが始まる
@@ -19,6 +20,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// 乱数生成クラスの初期化
 	MyRandom::Init();
+
+	Time::GetInstance();
 
 	// シーン制御のポインタを生成
 	SceneManager* pSceneMgr;
@@ -49,6 +52,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		while (GetNowHiPerformanceCount() - time < Game::kElapsedTime) {
 
 		}
+
+		Time::GetInstance().CalculateDeltaTime(time);
 	}
 
 	pSceneMgr->End();
