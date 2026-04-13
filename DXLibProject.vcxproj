@@ -155,6 +155,7 @@
     <ClCompile Include="Personal\Osawa\Scene\SceneTestOsawa.cpp" />
     <ClCompile Include="Personal\Syoguti\HpHealItem.cpp" />
     <ClCompile Include="Personal\Syoguti\ItemBase.cpp" />
+    <ClCompile Include="Personal\Syoguti\ItemManager.cpp" />
     <ClCompile Include="Personal\Syoguti\SceneTestSyoguti.cpp" />
     <ClCompile Include="Personal\Takagi\Player.cpp" />
     <ClCompile Include="Personal\Takagi\SceneTestTakagi.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Personal\Syoguti\deleteThis4.h" />
     <ClInclude Include="Personal\Syoguti\HpHealItem.h" />
     <ClInclude Include="Personal\Syoguti\ItemBase.h" />
+    <ClInclude Include="Personal\Syoguti\ItemManager.h" />
     <ClInclude Include="Personal\Syoguti\SceneTestSyoguti.h" />
     <ClInclude Include="Personal\Takagi\deleteThis5.h" />
     <ClInclude Include="Personal\Takagi\Player.h" />
