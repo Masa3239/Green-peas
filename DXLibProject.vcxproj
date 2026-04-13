@@ -151,6 +151,7 @@
     <ClCompile Include="Utility\GameSetting.cpp" />
     <ClCompile Include="Utility\Input.cpp" />
     <ClCompile Include="Utility\MyRandom.cpp" />
+    <ClCompile Include="Utility\Time.cpp" />
     <ClCompile Include="Utility\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +161,11 @@
     <ClInclude Include="Chara\Animation.h" />
     <ClInclude Include="Chara\AnimationController.h" />
     <ClInclude Include="Chara\Collision.h" />
+    <ClInclude Include="Personal\Asai\deleteThis1.h" />
+    <ClInclude Include="Personal\Kimura\deleteThis2.h" />
+    <ClInclude Include="Personal\Osawa\deleteThis3.h" />
+    <ClInclude Include="Personal\Syoguti\deleteThis4.h" />
+    <ClInclude Include="Personal\Takagi\deleteThis5.h" />
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Scene\SceneTest.h" />
@@ -170,6 +176,7 @@
     <ClInclude Include="Utility\Input.h" />
     <ClInclude Include="Utility\MyMath.h" />
     <ClInclude Include="Utility\MyRandom.h" />
+    <ClInclude Include="Utility\Time.h" />
     <ClInclude Include="Utility\Transform.h" />
     <ClInclude Include="Utility\Vector3.h" />
   </ItemGroup>
