@@ -27,36 +27,51 @@ public:
 	/// </summary>
 	~Player();
 
-
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
 	void Init();
+	/// <summary>
+	/// 終了処理
+	/// </summary>
 	void End();
+	/// <summary>
+	/// 更新処理
+	/// </summary>
 	void Update();
 	/// <summary>
 	/// プレイヤー移動の更新処理
 	/// </summary>
 	void Move();
+	/// <summary>
+	/// 移動量の計算
+	/// </summary>
 	void MoveAmount();
+	/// <summary>
+	/// 移動速度の更新処理
+	/// </summary>
 	void SpeedUpdate();
+	/// <summary>
+	/// 描画処理
+	/// </summary>
 	void Draw();
+
+	/// <summary>
+	/// プレイヤーの角度を取得する関数
+	/// </summary>
+	/// <returns>プレイヤーの角度</returns>
+	float GetRadian() { return m_transform.rotation.y; }
+
 
 private:
 
+	/// <summary>
+	/// プレイヤーのTransform
+	/// </summary>
 	Transform m_transform;
 
-	//// プレイヤーのグラフィックハンドル
-	//int m_handle[playerFrame];
 
-	//// プレイヤー画像のサイズ
-	//int m_sizeX;
-	//int m_sizeY;
-
-	//// フレーム更新をするカウント
-	//int m_animationCount;
-
-	//// アニメーションのフレーム
-	//int m_animationFrame;
-
-	// プレイヤーが向いている方向(左右)
+	// プレイヤーが向いている方向(左右)g
 	int m_direction;
 
 	// 移動速度
