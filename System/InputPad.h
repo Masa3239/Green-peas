@@ -1,10 +1,5 @@
 #pragma once
 #include"../Utility/Vector3.h"
-
-namespace Pad{
-
-}
-
 /// <summary>
 /// “ü—Íî•ñ‚Ìæ“¾EXV‚ğ‚·‚é
 /// </summary>
