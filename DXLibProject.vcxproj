@@ -146,6 +146,7 @@
       <DeploymentContent>true</DeploymentContent>
     </ClCompile>
     <ClCompile Include="Personal\Asai\SceneTestAsai.cpp" />
+    <ClCompile Include="Personal\Asai\UIManager.cpp" />
     <ClCompile Include="Personal\Kimura\SceneTestKimura.cpp" />
     <ClCompile Include="Personal\Osawa\Enemy\EnemyBase.cpp" />
     <ClCompile Include="Personal\Osawa\Enemy\EnemyManager.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Chara\Collision.h" />
     <ClInclude Include="Personal\Asai\deleteThis1.h" />
     <ClInclude Include="Personal\Asai\SceneTestAsai.h" />
+    <ClInclude Include="Personal\Asai\UIManager.h" />
     <ClInclude Include="Personal\Kimura\deleteThis2.h" />
     <ClInclude Include="Personal\Kimura\SceneTestKimura.h" />
     <ClInclude Include="Personal\Osawa\deleteThis3.h" />
