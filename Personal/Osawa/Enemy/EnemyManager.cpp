@@ -29,7 +29,7 @@ void EnemyManager::Update()
 {
 	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
-		if (m_enemies.size() <= 0) return;
+		if (m_enemies.size() <= 1) return;
 
 		m_enemies.back().get()->SetHP(0);
 	}
@@ -39,13 +39,15 @@ void EnemyManager::Update()
 		enemy->Update();
 	}
 
-	std::vector<std::unique_ptr<EnemyBase>> deadEnemies;
-	for (auto& enemy : m_enemies)
+	for (auto iter = m_enemies.begin(); iter != m_enemies.end();)
 	{
-		if (enemy->GetState() == EnemyBase::State::Dead)
+		if (iter->get()->GetState() == EnemyBase::State::Dead)
 		{
-
+			iter = m_enemies.erase(iter);
+			continue;
 		}
+
+		iter++;
 	}
 }
 
@@ -55,6 +57,8 @@ void EnemyManager::Draw()
 	{
 		enemy->Draw();
 	}
+
+	printfDx("Enemy Num: %d\n", m_enemies.size());
 }
 
 void EnemyManager::AddEnemy()

@@ -76,6 +76,8 @@ void Camera::DebugDraw()
 	printfDx("Camera y %f\n", m_transform.position.y);
 	printfDx("Camera z %f\n", m_transform.position.z);
 
+	printfDx("%d\n", m_worldScreen);
+
 	printfDx("Camera m_state %d\n", static_cast<int>(m_state));
 
 }

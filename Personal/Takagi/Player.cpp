@@ -5,12 +5,14 @@
 #include"../Utility/Time.h"
 #include"../System/InputPad.h"
 #include<math.h>
+#include<memory>
+#include"../Asai/Camera.h"
 
 namespace {
 	
 	constexpr float kMoveSpeed = 100.0f;
-	constexpr float kDeccel = 1.0f;
-	constexpr float kDash = 3.0f;
+	constexpr float kDash = 15.0f;
+	constexpr float kDeccel = kDash * 5.0f;
 }
 
 Player::Player() :
@@ -18,6 +20,8 @@ Player::Player() :
 	m_accel(1)
 {
 	m_transform.position = { 300,300,0 };
+	m_camera = new Camera();
+	m_camera->Init();
 }
 
 Player::~Player()
@@ -30,10 +34,14 @@ void Player::Init()
 
 void Player::End()
 {
+	m_camera->End();
+	m_camera = nullptr;
+	delete m_camera;
 }
 
 void Player::Update()
 {
+	m_camera->Update(m_transform);
 	m_deltaTime = Time::GetInstance().GetDeltaTime();
 	// 時間が止まっていなければ移動処理を呼ぶ
 	if (Time::GetInstance().GetDeltaTime()) {
@@ -63,11 +71,13 @@ void Player::MoveAmount()
 	float inputAmount = Pad::PadAnalogAmount(Pad::Joystick::Left);
 	printfDx("入力量 : %f\n", inputAmount);
 	// 入力されていなければ処理しない
-	if (!inputAmount)return;
-	// スティック入力の角度
-	float angle = Pad::AnalogAngle(Pad::Joystick::Left);
-	// 向いている方向を更新
-	m_transform.rotation.y = angle * MyMath::ToRadian;
+	if (m_accel <= 1) {
+
+		// スティック入力の角度
+		float angle = Pad::AnalogAngle(Pad::Joystick::Left);
+		// 向いている方向を更新
+		m_transform.rotation.y = angle * MyMath::ToRadian;
+	}
 
 	// 移動量の初期化
 	m_moveVector = { 0,0,0 };
@@ -95,6 +105,7 @@ void Player::SpeedUpdate()
 
 void Player::Draw()
 {
+	DrawCircle(600, 400, 10, GetColor(0, 0, 255));
 	// プレイヤー座標に円を描画
 	DrawCircle(m_transform.position.x, m_transform.position.y, 10, GetColor(255, 0, 0));
 
@@ -106,5 +117,4 @@ void Player::Draw()
 	angle *= 10;
 	angle += m_transform.position;
 	DrawCircle(angle.x, angle.y, 3, GetColor(0, 255, 0));
-
 }
