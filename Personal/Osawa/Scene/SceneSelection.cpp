@@ -1,6 +1,10 @@
 #include "SceneSelection.h"
 #include <DxLib.h>
 #include "SceneTestOsawa.h"
+#include "../Personal/Asai/SceneTestAsai.h"
+#include "../Personal/Kimura/SceneTestKimura.h"
+#include "../Personal/Syoguti/SceneTestSyoguti.h"
+#include "../Personal/Takagi/SceneTestTakagi.h"
 
 SceneSelection::SceneSelection()
 {
@@ -20,9 +24,25 @@ void SceneSelection::End()
 
 SceneBase* SceneSelection::Update()
 {
+	if (CheckHitKey(KEY_INPUT_1))
+	{
+		return new SceneTestAsai();
+	}
+	if (CheckHitKey(KEY_INPUT_2))
+	{
+		return new SceneTestKimura();
+	}
 	if (CheckHitKey(KEY_INPUT_3))
 	{
 		return new SceneTestOsawa();
+	}
+	if (CheckHitKey(KEY_INPUT_4))
+	{
+		return new SceneTestSyoguti();
+	}
+	if (CheckHitKey(KEY_INPUT_5))
+	{
+		return new SceneTestTakagi();
 	}
 
 	return this;

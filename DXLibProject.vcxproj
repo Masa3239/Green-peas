@@ -144,10 +144,14 @@
     <ClCompile Include="main.cpp">
       <DeploymentContent>true</DeploymentContent>
     </ClCompile>
+    <ClCompile Include="Personal\Asai\SceneTestAsai.cpp" />
+    <ClCompile Include="Personal\Kimura\SceneTestKimura.cpp" />
     <ClCompile Include="Personal\Osawa\Enemy\EnemyBase.cpp" />
     <ClCompile Include="Personal\Osawa\Scene\SceneSelection.cpp" />
     <ClCompile Include="Personal\Osawa\Scene\SceneTestOsawa.cpp" />
+    <ClCompile Include="Personal\Syoguti\SceneTestSyoguti.cpp" />
     <ClCompile Include="Personal\Takagi\Player.cpp" />
+    <ClCompile Include="Personal\Takagi\SceneTestTakagi.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Scene\SceneTest.cpp" />
@@ -167,14 +171,18 @@
     <ClInclude Include="Chara\AnimationController.h" />
     <ClInclude Include="Chara\Collision.h" />
     <ClInclude Include="Personal\Asai\deleteThis1.h" />
+    <ClInclude Include="Personal\Asai\SceneTestAsai.h" />
     <ClInclude Include="Personal\Kimura\deleteThis2.h" />
+    <ClInclude Include="Personal\Kimura\SceneTestKimura.h" />
     <ClInclude Include="Personal\Osawa\deleteThis3.h" />
     <ClInclude Include="Personal\Osawa\Enemy\EnemyBase.h" />
     <ClInclude Include="Personal\Osawa\Scene\SceneSelection.h" />
     <ClInclude Include="Personal\Osawa\Scene\SceneTestOsawa.h" />
     <ClInclude Include="Personal\Syoguti\deleteThis4.h" />
+    <ClInclude Include="Personal\Syoguti\SceneTestSyoguti.h" />
     <ClInclude Include="Personal\Takagi\deleteThis5.h" />
     <ClInclude Include="Personal\Takagi\Player.h" />
+    <ClInclude Include="Personal\Takagi\SceneTestTakagi.h" />
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Scene\SceneTest.h" />

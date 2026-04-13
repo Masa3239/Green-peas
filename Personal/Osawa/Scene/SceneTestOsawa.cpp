@@ -24,5 +24,5 @@ SceneBase* SceneTestOsawa::Update()
 
 void SceneTestOsawa::Draw()
 {
-	printfDx("OsawaTestScene\n");
+	printfDx("SceneTestOsawa\n");
 }
