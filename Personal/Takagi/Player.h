@@ -71,7 +71,7 @@ private:
 	Transform m_transform;
 
 
-	// プレイヤーが向いている方向(左右)
+	// プレイヤーが向いている方向(左右)g
 	int m_direction;
 
 	// 移動速度
