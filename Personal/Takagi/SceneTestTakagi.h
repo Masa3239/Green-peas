@@ -3,6 +3,7 @@
 #include"../../System/InputPad.h"
 #include<memory>
 class Player;
+class Camera;
 
 class SceneTestTakagi : public SceneBase
 {
@@ -34,6 +35,7 @@ public:
 
 private:
 	std::unique_ptr<Player> m_pPlayer;
+	std::unique_ptr<Camera> m_pCamera;
 
 
 

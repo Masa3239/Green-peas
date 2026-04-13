@@ -1,6 +1,7 @@
 #include"../Chara/Collision.h"
 #include"../Utility/Transform.h"
 #include"../Utility/Vector3.h"
+#include<memory>
 
 namespace {
 	enum class Status {
@@ -13,6 +14,8 @@ namespace {
 	// プレイヤーのアニメーションの枚数
 	constexpr int playerFrame = 8;
 }
+
+class Camera;
 
 class Player {
 public:
@@ -56,6 +59,7 @@ public:
 	/// </summary>
 	void Draw();
 
+	void SetCamera(Camera* camera) { m_camera = camera; }
 	/// <summary>
 	/// プレイヤーの角度を取得する関数
 	/// </summary>
@@ -83,4 +87,8 @@ private:
 
 	// プレイヤーの移動量
 	Vector3 m_moveVector;
+
+	Camera* m_camera;
+
+
 };
