@@ -139,6 +139,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Personal\Takagi\Gauge.cpp" />
+    <ClCompile Include="Personal\Takagi\HitPoint.cpp" />
     <ClCompile Include="Personal\Asai\Camera.cpp" />
     <ClCompile Include="Chara\AnimationController.cpp" />
     <ClCompile Include="Chara\Collision.cpp" />
@@ -174,6 +176,8 @@
     <Image Include="Image\Cloud.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Personal\Takagi\Gauge.h" />
+    <ClInclude Include="Personal\Takagi\HitPoint.h" />
     <ClInclude Include="Personal\Asai\Camera.h" />
     <ClInclude Include="Chara\Animation.h" />
     <ClInclude Include="Chara\AnimationController.h" />
