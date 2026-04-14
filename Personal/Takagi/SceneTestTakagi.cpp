@@ -67,7 +67,6 @@ SceneBase* SceneTestTakagi::Update()
 void SceneTestTakagi::Draw()
 {
 	printfDx("SceneTestTakagi\n");
-	//m_pPlayer->Draw();
 	box.DebugDraw();
 }
 
