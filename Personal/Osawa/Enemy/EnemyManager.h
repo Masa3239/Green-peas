@@ -40,9 +40,15 @@ public:
 
 private:
 
-	template <class T>
-	void GenerateEnemy();
+	/// <summary>
+	/// 敵をプレイヤーの周りに生成する
+	/// </summary>
+	/// <param name="enemy">敵のインスタンス</param>
+	void GenerateEnemy(EnemyBase* enemy);
 
+	/// <summary>
+	/// 死亡判定
+	/// </summary>
 	void CheckDead();
 
 	ObjectManager* m_objManager;
@@ -59,13 +65,3 @@ private:
 	/// </summary>
 	float m_generateCounter;
 };
-
-template<class T>
-inline void EnemyManager::GenerateEnemy()
-{
-	auto enemy = new T(m_objManager);
-	enemy->Init();
-	enemy->SetPlayer(m_player);
-
-	m_enemies.emplace_back(enemy);
-}
