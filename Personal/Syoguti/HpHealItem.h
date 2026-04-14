@@ -19,7 +19,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Init() override;
+	void Init(int graphHandle) override;
 
 	/// <summary>
 	/// 終了
