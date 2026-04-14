@@ -2,12 +2,12 @@
 
 #include "EnemyBase.h"
 
-class EnemyTest : public EnemyBase
+class EnemyMelee : public EnemyBase
 {
 public:
 
-	EnemyTest(ObjectManager* objManager);
-	virtual ~EnemyTest();
+	EnemyMelee(ObjectManager* objManager);
+	virtual ~EnemyMelee();
 
 	/// <summary>
 	/// ‰Šú‰»ˆ—

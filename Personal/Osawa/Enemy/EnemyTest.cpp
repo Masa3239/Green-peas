@@ -1,6 +1,7 @@
 #include "EnemyTest.h"
 
-EnemyTest::EnemyTest()
+EnemyTest::EnemyTest(ObjectManager* objManager) :
+	EnemyBase(objManager)
 {
 }
 

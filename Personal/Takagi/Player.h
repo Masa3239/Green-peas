@@ -1,6 +1,7 @@
 #include"../Chara/Collision.h"
 #include"../Utility/Transform.h"
 #include"../Utility/Vector3.h"
+#include"../../Object/GameObject.h"
 #include<memory>
 
 class Gauge;
@@ -17,12 +18,7 @@ namespace {
 		Dash,		// ダッシュ(回避)
 		Max
 	};
-	enum class GaugeType {
-		Hp,
-		Stamina,
-		Anger,
-		Max
-	};
+
 
 	// プレイヤーのアニメーションの枚数
 	constexpr int playerFrame = 8;
@@ -30,13 +26,19 @@ namespace {
 
 class Camera;
 
-class Player {
+class Player:public GameObject {
 public:
+	enum {
+		Hp,
+		Stamina,
+		Anger,
+		Max
+	};
 	/// <summary>
 	/// プレイヤーのコンストラクタ
 	/// メンバ変数の初期設定を行う
 	/// </summary>
-	Player();
+	Player(ObjectManager* objManager);
 
 	/// <summary>
 	/// プレイヤーのデストラクタ
@@ -46,15 +48,15 @@ public:
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
-	void Init();
+	void Init()override;
 	/// <summary>
 	/// 終了処理
 	/// </summary>
-	void End();
+	void End()override;
 	/// <summary>
 	/// 更新処理
 	/// </summary>
-	void Update();
+	void Update()override;
 	/// <summary>
 	/// プレイヤー移動の更新処理
 	/// </summary>
@@ -70,7 +72,7 @@ public:
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	void Draw();
+	void Draw()override;
 	/// <summary>
 	/// デバッグ処理
 	/// </summary>
@@ -102,7 +104,7 @@ public:
 	/// Anger   -> 怒りゲージ
 	/// </param>
 	/// <returns></returns>
-	float GetGaugeCurrentValue(GaugeType gauge);
+	float GetGaugeCurrentValue(int gauge);
 	/// <summary>
 	/// 選択したゲージの最大値を取得する関数
 	/// </summary>
@@ -113,7 +115,7 @@ public:
 	/// Anger   -> 怒りゲージ
 	/// </param>
 	/// <returns></returns>
-	float GetGaugeMaxValue(GaugeType gauge);
+	float GetGaugeMaxValue(int gauge);
 	/// <summary>
 	/// 選択したゲージの割合を取得する関数
 	/// </summary>
@@ -124,7 +126,8 @@ public:
 	/// Anger   -> 怒りゲージ
 	/// </param>
 	/// <returns></returns>
-	float GetGaugeRate(GaugeType gauge);
+	float GetGaugeRate(int gauge);
+	Collision::Circle GetCircle() { return m_circle; }
 private:
 	/// <summary>
 	/// ダッシュ可能かどうかを調べる関数
@@ -160,7 +163,7 @@ private:
 	/// <summary>
 	/// ゲージの配列(HP・スタミナ・怒り)
 	/// </summary>
-	std::unique_ptr<Gauge> m_gauges[static_cast<int>(GaugeType::Max)];
+	std::unique_ptr<Gauge> m_gauges[Max];
 
 	Camera* m_camera;
 
@@ -168,5 +171,6 @@ private:
 	/// 四角の当たり判定
 	/// </summary>
 	Collision::AABB m_box;
+	Collision::Circle m_circle;
 
 };

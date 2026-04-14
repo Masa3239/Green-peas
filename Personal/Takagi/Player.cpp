@@ -8,12 +8,15 @@
 #include<math.h>
 #include<memory>
 #include"../Asai/Camera.h"
+#include"../Chara/Collision.h"
+#include"../../Object/GameObject.h"
+#include"../../System/ObjectManager.h"
 
 namespace {
 	// ゲージの種類をキャスト(いちいちキャストするのが面倒なので用意)
-	constexpr int kHpNum = static_cast<int>(GaugeType::Hp);
-	constexpr int kStaminaNum = static_cast<int>(GaugeType::Stamina);
-	constexpr int kAngerNum = static_cast<int>(GaugeType::Anger);
+	//constexpr int kHpNum = static_cast<int>(Hp);
+	//constexpr int kStaminaNum = static_cast<int>(Stamina);
+	//constexpr int kAngerNum = static_cast<int>(Anger);
 	
 	// 通常の移動速度
 	constexpr float kMoveSpeed = 100.0f;
@@ -29,9 +32,12 @@ namespace {
 	constexpr float kAngerValue = 2.0f;
 	// 四角の当たり判定の大きさ
 	constexpr Vector3 kBoxSize = { 30,70,0 };
+	// 円の当たり判定の大きさ
+	constexpr float kCircleSize = 15;
 }
 
-Player::Player() :
+Player::Player(ObjectManager* objManager) :
+	GameObject(objManager),
 	m_direction(1),
 	m_speed (kMoveSpeed),
 	m_accel(1),
@@ -43,9 +49,10 @@ Player::Player() :
 	for (auto& gauge : m_gauges) {
 		gauge = std::make_unique<Gauge>();
 	}
-	m_gauges[kAngerNum]->Reset(Gauge::Min);
+	m_gauges[Anger]->Reset(Gauge::Min);
 
 	m_box = Collision::AABB(m_transform.position, kBoxSize);
+	m_circle = Collision::Circle(m_transform.position, kCircleSize);
 }
 
 Player::~Player()
@@ -72,7 +79,7 @@ void Player::Update()
 		Move();
 	}
 	m_box.SetPosition(m_transform.position);
-
+	m_circle.SetPosition(m_transform.position);
 	printfDx("deltatime : %f\n", m_deltaTime);
 	printfDx("移動量 : %f\n", m_moveVector.GetLength());
 		Time::GetInstance().SetTimeScale(1);
@@ -105,7 +112,7 @@ void Player::MoveAmount()
 		// 向いている方向を更新
 		m_transform.rotation.y = angle * MyMath::ToRadian;
 
-		m_gauges[kStaminaNum]->Increase(kStaminaHealValue * m_deltaTime);
+		m_gauges[Stamina]->Increase(kStaminaHealValue * m_deltaTime);
 	}
 	
 	// 移動量の初期化
@@ -126,7 +133,7 @@ void Player::SpeedUpdate()
 	// ダッシュしていないとき
 	if (Pad::IsPressed(Pad::Button::A)&& CheckCanDash()) {
 		m_accel = kDashSpeed;
-		m_gauges[kStaminaNum]->Decrease(kDashStaimina);
+		m_gauges[Stamina]->Decrease(kDashStaimina);
 	}
 	if (CheckDashNow()) {
 		m_accel -= kDeccel * m_deltaTime;
@@ -139,6 +146,7 @@ void Player::Draw()
 	// プレイヤー・カメラが移動していることがわかるよう一定の位置に円を描画
 	DrawCircle(600, 400, 10, GetColor(0, 0, 255));
 	// プレイヤー座標に円を描画
+	DrawCircle(m_transform.position.x, m_transform.position.y, 30, GetColor(100, 100, 100));
 	DrawCircle(m_transform.position.x, m_transform.position.y, 10, GetColor(255, 0, 0));
 
 	// 現在向いている方向のデバッグ表示
@@ -157,44 +165,45 @@ void Player::Debug()
 	if (Pad::IsPressed(Pad::Button::X)) {
 		Damage(5);
 	}
-	printfDx("現在HP       : %f\n", m_gauges[kHpNum]->GetValue(Gauge::Current));
-	printfDx("最大HP       : %f\n", m_gauges[kHpNum]->GetValue(Gauge::Max));
-	printfDx("最小HP       : %f\n", m_gauges[kHpNum]->GetValue(Gauge::Min));
-	printfDx("割合HP       : %f\n", GetGaugeRate(GaugeType::Hp));
-	printfDx("現在スタミナ : %f\n", m_gauges[kStaminaNum]->GetValue(Gauge::Current));
-	printfDx("最大スタミナ : %f\n", m_gauges[kStaminaNum]->GetValue(Gauge::Max));
-	printfDx("最小スタミナ : %f\n", m_gauges[kStaminaNum]->GetValue(Gauge::Min));
-	printfDx("割合スタミナ : %f\n", GetGaugeRate(GaugeType::Stamina));
-	printfDx("現在怒り     : %f\n", m_gauges[kAngerNum]->GetValue(Gauge::Current));
-	printfDx("最大怒り     : %f\n", m_gauges[kAngerNum]->GetValue(Gauge::Max));
-	printfDx("最小怒り     : %f\n", m_gauges[kAngerNum]->GetValue(Gauge::Min));
-	printfDx("割合怒り     : %f\n", GetGaugeRate(GaugeType::Anger));
+	printfDx("現在HP       : %f\n", m_gauges[Hp]->GetValue(Gauge::Current));
+	printfDx("最大HP       : %f\n", m_gauges[Hp]->GetValue(Gauge::Max));
+	printfDx("最小HP       : %f\n", m_gauges[Hp]->GetValue(Gauge::Min));
+	printfDx("割合HP       : %f\n", GetGaugeRate(Hp));
+	printfDx("現在スタミナ : %f\n", m_gauges[Stamina]->GetValue(Gauge::Current));
+	printfDx("最大スタミナ : %f\n", m_gauges[Stamina]->GetValue(Gauge::Max));
+	printfDx("最小スタミナ : %f\n", m_gauges[Stamina]->GetValue(Gauge::Min));
+	printfDx("割合スタミナ : %f\n", GetGaugeRate(Stamina));
+	printfDx("現在怒り     : %f\n", m_gauges[Anger]->GetValue(Gauge::Current));
+	printfDx("最大怒り     : %f\n", m_gauges[Anger]->GetValue(Gauge::Max));
+	printfDx("最小怒り     : %f\n", m_gauges[Anger]->GetValue(Gauge::Min));
+	printfDx("割合怒り     : %f\n", GetGaugeRate(Anger));
 	m_box.DebugDraw();
+	m_circle.DebugDraw();
 }
 
 void Player::Damage(float damage)
 {
 	if (CheckDashNow())return;
-	m_gauges[kHpNum]->Decrease(damage);
-	m_gauges[kAngerNum]->Increase(damage * kAngerValue);
+	m_gauges[Hp]->Decrease(damage);
+	m_gauges[Anger]->Increase(damage * kAngerValue);
 }
 
 bool Player::IsDead()
 {
-	return !m_gauges[kHpNum]->GetValue();
+	return !m_gauges[Hp]->GetValue();
 }
 
-float Player::GetGaugeCurrentValue(GaugeType gauge)
+float Player::GetGaugeCurrentValue(int gauge)
 {
 	return m_gauges[static_cast<int>(gauge)]->GetValue(Gauge::Current);
 }
 
-float Player::GetGaugeMaxValue(GaugeType gauge)
+float Player::GetGaugeMaxValue(int gauge)
 {
 	return m_gauges[static_cast<int>(gauge)]->GetValue(Gauge::Max);
 }
 
-float Player::GetGaugeRate(GaugeType gauge)
+float Player::GetGaugeRate(int gauge)
 {
 	return m_gauges[static_cast<int>(gauge)]->GetRate();
 }
@@ -206,7 +215,7 @@ bool Player::CheckCanDash()
 	if (CheckDashNow())return false;
 	bool canDash = false;
 	// 現在のスタミナがダッシュ時の消費スタミナより多いかどうか調べる
-	canDash = m_gauges[kStaminaNum]->CheckValue(kDashStaimina);
+	canDash = m_gauges[Stamina]->CheckValue(kDashStaimina);
 	return canDash;
 }
 

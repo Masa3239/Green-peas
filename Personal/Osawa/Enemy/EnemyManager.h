@@ -3,13 +3,15 @@
 #include <memory>
 #include <vector>
 
+class ObjectManager;
 class EnemyBase;
+class Player;
 
 class EnemyManager
 {
 public:
 
-	EnemyManager();
+	EnemyManager(ObjectManager* objManager);
 	~EnemyManager();
 
 	/// <summary>
@@ -34,10 +36,36 @@ public:
 
 	void AddEnemy();
 
+	void SetPlayer(Player* player) { m_player = player; }
+
 private:
+
+	template <class T>
+	void GenerateEnemy();
+
+	void CheckDead();
+
+	ObjectManager* m_objManager;
 
 	/// <summary>
 	/// 敵の配列
 	/// </summary>
-	std::vector<std::unique_ptr<EnemyBase>> m_enemies;
+	std::vector<EnemyBase*> m_enemies;
+
+	Player* m_player;
+
+	/// <summary>
+	/// 敵の生成待機のカウンター
+	/// </summary>
+	float m_generateCounter;
 };
+
+template<class T>
+inline void EnemyManager::GenerateEnemy()
+{
+	auto enemy = new T(m_objManager);
+	enemy->Init();
+	enemy->SetPlayer(m_player);
+
+	m_enemies.emplace_back(enemy);
+}
