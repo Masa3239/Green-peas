@@ -2,11 +2,13 @@
 #include <DxLib.h>
 #include"../../Personal/Takagi/Player.h"
 #include"../../Personal/Asai/Camera.h"
+#include"../../Personal/Osawa/Scene/SceneSelection.h"
 
 SceneTestTakagi::SceneTestTakagi()
 {
 	m_pPlayer = std::make_unique<Player>();
 	m_pCamera = std::make_unique<Camera>();
+	
 }
 
 SceneTestTakagi::~SceneTestTakagi()
@@ -31,6 +33,9 @@ SceneBase* SceneTestTakagi::Update()
 {
 	m_pPlayer->Update();
 	//m_pPlayer->Update();
+	if (m_pPlayer->IsDead()) {
+		return new SceneSelection();
+	}
 	return this;
 }
 
@@ -43,5 +48,5 @@ void SceneTestTakagi::Draw()
 
 	SetDrawScreen(DX_SCREEN_BACK);
 	m_pCamera->Draw();
-	m_pCamera->DebugDraw();
+	//m_pCamera->DebugDraw();
 }
