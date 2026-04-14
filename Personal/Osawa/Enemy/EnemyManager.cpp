@@ -3,6 +3,7 @@
 #include "EnemyBase.h"
 #include "../Utility/Time.h"
 #include "../Utility/MyMath.h"
+#include "../Personal/Takagi/Player.h"
 
 #include "EnemyMelee.h"
 #include <DxLib.h>
@@ -18,6 +19,7 @@ namespace
 
 EnemyManager::EnemyManager(ObjectManager* objManager) :
 	m_objManager(objManager),
+	m_player(nullptr),
 	m_generateCounter(0.0f)
 {
 }
@@ -51,7 +53,7 @@ void EnemyManager::Update()
 	if (m_generateCounter <= 0)
 	{
 		// “G‚ð¶¬
-		GenerateEnemy<EnemyMelee>();
+		GenerateEnemy(new EnemyMelee(m_objManager));
 
 		m_generateCounter = kGenerateDuration;
 	}
@@ -74,13 +76,25 @@ void EnemyManager::AddEnemy()
 	enemy->Init();
 	enemy->SetPlayer(m_player);
 
+	m_enemies.emplace_back(enemy);
+}
+
+void EnemyManager::GenerateEnemy(EnemyBase* enemy)
+{
+	enemy->Init();
+	enemy->SetPlayer(m_player);
+
+	// ¶¬À•W‚ª”ÍˆÍ“à‚É‚È‚é‚Ü‚ÅŒJ‚è•Ô‚·
+	Vector3 playerPos = m_player->GetTransform().position;
 	Vector3 pos;
 	while (true)
 	{
 		float dir = MyMath::DegToRad(GetRand(360));
-		pos.x = std::sin(dir) * kGenerateOffsetPos;
-		pos.y = std::cos(dir) * kGenerateOffsetPos;
+		pos = playerPos;
+		pos.x += std::sin(dir) * kGenerateOffsetPos;
+		pos.y += std::cos(dir) * kGenerateOffsetPos;
 
+		// ”ÍˆÍ“à‚È‚çŒˆ’è
 		if (pos.x >= 0 && pos.y >= 0) break;
 	}
 	enemy->GetTransform().position = pos;
