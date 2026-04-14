@@ -5,6 +5,8 @@
 
 void GameSetting::InitWindow()
 {
+	// 文字コードを UTF-8 に変更 printfDxで日本語表示ができる
+	SetUseCharCodeFormat(DX_CHARCODEFORMAT_UTF8);
 	// ウィンドウ名を設定
 	SetMainWindowText(Game::kWindowText);
 
@@ -13,7 +15,6 @@ void GameSetting::InitWindow()
 
 	// ウィンドウモードで起動
 	ChangeWindowMode(Game::kWindowMode);
-
 }
 
 void GameSetting::InitDxLib3D()
