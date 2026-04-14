@@ -5,17 +5,17 @@
 
 namespace Collision
 {
-	bool Sphere::CheckCollision(const Shape& other) const
+	bool Circle::CheckCollision(const Shape& other) const
 	{
 		// 当たった形状が球だったら
-		if (other.GetType() == Type::Sphere)
+		if (other.GetType() == Type::Circle)
 		{
 			// 相手の座標を取得するために
 			// Sphereクラスをdynamic_castして派生クラスであるSphereクラスを用意する
 			// memo：dynamic_castを避けた実装方法もある
 			// ダブルディスパッチ こちらのほうが高度だが、処理負荷が軽い
 			// これを使って衝突判定を作ったらポートフォリオには絶対に書くようにする
-			const Sphere* checkSphere = dynamic_cast<const Sphere*>(&other);
+			const Circle* checkSphere = dynamic_cast<const Circle*>(&other);
 			
 			// GetTypeでType::Sphereがとれているから大丈夫なはずだけど確認
 			assert(checkSphere);
@@ -36,10 +36,10 @@ namespace Collision
 		return false;
 	}
 
-	void Sphere::DebugDraw() const
+	void Circle::DebugDraw() const
 	{
-		// 球の当たり判定を表示
-		DrawSphere3D(GetPosition().ToVECTOR(), m_radius, 10, Color::kWhite, Color::kWhite, false);
+		// 円の当たり判定を表示
+		DrawCircle(m_center.x,m_center.y, m_radius, Color::kWhite, false);
 	}
 
 	AABB::AABB(const Vector3& center, const Vector3& size)
@@ -64,9 +64,9 @@ namespace Collision
 
 		if (m_maxPos.y < checkBox->m_minPos.y) return false;
 		if (m_minPos.y > checkBox->m_maxPos.y) return false;
-
-		if (m_maxPos.z < checkBox->m_minPos.z) return false;
-		if (m_minPos.z > checkBox->m_maxPos.z) return false;
+		// Z軸は使わない
+		//if (m_maxPos.z < checkBox->m_minPos.z) return false;
+		//if (m_minPos.z > checkBox->m_maxPos.z) return false;
 
 		// ここまで来たら当たっている
 		return true;
@@ -86,49 +86,7 @@ namespace Collision
 
 	void AABB::DebugDraw() const
 	{
-		// AABBボックスの座標
-		Vector3 vertices[8];
-
-		// 下の面の座標
-
-		vertices[0] = { m_minPos.x, m_minPos.y, m_minPos.z };
-		vertices[1] = { m_maxPos.x, m_minPos.y, m_minPos.z };
-		vertices[2] = { m_maxPos.x, m_minPos.y, m_maxPos.z };
-		vertices[3] = { m_minPos.x, m_minPos.y, m_maxPos.z };
-
-		// 上の面の座標
-
-		vertices[4] = { m_minPos.x, m_maxPos.y, m_minPos.z };
-		vertices[5] = { m_maxPos.x, m_maxPos.y, m_minPos.z };
-		vertices[6] = { m_maxPos.x, m_maxPos.y, m_maxPos.z };
-		vertices[7] = { m_minPos.x, m_maxPos.y, m_maxPos.z };
-
-		for (int i = 0; i < 4; i++)
-		{
-			// 下の面
-			DrawLine3D(vertices[i].ToVECTOR(), vertices[(i + 1) % 4].ToVECTOR(), Color::kWhite);
-			// 上の面
-			DrawLine3D(vertices[i + 4].ToVECTOR(), vertices[(i + 1) % 4 + 4].ToVECTOR(), Color::kWhite);
-			// 横の面
-			DrawLine3D(vertices[i].ToVECTOR(), vertices[i + 4].ToVECTOR(), Color::kWhite);
-		}
-
-		//DrawLine3D(vector[0].ToVECTOR(), vector[1].ToVECTOR(), Color::kWhite);
-		//DrawLine3D(vector[1].ToVECTOR(), vector[2].ToVECTOR(), Color::kWhite);
-		//DrawLine3D(vector[2].ToVECTOR(), vector[3].ToVECTOR(), Color::kWhite);
-		//DrawLine3D(vector[3].ToVECTOR(), vector[0].ToVECTOR(), Color::kWhite);
-
-		//DrawLine3D(vector[4].ToVECTOR(), vector[5].ToVECTOR(), Color::kWhite);
-		//DrawLine3D(vector[5].ToVECTOR(), vector[6].ToVECTOR(), Color::kWhite);
-		//DrawLine3D(vector[6].ToVECTOR(), vector[7].ToVECTOR(), Color::kWhite);
-		//DrawLine3D(vector[7].ToVECTOR(), vector[4].ToVECTOR(), Color::kWhite);
-
-		//DrawLine3D(vector[0].ToVECTOR(), vector[4].ToVECTOR(), Color::kWhite);
-		//DrawLine3D(vector[1].ToVECTOR(), vector[5].ToVECTOR(), Color::kWhite);
-		//DrawLine3D(vector[2].ToVECTOR(), vector[6].ToVECTOR(), Color::kWhite);
-		//DrawLine3D(vector[3].ToVECTOR(), vector[7].ToVECTOR(), Color::kWhite);
-
-		//DrawCube3D(m_minPos.ToVECTOR(), m_maxPos.ToVECTOR(), Color::kWhite, Color::kWhite, false);
+		DrawBox(m_minPos.x, m_minPos.y, m_maxPos.x, m_maxPos.y, Color::kWhite, FALSE);
 	}
 
 	void AABB::SetSize(const Vector3& size)

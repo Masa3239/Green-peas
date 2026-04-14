@@ -12,7 +12,7 @@ namespace Collision
 	/// </summary>
 	enum class Type
 	{
-		Sphere,
+		Circle,		// 円
 		AABB		// Axis Aligne Bounding Box	回転しない
 		//OBB		// Oriented Bounding Box	回転する
 	};
@@ -59,22 +59,22 @@ namespace Collision
 	};
 
 	/// <summary>
-	/// 衝突判定の球の形状のクラス
+	/// 衝突判定の円の形状のクラス
 	/// </summary>
-	class Sphere : public Shape
+	class Circle : public Shape
 	{
 	public:
 
-		Sphere() = default;
-		Sphere(const Vector3& pos, float radius) : m_center(pos), m_radius(radius) {}
+		Circle() = default;
+		Circle(const Vector3& pos, float radius) : m_center(pos), m_radius(radius) {}
 
-		~Sphere() = default;
+		~Circle() = default;
 
 		/// <summary>
 		/// 形状データの取得
 		/// </summary>
 		/// <returns></returns>
-		Type GetType() const override { return Type::Sphere; }
+		Type GetType() const override { return Type::Circle; }
 
 		/// <summary>
 		/// 衝突判定

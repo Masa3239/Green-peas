@@ -1,6 +1,7 @@
 #include "SceneBase.h"
 #include "../Utility/Color.h"
 #include "../Utility/Game.h"
+#include "../System/ObjectManager.h"
 #include <DxLib.h>
 
 namespace {
@@ -14,8 +15,16 @@ SceneBase::SceneBase() :
 	m_fadeColor(Color::kBlack),
 	m_fadeBright(255),
 	m_fadeSpeed(-kFadeSpeed),
-	m_isFadeOut(false)
+	m_isFadeOut(false),
+	m_objManager(nullptr)
 {
+	m_objManager = new ObjectManager();
+	m_objManager->Init();
+}
+
+SceneBase::~SceneBase()
+{
+	m_objManager->End();
 }
 
 // フェードの更新
