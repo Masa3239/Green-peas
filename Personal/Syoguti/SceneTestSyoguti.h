@@ -4,6 +4,7 @@
 #include <memory>
 
 class ItemManager;
+class EnemyBoss;
 
 class SceneTestSyoguti : public SceneBase
 {
@@ -36,5 +37,6 @@ public:
 private:
 
 	std::unique_ptr<ItemManager>m_pItemMgr;
+	std::unique_ptr<EnemyBoss> m_pEnemyBoss;
 
 };
