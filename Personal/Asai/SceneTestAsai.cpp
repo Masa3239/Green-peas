@@ -3,8 +3,9 @@
 #include"../Asai/Camera.h"
 #include"../../Utility/Transform.h"
 #include"../../Utility/Time.h"
+#include"../Asai/UIManager.h"
 
-Camera camera;
+UIManager* uiMgr;
 
 Transform transform;
 
@@ -18,8 +19,10 @@ SceneTestAsai::~SceneTestAsai()
 
 void SceneTestAsai::Init()
 {
-	camera = Camera();
-	camera.Init();
+
+	uiMgr = new UIManager();
+	uiMgr->Init();
+
 }
 
 void SceneTestAsai::End()
@@ -36,12 +39,6 @@ SceneBase* SceneTestAsai::Update()
 
 	}
 
-	if (CheckHitKey(KEY_INPUT_2)) {
-		camera.StartDamage();
-	}
-
-	camera.Update(transform);
-
 	if (CheckHitKey(KEY_INPUT_0)) {
 		Time::GetInstance().SetTimeScale(0);
 	}
@@ -57,11 +54,12 @@ SceneBase* SceneTestAsai::Update()
 
 void SceneTestAsai::Draw()
 {
-	camera.Draw();
-	camera.DebugDraw();
 
-	printfDx("x %f\n", transform.position.x);
-	printfDx("y %f\n",transform.position.y);
+	uiMgr->ScreenDraw();
+	uiMgr->DebugDraw();
+
+	//printfDx("x %f\n", transform.position.x);
+	//printfDx("y %f\n",transform.position.y);
 
 	printfDx("SceneTestAsai\n");
 }

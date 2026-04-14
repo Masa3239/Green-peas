@@ -6,7 +6,7 @@ class EnemyTest : public EnemyBase
 {
 public:
 
-	EnemyTest();
+	EnemyTest(ObjectManager* objManager);
 	virtual ~EnemyTest();
 
 	/// <summary>

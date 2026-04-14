@@ -13,7 +13,7 @@ SceneTestOsawa::~SceneTestOsawa()
 
 void SceneTestOsawa::Init()
 {
-	m_enemyMgr = std::make_unique<EnemyManager>();
+	m_enemyMgr = std::make_unique<EnemyManager>(GetObjectManager());
 	m_enemyMgr->Init();
 
 	m_enemyMgr->AddEnemy();

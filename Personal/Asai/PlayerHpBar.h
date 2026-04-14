@@ -34,7 +34,7 @@ public:
 	/// </summary>
 	void End()override;
 
-	const PlayerUI::DrawType& GetDrawType()const override;
+	PlayerUI::DrawType GetDrawType()const override;
 
 private:
 

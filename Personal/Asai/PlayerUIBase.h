@@ -25,8 +25,8 @@ namespace PlayerUI {
 
 	enum class DrawType {
 
-		world,
-		screen,
+		World,
+		Screen,
 
 	};
 
@@ -53,6 +53,8 @@ public:
 	/// </summary>
 	virtual void Update() = 0;
 
+	virtual void CalculateRate();
+
 	/// <summary>
 	/// 描画処理
 	/// </summary>
@@ -72,7 +74,7 @@ public:
 	/// 描画タイプを取得する
 	/// </summary>
 	/// <returns></returns>
-	virtual const PlayerUI::DrawType& GetDrawType()const = 0;
+	virtual PlayerUI::DrawType GetDrawType()const = 0;
 
 	virtual void SetState(const PlayerUI::Type& state) { m_state = state; }
 

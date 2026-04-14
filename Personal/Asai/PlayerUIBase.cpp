@@ -1,4 +1,5 @@
 #include "PlayerUIBase.h"
+#include"../../Utility/MyMath.h"
 
 PlayerUIBase::PlayerUIBase():
 	m_state(),
@@ -7,4 +8,10 @@ PlayerUIBase::PlayerUIBase():
 	m_max(0),
 	m_rate(0)
 {
+}
+
+void PlayerUIBase::CalculateRate()
+{
+	//割合を計算
+	m_rate = MyMath::Rate(m_value, m_max);
 }
