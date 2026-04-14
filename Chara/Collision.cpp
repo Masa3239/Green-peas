@@ -52,22 +52,36 @@ namespace Collision
 	{
 		// ここではAABB vs AABBの当たり判定の計算を行う
 		// 形状がAABBだったら
-		if (other.GetType() != Type::AABB) return false;
+		//if (other.GetType() != Type::AABB) return false;
+		if (other.GetType() == Type::AABB) {
 
-		// 相手の座標を取得するためにAABBクラスをdynamic_castして取得する
-		const AABB* checkBox = dynamic_cast<const AABB*>(&other);
+			// 相手の座標を取得するためにAABBクラスをdynamic_castして取得する
+			const AABB* checkBox = dynamic_cast<const AABB*>(&other);
 
-		assert(checkBox);
+			assert(checkBox);
 
-		if (m_maxPos.x < checkBox->m_minPos.x) return false;
-		if (m_minPos.x > checkBox->m_maxPos.x) return false;
+			if (m_maxPos.x < checkBox->m_minPos.x) return false;
+			if (m_minPos.x > checkBox->m_maxPos.x) return false;
 
-		if (m_maxPos.y < checkBox->m_minPos.y) return false;
-		if (m_minPos.y > checkBox->m_maxPos.y) return false;
-		// Z軸は使わない
-		//if (m_maxPos.z < checkBox->m_minPos.z) return false;
-		//if (m_minPos.z > checkBox->m_maxPos.z) return false;
-
+			if (m_maxPos.y < checkBox->m_minPos.y) return false;
+			if (m_minPos.y > checkBox->m_maxPos.y) return false;
+			// Z軸は使わない
+			//if (m_maxPos.z < checkBox->m_minPos.z) return false;
+			//if (m_minPos.z > checkBox->m_maxPos.z) return false;
+		}
+		else if (other.GetType() == Type::Circle) {
+			const Circle* checkCircle = dynamic_cast<const Circle*>(&other);
+			// 円の中心が四角の中にある時true
+			if (CheckPointInAABB(checkCircle->GetPosition())) {
+				return true;
+			}
+			// 円の中心が四角の中にない時
+			// 四角と点の最短距離が円の半径よりも大きいときfalseを返す
+			if (checkCircle->GetRadius()<Measure(checkCircle->GetPosition())) {
+				return false;
+			}
+		
+		}
 		// ここまで来たら当たっている
 		return true;
 	}
@@ -92,5 +106,43 @@ namespace Collision
 	void AABB::SetSize(const Vector3& size)
 	{
 		m_halfSize = size * 0.5f;
+	}
+	bool AABB::CheckPointInAABB(const Vector3& pos)const
+	{
+		// X座標が四角の範囲外ならfalse
+		if (pos.x < m_minPos.x)return false;
+		if (pos.x > m_maxPos.x)return false;
+		// Y座標が四角の範囲外ならfalse
+		if (pos.y < m_minPos.y)return false;
+		if (pos.y > m_maxPos.y)return false;
+		
+		return true;
+	}
+	float AABB::Measure(const Vector3& pos) const
+	{
+		Vector3 leftBottom = { m_minPos.x,m_maxPos.y,m_minPos.z };	// 左下の座標
+		Vector3 rightTop = { m_maxPos.x,m_minPos.y,m_minPos.z };	// 右上の座標
+		// 点と辺の最短距離を調べる
+		float min = Segment_Point_MinLength(m_minPos.ToVECTOR(), rightTop.ToVECTOR(), pos.ToVECTOR());
+		float distance = Segment_Point_MinLength(m_maxPos.ToVECTOR(), rightTop.ToVECTOR(), pos.ToVECTOR());
+		// 調べた距離が現在の最短距離よりも短ければ更新
+		if (min > distance) {
+			min = distance;
+		}
+		// 点と辺の最短距離を調べる
+		distance = Segment_Point_MinLength(m_maxPos.ToVECTOR(), leftBottom.ToVECTOR(), pos.ToVECTOR());
+		// 調べた距離が現在の最短距離よりも短ければ更新
+		if (min > distance) {
+			min = distance;
+		}
+		// 点と辺の最短距離を調べる
+		distance = Segment_Point_MinLength(m_minPos.ToVECTOR(), leftBottom.ToVECTOR(), pos.ToVECTOR());
+		// 調べた距離が現在の最短距離よりも短ければ更新
+		if (min > distance) {
+			min = distance;
+		}
+
+		// 最短距離を返す
+		return min;
 	}
 }
