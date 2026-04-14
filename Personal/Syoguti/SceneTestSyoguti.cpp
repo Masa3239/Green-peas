@@ -1,7 +1,10 @@
 #include "SceneTestSyoguti.h"
 #include <DxLib.h>
 
-SceneTestSyoguti::SceneTestSyoguti()
+#include "ItemManager.h"
+
+SceneTestSyoguti::SceneTestSyoguti() :
+	m_pItemMgr(nullptr)
 {
 }
 
@@ -11,10 +14,14 @@ SceneTestSyoguti::~SceneTestSyoguti()
 
 void SceneTestSyoguti::Init()
 {
+
+	 m_pItemMgr = std::make_unique<ItemManager>();
+	 m_pItemMgr->Init();
 }
 
 void SceneTestSyoguti::End()
 {
+	m_pItemMgr->End();
 }
 
 SceneBase* SceneTestSyoguti::Update()
@@ -24,5 +31,6 @@ SceneBase* SceneTestSyoguti::Update()
 
 void SceneTestSyoguti::Draw()
 {
+	m_pItemMgr->Draw();
 	printfDx("SceneTestSyoguti\n");
 }

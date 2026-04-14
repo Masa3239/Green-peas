@@ -17,6 +17,7 @@ void SceneTestOsawa::Init()
 	m_enemyMgr->Init();
 
 	m_enemyMgr->AddEnemy();
+	m_enemyMgr->AddEnemy();
 }
 
 void SceneTestOsawa::End()

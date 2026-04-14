@@ -39,14 +39,33 @@ public:
 	virtual void Draw() = 0;
 
 	/// <summary>
-	/// 生成
+	/// グラフパスをセットするセッター関数
 	/// </summary>
-	virtual void Regist() = 0;
+	/// <param name="graphHandlePath"></param>
+	virtual void SetGraphHandlePath(int graphHandlePath) { m_graphHandle = graphHandlePath; }
 
 protected:
 
-	int m_posX;
-	int m_posY;
+	/// <summary>
+	/// 画像の座標
+	/// </summary>
+	float m_posX;
+	float m_posY;
 
+	/// <summary>
+	/// 画像のサイズ
+	/// </summary>
+	int m_sizeX;
+	int m_sizeY;
+
+	/// <summary>
+	/// 画像ハンドル
+	/// </summary>
+	int m_graphHandle;
+
+	/// <summary>
+	/// 画像のスケール
+	/// </summary>
+	float m_scale;
 };
 

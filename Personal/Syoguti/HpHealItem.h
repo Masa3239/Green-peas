@@ -37,9 +37,10 @@ public:
 	void Draw() override;
 
 	/// <summary>
-	/// 生成
+	/// グラフパスをセットするセッター関数
 	/// </summary>
-	void Regist() override;
+	/// <param name="graphHandlePath"></param>
+	virtual void SetGraphHandlePath(int graphHandlePath) override{ m_graphHandle = graphHandlePath; }
 
 };
 

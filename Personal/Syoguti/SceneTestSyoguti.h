@@ -1,6 +1,9 @@
 #pragma once
 
 #include "../Scene/SceneBase.h"
+#include <memory>
+
+class ItemManager;
 
 class SceneTestSyoguti : public SceneBase
 {
@@ -29,4 +32,9 @@ public:
 	/// •`‰æˆ—
 	/// </summary>
 	void Draw() override;
+
+private:
+
+	std::unique_ptr<ItemManager>m_pItemMgr;
+
 };
