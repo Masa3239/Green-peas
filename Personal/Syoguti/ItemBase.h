@@ -46,13 +46,26 @@ public:
 
 protected:
 
+	/// <summary>
+	/// 画像の座標
+	/// </summary>
 	float m_posX;
 	float m_posY;
 
+	/// <summary>
+	/// 画像のサイズ
+	/// </summary>
 	int m_sizeX;
 	int m_sizeY;
 
+	/// <summary>
+	/// 画像ハンドル
+	/// </summary>
 	int m_graphHandle;
+
+	/// <summary>
+	/// 画像のスケール
+	/// </summary>
 	float m_scale;
 };
 

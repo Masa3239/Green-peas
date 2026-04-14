@@ -20,13 +20,15 @@ ItemManager::ItemManager() :
 
 void ItemManager::Init()
 {
+
+	// 画像のファイルパスを取得
 	m_hpHealItemGraphHandle = LoadGraph(kHpHealItemGraphHandlePath);
 
 	for (int i = 0; i < kHpHealItems; i++) {
 
 		m_items.push_back(std::make_unique<HpHealItem>());
-		m_items.back()->Init();
 		m_items.back()->SetGraphHandlePath(m_hpHealItemGraphHandle);
+		m_items.back()->Init();
 	}
 
 }

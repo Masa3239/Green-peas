@@ -31,5 +31,6 @@ SceneBase* SceneTestSyoguti::Update()
 
 void SceneTestSyoguti::Draw()
 {
+	m_pItemMgr->Draw();
 	printfDx("SceneTestSyoguti\n");
 }
