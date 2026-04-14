@@ -21,7 +21,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	virtual void Init(int graphHandle) = 0;
+	virtual void Init() = 0;
 
 	/// <summary>
 	/// 終了
@@ -39,9 +39,10 @@ public:
 	virtual void Draw() = 0;
 
 	/// <summary>
-	/// 生成
+	/// グラフパスをセットするセッター関数
 	/// </summary>
-	virtual void Regist() = 0;
+	/// <param name="graphHandlePath"></param>
+	virtual void SetGraphHandlePath(int graphHandlePath) { m_graphHandle = graphHandlePath; }
 
 protected:
 

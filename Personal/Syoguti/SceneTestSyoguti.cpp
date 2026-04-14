@@ -15,12 +15,13 @@ SceneTestSyoguti::~SceneTestSyoguti()
 void SceneTestSyoguti::Init()
 {
 
-	// m_pItemMgr = std::make_unique<ItemManager>;
-	// m_pItemMgr->Init();
+	 m_pItemMgr = std::make_unique<ItemManager>();
+	 m_pItemMgr->Init();
 }
 
 void SceneTestSyoguti::End()
 {
+	m_pItemMgr->End();
 }
 
 SceneBase* SceneTestSyoguti::Update()

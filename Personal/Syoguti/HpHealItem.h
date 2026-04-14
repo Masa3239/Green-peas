@@ -19,7 +19,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Init(int graphHandle) override;
+	void Init() override;
 
 	/// <summary>
 	/// 終了
@@ -36,10 +36,7 @@ public:
 	/// </summary>
 	void Draw() override;
 
-	/// <summary>
-	/// 生成
-	/// </summary>
-	void Regist() override;
+	virtual void SetGraphHandlePath(int graphHandlePath) override{ m_graphHandle = graphHandlePath; }
 
 };
 

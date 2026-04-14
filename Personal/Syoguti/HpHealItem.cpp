@@ -6,10 +6,9 @@ HpHealItem::HpHealItem()
 {
 }
 
-void HpHealItem::Init(int graphHandle)
+void HpHealItem::Init()
 {
 
-	m_graphHandle = graphHandle;
 	GetGraphSize(m_graphHandle, &m_sizeX, &m_sizeY);
 
 	float scaleX = 64.0f / m_sizeX;
