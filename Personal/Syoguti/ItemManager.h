@@ -40,9 +40,11 @@ public:
 	void Draw();
 
 	/// <summary>
-	/// 生成
+	/// アイテムの生成
 	/// </summary>
-	void Create();
+	/// <param name="type">アイテムの種類</param>
+	/// <param name="position">座標</param>
+	void Create(ItemBase::ItemType type, Vector3 position);
 
 	/// <summary>
 	/// 指定したインデックスのアイテムを削除
@@ -58,8 +60,14 @@ public:
 
 private:
 
+	/// <summary>
+	/// 可変長配列
+	/// </summary>
 	std::vector<std::unique_ptr<ItemBase>> m_items;
 
+	/// <summary>
+	/// 画像のファイルパス
+	/// </summary>
 	int m_hpHealItemGraphHandle;
 
 };

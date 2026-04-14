@@ -1,5 +1,6 @@
 #include "HpHealItem.h"
 #include "../../Chara/Collision.h"
+#include "../../Utility/Transform.h"
 #include "DxLib.h"
 
 namespace {
@@ -15,12 +16,13 @@ HpHealItem::HpHealItem()
 	m_collision = Collision::Circle(m_transform.position, kCircleRadius);
 }
 
+HpHealItem::HpHealItem(Vector3 position)
+{
+	m_transform.position = position;
+}
+
 void HpHealItem::Init()
 {
-
-	// 画像の位置(仮)
-	m_transform.position.x = 100.0f;
-	m_transform.position.y = 100.0f;
 	// 中心座標をセット
 	m_collision.SetPosition(m_transform.position);
 }
