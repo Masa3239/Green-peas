@@ -110,6 +110,9 @@
     <Image Include="Image\Cloud.png">
       <Filter>リソース ファイル</Filter>
     </Image>
+    <Image Include="Personal\Syoguti\Resource\ItemTest1.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility\Color.h">
