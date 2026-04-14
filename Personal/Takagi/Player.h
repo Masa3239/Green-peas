@@ -168,5 +168,6 @@ private:
 	/// 四角の当たり判定
 	/// </summary>
 	Collision::AABB m_box;
+	Collision::Circle m_circle;
 
 };
