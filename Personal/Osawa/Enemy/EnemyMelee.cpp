@@ -1,5 +1,11 @@
 #include "EnemyMelee.h"
 #include "../Personal/Takagi/Player.h"
+#include "../Utility/Time.h"
+
+namespace
+{
+	constexpr float kMoveSpeed = 50.0f;
+}
 
 EnemyMelee::EnemyMelee(ObjectManager* objManager) :
 	EnemyBase(objManager)
@@ -20,9 +26,16 @@ void EnemyMelee::End()
 
 void EnemyMelee::UpdateEnemy()
 {
-	if (GetPlayer())
+	if (auto player = GetPlayer())
 	{
+		const Vector3& targetPos = player->GetTransform().position;
+		Vector3& myPos = GetTransform().position;
 
+		if (targetPos == myPos) return;
+
+		Vector3 vec = (targetPos - myPos).GetNormalize();
+
+		myPos += vec * kMoveSpeed * Time::GetInstance().GetDeltaTime();
 	}
 }
 
