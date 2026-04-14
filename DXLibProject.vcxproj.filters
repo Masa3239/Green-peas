@@ -102,9 +102,15 @@
     <ClCompile Include="Personal\Takagi\Gauge.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Personal\Syoguti\EnemyBoss.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Image\Cloud.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Personal\Syoguti\Resource\ItemTest1.png">
       <Filter>リソース ファイル</Filter>
     </Image>
   </ItemGroup>
@@ -221,6 +227,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Personal\Takagi\Gauge.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Syoguti\EnemyBoss.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

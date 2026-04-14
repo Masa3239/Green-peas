@@ -8,6 +8,7 @@
 #include<math.h>
 #include<memory>
 #include"../Asai/Camera.h"
+#include"../Chara/Collision.h"
 
 namespace {
 	// ゲージの種類をキャスト(いちいちキャストするのが面倒なので用意)
@@ -29,6 +30,8 @@ namespace {
 	constexpr float kAngerValue = 2.0f;
 	// 四角の当たり判定の大きさ
 	constexpr Vector3 kBoxSize = { 30,70,0 };
+	// 円の当たり判定の大きさ
+	constexpr float kCircleSize = 18;
 }
 
 Player::Player() :
@@ -46,6 +49,7 @@ Player::Player() :
 	m_gauges[kAngerNum]->Reset(Gauge::Min);
 
 	m_box = Collision::AABB(m_transform.position, kBoxSize);
+	m_circle = Collision::Circle(m_transform.position, kCircleSize);
 }
 
 Player::~Player()
@@ -72,7 +76,7 @@ void Player::Update()
 		Move();
 	}
 	m_box.SetPosition(m_transform.position);
-
+	m_circle.SetPosition(m_transform.position);
 	printfDx("deltatime : %f\n", m_deltaTime);
 	printfDx("移動量 : %f\n", m_moveVector.GetLength());
 		Time::GetInstance().SetTimeScale(1);
@@ -139,6 +143,7 @@ void Player::Draw()
 	// プレイヤー・カメラが移動していることがわかるよう一定の位置に円を描画
 	DrawCircle(600, 400, 10, GetColor(0, 0, 255));
 	// プレイヤー座標に円を描画
+	DrawCircle(m_transform.position.x, m_transform.position.y, 30, GetColor(100, 100, 100));
 	DrawCircle(m_transform.position.x, m_transform.position.y, 10, GetColor(255, 0, 0));
 
 	// 現在向いている方向のデバッグ表示
@@ -170,6 +175,7 @@ void Player::Debug()
 	printfDx("最小怒り     : %f\n", m_gauges[kAngerNum]->GetValue(Gauge::Min));
 	printfDx("割合怒り     : %f\n", GetGaugeRate(GaugeType::Anger));
 	m_box.DebugDraw();
+	m_circle.DebugDraw();
 }
 
 void Player::Damage(float damage)
