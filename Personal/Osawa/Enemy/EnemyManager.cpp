@@ -4,7 +4,8 @@
 #include "EnemyTest.h"
 #include <DxLib.h>
 
-EnemyManager::EnemyManager()
+EnemyManager::EnemyManager(ObjectManager* objManager) :
+	m_objManager(objManager)
 {
 }
 
@@ -31,17 +32,20 @@ void EnemyManager::Update()
 	{
 		if (m_enemies.size() <= 1) return;
 
-		m_enemies.back().get()->SetHP(0);
+		m_enemies.back()->SetHP(0);
 	}
 
-	for (auto& enemy : m_enemies)
+	for (const auto& enemy : m_enemies)
 	{
-		enemy->Update();
+		if (enemy->GetHP() > 0) continue;
+
+		enemy->SetState(GameObject::State::Dead);
 	}
 
 	for (auto iter = m_enemies.begin(); iter != m_enemies.end();)
 	{
-		if (iter->get()->GetState() == EnemyBase::State::Dead)
+		EnemyBase* enemy = *iter;
+		if (enemy->GetHP() <= 0)
 		{
 			iter = m_enemies.erase(iter);
 			continue;
@@ -53,18 +57,13 @@ void EnemyManager::Update()
 
 void EnemyManager::Draw()
 {
-	for (auto& enemy : m_enemies)
-	{
-		enemy->Draw();
-	}
-
 	printfDx("Enemy Num: %d\n", m_enemies.size());
 }
 
 void EnemyManager::AddEnemy()
 {
-	auto enemy = std::make_unique<EnemyTest>();
+	auto enemy = new EnemyTest(m_objManager);
 	enemy->Init();
 
-	m_enemies.emplace_back(std::move(enemy));
+	m_enemies.emplace_back(enemy);
 }

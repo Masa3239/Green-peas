@@ -3,6 +3,7 @@
 #include "../Personal/Osawa/Scene/SceneSelection.h"
 #include "../Utility/Input.h"
 #include "../System/InputPad.h"
+#include "../System/ObjectManager.h"
 
 SceneManager::SceneManager() {
 
@@ -40,6 +41,7 @@ void SceneManager::Update() {
 
 	// シーンの切り替えもしくは更新
 	SceneBase* pScene = m_pScene->Update();
+	m_pScene->GetObjectManager()->Update();
 
 	if ( pScene != m_pScene ) {
 
@@ -61,5 +63,6 @@ void SceneManager::Draw() {
 
 	m_pScene->Draw();
 
+	m_pScene->GetObjectManager()->Draw();
 }
 

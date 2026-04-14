@@ -1,5 +1,7 @@
 #pragma once
 
+class ObjectManager;
+
 /// <summary>
 /// 各画面の基本クラス
 /// 基本的にはこのクラスを継承して各画面のクラスを作成する
@@ -19,7 +21,7 @@ public:
 	/// デストラクタ
 	/// 派生クラスを破棄した時に備えて仮想デストラクタ化
 	/// </summary>
-	virtual ~SceneBase(){}
+	virtual ~SceneBase();
 
 	/// <summary>
 	/// 初期設定
@@ -44,6 +46,11 @@ public:
 	/// 具体的な処理は各画面毎で異なるので純粋仮想関数にして派生先で実装
 	/// </summary>
 	virtual void Draw() = 0;
+
+	/// <summary>
+	/// オブジェクトマネージャーのポインタを取得する
+	/// </summary>
+	ObjectManager* GetObjectManager() const { return m_objManager; }
 
 	//-----------------------------------
 	// フェード関連の処理
@@ -95,4 +102,7 @@ protected:
 	// フェードアウトを行っているかどうか
 	bool m_isFadeOut;
 
+private:
+
+	ObjectManager* m_objManager;
 };

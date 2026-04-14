@@ -3,13 +3,14 @@
 #include <memory>
 #include <vector>
 
+class ObjectManager;
 class EnemyBase;
 
 class EnemyManager
 {
 public:
 
-	EnemyManager();
+	EnemyManager(ObjectManager* objManager);
 	~EnemyManager();
 
 	/// <summary>
@@ -36,8 +37,10 @@ public:
 
 private:
 
+	ObjectManager* m_objManager;
+
 	/// <summary>
 	/// “G‚Ì”z—ñ
 	/// </summary>
-	std::vector<std::unique_ptr<EnemyBase>> m_enemies;
+	std::vector<EnemyBase*> m_enemies;
 };
