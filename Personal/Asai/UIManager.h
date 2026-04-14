@@ -29,6 +29,21 @@ public:
 	void DebugDraw();
 
 	/// <summary>
+	/// スクリーン座標に描画
+	/// </summary>
+	void ScreenDraw();
+
+	/// <summary>
+	/// ワールド座標に描画
+	/// </summary>
+	void WorldDraw();
+
+	/// <summary>
+	/// デバック描画
+	/// </summary>
+	void DebugDraw();
+
+	/// <summary>
 	/// 終了処理
 	/// </summary>
 	void End();
