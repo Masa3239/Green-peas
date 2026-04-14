@@ -139,6 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Object\ExampleObject.cpp" />
+    <ClCompile Include="Object\GameObject.cpp" />
+    <ClCompile Include="Personal\Asai\PlayerHpBar.cpp" />
+    <ClCompile Include="Personal\Asai\PlayerUIBase.cpp" />
+    <ClCompile Include="Personal\Asai\PlayerUIManager.cpp" />
+    <ClCompile Include="Personal\Syoguti\EnemyBoss.cpp" />
     <ClCompile Include="Personal\Takagi\Gauge.cpp" />
     <ClCompile Include="Personal\Asai\Camera.cpp" />
     <ClCompile Include="Chara\AnimationController.cpp" />
@@ -164,6 +170,7 @@
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Scene\SceneTest.cpp" />
     <ClCompile Include="System\InputPad.cpp" />
+    <ClCompile Include="System\ObjectManager.cpp" />
     <ClCompile Include="System\SoundManager.cpp" />
     <ClCompile Include="Utility\GameSetting.cpp" />
     <ClCompile Include="Utility\Input.cpp" />
@@ -175,6 +182,12 @@
     <Image Include="Image\Cloud.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Object\ExampleObject.h" />
+    <ClInclude Include="Object\GameObject.h" />
+    <ClInclude Include="Personal\Asai\PlayerHpBar.h" />
+    <ClInclude Include="Personal\Asai\PlayerUIBase.h" />
+    <ClInclude Include="Personal\Asai\PlayerUIManager.h" />
+    <ClInclude Include="Personal\Syoguti\EnemyBoss.h" />
     <ClInclude Include="Personal\Takagi\Gauge.h" />
     <ClInclude Include="Personal\Asai\Camera.h" />
     <ClInclude Include="Chara\Animation.h" />
@@ -203,6 +216,7 @@
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Scene\SceneTest.h" />
     <ClInclude Include="System\InputPad.h" />
+    <ClInclude Include="System\ObjectManager.h" />
     <ClInclude Include="System\SoundManager.h" />
     <ClInclude Include="Utility\Color.h" />
     <ClInclude Include="Utility\Game.h" />
