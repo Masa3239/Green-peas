@@ -3,12 +3,21 @@
 
 #include<DxLib.h>
 #include"../../Utility/MyMath.h"
-#include"../../Utility/Transform.h"
+#include"../../Utility/Game.h"
+
+#include"../Takagi/Player.h"
 
 namespace {
 
 	const char* const kGraphHandlePath = "";
 	
+	constexpr float kGaugeLeft = Game::kScreenWidth / 2;
+
+	constexpr float kGaugeRight = Game::kScreenWidth - 70;
+
+	constexpr float kGaugeTop = Game::kScreenHeight - 50;
+
+	constexpr float kGaugeBottom = Game::kScreenHeight - 20;
 
 }
 
@@ -27,8 +36,6 @@ void PlayerHpBar::Init()
 
 void PlayerHpBar::Update()
 {
-	//HPの割合を計算
-	CalculateRate();
 
 }
 
@@ -41,7 +48,16 @@ void PlayerHpBar::Draw()
 	//作成予定
 	//DrawRectGraph()
 
-	DrawBox(100, 100, 200, 200, 0xff0000, true);
+	//仮
+	DrawBox(kGaugeLeft, kGaugeTop, kGaugeRight, kGaugeBottom, 0xffffff, true);
+
+	float max = kGaugeLeft + 10;
+
+	DrawBox(
+		max * m_rate,
+		kGaugeTop,
+		kGaugeRight - 10,
+		kGaugeBottom, 0x00ff00, true);
 
 }
 
@@ -63,4 +79,13 @@ void PlayerHpBar::End()
 PlayerUI::DrawType PlayerHpBar::GetDrawType() const
 {
 	return PlayerUI::DrawType::Screen;
+}
+
+void PlayerHpBar::SetPlayer(Player* pPlayer)
+{
+
+	m_value = pPlayer->GetGaugeCurrentValue(Player::Hp);
+	m_max = pPlayer->GetGaugeMaxValue(Player::Hp);
+	m_rate = pPlayer->GetGaugeRate(Player::Hp);
+
 }

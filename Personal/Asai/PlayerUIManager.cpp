@@ -85,3 +85,14 @@ void PlayerUIManager::End()
 	}
 
 }
+
+void PlayerUIManager::SetPlayer(Player* pPlayer)
+{
+
+	for (auto& UI : m_pUIs) {
+
+		UI->SetPlayer(pPlayer);
+
+	}
+
+}

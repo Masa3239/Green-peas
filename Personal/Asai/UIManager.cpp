@@ -4,6 +4,8 @@
 #include<DxLib.h>
 #include"../Asai/PlayerUIManager.h"
 
+#include"../Takagi/Player.h"
+
 UIManager::UIManager():
 	m_pPlayerUIMgr()
 {
@@ -59,5 +61,12 @@ void UIManager::End()
 {
 
 	m_pPlayerUIMgr->End();
+
+}
+
+void UIManager::SetPlayer(Player* pPlayer)
+{
+
+	m_pPlayerUIMgr->SetPlayer(pPlayer);
 
 }

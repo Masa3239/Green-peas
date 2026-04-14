@@ -3,6 +3,8 @@
 #include<vector>
 #include<memory>
 
+class Player;
+
 class PlayerUIManager
 {
 
@@ -41,6 +43,7 @@ public:
 	/// </summary>
 	void End();
 
+	void SetPlayer(Player* pPlayer);
 
 private:
 

@@ -1,27 +1,11 @@
 #pragma once
-#include"../../Utility/Transform.h"
+
+class Player;
 
 /// <summary>
 /// 表示するプレイヤーのUIの情報
 /// </summary>
 namespace PlayerUI {
-
-	/// <summary>
-	/// 表示するプレイヤーのUIのタイプ
-	/// </summary>
-	struct Type {
-
-		Transform transform;
-
-		int hp;
-		int hpMax;
-
-		float stamina;
-		float staminaMax;
-
-		int level;
-
-	};
 
 	enum class DrawType {
 
@@ -76,11 +60,9 @@ public:
 	/// <returns></returns>
 	virtual PlayerUI::DrawType GetDrawType()const = 0;
 
-	virtual void SetState(const PlayerUI::Type& state) { m_state = state; }
+	virtual void SetPlayer(Player* pPlayer) = 0;
 
 protected:
-
-	PlayerUI::Type m_state;
 
 	/// <summary>
 	/// 表示しているか

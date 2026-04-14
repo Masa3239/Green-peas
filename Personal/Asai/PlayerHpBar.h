@@ -36,6 +36,8 @@ public:
 
 	PlayerUI::DrawType GetDrawType()const override;
 
+	void SetPlayer(Player* pPlayer)override;
+
 private:
 
 	int m_graphHandle;
