@@ -3,10 +3,12 @@
 
 #include<DxLib.h>
 #include"../../Utility/MyMath.h"
+#include"../../Utility/Transform.h"
 
 namespace {
 
 	const char* const kGraphHandlePath = "";
+	
 
 }
 
@@ -26,7 +28,7 @@ void PlayerHpBar::Init()
 void PlayerHpBar::Update()
 {
 	//HPの割合を計算
-	m_rate = MyMath::Rate(m_value, m_max);
+	CalculateRate();
 
 }
 
@@ -38,6 +40,8 @@ void PlayerHpBar::Draw()
 
 	//作成予定
 	//DrawRectGraph()
+
+	DrawBox(100, 100, 200, 200, 0xff0000, true);
 
 }
 
@@ -56,7 +60,7 @@ void PlayerHpBar::End()
 	//DeleteGraph(m_graphHandle);
 }
 
-const PlayerUI::DrawType& PlayerHpBar::GetDrawType() const
+PlayerUI::DrawType PlayerHpBar::GetDrawType() const
 {
-	return PlayerUI::DrawType::screen;
+	return PlayerUI::DrawType::Screen;
 }

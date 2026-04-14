@@ -1,14 +1,15 @@
 #pragma once
-#include"../Asai/PlayerUIManager.h"
+#include"../Asai/PlayerUIBase.h"
+#include<vector>
 #include<memory>
 
-class UIManager
+class PlayerUIManager
 {
 
 public:
 
-	UIManager();
-	~UIManager();
+	PlayerUIManager();
+	~PlayerUIManager() = default;
 
 	/// <summary>
 	/// 初期化処理
@@ -21,11 +22,6 @@ public:
 	void Update();
 
 	/// <summary>
-	/// 描画処理
-	/// </summary>
-	void Draw();
-
-	/// <summary>
 	/// スクリーン座標に描画
 	/// </summary>
 	void ScreenDraw();
@@ -36,7 +32,7 @@ public:
 	void WorldDraw();
 
 	/// <summary>
-	/// デバック描画
+	/// デバックの描画
 	/// </summary>
 	void DebugDraw();
 
@@ -45,8 +41,12 @@ public:
 	/// </summary>
 	void End();
 
+
 private:
 
-	std::unique_ptr<PlayerUIManager>m_pPlayerUIMgr;
+	/// <summary>
+	/// 表示するプレイヤーのUIの配列
+	/// </summary>
+	std::vector<std::unique_ptr<PlayerUIBase>>m_pUIs;
 
 };
