@@ -50,16 +50,19 @@ SceneBase* SceneTestOsawa::Update()
 
 void SceneTestOsawa::Draw()
 {
+	m_enemyMgr->Draw();
+}
+
+void SceneTestOsawa::PreDraw()
+{
 	printfDx("SceneTestOsawa\n");
 
 	SetDrawScreen(m_camera->GetWorldScreen());
 	ClearDrawScreen();
+}
 
-	GetObjectManager()->Draw();
-	m_player->Draw();
-
+void SceneTestOsawa::PostDraw()
+{
 	SetDrawScreen(DX_SCREEN_BACK);
 	m_camera->Draw();
-
-	m_enemyMgr->Draw();
 }

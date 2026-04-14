@@ -48,6 +48,15 @@ public:
 	virtual void Draw() = 0;
 
 	/// <summary>
+	/// 描画前の処理
+	/// </summary>
+	virtual void PreDraw() {};
+	/// <summary>
+	/// 描画後の処理
+	/// </summary>
+	virtual void PostDraw() {};
+
+	/// <summary>
 	/// オブジェクトマネージャーのポインタを取得する
 	/// </summary>
 	ObjectManager* GetObjectManager() const { return m_objManager; }
