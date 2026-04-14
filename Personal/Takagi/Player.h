@@ -87,7 +87,7 @@ public:
 	/// プレイヤーの角度を取得する関数
 	/// </summary>
 	/// <returns>プレイヤーの角度</returns>
-	float GetRadian() { return m_transform.rotation.y; }
+	float GetRadian() { return GetTransform().rotation.y; }
 
 	/// <summary>
 	/// プレイヤーが死んでいるかどうか
@@ -128,6 +128,7 @@ public:
 	/// <returns></returns>
 	float GetGaugeRate(int gauge);
 	Collision::Circle GetCircle() { return m_circle; }
+
 private:
 	/// <summary>
 	/// ダッシュ可能かどうかを調べる関数
@@ -144,7 +145,7 @@ private:
 	/// <summary>
 	/// プレイヤーのTransform
 	/// </summary>
-	Transform m_transform;
+	//Transform m_transform;
 
 
 	// プレイヤーが向いている方向(左右)
