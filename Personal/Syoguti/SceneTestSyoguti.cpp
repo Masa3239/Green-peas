@@ -3,6 +3,7 @@
 
 #include "ItemManager.h"
 #include "EnemyBoss.h"
+#include "../../Utility/Input.h"
 
 SceneTestSyoguti::SceneTestSyoguti() :
 	m_pItemMgr(nullptr),
@@ -31,6 +32,10 @@ void SceneTestSyoguti::End()
 
 SceneBase* SceneTestSyoguti::Update()
 {
+
+	if (Input::IsPressed(PAD_INPUT_10)) {
+		m_pItemMgr->Create();
+	}
 	return this;
 }
 

@@ -37,26 +37,15 @@ public:
 private:
 
 	/// <summary>
-	/// 画像の座標
-	/// </summary>
-	float m_posX;
-	float m_posY;
-
-	/// <summary>
-	/// 画像のサイズ
-	/// </summary>
-	int m_sizeX;
-	int m_sizeY;
-
-	/// <summary>
 	/// 画像のハンドル
 	/// </summary>
 	int m_graphHandle;
 
 	/// <summary>
-	/// 画像のスケール
+	/// 座標
 	/// </summary>
-	float m_scale;
+	int m_posX;
+	int m_posY;
 
 };
 

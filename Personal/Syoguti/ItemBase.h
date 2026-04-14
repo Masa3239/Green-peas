@@ -1,4 +1,6 @@
 #pragma once
+#include "../../Chara/Collision.h"
+#include "../../Utility/Transform.h"
 
 /// <summary>
 /// アイテムの基本クラス
@@ -44,28 +46,28 @@ public:
 	/// <param name="graphHandlePath"></param>
 	virtual void SetGraphHandlePath(int graphHandlePath) { m_graphHandle = graphHandlePath; }
 
+	/// <summary>
+	/// 当たり判定の情報を取得するゲッター関数
+	/// </summary>
+	/// <returns></returns>
+	virtual const Collision::Circle GetCollision() { return m_collision; }
+
 protected:
 
 	/// <summary>
 	/// 画像の座標
 	/// </summary>
-	float m_posX;
-	float m_posY;
-
-	/// <summary>
-	/// 画像のサイズ
-	/// </summary>
-	int m_sizeX;
-	int m_sizeY;
-
+	Transform m_transform;
+	
 	/// <summary>
 	/// 画像ハンドル
 	/// </summary>
 	int m_graphHandle;
 
 	/// <summary>
-	/// 画像のスケール
+	/// 円の当たり判定
 	/// </summary>
-	float m_scale;
+	Collision::Circle m_collision;
+
 };
 
