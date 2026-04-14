@@ -39,6 +39,23 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 生成
+	/// </summary>
+	void Create();
+
+	/// <summary>
+	/// 指定したインデックスのアイテムを削除
+	/// </summary>
+	/// <param name="index"></param>
+	void Remove(int index);
+
+	/// <summary>
+	/// 引数のサークルとアイテムが当たっているか調べる
+	/// </summary>
+	/// <param name="other"></param>
+	void CheckHitCircle(const Collision::Circle other);
+
 private:
 
 	std::vector<std::unique_ptr<ItemBase>> m_items;
