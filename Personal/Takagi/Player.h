@@ -125,6 +125,7 @@ public:
 	/// </param>
 	/// <returns></returns>
 	float GetGaugeRate(GaugeType gauge);
+	Collision::Circle GetCircle() { return m_circle; }
 private:
 	/// <summary>
 	/// ダッシュ可能かどうかを調べる関数

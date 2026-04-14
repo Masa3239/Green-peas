@@ -31,7 +31,7 @@ namespace {
 	// 四角の当たり判定の大きさ
 	constexpr Vector3 kBoxSize = { 30,70,0 };
 	// 円の当たり判定の大きさ
-	constexpr float kCircleSize = 18;
+	constexpr float kCircleSize = 15;
 }
 
 Player::Player() :
