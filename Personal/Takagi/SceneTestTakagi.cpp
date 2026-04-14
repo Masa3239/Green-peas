@@ -12,7 +12,7 @@ namespace {
 
 SceneTestTakagi::SceneTestTakagi()
 {
-	m_pPlayer = std::make_unique<Player>();
+	m_pPlayer = std::make_unique<Player>(GetObjectManager());
 	m_pCamera = std::make_unique<Camera>();
 	
 }
