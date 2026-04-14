@@ -1,7 +1,28 @@
 #pragma once
+
+namespace {
+	/// <summary>
+	/// リセットの種類
+	/// </summary>
+	/*enum class GaugeValue {
+		Max,
+		Current,
+		Min,
+	};*/
+	/// <summary>
+	/// 値の初期値
+	/// </summary>
+	constexpr float kInitialValue = 100.0f;
+}
+
 class Gauge
 {
 public:
+	enum {
+		Max,
+		Current,
+		Min,
+	};
 	/// <summary>
 	/// ゲージ関連のクラス
 	/// これを継承してHP・スタミナ・怒りゲージ等の処理を作る
@@ -18,48 +39,59 @@ public:
 	/// </summary>
 	void End();
 	/// <summary>
-	/// 更新処理
-	/// </summary>
-	void Update();
-	/// <summary>
-	/// 描画処理
-	/// </summary>
-	void Draw();
-	/// <summary>
 	/// 上昇
 	/// </summary>
-	void Increase();
+	/// <param name="value">上昇量</param>
+	void Increase(float value);
 	/// <summary>
 	/// 減少
 	/// </summary>
-	void Decrease();
-
+	/// <param name="value">減少量</param>
+	void Decrease(float value);
+	/// <summary>
+	/// ゲージをリセットする関数
+	/// </summary>
+	/// <param name="set">
+	/// リセットの種類
+	/// Max -> 最大値でリセット
+	/// Min -> 最小値でリセット
+	/// </param>
+	void Reset(int set = Max);
+	/// <summary>
+	/// 指定した値以上かどうかを調べる
+	/// </summary>
+	/// <param name="value">値の量</param>
+	/// <param name="check">
+	/// 調べる値の種類
+	/// Max     -> 最大値を調べる
+	/// Current -> 現在の値を調べる
+	/// Min     -> 最小値を調べる
+	/// </param>
+	/// <returns></returns>
+	bool CheckValue(float value, int check = Current);
 public:// ゲッター・セッター =======================
 	/// <summary>
-	/// 現在の値を取得
+	/// 最大・最小・現在の値を設定する関数
 	/// </summary>
+	/// <param name="velue">設定する値</param>
+	/// <param name="get">
+	/// 設定する値の種類
+	/// Max     -> 最大値を設定
+	/// Current -> 現在の値を設定
+	/// Min     -> 最小値を設定
+	/// </param>
+	void SetValue(float value,int set = Current);
+	/// <summary>
+	/// 最大・最小・現在の値を取得する関数
+	/// </summary>
+	/// <param name="get">
+	/// 取得する値の種類
+	/// Max     -> 最大値を取得
+	/// Current -> 現在の値を取得
+	/// Min     -> 最小値を取得
+	/// </param>
 	/// <returns></returns>
-	float GetCurrentValue() { return m_currentValue; }
-	/// <summary>
-	/// 最大値を設定
-	/// </summary>
-	/// <param name="Max"></param>
-	void SetMaxValue(float Max) { m_maxValue = Max; }
-	/// <summary>
-	/// 最大値を取得する関数
-	/// </summary>
-	/// <returns></returns>
-	float GetMaxValue() { return m_maxValue; }
-	/// <summary>
-	/// 最小値を設定
-	/// </summary>
-	/// <param name="Min"></param>
-	void SetMinValue(float Min) { m_minValue = Min; }
-	/// <summary>
-	/// 最小値を取得する関数
-	/// </summary>
-	/// <returns></returns>
-	float GetMinValue() { return m_minValue; }
+	float GetValue(int get = Current);
 
 	/// <summary>
 	/// 割合を取得する関数
@@ -67,19 +99,19 @@ public:// ゲッター・セッター =======================
 	/// <returns>現在の値を最大の値で割った割合</returns>
 	float GetRate() { return m_currentValue / m_maxValue; }
 
-private:
+protected:
 	/// <summary>
 	/// 最大値
 	/// </summary>
 	float m_maxValue;
 	/// <summary>
-	/// 現在の値
-	/// </summary>
-	float m_currentValue;
-	/// <summary>
 	/// 最小値
 	/// </summary>
 	float m_minValue;
+	/// <summary>
+	/// 現在の値
+	/// </summary>
+	float m_currentValue;
 
 };
 

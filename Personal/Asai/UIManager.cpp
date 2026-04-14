@@ -1,5 +1,6 @@
 #include "UIManager.h"
 
+#include<DxLib.h>
 
 UIManager::UIManager()
 {
