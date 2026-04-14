@@ -53,7 +53,6 @@ SceneBase* SceneTestTakagi::Update()
 		printfDx("当たってない\n");
 	}
 
-
 	box.SetPosition(kBoxPos);
 
 
@@ -67,13 +66,20 @@ SceneBase* SceneTestTakagi::Update()
 
 void SceneTestTakagi::Draw()
 {
-	SetDrawScreen(m_pCamera->GetWorldScreen());
-	ClearDrawScreen();
 	printfDx("SceneTestTakagi\n");
-	m_pPlayer->Draw();
+	//m_pPlayer->Draw();
 	box.DebugDraw();
+}
 
+void SceneTestTakagi::PreDraw()
+{
+	SetDrawScreen(m_pCamera->GetWorldScreen());
+	
+	ClearDrawScreen();
+}
+
+void SceneTestTakagi::PostDraw()
+{
 	SetDrawScreen(DX_SCREEN_BACK);
 	m_pCamera->Draw();
-	//m_pCamera->DebugDraw();
 }
