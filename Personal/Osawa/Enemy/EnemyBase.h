@@ -3,6 +3,8 @@
 #include "../Object/GameObject.h"
 #include "../Utility/Transform.h"
 
+class Player;
+
 class EnemyBase : public GameObject
 {
 public:
@@ -30,10 +32,18 @@ public:
 	/// </summary>
 	void SetHP(const int hp) { m_hp = hp; }
 
+	Player* GetPlayer() const { return m_player; }
+	void SetPlayer(Player* player) { m_player = player; }
+
 private:
 
 	/// <summary>
 	/// 自身のHP
 	/// </summary>
 	int m_hp;
+
+	/// <summary>
+	/// プレイヤーのポインタ
+	/// </summary>
+	Player* m_player;
 };

@@ -73,7 +73,7 @@ public:
 	/// <summary>
 	/// トランスフォームを取得する
 	/// </summary>
-	const Transform& GetTransform() const { return m_transform; }
+	Transform& GetTransform() { return m_transform; }
 
 private:
 

@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Personal\Osawa\Enemy\EnemyMelee.cpp" />
     <ClCompile Include="Object\ExampleObject.cpp" />
     <ClCompile Include="Object\GameObject.cpp" />
     <ClCompile Include="Personal\Asai\PlayerHpBar.cpp" />
@@ -182,6 +183,7 @@
     <Image Include="Image\Cloud.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Personal\Osawa\Enemy\EnemyMelee.h" />
     <ClInclude Include="Object\ExampleObject.h" />
     <ClInclude Include="Object\GameObject.h" />
     <ClInclude Include="Personal\Asai\PlayerHpBar.h" />

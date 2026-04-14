@@ -2,7 +2,8 @@
 
 EnemyBase::EnemyBase(ObjectManager* objManager) :
 	GameObject(objManager),
-	m_hp(1)
+	m_hp(1),
+	m_player(nullptr)
 {
 }
 
