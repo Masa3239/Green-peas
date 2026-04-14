@@ -1,6 +1,8 @@
 #pragma once
-#include"../Asai/PlayerUIManager.h"
 #include<memory>
+
+class PlayerUIManager;
+class Player;
 
 class UIManager
 {
@@ -44,6 +46,8 @@ public:
 	/// 終了処理
 	/// </summary>
 	void End();
+
+	void SetPlayer(Player* pPlayer);
 
 private:
 

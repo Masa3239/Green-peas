@@ -5,7 +5,11 @@
 #include"../../Utility/Time.h"
 #include"../Asai/UIManager.h"
 
+#include"../Takagi/Player.h"
+
 UIManager* uiMgr;
+
+Player* pPlayer;
 
 Transform transform;
 
@@ -23,6 +27,9 @@ void SceneTestAsai::Init()
 	uiMgr = new UIManager();
 	uiMgr->Init();
 
+	pPlayer = new Player(GetObjectManager());
+	pPlayer->Init();
+
 }
 
 void SceneTestAsai::End()
@@ -31,6 +38,8 @@ void SceneTestAsai::End()
 
 SceneBase* SceneTestAsai::Update()
 {
+
+	uiMgr->SetPlayer(pPlayer);
 
 	if (CheckHitKey(KEY_INPUT_1)) {
 
