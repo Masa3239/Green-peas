@@ -24,11 +24,6 @@ public:
 	void Draw();
 
 	/// <summary>
-	/// デバック描画
-	/// </summary>
-	void DebugDraw();
-
-	/// <summary>
 	/// スクリーン座標に描画
 	/// </summary>
 	void ScreenDraw();
