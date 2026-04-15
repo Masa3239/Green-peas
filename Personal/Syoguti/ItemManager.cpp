@@ -1,5 +1,6 @@
 #include "ItemManager.h"
 #include "HpHealItem.h"
+#include "AttackUpItem.h"
 
 #include "DxLib.h"
 
@@ -7,11 +8,12 @@ namespace {
 
 	// 画像のファイルパス
 	const char* const kHpHealItemGraphHandlePath = "Personal\\Syoguti\\Resource\\ItemTest1.png";
-
+	const char* const kAttackUpItemGraphHandlePath = ".\\Personal\\Syoguti\\Resource\\EnemyBossTest2.png";
 }
 
 ItemManager::ItemManager() :
-	m_hpHealItemGraphHandle(-1)
+	m_hpHealItemGraphHandle(-1),
+	m_attackUpItemGraphHandle(-1)
 {
 }
 
@@ -20,6 +22,7 @@ void ItemManager::Init()
 
 	// 画像のファイルパスを取得
 	m_hpHealItemGraphHandle = LoadGraph(kHpHealItemGraphHandlePath);
+	m_attackUpItemGraphHandle = LoadGraph(kAttackUpItemGraphHandlePath);
 }
 
 void ItemManager::End()
@@ -28,6 +31,9 @@ void ItemManager::End()
 	for (auto& e : m_items) {
 		e->End();
 	}
+
+	// 可変長配列を綺麗にする
+	m_items.clear();
 }
 
 void ItemManager::Update()
@@ -36,7 +42,7 @@ void ItemManager::Update()
 
 void ItemManager::Draw()
 {
-	//printfDx("数 : %d\n",m_items.size());
+	// printfDx("数 : %d\n",m_items.size());
 
 	for (auto& e : m_items) {
 		e->Draw();
@@ -49,19 +55,33 @@ void ItemManager::Create(ItemBase::ItemType type, Vector3 position)
 	std::unique_ptr<ItemBase> items;
 	int graphHandle = -1;
 
+	// 引数でもらったItemTypeを調べる
 	switch (type)
 	{
+
+		// Healなら
 	case ItemBase::ItemType::Heal:
-		items = std::make_unique<HpHealItem>();
+		// HpHealItemのコンストラクタを呼んで座標を指定
+		items = std::make_unique<HpHealItem>(position);
+		// グラフハンドルを回復アイテムの画像に設定
 		graphHandle = m_hpHealItemGraphHandle;
 		break;
+
+		// Attackなら
 	case ItemBase::ItemType::Attack:
-		items = std::make_unique<HpHealItem>();
-		graphHandle = m_hpHealItemGraphHandle;
+		// AttackUpItemのコンストラクタを呼んで座標を指定
+		items = std::make_unique<AttackUpItem>(position);
+		// グラフハンドルを攻撃力アップアイテムに設定
+		graphHandle = m_attackUpItemGraphHandle;
 		break;
+
 	default:
+		printfDx("エラー\n");
 		break;
 	}
+
+	// itemsまたはgraphHandeの値がおかしかったらreturn
+	if (!items || graphHandle == -1) return;
 
 	// 画像のグラフハンドルをセット
 	items->SetGraphHandle(graphHandle);

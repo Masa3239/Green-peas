@@ -2,7 +2,7 @@
 #include "ItemBase.h"
 #include "../../Utility/Transform.h"
 
-class HpHealItem : public ItemBase 
+class AttackUpItem : public ItemBase
 {
 
 public:
@@ -10,18 +10,18 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	HpHealItem();
+	AttackUpItem();
 
 	/// <summary>
 	/// 引数ありのコンストラクタ
 	/// </summary>
 	/// <param name="position"></param>
-	HpHealItem(Vector3 position);
+	AttackUpItem(Vector3 position);
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~HpHealItem() = default;
+	~AttackUpItem() = default;
 
 	/// <summary>
 	/// 初期化
@@ -47,7 +47,7 @@ public:
 	/// グラフハンドルをセットするセッター関数
 	/// </summary>
 	/// <param name="graphHandlePath"></param>
-	virtual void SetGraphHandle(int graphHandle) override{ m_graphHandle = graphHandle; }
+	virtual void SetGraphHandle(int graphHandle) override { m_graphHandle = graphHandle; }
 
 };
 
