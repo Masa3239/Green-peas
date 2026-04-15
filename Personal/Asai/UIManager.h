@@ -1,7 +1,9 @@
 #pragma once
 #include<memory>
+#include"../../Utility/Vector3.h"
 
 class PlayerUIManager;
+class PopUpTextManager;
 class Player;
 
 class UIManager
@@ -49,8 +51,12 @@ public:
 
 	void SetPlayer(Player* pPlayer);
 
+	void CreateDamagePopUpText(Vector3 pos,int amount);
+
 private:
 
 	std::unique_ptr<PlayerUIManager>m_pPlayerUIMgr;
+
+	std::unique_ptr<PopUpTextManager>m_pPopUpTextMgr;
 
 };

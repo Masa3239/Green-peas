@@ -1,6 +1,8 @@
 #include "EnemyBoss.h"
+#include "../../Chara/Collision.h"
+#include "../../Utility/Transform.h"
+#include "DxLib.h"
 
-#include "Dxlib.h"
 namespace {
 
 	// 画像のファイルパス
@@ -10,13 +12,28 @@ namespace {
 	// 画像のサイズ
 	constexpr float kGraphScale = 0.1f;
 
+	// 円の当たり判定の半径
+	constexpr float kCircleRadius = 50.0f;
+
 }
 
 EnemyBoss::EnemyBoss() :
 	m_graphHandle(-1),
-	m_posX(0),
-	m_posY(0)
+	m_transform(),
+	m_collsion(m_transform.position, kCircleRadius),
+	m_state(BossStatus::Seal)
 {
+	m_transform.Reset();
+}
+
+EnemyBoss::EnemyBoss(Vector3 position) :
+	m_graphHandle(-1),
+	m_transform(),
+	m_collsion(m_transform.position, kCircleRadius),
+	m_state(BossStatus::Seal)
+{
+	m_transform.Reset();
+	m_transform.position = position;
 }
 
 void EnemyBoss::Init()
@@ -33,14 +50,16 @@ void EnemyBoss::End()
 
 void EnemyBoss::Update()
 {
+
+	m_collsion.SetPosition(m_transform.position);
 }
 
 void EnemyBoss::Draw()
 {
 
-	// 仮の座標
-	m_posX = 200;
-	m_posY = 200;
 	// 画像の描画
-	DrawRotaGraph(m_posX, m_posY, kGraphScale, 0.0f, m_graphHandle, TRUE);
+	DrawRotaGraph(m_transform.position.x, m_transform.position.y, kGraphScale, 0.0f, m_graphHandle, TRUE);
+
+	// 円の当たり判定の描画
+	m_collsion.DebugDraw();
 }
