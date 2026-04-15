@@ -4,6 +4,7 @@
 #include<memory>
 
 #include"../Asai/PlayerHpBar.h"
+#include"../Asai/PlayerAngerBar.h"
 #include <cassert>
 
 PlayerUIManager::PlayerUIManager():
@@ -13,11 +14,17 @@ PlayerUIManager::PlayerUIManager():
 
 void PlayerUIManager::Init()
 {
-	
+	//HPのUIを追加
 	std::unique_ptr<PlayerUIBase> hpBar = std::make_unique<PlayerHpBar>();
 	assert(hpBar);
 	
 	m_pUIs.push_back(std::move(hpBar));
+
+	//怒りゲージのUIを追加
+	std::unique_ptr<PlayerUIBase>angerBar = std::make_unique<PlayerAngerBar>();
+	assert(angerBar);
+
+	m_pUIs.push_back(std::move(angerBar));
 
 	for (auto& UI : m_pUIs) {
 

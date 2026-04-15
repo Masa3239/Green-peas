@@ -1,13 +1,14 @@
 #pragma once
 #include"../Asai/PlayerUIBase.h"
 
-class PlayerHpBar :public PlayerUIBase
+
+class PlayerAngerBar:public PlayerUIBase
 {
 
 public:
 
-	PlayerHpBar();
-	~PlayerHpBar() = default;
+	PlayerAngerBar();
+	~PlayerAngerBar() = default;
 
 	/// <summary>
 	/// 初期化処理
@@ -41,4 +42,6 @@ public:
 private:
 
 
+
 };
+
