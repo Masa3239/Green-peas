@@ -40,12 +40,19 @@ SceneBase* SceneTestAsai::Update()
 {
 
 	uiMgr->SetPlayer(pPlayer);
+	uiMgr->Update();
 
 	if (CheckHitKey(KEY_INPUT_1)) {
-
 		transform.position.x++;
 		transform.position.y++;
+
 		pPlayer->Damage(1);
+	}
+
+	if (CheckHitKey(KEY_INPUT_2)) {
+
+		uiMgr->CreateDamagePopUpText(transform.position,5);
+
 	}
 
 	if (CheckHitKey(KEY_INPUT_0)) {
@@ -65,6 +72,7 @@ void SceneTestAsai::Draw()
 {
 
 	uiMgr->ScreenDraw();
+	uiMgr->WorldDraw();
 	uiMgr->DebugDraw();
 
 	//printfDx("x %f\n", transform.position.x);
