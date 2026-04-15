@@ -66,9 +66,13 @@ private:
 	std::vector<std::unique_ptr<ItemBase>> m_items;
 
 	/// <summary>
-	/// 画像のファイルパス
+	/// Hp回復アイテムの画像のグラフハンドル
 	/// </summary>
 	int m_hpHealItemGraphHandle;
 
+	/// <summary>
+	/// 攻撃力アップアイテムの画像のグラフハンドル
+	/// </summary>
+	int m_attackUpItemGraphHandle;
 };
 
