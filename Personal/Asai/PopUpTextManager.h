@@ -1,8 +1,9 @@
 #pragma once
 #include<memory>
 #include<vector>
+#include"../Asai/PopUpText.h"
 
-class PopUpText;
+#include"../../Utility/Vector3.h"
 
 class PopUpTextManager
 {
@@ -38,12 +39,14 @@ public:
 	void End();
 
 	/// <summary>
-	/// ダメージテキストを生成
+	/// テキストを生成
 	/// </summary>
-	void CreateDamageText();
+	void CreateText(Vector3 position, int amount, PopUpText::Type type);
 
 private:
 
-	std::vector<std::unique_ptr<PopUpText>>m_Texts;
+	std::vector<std::unique_ptr<PopUpText>>m_pTexts;
+
+	std::vector<int>m_textFonts;
 
 };
