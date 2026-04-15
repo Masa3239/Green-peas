@@ -32,6 +32,10 @@ namespace Collision
 			// 半径の和を2乗しているのはdistanceを平方根にしていないため（平方根の計算は不可がかかる）
 			return distance <= (radiusSum * radiusSum);
 		}
+		else if (other.GetType() == Type::AABB) {
+			const Circle checkCircle = Circle(GetPosition(), GetRadius());
+			if (other.CheckCollision(checkCircle))return true;
+		}
 
 		return false;
 	}

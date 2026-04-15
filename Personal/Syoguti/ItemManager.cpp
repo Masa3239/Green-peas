@@ -36,17 +36,36 @@ void ItemManager::Update()
 
 void ItemManager::Draw()
 {
-	printfDx("数 : %d\n",m_items.size());
+	//printfDx("数 : %d\n",m_items.size());
+
 	for (auto& e : m_items) {
 		e->Draw();
 	}
 }
 
-void ItemManager::Create()
+void ItemManager::Create(ItemBase::ItemType type, Vector3 position)
 {
 
-	auto items = std::make_unique<HpHealItem>();
-	items->SetGraphHandlePath(m_hpHealItemGraphHandle);
+	std::unique_ptr<ItemBase> items;
+	int graphHandle = -1;
+
+	switch (type)
+	{
+	case ItemBase::ItemType::Heal:
+		items = std::make_unique<HpHealItem>();
+		graphHandle = m_hpHealItemGraphHandle;
+		break;
+	case ItemBase::ItemType::Attack:
+		items = std::make_unique<HpHealItem>();
+		graphHandle = m_hpHealItemGraphHandle;
+		break;
+	default:
+		break;
+	}
+
+	// 画像のグラフハンドルをセット
+	items->SetGraphHandle(graphHandle);
+
 	items->Init();
 	m_items.push_back(std::move(items));
 }

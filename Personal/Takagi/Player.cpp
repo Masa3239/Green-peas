@@ -43,7 +43,7 @@ Player::Player(ObjectManager* objManager) :
 	m_accel(1),
 	m_deltaTime(0)
 {
-	m_transform.position = { 300,300,0 };
+	GetTransform().position = {300,300,0};
 	m_camera = new Camera();
 	m_camera->Init();
 	for (auto& gauge : m_gauges) {
@@ -51,8 +51,8 @@ Player::Player(ObjectManager* objManager) :
 	}
 	m_gauges[Anger]->Reset(Gauge::Min);
 
-	m_box = Collision::AABB(m_transform.position, kBoxSize);
-	m_circle = Collision::Circle(m_transform.position, kCircleSize);
+	m_box = Collision::AABB(GetTransform().position, kBoxSize);
+	m_circle = Collision::Circle(GetTransform().position, kCircleSize);
 }
 
 Player::~Player()
@@ -72,14 +72,14 @@ void Player::End()
 
 void Player::Update()
 {
-	m_camera->Update(m_transform);
+	m_camera->Update(GetTransform());
 	m_deltaTime = Time::GetInstance().GetDeltaTime();
 	// 時間が止まっていなければ移動処理を呼ぶ
 	if (Time::GetInstance().GetDeltaTime()) {
 		Move();
 	}
-	m_box.SetPosition(m_transform.position);
-	m_circle.SetPosition(m_transform.position);
+	m_box.SetPosition(GetTransform().position);
+	m_circle.SetPosition(GetTransform().position);
 	printfDx("deltatime : %f\n", m_deltaTime);
 	printfDx("移動量 : %f\n", m_moveVector.GetLength());
 		Time::GetInstance().SetTimeScale(1);
@@ -95,7 +95,7 @@ void Player::Move()
 	SpeedUpdate();
 
 	// 座標の移動
-	m_transform.position += m_moveVector;
+	GetTransform().position += m_moveVector;
 }
 
 void Player::MoveAmount()
@@ -110,7 +110,7 @@ void Player::MoveAmount()
 		// スティック入力の角度
 		float angle = Pad::AnalogAngle(Pad::Joystick::Left);
 		// 向いている方向を更新
-		m_transform.rotation.y = angle * MyMath::ToRadian;
+		GetTransform().rotation.y = angle * MyMath::ToRadian;
 
 		m_gauges[Stamina]->Increase(kStaminaHealValue * m_deltaTime);
 	}
@@ -118,8 +118,8 @@ void Player::MoveAmount()
 	// 移動量の初期化
 	m_moveVector = { 0,0,0 };
 	// 入力角度からX,Y方向の移動量を計算
-	m_moveVector.x = sinf(m_transform.rotation.y);
-	m_moveVector.y = -cosf(m_transform.rotation.y);
+	m_moveVector.x = sinf(GetTransform().rotation.y);
+	m_moveVector.y = -cosf(GetTransform().rotation.y);
 	// 正規化
 	m_moveVector = m_moveVector.GetNormalize();
 	// 移動速度を求める(入力量×移動速度×速度割合×時間)
@@ -146,16 +146,16 @@ void Player::Draw()
 	// プレイヤー・カメラが移動していることがわかるよう一定の位置に円を描画
 	DrawCircle(600, 400, 10, GetColor(0, 0, 255));
 	// プレイヤー座標に円を描画
-	DrawCircle(m_transform.position.x, m_transform.position.y, 30, GetColor(100, 100, 100));
-	DrawCircle(m_transform.position.x, m_transform.position.y, 10, GetColor(255, 0, 0));
+	DrawCircle(GetTransform().position.x, GetTransform().position.y, 30, GetColor(100, 100, 100));
+	DrawCircle(GetTransform().position.x, GetTransform().position.y, 10, GetColor(255, 0, 0));
 
 	// 現在向いている方向のデバッグ表示
 	Vector3 angle = { 0,0,0 };
-	angle.x = sinf(m_transform.rotation.y);
-	angle.y = -cosf(m_transform.rotation.y);
+	angle.x = sinf(GetTransform().rotation.y);
+	angle.y = -cosf(GetTransform().rotation.y);
 	angle = angle.GetNormalize();
 	angle *= 10;
-	angle += m_transform.position;
+	angle += GetTransform().position;
 	DrawCircle(angle.x, angle.y, 3, GetColor(0, 255, 0));
 	Debug();
 }

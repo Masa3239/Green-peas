@@ -2,11 +2,22 @@
 #include "../../Chara/Collision.h"
 #include "../../Utility/Transform.h"
 
+
+
+
 /// <summary>
 /// アイテムの基本クラス
 /// </summary>
 class ItemBase
 {
+
+public:
+
+	enum class ItemType {
+
+		Heal,
+		Attack
+	};
 
 public:
 
@@ -41,10 +52,10 @@ public:
 	virtual void Draw() = 0;
 
 	/// <summary>
-	/// グラフパスをセットするセッター関数
+	/// グラフハンドルをセットするセッター関数
 	/// </summary>
 	/// <param name="graphHandlePath"></param>
-	virtual void SetGraphHandlePath(int graphHandlePath) { m_graphHandle = graphHandlePath; }
+	virtual void SetGraphHandle(int graphHandle) { m_graphHandle = graphHandle; }
 
 	/// <summary>
 	/// 当たり判定の情報を取得するゲッター関数

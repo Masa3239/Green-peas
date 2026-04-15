@@ -61,8 +61,12 @@ void SceneManager::Draw() {
 	assert(m_pScene);
 	if (!m_pScene) return;
 
+	m_pScene->PreDraw();
+
 	m_pScene->Draw();
 
 	m_pScene->GetObjectManager()->Draw();
+
+	m_pScene->PostDraw();
 }
 

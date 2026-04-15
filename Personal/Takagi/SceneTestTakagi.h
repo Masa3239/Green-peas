@@ -33,6 +33,10 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	void PreDraw()override;
+	void PostDraw()override;
+
+
 private:
 	std::unique_ptr<Player> m_pPlayer;
 	std::unique_ptr<Camera> m_pCamera;

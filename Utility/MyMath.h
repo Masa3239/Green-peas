@@ -70,4 +70,15 @@ namespace MyMath {
 	constexpr float Rate(float value, float max) {
 		return value / max;
 	}
+	/// <summary>
+	/// ’²‚×‚½’l‚Ì•„†‚ğ•Ô‚·ŠÖ”
+	/// </summary>
+	/// <param name="value">’²‚×‚½‚¢’l</param>
+	/// <returns>³‚Ì”‚È‚ç1A•‰‚Ì”‚È‚ç-1‚ğ•Ô‚·</returns>
+	constexpr int Sign(float value) {
+		int res = 1;
+		if (value < 0)res = -1;
+		return res;
+	}
+
 }
