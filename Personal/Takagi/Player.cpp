@@ -11,6 +11,8 @@
 #include"../Chara/Collision.h"
 #include"../../Object/GameObject.h"
 #include"../../System/ObjectManager.h"
+#include"Weapon.h"
+#include"Sword.h"
 
 namespace {
 	// ゲージの種類をキャスト(いちいちキャストするのが面倒なので用意)
@@ -53,6 +55,12 @@ Player::Player(ObjectManager* objManager) :
 
 	m_box = Collision::AABB(GetTransform().position, kBoxSize);
 	m_circle = Collision::Circle(GetTransform().position, kCircleSize);
+
+	//for (auto& weapon : m_weapons) {
+	//	weapon = nullptr;
+	//}
+	m_weapons = new Sword(objManager);
+	m_weapons->Init();
 }
 
 Player::~Player()
@@ -61,6 +69,7 @@ Player::~Player()
 
 void Player::Init()
 {
+
 }
 
 void Player::End()
@@ -68,6 +77,7 @@ void Player::End()
 	m_camera->End();
 	m_camera = nullptr;
 	delete m_camera;
+	m_weapons->End();
 }
 
 void Player::Update()
@@ -86,6 +96,8 @@ void Player::Update()
 	
 	if (Pad::IsDown(Pad::Button::LB)) {
 	}
+
+
 }
 
 void Player::Move()
@@ -113,8 +125,25 @@ void Player::MoveAmount()
 		GetTransform().rotation.y = angle * MyMath::ToRadian;
 
 		m_gauges[Stamina]->Increase(kStaminaHealValue * m_deltaTime);
+		if (angle > 0) {
+			m_direction = 1;
+		}
+		else
+		{
+			m_direction = -1;
+		}
+		m_weapons->GetTransform().rotation.y = GetTransform().rotation.y;
 	}
+	// 武器の座標を設定
+	m_weapons->GetTransform().position = GetTransform().position ;
+	// 武器の更新処理
+	m_weapons->Update();
 	
+	if (Pad::IsPressed(Pad::Button::Y)) {
+		m_weapons->Attack();
+	}
+
+	printfDx("m_direction : %d\n",m_direction);
 	// 移動量の初期化
 	m_moveVector = { 0,0,0 };
 	// 入力角度からX,Y方向の移動量を計算
@@ -143,6 +172,7 @@ void Player::SpeedUpdate()
 
 void Player::Draw()
 {
+	m_weapons->Draw();
 	// プレイヤー・カメラが移動していることがわかるよう一定の位置に円を描画
 	DrawCircle(600, 400, 10, GetColor(0, 0, 255));
 	// プレイヤー座標に円を描画
@@ -158,6 +188,9 @@ void Player::Draw()
 	angle += GetTransform().position;
 	DrawCircle(angle.x, angle.y, 3, GetColor(0, 255, 0));
 	Debug();
+	printfDx("x : %f\n", GetTransform().position.x);
+	printfDx("y : %f\n", GetTransform().position.y);
+	printfDx("z : %f\n", GetTransform().position.z);
 }
 
 void Player::Debug()

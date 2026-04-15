@@ -4,7 +4,7 @@
 #include"../../Object/GameObject.h"
 #include<memory>
 
-class Gauge;
+
 namespace Collision{
 	class Shape;
 	class Circle;
@@ -24,7 +24,10 @@ namespace {
 	constexpr int playerFrame = 8;
 }
 
+class Gauge;
 class Camera;
+class Weapon;
+class Sword;
 
 class Player:public GameObject {
 public:
@@ -165,6 +168,7 @@ private:
 	/// ゲージの配列(HP・スタミナ・怒り)
 	/// </summary>
 	std::unique_ptr<Gauge> m_gauges[Max];
+	Weapon* m_weapons;
 
 	Camera* m_camera;
 
