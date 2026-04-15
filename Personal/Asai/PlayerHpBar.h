@@ -34,10 +34,11 @@ public:
 	/// </summary>
 	void End()override;
 
-	const PlayerUI::DrawType& GetDrawType()const override;
+	PlayerUI::DrawType GetDrawType()const override;
+
+	void SetPlayer(Player* pPlayer)override;
 
 private:
 
-	int m_graphHandle;
 
 };

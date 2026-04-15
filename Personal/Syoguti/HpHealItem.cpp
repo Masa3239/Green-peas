@@ -1,23 +1,30 @@
 #include "HpHealItem.h"
-
+#include "../../Chara/Collision.h"
+#include "../../Utility/Transform.h"
 #include "DxLib.h"
+
+namespace {
+	
+	//画像のサイズ
+	constexpr float kGraphScale = 0.1f;
+
+	constexpr float kCircleRadius = 50.0f;
+}
 
 HpHealItem::HpHealItem()
 {
+	m_collision = Collision::Circle(m_transform.position, kCircleRadius);
+}
+
+HpHealItem::HpHealItem(Vector3 position)
+{
+	m_transform.position = position;
 }
 
 void HpHealItem::Init()
 {
-
-	// 画像サイズの取得
-	GetGraphSize(m_graphHandle, &m_sizeX, &m_sizeY);
-
-	// 画像のスケール
-	float scaleX = 64.0f / m_sizeX;
-	float scaleY = 64.0f / m_sizeY;
-	
-	// 画像のスケールを小さい方に合わせる
-	m_scale = (scaleX < scaleY) ? scaleX : scaleY;
+	// 中心座標をセット
+	m_collision.SetPosition(m_transform.position);
 }
 
 void HpHealItem::End()
@@ -28,15 +35,15 @@ void HpHealItem::End()
 
 void HpHealItem::Update()
 {
+
+	
 }
 
 void HpHealItem::Draw()
 {
 
-	// 画像の位置(仮)
-	m_posX = 100.0f;
-	m_posY = 100.0f;
-
 	// 画像の描画
-	DrawRotaGraph(m_posX, m_posY, m_scale, 0.0f, m_graphHandle, TRUE);
+	DrawRotaGraph(m_transform.position.x, m_transform.position.y, kGraphScale, 0.0f, m_graphHandle, TRUE);
+	// 当たり判定の描画
+	m_collision.DebugDraw();
 }

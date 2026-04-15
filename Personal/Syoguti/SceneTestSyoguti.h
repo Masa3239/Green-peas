@@ -1,9 +1,11 @@
 #pragma once
 
 #include "../Scene/SceneBase.h"
+#include "../../Utility/Transform.h"
 #include <memory>
 
 class ItemManager;
+class EnemyBoss;
 
 class SceneTestSyoguti : public SceneBase
 {
@@ -36,5 +38,8 @@ public:
 private:
 
 	std::unique_ptr<ItemManager>m_pItemMgr;
+	std::unique_ptr<EnemyBoss> m_pEnemyBoss;
+
+	Transform m_transform;
 
 };

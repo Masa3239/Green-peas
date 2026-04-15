@@ -39,10 +39,35 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// アイテムの生成
+	/// </summary>
+	/// <param name="type">アイテムの種類</param>
+	/// <param name="position">座標</param>
+	void Create(ItemBase::ItemType type, Vector3 position);
+
+	/// <summary>
+	/// 指定したインデックスのアイテムを削除
+	/// </summary>
+	/// <param name="index"></param>
+	void Remove(int index);
+
+	/// <summary>
+	/// 引数のサークルとアイテムが当たっているか調べる
+	/// </summary>
+	/// <param name="other"></param>
+	void CheckHitCircle(const Collision::Circle other);
+
 private:
 
+	/// <summary>
+	/// 可変長配列
+	/// </summary>
 	std::vector<std::unique_ptr<ItemBase>> m_items;
 
+	/// <summary>
+	/// 画像のファイルパス
+	/// </summary>
 	int m_hpHealItemGraphHandle;
 
 };

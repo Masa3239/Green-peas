@@ -12,11 +12,10 @@ namespace Collision
 	/// </summary>
 	enum class Type
 	{
-		Sphere,
+		Circle,		// 円
 		AABB		// Axis Aligne Bounding Box	回転しない
 		//OBB		// Oriented Bounding Box	回転する
 	};
-
 	/// <summary>
 	/// 衝突判定の形状の抽象クラス
 	/// これを継承して様々な形状で対応できるようにする
@@ -59,22 +58,22 @@ namespace Collision
 	};
 
 	/// <summary>
-	/// 衝突判定の球の形状のクラス
+	/// 衝突判定の円の形状のクラス
 	/// </summary>
-	class Sphere : public Shape
+	class Circle : public Shape
 	{
 	public:
 
-		Sphere() = default;
-		Sphere(const Vector3& pos, float radius) : m_center(pos), m_radius(radius) {}
+		Circle() = default;
+		Circle(const Vector3& pos, float radius) : m_center(pos), m_radius(radius) {}
 
-		~Sphere() = default;
+		~Circle() = default;
 
 		/// <summary>
 		/// 形状データの取得
 		/// </summary>
 		/// <returns></returns>
-		Type GetType() const override { return Type::Sphere; }
+		Type GetType() const override { return Type::Circle; }
 
 		/// <summary>
 		/// 衝突判定
@@ -94,6 +93,11 @@ namespace Collision
 		/// </summary>
 		/// <returns></returns>
 		Vector3 GetPosition() const override { return m_center; }
+		/// <summary>
+		/// 円の半径の取得
+		/// </summary>
+		/// <returns></returns>
+		float GetRadius() const  { return m_radius; }
 
 		/// <summary>
 		/// 球のデバッグ描画
@@ -152,6 +156,18 @@ namespace Collision
 		/// </summary>
 		void DebugDraw() const override;
 
+		/// <summary>
+		/// 点がAABB内に入っているかどうかを調べる
+		/// </summary>
+		/// <param name="pos"></param>
+		/// <returns></returns>
+		bool CheckPointInAABB(const Vector3& pos)const;
+		/// <summary>
+		/// 点と四角の最短距離を調べる
+		/// </summary>
+		/// <param name="pos"></param>
+		/// <returns></returns>
+		float Measure(const Vector3& pos)const;
 	private:
 
 		void SetSize(const Vector3& size);
@@ -161,4 +177,5 @@ namespace Collision
 		Vector3 m_halfSize;
 
 	};
+
 };

@@ -1,4 +1,8 @@
 #pragma once
+#include<memory>
+
+class PlayerUIManager;
+class Player;
 
 class UIManager
 {
@@ -43,8 +47,10 @@ public:
 	/// </summary>
 	void End();
 
+	void SetPlayer(Player* pPlayer);
+
 private:
 
-
+	std::unique_ptr<PlayerUIManager>m_pPlayerUIMgr;
 
 };

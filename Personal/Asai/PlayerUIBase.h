@@ -1,32 +1,16 @@
 #pragma once
-#include"../../Utility/Transform.h"
+
+class Player;
 
 /// <summary>
 /// 表示するプレイヤーのUIの情報
 /// </summary>
 namespace PlayerUI {
 
-	/// <summary>
-	/// 表示するプレイヤーのUIのタイプ
-	/// </summary>
-	struct Type {
-
-		Transform transform;
-
-		int hp;
-		int hpMax;
-
-		float stamina;
-		float staminaMax;
-
-		int level;
-
-	};
-
 	enum class DrawType {
 
-		world,
-		screen,
+		World,
+		Screen,
 
 	};
 
@@ -72,13 +56,28 @@ public:
 	/// 描画タイプを取得する
 	/// </summary>
 	/// <returns></returns>
-	virtual const PlayerUI::DrawType& GetDrawType()const = 0;
+	virtual PlayerUI::DrawType GetDrawType()const = 0;
 
-	virtual void SetState(const PlayerUI::Type& state) { m_state = state; }
+	virtual void SetPlayer(Player* pPlayer) = 0;
 
 protected:
 
-	PlayerUI::Type m_state;
+	/// <summary>
+	/// 割合を計算
+	/// </summary>
+	virtual void CalculateRate();
+
+	/// <summary>
+	/// 割合を正規化する
+	/// </summary>
+	virtual void NormalizeRate();
+
+protected:
+
+	/// <summary>
+	/// 画像
+	/// </summary>
+	int m_graphHandle;
 
 	/// <summary>
 	/// 表示しているか

@@ -3,6 +3,8 @@
 #include <memory>
 #include "../Scene/SceneBase.h"
 
+class Player;
+class Camera;
 class EnemyManager;
 
 class SceneTestOsawa : public SceneBase
@@ -33,7 +35,15 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	void PreDraw() override;
+
+	void PostDraw() override;
+
 private:
+
+	std::unique_ptr<Player> m_player;
+
+	std::unique_ptr<Camera> m_camera;
 
 	std::unique_ptr<EnemyManager> m_enemyMgr;
 };

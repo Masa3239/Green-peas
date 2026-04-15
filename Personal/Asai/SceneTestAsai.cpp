@@ -3,8 +3,13 @@
 #include"../Asai/Camera.h"
 #include"../../Utility/Transform.h"
 #include"../../Utility/Time.h"
+#include"../Asai/UIManager.h"
 
-Camera camera;
+#include"../Takagi/Player.h"
+
+UIManager* uiMgr;
+
+Player* pPlayer;
 
 Transform transform;
 
@@ -18,8 +23,13 @@ SceneTestAsai::~SceneTestAsai()
 
 void SceneTestAsai::Init()
 {
-	camera = Camera();
-	camera.Init();
+
+	uiMgr = new UIManager();
+	uiMgr->Init();
+
+	pPlayer = new Player(GetObjectManager());
+	pPlayer->Init();
+
 }
 
 void SceneTestAsai::End()
@@ -29,18 +39,14 @@ void SceneTestAsai::End()
 SceneBase* SceneTestAsai::Update()
 {
 
+	uiMgr->SetPlayer(pPlayer);
+
 	if (CheckHitKey(KEY_INPUT_1)) {
 
 		transform.position.x++;
 		transform.position.y++;
-
+		pPlayer->Damage(1);
 	}
-
-	if (CheckHitKey(KEY_INPUT_2)) {
-		camera.StartDamage();
-	}
-
-	camera.Update(transform);
 
 	if (CheckHitKey(KEY_INPUT_0)) {
 		Time::GetInstance().SetTimeScale(0);
@@ -57,11 +63,13 @@ SceneBase* SceneTestAsai::Update()
 
 void SceneTestAsai::Draw()
 {
-	camera.Draw();
-	camera.DebugDraw();
 
-	printfDx("x %f\n", transform.position.x);
-	printfDx("y %f\n",transform.position.y);
+	uiMgr->ScreenDraw();
+	uiMgr->DebugDraw();
+
+	//printfDx("x %f\n", transform.position.x);
+	//printfDx("y %f\n",transform.position.y);
 
 	printfDx("SceneTestAsai\n");
+
 }
