@@ -13,6 +13,9 @@ class ItemBase
 
 public:
 
+	/// <summary>
+	/// アイテムの種類
+	/// </summary>
 	enum class ItemType {
 
 		Heal,
