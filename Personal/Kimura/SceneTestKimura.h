@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Scene/SceneBase.h"
+#include"Map/Map.h"
 
 class SceneTestKimura : public SceneBase
 {
@@ -29,4 +30,6 @@ public:
 	/// •`‰æˆ—
 	/// </summary>
 	void Draw() override;
+private:
+	Map m_map;
 };

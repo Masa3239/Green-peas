@@ -37,8 +37,6 @@ public:
 	/// </summary>
 	virtual void Update() = 0;
 
-	virtual void CalculateRate();
-
 	/// <summary>
 	/// 描画処理
 	/// </summary>
@@ -63,6 +61,23 @@ public:
 	virtual void SetPlayer(Player* pPlayer) = 0;
 
 protected:
+
+	/// <summary>
+	/// 割合を計算
+	/// </summary>
+	virtual void CalculateRate();
+
+	/// <summary>
+	/// 割合を正規化する
+	/// </summary>
+	virtual void NormalizeRate();
+
+protected:
+
+	/// <summary>
+	/// 画像
+	/// </summary>
+	int m_graphHandle;
 
 	/// <summary>
 	/// 表示しているか

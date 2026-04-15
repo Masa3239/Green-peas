@@ -21,8 +21,7 @@ namespace {
 
 }
 
-PlayerHpBar::PlayerHpBar():
-	m_graphHandle(-1)
+PlayerHpBar::PlayerHpBar()
 {
 }
 
@@ -51,13 +50,23 @@ void PlayerHpBar::Draw()
 	//仮
 	DrawBox(kGaugeLeft, kGaugeTop, kGaugeRight, kGaugeBottom, 0xffffff, true);
 
-	float max = kGaugeLeft + 10;
+	float hpGaugeWidth = (kGaugeRight - 10) - (kGaugeLeft + 10);
 
-	DrawBox(
-		max * m_rate,
+	DrawBox(kGaugeRight - 10 - (hpGaugeWidth * m_rate),
 		kGaugeTop,
 		kGaugeRight - 10,
-		kGaugeBottom, 0x00ff00, true);
+		kGaugeBottom,
+		0x00ff00, TRUE
+	);
+
+
+	float max = kGaugeLeft + 10;
+
+	//DrawBox(
+	//	max * m_rate,
+	//	kGaugeTop,
+	//	kGaugeRight - 10,
+	//	kGaugeBottom, 0x00ff00, true);
 
 }
 

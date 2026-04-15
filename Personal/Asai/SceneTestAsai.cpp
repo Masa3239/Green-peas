@@ -45,7 +45,7 @@ SceneBase* SceneTestAsai::Update()
 
 		transform.position.x++;
 		transform.position.y++;
-
+		pPlayer->Damage(1);
 	}
 
 	if (CheckHitKey(KEY_INPUT_0)) {
@@ -71,4 +71,5 @@ void SceneTestAsai::Draw()
 	//printfDx("y %f\n",transform.position.y);
 
 	printfDx("SceneTestAsai\n");
+
 }
