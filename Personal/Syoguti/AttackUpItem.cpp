@@ -52,3 +52,8 @@ void AttackUpItem::Draw()
 	// 当たり判定の描画
 	m_collision.DebugDraw();
 }
+
+void AttackUpItem::ItemAbility()
+{
+	printfDx("攻撃力が上がりました\n");
+}

@@ -44,6 +44,11 @@ public:
 	void Draw() override;
 
 	/// <summary>
+	/// アイテムの効果
+	/// </summary>
+	virtual void ItemAbility() override;
+
+	/// <summary>
 	/// グラフハンドルをセットするセッター関数
 	/// </summary>
 	/// <param name="graphHandlePath"></param>

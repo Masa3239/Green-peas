@@ -2,9 +2,6 @@
 #include "../../Chara/Collision.h"
 #include "../../Utility/Transform.h"
 
-
-
-
 /// <summary>
 /// アイテムの基本クラス
 /// </summary>
@@ -53,6 +50,11 @@ public:
 	/// 描画
 	/// </summary>
 	virtual void Draw() = 0;
+
+	/// <summary>
+	/// アイテムの効果
+	/// </summary>
+	virtual void ItemAbility() = 0;
 
 	/// <summary>
 	/// グラフハンドルをセットするセッター関数

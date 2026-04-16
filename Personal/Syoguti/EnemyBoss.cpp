@@ -15,13 +15,21 @@ namespace {
 	// 円の当たり判定の半径
 	constexpr float kCircleRadius = 50.0f;
 
+	// ボスの最大体力
+	constexpr int kMaxHp = 100;
+
+	// ボスの攻撃力
+	constexpr int kAttackPower = 10;
+
 }
 
 EnemyBoss::EnemyBoss() :
 	m_graphHandle(-1),
 	m_transform(),
 	m_collsion(m_transform.position, kCircleRadius),
-	m_state(BossStatus::Seal)
+	m_sealFlag(true),
+	m_bossHp(kMaxHp),
+	m_attackPower(kAttackPower)
 {
 	m_transform.Reset();
 }
@@ -30,7 +38,9 @@ EnemyBoss::EnemyBoss(Vector3 position) :
 	m_graphHandle(-1),
 	m_transform(),
 	m_collsion(m_transform.position, kCircleRadius),
-	m_state(BossStatus::Seal)
+	m_sealFlag(true),
+	m_bossHp(kMaxHp),
+	m_attackPower(kAttackPower)
 {
 	m_transform.Reset();
 	m_transform.position = position;
