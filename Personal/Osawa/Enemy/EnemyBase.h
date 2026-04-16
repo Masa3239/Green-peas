@@ -42,6 +42,15 @@ public:
 
 	const Collision::AABB& GetCollider() const { return m_collider; }
 
+protected:
+
+	void SetAttackCooltime(const float time) { m_attackCooltime = time; }
+
+	/// <summary>
+	/// 攻撃処理
+	/// </summary>
+	virtual void Attack() = 0;
+
 private:
 
 	/// <summary>
@@ -53,6 +62,16 @@ private:
 	/// コライダー
 	/// </summary>
 	Collision::AABB m_collider;
+
+	/// <summary>
+	/// 攻撃クールタイムのカウンター
+	/// </summary>
+	float m_attackCooltimeCounter;
+
+	/// <summary>
+	/// 攻撃クールタイムの時間
+	/// </summary>
+	float m_attackCooltime;
 
 	/// <summary>
 	/// プレイヤーのポインタ

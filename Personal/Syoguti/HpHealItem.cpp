@@ -52,3 +52,9 @@ void HpHealItem::Draw()
 	// 当たり判定の描画
 	m_collision.DebugDraw();
 }
+
+void HpHealItem::ItemAbility()
+{
+
+	printfDx("HPが回復しました\n");
+}

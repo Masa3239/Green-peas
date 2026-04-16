@@ -4,6 +4,7 @@
 #include "../Utility/Time.h"
 #include "../Utility/MyMath.h"
 #include "../Personal/Takagi/Player.h"
+#include "../Personal/Asai/UIManager.h"
 
 #include "EnemyMelee.h"
 #include <DxLib.h>
@@ -20,6 +21,7 @@ namespace
 EnemyManager::EnemyManager(ObjectManager* objManager) :
 	GameObject(objManager),
 	m_player(nullptr),
+	m_uiMgr(nullptr),
 	m_generateCounter(0.0f)
 {
 }
@@ -79,6 +81,8 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, int damage)
 		if (!enemy->GetCollider().CheckCollision(shape)) continue;
 		
 		enemy->Damage(damage);
+
+		m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, damage);
 
 		// ’N‚©ˆêl‚Å‚à“–‚½‚Á‚Ä‚¢‚½‚çtrue‚É‚È‚é
 		result = true;

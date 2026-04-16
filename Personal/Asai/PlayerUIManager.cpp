@@ -3,8 +3,9 @@
 #include<vector>
 #include<memory>
 
-#include"../Asai/PlayerHpBar.h"
 #include"../Asai/PlayerAngerBar.h"
+#include"../Asai/PlayerHpBar.h"
+#include"../Asai/PlayerStaminaBar.h"
 #include <cassert>
 
 PlayerUIManager::PlayerUIManager():
@@ -17,14 +18,20 @@ void PlayerUIManager::Init()
 	//HPのUIを追加
 	std::unique_ptr<PlayerUIBase> hpBar = std::make_unique<PlayerHpBar>();
 	assert(hpBar);
-	
+	//配列に追加
 	m_pUIs.push_back(std::move(hpBar));
 
 	//怒りゲージのUIを追加
 	std::unique_ptr<PlayerUIBase>angerBar = std::make_unique<PlayerAngerBar>();
 	assert(angerBar);
-
+	//配列に追加
 	m_pUIs.push_back(std::move(angerBar));
+
+	//スタミナゲージのUIを追加
+	std::unique_ptr<PlayerUIBase>staminaBar = std::make_unique<PlayerStaminaBar>();
+	assert(staminaBar);
+	//配列に追加
+	m_pUIs.push_back(std::move(staminaBar));
 
 	for (auto& UI : m_pUIs) {
 

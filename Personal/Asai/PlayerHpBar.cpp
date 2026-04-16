@@ -59,15 +59,6 @@ void PlayerHpBar::Draw()
 		0x00ff00, TRUE
 	);
 
-
-	float max = kGaugeLeft + 10;
-
-	//DrawBox(
-	//	max * m_rate,
-	//	kGaugeTop,
-	//	kGaugeRight - 10,
-	//	kGaugeBottom, 0x00ff00, true);
-
 }
 
 void PlayerHpBar::DebugDraw()

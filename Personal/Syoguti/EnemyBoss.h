@@ -9,8 +9,7 @@ public:
 
 	enum class BossStatus {
 
-		Seal,
-		Normal
+	
 	};
 
 public:
@@ -68,8 +67,18 @@ private:
 	Collision::Circle m_collsion;
 
 	/// <summary>
-	/// ボスの状態
+	/// 封印状態かどうか
 	/// </summary>
-	BossStatus m_state;
+	bool m_sealFlag;
+
+	/// <summary>
+	/// ボスの体力
+	/// </summary>
+	int m_bossHp;
+
+	/// <summary>
+	/// ボスの攻撃力
+	/// </summary>
+	int m_attackPower;
 };
 

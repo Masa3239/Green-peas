@@ -8,6 +8,7 @@
 class ObjectManager;
 class EnemyBase;
 class Player;
+class UIManager;
 
 class EnemyManager : public GameObject
 {
@@ -48,6 +49,8 @@ public:
 
 	void SetPlayer(Player* player) { m_player = player; }
 
+	void SetUIManager(UIManager* uiMgr) { m_uiMgr = uiMgr; }
+
 private:
 
 	/// <summary>
@@ -67,6 +70,8 @@ private:
 	std::vector<EnemyBase*> m_enemies;
 
 	Player* m_player;
+
+	UIManager* m_uiMgr;
 
 	/// <summary>
 	/// 敵の生成待機のカウンター
