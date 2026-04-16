@@ -17,7 +17,8 @@ public:
 	enum class ItemType {
 
 		Heal,
-		Attack
+		Attack,
+		Max
 	};
 
 public:
@@ -69,6 +70,12 @@ public:
 	/// <returns></returns>
 	virtual const Collision::Circle GetCollision() { return m_collision; }
 
+	/// <summary>
+	/// アイテムの種類を取得するゲッター関数
+	/// </summary>
+	/// <returns></returns>
+	ItemBase::ItemType GetType() { return m_itemType; }
+
 protected:
 
 	/// <summary>
@@ -85,6 +92,11 @@ protected:
 	/// 円の当たり判定
 	/// </summary>
 	Collision::Circle m_collision;
+
+	/// <summary>
+	/// アイテムの種類
+	/// </summary>
+	ItemType m_itemType;
 
 };
 

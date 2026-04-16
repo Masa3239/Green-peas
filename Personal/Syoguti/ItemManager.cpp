@@ -111,7 +111,7 @@ void ItemManager::Remove(int index)
 	m_items.erase(m_items.begin() + index);
 }
 
-void ItemManager::CheckHitCollision(const Collision::Shape& other)
+ItemBase::ItemType ItemManager::CheckHitCollision(const Collision::Shape& other)
 {
 
 	// 空きがあれば前詰めする前提の処理
@@ -119,8 +119,13 @@ void ItemManager::CheckHitCollision(const Collision::Shape& other)
 
 		if (!m_items[i]->GetCollision().CheckCollision(other)) continue;
 
+		ItemBase::ItemType itemType;
+
+		itemType = m_items[i]->GetType();
+
 		m_items[i]->ItemAbility();
 
 		Remove(i);
+		return itemType;
 	}
 }

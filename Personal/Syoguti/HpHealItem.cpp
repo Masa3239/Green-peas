@@ -28,6 +28,7 @@ HpHealItem::HpHealItem(ObjectManager* objManager,Vector3 position) :
 	m_transform.position = position;
 
 	m_collision = Collision::Circle(m_transform.position, kCircleRadius);
+	m_itemType = ItemType::Heal;
 }
 
 void HpHealItem::Init()

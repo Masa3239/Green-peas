@@ -57,7 +57,7 @@ public:
 	/// 引数の形状とアイテムが当たっているか調べる
 	/// </summary>
 	/// <param name="other"></param>
-	void CheckHitCollision(const Collision::Shape& other);
+	ItemBase::ItemType CheckHitCollision(const Collision::Shape& other);
 
 	/// <summary>
 	/// オブジェクトマネージャーのポインタをセットするセッター関数
