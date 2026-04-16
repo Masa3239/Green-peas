@@ -36,11 +36,14 @@ namespace {
 	constexpr Vector3 kBoxSize = { 30,70,0 };
 	// 円の当たり判定の大きさ
 	constexpr float kCircleSize = 15;
+	// プレイヤー画像のグラフィックハンドル
+	const char* const kGraphPath = "Personal\\Takagi\\Resource\\pipo-charachip_otaku01.png";
+	constexpr float kPlayerScale = 1.5f;
 }
 
 Player::Player(ObjectManager* objManager) :
 	GameObject(objManager),
-	m_direction(1),
+	m_directionX(1),
 	m_speed (kMoveSpeed),
 	m_accel(1),
 	m_deltaTime(0)
@@ -61,6 +64,21 @@ Player::Player(ObjectManager* objManager) :
 	//}
 	m_weapons = new Sword(objManager);
 	m_weapons->Init();
+	for (int i = 0;i < static_cast<int>(Pad::Direction::Max);i++) {
+		for (int& handle : m_graphHandle[i])
+			handle = -1;
+	}
+	int graph[12];
+	LoadDivGraph(kGraphPath, 12, 3, 4, 32, 32, graph);
+	int num = 0;
+	for (int i = 0;i < static_cast<int>(Pad::Direction::Max);i++) {
+		for (int j = 0;j < 3;j++) {
+			m_graphHandle[i][j] = graph[num];
+			num++;
+		}
+	}
+	m_direction = Pad::Direction::Front;
+
 }
 
 Player::~Player()
@@ -78,6 +96,11 @@ void Player::End()
 	m_camera = nullptr;
 	delete m_camera;
 	m_weapons->End();
+	// アニメーションの破棄
+	for (int i = 0;i < static_cast<int>(Pad::Direction::Max);i++) {
+		for (int& handle : m_graphHandle[i])
+			DeleteGraph(handle);
+	}
 }
 
 void Player::Update()
@@ -97,7 +120,9 @@ void Player::Update()
 	if (Pad::IsDown(Pad::Button::LB)) {
 	}
 
-
+	printfDx("m_direction : %d\n", static_cast<int>(m_direction));
+	frame += m_deltaTime * 2;
+	if (frame > kPlayerFrame)frame = 0;
 }
 
 void Player::Move()
@@ -126,11 +151,11 @@ void Player::MoveAmount()
 
 		m_gauges[Stamina]->Increase(kStaminaHealValue * m_deltaTime);
 		if (angle > 0) {
-			m_direction = 1;
+			m_directionX = 1;
 		}
 		else
 		{
-			m_direction = -1;
+			m_directionX = -1;
 		}
 		m_weapons->GetTransform().rotation.y = GetTransform().rotation.y;
 	}
@@ -139,11 +164,11 @@ void Player::MoveAmount()
 	// 武器の更新処理
 	m_weapons->Update();
 	
-	if (Pad::IsPressed(Pad::Button::Y)) {
+	if (Pad::IsPressed(Pad::Button::X)) {
 		m_weapons->Attack();
 	}
 
-	printfDx("m_direction : %d\n",m_direction);
+	printfDx("m_direction : %d\n",m_directionX);
 	// 移動量の初期化
 	m_moveVector = { 0,0,0 };
 	// 入力角度からX,Y方向の移動量を計算
@@ -155,6 +180,11 @@ void Player::MoveAmount()
 	float moveSpeed = inputAmount * m_speed * m_accel * Time::GetInstance().GetDeltaTime();
 	// プレイヤーの移動量に入力量と移動速度と時間をかける
 	m_moveVector *= moveSpeed;
+
+	if (inputAmount) {
+		m_direction = Pad::AnalogDirection(Pad::Joystick::Left);
+	}
+
 }
 
 void Player::SpeedUpdate()
@@ -178,7 +208,7 @@ void Player::Draw()
 	// プレイヤー座標に円を描画
 	DrawCircle(GetTransform().position.x, GetTransform().position.y, 30, GetColor(100, 100, 100));
 	DrawCircle(GetTransform().position.x, GetTransform().position.y, 10, GetColor(255, 0, 0));
-
+	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kPlayerScale, 0, m_graphHandle[static_cast<int>(m_direction)][kFrame[static_cast<int>(frame)]], TRUE);
 	// 現在向いている方向のデバッグ表示
 	Vector3 angle = { 0,0,0 };
 	angle.x = sinf(GetTransform().rotation.y);
@@ -191,11 +221,12 @@ void Player::Draw()
 	printfDx("x : %f\n", GetTransform().position.x);
 	printfDx("y : %f\n", GetTransform().position.y);
 	printfDx("z : %f\n", GetTransform().position.z);
+	printfDx("ni : %d\n", static_cast<int>(Pad::AnalogDirection(Pad::Joystick::Left)));
 }
 
 void Player::Debug()
 {
-	if (Pad::IsPressed(Pad::Button::X)) {
+	if (Pad::IsPressed(Pad::Button::Y)) {
 		Damage(5);
 	}
 	printfDx("現在HP       : %f\n", m_gauges[Hp]->GetValue(Gauge::Current));

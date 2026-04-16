@@ -4,8 +4,6 @@
 //		マップ関連
 //===================================================================================
 
-namespace MapSystem
-{
     // 定数
     const int kMapBlockSize = 40;// ブロックのサイズ
     const int kMapTypeNum   = 64;// マップチップの種類数
@@ -14,7 +12,7 @@ namespace MapSystem
     // 列挙型
     enum MapChip
     {
-        Space = 41,
-        Wall  = 30,
+        Space = 0,
+        IceTile=10,
+        Wall  = 2,
     };
-}

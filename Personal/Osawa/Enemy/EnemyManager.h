@@ -2,12 +2,15 @@
 
 #include <memory>
 #include <vector>
+#include "../Object/GameObject.h"
+#include "../Chara/Collision.h"
 
 class ObjectManager;
 class EnemyBase;
 class Player;
+class UIManager;
 
-class EnemyManager
+class EnemyManager : public GameObject
 {
 public:
 
@@ -34,9 +37,19 @@ public:
 	/// </summary>
 	void Draw();
 
-	void AddEnemy();
+	/// <summary>
+	/// コライダーが敵に触れているかチェック
+	/// </summary>
+	/// <param name="shape">コライダー</param>
+	/// <param name="damage">ダメージ量</param>
+	/// <returns>敵に触れていたらtrue</returns>
+	bool CheckHitEnemies(const Collision::Shape& shape, int damage);
+
+	void AddEnemyTest();
 
 	void SetPlayer(Player* player) { m_player = player; }
+
+	void SetUIManager(UIManager* uiMgr) { m_uiMgr = uiMgr; }
 
 private:
 
@@ -51,14 +64,14 @@ private:
 	/// </summary>
 	void CheckDead();
 
-	ObjectManager* m_objManager;
-
 	/// <summary>
 	/// 敵の配列
 	/// </summary>
 	std::vector<EnemyBase*> m_enemies;
 
 	Player* m_player;
+
+	UIManager* m_uiMgr;
 
 	/// <summary>
 	/// 敵の生成待機のカウンター
