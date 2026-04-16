@@ -18,7 +18,7 @@ namespace {
 class Gauge
 {
 public:
-	enum {
+	enum class Value{
 		Max,
 		Current,
 		Min,
@@ -61,7 +61,7 @@ public:
 	/// Max -> 最大値でリセット
 	/// Min -> 最小値でリセット
 	/// </param>
-	virtual void Reset(int set = Max);
+	virtual void Reset(Value set = Value::Max);
 	/// <summary>
 	/// 指定した値以上かどうかを調べる
 	/// </summary>
@@ -73,7 +73,7 @@ public:
 	/// Min     -> 最小値を調べる
 	/// </param>
 	/// <returns></returns>
-	bool CheckValue(float value, int check = Current);
+	bool CheckValue(float value, Value check = Value::Current);
 
 	virtual void Debug();
 public:// ゲッター・セッター =======================
@@ -87,7 +87,7 @@ public:// ゲッター・セッター =======================
 	/// Current -> 現在の値を設定
 	/// Min     -> 最小値を設定
 	/// </param>
-	void SetValue(float value,int set = Current);
+	void SetValue(float value,Value set = Value::Current);
 	/// <summary>
 	/// 最大・最小・現在の値を取得する関数
 	/// </summary>
@@ -98,14 +98,18 @@ public:// ゲッター・セッター =======================
 	/// Min     -> 最小値を取得
 	/// </param>
 	/// <returns></returns>
-	float GetValue(int get = Current);
+	float GetValue(Value get = Value::Current);
 
 	/// <summary>
 	/// 割合を取得する関数
 	/// </summary>
 	/// <returns>現在の値を最大の値で割った割合</returns>
-	virtual float GetRate() { return m_currentValue / m_maxValue; }
-
+	virtual float GetRate() { return (m_currentValue / m_maxValue); }
+	/// <summary>
+	/// 最大かどうか
+	/// </summary>
+	/// <returns>最大以上ならtrue</returns>
+	virtual bool CheckMax() { return (m_currentValue >= m_maxValue); }
 protected:
 	/// <summary>
 	/// 最大値

@@ -18,11 +18,19 @@ PopUpTextManager::~PopUpTextManager()
 void PopUpTextManager::Init()
 {
 
-	m_textFonts.resize(200);
+	m_pTexts.resize(200);
 
 	m_textFonts.resize(static_cast<int>(PopUpText::Type::Max));
 
 	m_textFonts[static_cast<int>(PopUpText::Type::Damage)] = CreateFontToHandle(NULL, 40, 3);
+
+	for (int i = 0;i < m_pTexts.size();i++) {
+
+		auto text = std::make_unique<PopUpText>();
+
+		m_pTexts[i] = std::move(text);
+
+	}
 
 }
 
@@ -57,6 +65,18 @@ void PopUpTextManager::DebugDraw()
 
 	printfDx("m_texts size %d\n", m_pTexts.size());
 
+	int activeNum = 0;
+
+	for (auto& text : m_pTexts) {
+
+		if(!text->GetIsActive())continue;
+
+		activeNum++;
+
+	}
+
+	printfDx("m_texts activeNum%d\n", activeNum);
+
 	for (auto& text : m_pTexts) {
 
 		if (!text->GetIsActive())continue;
@@ -81,11 +101,16 @@ void PopUpTextManager::End()
 void PopUpTextManager::CreateText(Vector3 position, int amount, PopUpText::Type type)
 {
 
-	auto text = std::make_unique<PopUpText>();
-	text->Init();
-	text->SetPos(position);
-	text->SetData(amount, m_textFonts[static_cast<int>(type)], type);
+	for (auto& text : m_pTexts) {
 
-	m_pTexts.push_back(std::move(text));
+		if (text->GetIsActive())continue;
+
+		text->Init();
+		text->SetPos(position);
+		text->SetData(amount, m_textFonts[static_cast<int>(type)], type);
+
+		return;
+
+	}
 
 }

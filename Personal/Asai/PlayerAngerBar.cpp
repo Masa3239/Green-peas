@@ -1,6 +1,5 @@
 #include "PlayerAngerBar.h"
 
-
 #include<DxLib.h>
 #include"../../Utility/Game.h"
 
@@ -10,13 +9,13 @@ namespace {
 
     const char* const kGraphHandlePath = "";
 
-    constexpr float kGaugeLeft = Game::kScreenWidth - 50;
+    constexpr float kGaugeLeft = Game::kScreenWidth - 60;
 
-    constexpr float kGaugeRight = Game::kScreenWidth - 20;
+    constexpr float kGaugeRight = Game::kScreenWidth - 30;
 
     constexpr float kGaugeTop = Game::kScreenHeight / 2;
 
-    constexpr float kGaugeBottom = Game::kScreenHeight - 70;
+    constexpr float kGaugeBottom = Game::kScreenHeight - 93;
 
 }
 

@@ -41,41 +41,41 @@ void Gauge::Clamp()
 	m_currentValue = MyMath::Clamp(m_currentValue, m_minValue, m_maxValue);
 }
 
-void Gauge::Reset(int set)
+void Gauge::Reset(Value set)
 {
 	// リセットの種類によって分岐
 	switch (set)
 	{
-	case Max:
+	case Value::Max:
 		// 最大値でリセット
 		m_currentValue = m_maxValue;
 		break;
-	case Min:
+	case Value::Min:
 		// 最小値でリセット
 		m_currentValue = m_minValue;
 		break;
-	case Current:
+	case Value::Current:
 		break;
 	default:
 		break;
 	}
 }
 
-bool Gauge::CheckValue(float value, int check)
+bool Gauge::CheckValue(float value, Value check)
 {
 	// 調べたい値の現在の値を格納する変数
 	float checkValue = -1;
 	switch (check)
 	{
-	case Max:
+	case Value::Max:
 		// checkValueを最大値に設定
 		checkValue = m_maxValue;
 		break;
-	case Min:
+	case Value::Min:
 		// checkValueを最小値に設定
 		checkValue = m_minValue;
 		break;
-	case Current:
+	case Value::Current:
 		// checkValueを現在の値に設定
 		checkValue = m_currentValue;
 		break;
@@ -90,19 +90,19 @@ void Gauge::Debug()
 {
 }
 
-void Gauge::SetValue(float value, int set)
+void Gauge::SetValue(float value, Value set)
 {
 	switch (set)
 	{
-	case Max:
+	case Value::Max:
 		// 最大値を設定
 		m_maxValue = value;
 		break;
-	case Min:
+	case Value::Min:
 		// 最小値を設定
 		m_minValue = value;
 		break;
-	case Current:
+	case Value::Current:
 		// 現在の値を設定
 		m_currentValue = value;
 		break;
@@ -111,21 +111,21 @@ void Gauge::SetValue(float value, int set)
 	}
 }
 
-float Gauge::GetValue(int get)
+float Gauge::GetValue(Value get)
 {
 	// 返す値を格納する変数
 	float value = -1;
 	switch (get)
 	{
-	case Max:
+	case Value::Max:
 		// valueを最大値に設定
 		value = m_maxValue;
 		break;
-	case Min:
+	case Value::Min:
 		// valueを最小値に設定
 		value = m_minValue;
 		break;
-	case Current:
+	case Value::Current:
 		// valueを現在の値に設定
 		value = m_currentValue;
 		break;
