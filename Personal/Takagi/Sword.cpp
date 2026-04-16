@@ -23,6 +23,8 @@ namespace {
 	constexpr float kShowRadian = -45 * MyMath::ToRadian;
 	constexpr float kSwingRadian = 60 * MyMath::ToRadian;
 	constexpr float kColRadius = 10;
+	constexpr float kInitRadian = 150*MyMath::ToRadian;
+
 }
 
 Sword::Sword(ObjectManager* objManager) :
@@ -106,10 +108,10 @@ void Sword::Update()
 	}
 	else {
 		if (GetTransform().rotation.y >= 0) {
-		m_desireRadian = -150*MyMath::ToRadian;
+		m_desireRadian = -kInitRadian;
 		}
 		else {
-		m_desireRadian = 150*MyMath::ToRadian;
+		m_desireRadian = kInitRadian;
 		}
 		m_attackRadian= GetTransform().rotation.y;
 	}
@@ -162,4 +164,10 @@ void Sword::Attack()
 	m_swing.rotation.y = m_desireRadian;
 	attack = true;
 	m_swingState = Swing::Up;
+}
+
+bool Sword::CheckAttack()
+{
+
+	return attack;
 }

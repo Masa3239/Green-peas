@@ -26,6 +26,8 @@ public:
 	//virtual void Draw()= 0;
 	virtual void Attack()=0;
 	virtual Collision::Circle GetCollision()=0;
+	virtual bool CheckAttack() = 0;
+
 
 protected:
 	/// <summary>

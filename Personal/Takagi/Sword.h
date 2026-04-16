@@ -16,6 +16,7 @@ public:
 	void SetPos(const Vector3& pos) { GetTransform().position = pos; }
 	void Attack()override;
 	Collision::Circle GetCollision()override { return m_circle; }
+	bool CheckAttack()override;
 
 private:
 	bool attack;
