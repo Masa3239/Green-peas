@@ -56,14 +56,14 @@ private:
 	//===============================
 	//メンバ変数
 	//===============================
-	int m_graphHandle[MapSystem::kMapTypeNum];   //グラフィックハンドル
+	int m_graphHandle[kMapTypeNum];   //グラフィックハンドル
 	float m_chipScaleRate;   //マップチップの拡大率
 
 	int m_mapBlockNumX;     //マップの横サイズ
 	int m_mapBlockNumY;     //マップの縦サイズ
 
 	//読み込んだデータの大きさによってマップサイズを決めるのでポインタを用意
-	std::vector<std::vector<MapSystem::MapChip>> m_mapData;    //マップデータ
+	std::vector<std::vector<MapChip>> m_mapData;    //マップデータ
 	
 	int m_worldid;          //読み込むマップのワールドID
 	int m_stageid;          //読み込むマップのステージID

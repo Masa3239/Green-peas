@@ -9,7 +9,11 @@
 
 namespace {
 
-	
+	//マップのタイルの画像
+	const char* const kMapChip = "Image\\MapChip.png";
+	// CSVファイルパス（worldID / stageIDで変化）
+	const char* const kMapCsv = "Mapdata\\Map%d_%d.csv";
+
 }
 
 Map::Map():
@@ -19,9 +23,10 @@ m_mapBlockNumY(0),
 m_worldid(0),
 m_stageid(0)
 {
-	for (int i = 0; i < MapSystem::kMapTypeNum; i++)
+	// グラフィックハンドル初期化
+	for (int i = 0; i < kMapTypeNum; i++)
 	{
-		m_graphHandle[i] = -1;
+		m_graphHandle[i] = 0;
 	}
 }
 
@@ -32,19 +37,13 @@ Map::~Map()
 void Map::Init()
 {
 	//マップチップの拡大率の初期化
-	m_chipScaleRate = (float)MapSystem::kMapBlockSize / (float)MapSystem::kMapChipSize;
-
-	//グラフィックハンドルの初期化
-	for (int i = 0; i < MapSystem::kMapTypeNum; i++) {
-		m_graphHandle[i] = 0;
-
-	}
+	m_chipScaleRate = (float)kMapBlockSize / (float)kMapChipSize;
 
 	//マップチップの読み込み
-	LoadDivGraph("Image\\MapChip.png",
+	LoadDivGraph(kMapChip,
 		55, 11, 5,
-		MapSystem::kMapChipSize, MapSystem::kMapChipSize, m_graphHandle);
-
+		kMapChipSize, kMapChipSize, m_graphHandle);
+	
 	//IDの設定
 	m_worldid = 1;
 	m_stageid = 1;
@@ -55,6 +54,7 @@ void Map::Init()
 
 void Map::End()
 {
+	// マップデータ破棄
 	m_mapData.clear();
 }
 
@@ -69,14 +69,15 @@ void Map::Draw()
 	for (int i = 0; i < m_mapBlockNumY; i++) {
 
 		for (int j = 0; j < m_mapBlockNumX; j++) {
-
+			
 			//0なら何もしない、１なら描画
-			if (m_mapData[i][j] != MapSystem::MapChip::Space) {
-				DrawRotaGraph(j * MapSystem::kMapBlockSize + (MapSystem::kMapBlockSize / 2),
-					i * MapSystem::kMapBlockSize + (MapSystem::kMapBlockSize / 2),
+			if (m_mapData[i][j] != MapChip::Space) {
+				DrawRotaGraph(j * kMapBlockSize + (kMapBlockSize / 2),
+					i * kMapBlockSize + (kMapBlockSize / 2),
 					m_chipScaleRate, 0.0f,
-					m_graphHandle[static_cast<int>(m_mapData[i][j])], false, false);
+					m_graphHandle[m_mapData[i][j]], false, false);
 			}
+			
 		}
 
 	}
@@ -85,8 +86,8 @@ void Map::Draw()
 
 void Map::Finalize()
 {
-	//グラフィックハンドルの破棄
-	for (int i = 0; i < MapSystem::kMapTypeNum; i++) {
+	//グラフィックハンドル解放
+	for (int i = 0; i < kMapTypeNum; i++) {
 
 		DeleteGraph(m_graphHandle[i]);
 	}
@@ -100,9 +101,9 @@ void Map::DebugShow()
 		for (int j = 0; j < m_mapBlockNumX; j++) {
 
 			//0なら何もしない、１なら描画
-			if (m_mapData[i][j] != MapSystem::MapChip::Space) {
-				DrawRotaGraph(j * MapSystem::kMapBlockSize + (MapSystem::kMapBlockSize / 2),
-					i * MapSystem::kMapBlockSize + (MapSystem::kMapBlockSize / 2),
+			if (m_mapData[i][j] != MapChip::Space) {
+				DrawRotaGraph(j * kMapBlockSize + (kMapBlockSize / 2),
+					i * kMapBlockSize + (kMapBlockSize / 2),
 					m_chipScaleRate, 0.0f,
 					m_graphHandle[41], false, false);
 
@@ -116,17 +117,12 @@ void Map::DebugShow()
 bool Map::LoadCSVToMapData(int worldNum, int stageNum)
 {
 	char fileNameCSV[256];
-	sprintf_s(fileNameCSV, 256, "Mapdata\\Map%d_%d.csv", worldNum, stageNum);
+	// CSVファイル名生成（ワールド・ステージ指定）
+	sprintf_s(fileNameCSV, 256, kMapCsv, worldNum, stageNum);
+	// マップサイズ取得（失敗したら読み込み終了）
+	if (!CheckMapSize(fileNameCSV)) return false;
 
-	MessageBox(NULL, fileNameCSV, "CSV PATH", MB_OK);
-
-	if (!CheckMapSize(fileNameCSV))
-	{
-		MessageBox(NULL, "CheckMapSize failed", "ERROR", MB_OK);
-		return false;
-	}
-
-	// vectorでサイズ確保
+	//2次元配列サイズ確保
 	m_mapData.resize(m_mapBlockNumY);
 	for (int i = 0; i < m_mapBlockNumY; i++) {
 		m_mapData[i].resize(m_mapBlockNumX);
@@ -134,25 +130,20 @@ bool Map::LoadCSVToMapData(int worldNum, int stageNum)
 
 	std::ifstream ifs(fileNameCSV);
 
-	/*if (ifs.fail()) {
-		MessageBox(NULL, "Fail to open csv file", "Fail to open csv file", MB_OK);
-		return false;
-	}*/
-
+	std::string buf;
 	for (int y = 0; y < m_mapBlockNumY; y++) {
 
-		std::string buf;
-		getline(ifs, buf);
+		
+		if (!std::getline(ifs, buf)) break;
 
 		auto list = Split(buf, ',');
 
 		for (int x = 0; x < list.size(); x++) {
-			m_mapData[y][x] = static_cast<MapSystem::MapChip>(std::stoi(list[x]));
+			m_mapData[y][x] = static_cast<MapChip>(std::stoi(list[x]));
 		}
 	}
 
 	ifs.close();
-	MessageBox(NULL, std::to_string(m_mapData[0][0]).c_str(), "DEBUG", MB_OK);
 	return true;
 }
 
@@ -190,20 +181,6 @@ bool Map::CheckMapSize(const char* fileName)
 {
 	//ファイルを開く
 	std::ifstream ifs(fileName);
-	
-	if (!ifs)
-	{
-		MessageBox(NULL, "CSV open failed (path issue)", "ERROR", MB_OK);
-		return false;
-	}
-
-	//ファイルが開けなければプログラムを終了
-	if (ifs.fail()) {
-
-		MessageBox(NULL, "Fail to open csv file", "Fail to open csv file", MB_OK);
-		return false;
-
-	}
 
 	//マップサイズのクリア
 	m_mapBlockNumX = 0;
@@ -211,26 +188,17 @@ bool Map::CheckMapSize(const char* fileName)
 
 	//マップの大きさ意を１行ずつ読み込んで調べる
 	//読み込んだマップの大きさがわからないので、無限ループで調べる
-	while (true) {
+	std::string buf;
 
-		//読み込んだものを一時的に格納するデータを用意
-		std::string buf;
+	while (std::getline(ifs, buf)) {
 
-		//１行ずつ読み込む
-		getline(ifs, buf);
+		if (buf.empty()) continue;
 
-		//読み込んだデータがなければループを終了
-		if (ifs.eof())break;
-
-		//１行読み込んだので行をカウントアップ
 		m_mapBlockNumY++;
 
-		//読み込んだ行を分割してマップの横サイズを調べる
-		std::vector < std::string>separatedList = Split(buf, ',');
+		auto separatedList = Split(buf, ',');
 
-		//分割後の配列の要素数を格納する
 		m_mapBlockNumX = separatedList.size();
-
 	}
 
 	//開いたファイルは必ず閉じる

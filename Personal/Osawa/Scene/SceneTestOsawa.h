@@ -6,6 +6,7 @@
 class Player;
 class Camera;
 class EnemyManager;
+class UIManager;
 
 class SceneTestOsawa : public SceneBase
 {
@@ -46,4 +47,6 @@ private:
 	std::unique_ptr<Camera> m_camera;
 
 	std::unique_ptr<EnemyManager> m_enemyMgr;
+
+	std::unique_ptr<UIManager> m_uiMgr;
 };

@@ -55,7 +55,9 @@ SceneBase* SceneTestTakagi::Update()
 
 	box.SetPosition(kBoxPos);
 
-
+	if (Pad::IsPressed(Pad::Button::Start)) {
+		return new SceneSelection();
+	}
 
 
 

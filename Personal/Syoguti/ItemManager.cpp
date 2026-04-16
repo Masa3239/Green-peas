@@ -115,6 +115,8 @@ void ItemManager::CheckHitCircle(const Collision::Circle other)
 
 		if (!m_items[i]->GetCollision().CheckCollision(other)) continue;
 
+		m_items[i]->ItemAbility();
+
 		Remove(i);
 	}
 }

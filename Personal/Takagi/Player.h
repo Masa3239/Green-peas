@@ -2,9 +2,10 @@
 #include"../Utility/Transform.h"
 #include"../Utility/Vector3.h"
 #include"../../Object/GameObject.h"
+#include"../../System/InputPad.h"
 #include<memory>
 
-class Gauge;
+
 namespace Collision{
 	class Shape;
 	class Circle;
@@ -12,19 +13,24 @@ namespace Collision{
 }
 
 namespace {
-	enum class Status {
-		Stop,		// 停止状態
-		Walk,		// 歩行状態
-		Dash,		// ダッシュ(回避)
-		Max
-	};
-
-
+	//enum class Status {
+	//	Stop,		// 停止状態
+	//	Walk,		// 歩行状態
+	//	Dash,		// ダッシュ(回避)
+	//	Max
+	//};
+	
 	// プレイヤーのアニメーションの枚数
-	constexpr int playerFrame = 8;
+	constexpr int kPlayerFrame = 4;
+	// プレイヤーのアニメーションで何枚目のフレームを使うか
+	constexpr int kFrame[kPlayerFrame] = { 0,1,2,1 };
+
 }
 
+class Gauge;
 class Camera;
+class Weapon;
+class Sword;
 
 class Player:public GameObject {
 public:
@@ -32,6 +38,7 @@ public:
 		Hp,
 		Stamina,
 		Anger,
+		Exp,
 		Max
 	};
 	/// <summary>
@@ -147,9 +154,13 @@ private:
 	/// </summary>
 	//Transform m_transform;
 
+	/// <summary>
+	/// プレイヤーのグラフィックハンドル
+	/// </summary>
+	int m_graphHandle[static_cast<int>(Pad::Direction::Max)][kPlayerFrame];
 
 	// プレイヤーが向いている方向(左右)
-	int m_direction;
+	int m_directionX;
 
 	// 移動速度
 	float m_speed;
@@ -161,10 +172,14 @@ private:
 	// プレイヤーの移動量
 	Vector3 m_moveVector;
 
+	Pad::Direction m_direction;
+	float frame;
+
 	/// <summary>
 	/// ゲージの配列(HP・スタミナ・怒り)
 	/// </summary>
 	std::unique_ptr<Gauge> m_gauges[Max];
+	Weapon* m_weapons;
 
 	Camera* m_camera;
 
