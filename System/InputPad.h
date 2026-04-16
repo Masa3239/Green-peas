@@ -1,19 +1,13 @@
 #pragma once
 #include"../Utility/Vector3.h"
+#include"../Utility/MyMath.h"
 /// <summary>
 /// 入力情報の取得・更新をする
 /// </summary>
 
 // 名前空間
 namespace Pad {
-	// 入力方向
-	enum class Direction {
-		Front,		// 手前
-		Left,		// 左
-		Right,		// 右
-		Back,		// 奥
-		Max
-	};
+
 		// プレイヤーの数
 	enum class Player {
 		P1, // プレイヤー1
@@ -95,7 +89,7 @@ namespace Pad {
 	/// <param name="stick">左右どちらのスティックか</param>
 	/// <param name="padNum">コントローラーの種類</param>
 	/// <returns></returns>
-	Direction AnalogDirection(const Pad::Joystick stick, const Pad::Player padNum = Pad::Player::P1);
+	MyMath::FourDirection AnalogDirection(const Pad::Joystick stick, const Pad::Player padNum = Pad::Player::P1);
 	/// <summary>
 	/// デバッグ処理
 	/// </summary>

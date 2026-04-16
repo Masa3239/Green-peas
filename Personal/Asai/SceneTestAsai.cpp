@@ -4,10 +4,12 @@
 #include"../../Utility/Transform.h"
 #include"../../Utility/Time.h"
 #include"../Asai/UIManager.h"
+#include"../Asai/Arrow.h"
 
 #include"../Takagi/Player.h"
 
 UIManager* uiMgr;
+Arrow* arrow;
 
 Player* pPlayer;
 
@@ -29,6 +31,9 @@ void SceneTestAsai::Init()
 
 	pPlayer = new Player(GetObjectManager());
 	pPlayer->Init();
+
+	arrow = new Arrow(GetObjectManager());
+	arrow->Init();
 
 }
 
@@ -74,6 +79,8 @@ void SceneTestAsai::Draw()
 	uiMgr->ScreenDraw();
 	uiMgr->WorldDraw();
 	uiMgr->DebugDraw();
+
+	arrow->DebugDraw();
 
 	//printfDx("x %f\n", transform.position.x);
 	//printfDx("y %f\n",transform.position.y);

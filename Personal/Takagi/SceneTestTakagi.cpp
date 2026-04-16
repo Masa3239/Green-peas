@@ -4,6 +4,8 @@
 #include"../../Personal/Asai/Camera.h"
 #include"../../Personal/Osawa/Scene/SceneSelection.h"
 #include"../../Chara/Collision.h"
+#include"../../Utility/Time.h"
+#include"../Kimura/Map/Map.h"
 namespace {
 	Vector3 kBoxPos = { 200,200 ,0 };
 	Vector3 kBoxSize = { 50,70 ,0 };
@@ -14,7 +16,7 @@ SceneTestTakagi::SceneTestTakagi()
 {
 	m_pPlayer = std::make_unique<Player>(GetObjectManager());
 	m_pCamera = std::make_unique<Camera>();
-	
+	m_pMap = new Map();
 }
 
 SceneTestTakagi::~SceneTestTakagi()
@@ -26,17 +28,20 @@ void SceneTestTakagi::Init()
 	m_pPlayer->Init();
 	m_pCamera->Init();
 	m_pPlayer->SetCamera(m_pCamera.get());
+	m_pMap->Init();
 }
 
 void SceneTestTakagi::End()
 {
 	m_pPlayer->End();
 	m_pCamera->End();
+	m_pMap->End();
 
 }
 
 SceneBase* SceneTestTakagi::Update()
 {
+	Time::GetInstance().SetTimeScale(1);
 	m_pPlayer->Update();
 	//m_pPlayer->Update();
 	if (m_pPlayer->IsDead()) {
@@ -58,6 +63,7 @@ SceneBase* SceneTestTakagi::Update()
 	if (Pad::IsPressed(Pad::Button::Start)) {
 		return new SceneSelection();
 	}
+	m_pMap->Update();
 
 
 
@@ -75,8 +81,9 @@ void SceneTestTakagi::Draw()
 void SceneTestTakagi::PreDraw()
 {
 	SetDrawScreen(m_pCamera->GetWorldScreen());
-	
+
 	ClearDrawScreen();
+	m_pMap->Draw();
 }
 
 void SceneTestTakagi::PostDraw()
