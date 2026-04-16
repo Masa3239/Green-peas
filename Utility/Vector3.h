@@ -118,6 +118,25 @@ public:
 	bool operator!=(const Vector3& vec) const;
 
 	/// <summary>
+	/// 内積を計算する
+	/// </summary>
+	constexpr float Dot(const Vector3& v)
+	{
+		return (x * v.x) + (y * v.y) + (z * v.z);
+	}
+
+	/// <summary>
+	/// 外積を計算する
+	/// </summary>
+	constexpr Vector3 Cross(const Vector3& v)
+	{
+		return Vector3(
+			y * v.z - z * v.y,
+			z * v.x - x * v.z,
+			x * v.y - y * v.x);
+	}
+
+	/// <summary>
 	/// ベクトルの長さを取得
 	/// 平方根の処理が少し負荷があるので厳密な長さが必要じゃなければ非推奨
 	/// </summary>
