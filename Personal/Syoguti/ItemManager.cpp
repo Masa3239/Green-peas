@@ -8,7 +8,7 @@ namespace {
 
 	// 画像のファイルパス
 	const char* const kHpHealItemGraphHandlePath = "Personal\\Syoguti\\Resource\\ItemTest1.png";
-	const char* const kAttackUpItemGraphHandlePath = ".\\Personal\\Syoguti\\Resource\\EnemyBossTest2.png";
+	const char* const kAttackUpItemGraphHandlePath = ".\\Personal\\Syoguti\\Resource\\ItemTest2.png";
 }
 
 ItemManager::ItemManager() :
@@ -117,6 +117,7 @@ ItemBase::ItemType ItemManager::CheckHitCollision(const Collision::Shape& other)
 	// 空きがあれば前詰めする前提の処理
 	for (int i = m_items.size() - 1; i >= 0; i--) {
 
+		// アイテムのi番目と引数が当たっているか調べる
 		if (!m_items[i]->GetCollision().CheckCollision(other)) continue;
 
 		ItemBase::ItemType itemType;

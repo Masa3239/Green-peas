@@ -57,7 +57,7 @@ void AttackUpItem::Draw()
 	m_collision.DebugDraw();
 }
 
-void AttackUpItem::ItemAbility()
+void AttackUpItem::ItemAbility(Player* player)
 {
 	printfDx("攻撃力が上がりました\n");
 }
