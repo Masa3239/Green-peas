@@ -56,7 +56,7 @@ void HpHealItem::Draw()
 	m_collision.DebugDraw();
 }
 
-void HpHealItem::ItemAbility()
+void HpHealItem::ItemAbility(Player* player)
 {
 
 	printfDx("HPが回復しました\n");

@@ -2,6 +2,8 @@
 #include "../../Chara/Collision.h"
 #include "../../Utility/Transform.h"
 #include"../../Object/GameObject.h"
+#include <memory>
+class Player;
 
 /// <summary>
 /// アイテムの基本クラス
@@ -56,7 +58,7 @@ public:
 	/// <summary>
 	/// アイテムの効果
 	/// </summary>
-	virtual void ItemAbility() = 0;
+	virtual void ItemAbility(Player* player) = 0;
 
 	/// <summary>
 	/// グラフハンドルをセットするセッター関数
@@ -97,6 +99,11 @@ protected:
 	/// アイテムの種類
 	/// </summary>
 	ItemType m_itemType;
+
+	/// <summary>
+	/// プレイヤーのポインタ
+	/// </summary>
+	std::unique_ptr<Player> m_pPlayer;
 
 };
 
