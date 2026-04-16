@@ -223,15 +223,12 @@ namespace Pad {
 		return analogAmount[Stick][0];
 	}
 
-	Direction AnalogDirection(const Pad::Joystick stick, const Pad::Player padNum)
+	MyMath::FourDirection AnalogDirection(const Pad::Joystick stick, const Pad::Player padNum)
 	{
 		// “ü—Í‚³‚ê‚Ä‚¢‚È‚¢”»’è‚È‚ç‚Ç‚Ì•ûŒü‚à•Ô‚³‚È‚¢
-		if (!PadAnalogAmount(stick, padNum))return Direction::Max;
+		if (!PadAnalogAmount(stick, padNum))return MyMath::FourDirection::Max;
 		float angle = AnalogAngle(stick, padNum);
-		if (angle < 135 && angle>=45)return Direction::Right;
-		else if (angle <  45&& angle>=-45)return Direction::Back;
-		else if (angle < -45 && angle>=-135)return Direction::Left;
-		return Direction::Front;
+		return MyMath::Direction(angle * MyMath::ToRadian);
 
 	}
 
