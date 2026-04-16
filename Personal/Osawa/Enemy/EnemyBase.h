@@ -2,6 +2,7 @@
 
 #include "../Object/GameObject.h"
 #include "../Utility/Transform.h"
+#include "../Chara/Collision.h"
 
 class Player;
 
@@ -26,14 +27,20 @@ public:
 	/// HPを取得
 	/// </summary>
 	int GetHP() const { return m_hp; }
-
 	/// <summary>
 	/// HPを設定
 	/// </summary>
 	void SetHP(const int hp) { m_hp = hp; }
+	/// <summary>
+	/// ダメージを与える
+	/// </summary>
+	/// <param name="damage">ダメージ量</param>
+	void Damage(const int damage) { m_hp -= damage; }
 
 	Player* GetPlayer() const { return m_player; }
 	void SetPlayer(Player* player) { m_player = player; }
+
+	const Collision::AABB& GetCollider() const { return m_collider; }
 
 private:
 
@@ -41,6 +48,11 @@ private:
 	/// 自身のHP
 	/// </summary>
 	int m_hp;
+
+	/// <summary>
+	/// コライダー
+	/// </summary>
+	Collision::AABB m_collider;
 
 	/// <summary>
 	/// プレイヤーのポインタ

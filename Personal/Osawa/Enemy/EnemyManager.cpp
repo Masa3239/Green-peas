@@ -18,7 +18,7 @@ namespace
 }
 
 EnemyManager::EnemyManager(ObjectManager* objManager) :
-	m_objManager(objManager),
+	GameObject(objManager),
 	m_player(nullptr),
 	m_generateCounter(0.0f)
 {
@@ -53,7 +53,7 @@ void EnemyManager::Update()
 	if (m_generateCounter <= 0)
 	{
 		// 敵を生成
-		GenerateEnemy(new EnemyMelee(m_objManager));
+		GenerateEnemy(new EnemyMelee(GetObjectManager()));
 
 		m_generateCounter = kGenerateDuration;
 	}
@@ -70,9 +70,26 @@ void EnemyManager::Draw()
 	printfDx("Enemy Num: %d\n", m_enemies.size());
 }
 
-void EnemyManager::AddEnemy()
+bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, int damage)
 {
-	auto enemy = new EnemyMelee(m_objManager);
+	bool result = false;
+
+	for (const auto& enemy : m_enemies)
+	{
+		if (!enemy->GetCollider().CheckCollision(shape)) continue;
+		
+		enemy->Damage(damage);
+
+		// 誰か一人でも当たっていたらtrueになる
+		result = true;
+	}
+
+	return result;
+}
+
+void EnemyManager::AddEnemyTest()
+{
+	auto enemy = new EnemyMelee(GetObjectManager());
 	enemy->Init();
 	enemy->SetPlayer(m_player);
 
@@ -105,6 +122,8 @@ void EnemyManager::GenerateEnemy(EnemyBase* enemy)
 void EnemyManager::CheckDead()
 {
 	// 死亡判定
+	// オブジェクトマネージャー側
+	// マネージャー側で死亡判定を行う
 	for (const auto& enemy : m_enemies)
 	{
 		if (enemy->GetHP() > 0) continue;

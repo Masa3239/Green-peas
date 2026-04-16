@@ -36,6 +36,8 @@ void EnemyMelee::UpdateEnemy()
 		Vector3 vec = (targetPos - myPos).GetNormalize();
 
 		myPos += vec * kMoveSpeed * Time::GetInstance().GetDeltaTime();
+
+
 	}
 }
 
@@ -43,5 +45,7 @@ void EnemyMelee::Draw()
 {
 	auto& transform = GetTransform();
 	
-	DrawBox(transform.position.x, transform.position.y, transform.position.x + 20, transform.position.y + 20, 0xff0000, 1);
+	DrawBox(transform.position.x - 9, transform.position.y  -10, transform.position.x + 9, transform.position.y + 20, 0xff0000, 1);
+
+	GetCollider().DebugDraw();
 }

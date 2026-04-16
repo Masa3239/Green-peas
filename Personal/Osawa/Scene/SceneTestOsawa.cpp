@@ -28,8 +28,8 @@ void SceneTestOsawa::Init()
 	m_enemyMgr->Init();
 	m_enemyMgr->SetPlayer(m_player.get());
 
-	m_enemyMgr->AddEnemy();
-	m_enemyMgr->AddEnemy();
+	m_enemyMgr->AddEnemyTest();
+	m_enemyMgr->AddEnemyTest();
 }
 
 void SceneTestOsawa::End()
