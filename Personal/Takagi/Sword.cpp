@@ -4,6 +4,7 @@
 #include"../../Utility/Transform.h"
 #include"../../Utility/Vector3.h"
 #include"../../Utility/Time.h"
+#include"../../System/InputPad.h"
 #include<DxLib.h>
 #include<math.h>
 namespace {
@@ -11,8 +12,9 @@ namespace {
 	/// <summary>
 	/// 武器の表示座標
 	/// </summary>
-	constexpr Vector3 kOffset = { -13.0f,10.0f,0.0f };
+	constexpr Vector3 kOffset = { -13.0f,15.0,0.0f };
 	constexpr float kLerpSwing = 12.0f;
+	constexpr float kLerpPos = 50.0f;
 	constexpr Transform kSwingUp = {
 		{0,0,0},
 		{0,60 * MyMath::ToRadian,0},
@@ -72,13 +74,21 @@ void Sword::Update()
 	}
 
 	Vector3 drawPos = GetTransform().position;
-	if (GetTransform().rotation.y >= 0) {
+	switch (MyMath::Direction(GetTransform().rotation.y)) {
+	case MyMath::FourDirection::Right:
 		drawPos.x += kOffset.x;
-		drawPos.y += kOffset.y;
-	}
-	else {
+		//drawPos.y += kOffset.y;
+		break;
+	case MyMath::FourDirection::Left:
 		drawPos.x -= kOffset.x;
+		//drawPos.y += kOffset.y;
+		break;
+	case MyMath::FourDirection::Back:
 		drawPos.y += kOffset.y;
+		break;
+	case MyMath::FourDirection::Front:
+		drawPos.y -= kOffset.y;
+			break;
 	}
 
 	if (attack) {
@@ -103,21 +113,36 @@ void Sword::Update()
 		}
 		m_attackRadian= GetTransform().rotation.y;
 	}
-	m_swing.position += (drawPos - m_swing.position) * 50 * time;
+	m_swing.position += (drawPos - m_swing.position) * kLerpPos * time;
 	m_circle.SetPosition(drawPos);
 }
 
 void Sword::Draw()
 {
 	bool reverseX = false;
+	//switch (MyMath::Direction(GetTransform().rotation.y))
+	//{
+	//case MyMath::FourDirection::Right:
+	//case MyMath::FourDirection::Left:
+	//	reverseX = false;
+	//	break;
+	//case MyMath::FourDirection::Back:
+	//case MyMath::FourDirection::Front:
+	//	reverseX = true;
+	//	break;
+	//default:
+	//	break;
+	//}
 	if (GetTransform().rotation.y >= 0) {
 		reverseX = false;
 	}
 	else {
 		reverseX = true;
-	}
-	float radian = /*GetTransform().rotation.y+*/m_swing.rotation.y + (kShowRadian)*MyMath::Sign(GetTransform().rotation.y);
 
+	}
+
+	float radian = /*GetTransform().rotation.y+*/m_swing.rotation.y + (kShowRadian)*MyMath::Sign(GetTransform().rotation.y);
+	//if (reverseX)radian *= -1;
 	//if (attack) {
 	//}
 	//else {
