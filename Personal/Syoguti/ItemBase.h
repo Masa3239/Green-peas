@@ -1,11 +1,12 @@
 #pragma once
 #include "../../Chara/Collision.h"
 #include "../../Utility/Transform.h"
+#include"../../Object/GameObject.h"
 
 /// <summary>
 /// アイテムの基本クラス
 /// </summary>
-class ItemBase
+class ItemBase : public GameObject
 {
 
 public:
@@ -24,7 +25,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	ItemBase();
+	ItemBase(ObjectManager* objManager);
 
 	/// <summary>
 	/// デストラクタ

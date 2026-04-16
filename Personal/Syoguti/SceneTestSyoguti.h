@@ -39,7 +39,6 @@ private:
 
 	std::unique_ptr<ItemManager>m_pItemMgr;
 	std::unique_ptr<EnemyBoss> m_pEnemyBoss;
-
 	Transform m_transform;
-
+	
 };

@@ -3,6 +3,7 @@
 #include<vector>
 #include<memory>
 #include "ItemBase.h"
+#include "../../System/ObjectManager.h"
 
 class ItemManager
 {
@@ -58,6 +59,12 @@ public:
 	/// <param name="other"></param>
 	void CheckHitCircle(const Collision::Circle other);
 
+	/// <summary>
+	/// オブジェクトマネージャーのポインタをセットするセッター関数
+	/// </summary>
+	/// <param name="objectManager"></param>
+	void SetObjectManager(ObjectManager* objectManager) { m_pObjectMgr = objectManager; }
+
 private:
 
 	/// <summary>
@@ -74,5 +81,10 @@ private:
 	/// 攻撃力アップアイテムの画像のグラフハンドル
 	/// </summary>
 	int m_attackUpItemGraphHandle;
+
+	/// <summary>
+	/// オブジェクトマネージャーのポインタ
+	/// </summary>
+	ObjectManager* m_pObjectMgr;
 };
 

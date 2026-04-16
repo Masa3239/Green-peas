@@ -12,11 +12,13 @@ namespace {
 	constexpr float kCircleRadius = 50.0f;
 }
 
-HpHealItem::HpHealItem()
+HpHealItem::HpHealItem(ObjectManager* objManager):
+	ItemBase(objManager)
 {
 }
 
-HpHealItem::HpHealItem(Vector3 position)
+HpHealItem::HpHealItem(ObjectManager* objManager,Vector3 position) :
+	ItemBase(objManager)
 {
 
 	// 座標のリセット
@@ -30,8 +32,6 @@ HpHealItem::HpHealItem(Vector3 position)
 
 void HpHealItem::Init()
 {
-	// 中心座標をセット
-	m_collision.SetPosition(m_transform.position);
 }
 
 void HpHealItem::End()
@@ -42,6 +42,8 @@ void HpHealItem::End()
 
 void HpHealItem::Update()
 {
+	// 中心座標をセット
+	m_collision.SetPosition(m_transform.position);
 }
 
 void HpHealItem::Draw()

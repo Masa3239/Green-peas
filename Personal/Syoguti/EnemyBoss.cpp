@@ -23,23 +23,27 @@ namespace {
 
 }
 
-EnemyBoss::EnemyBoss() :
+EnemyBoss::EnemyBoss(ObjectManager* objManager) :
+	GameObject(objManager),
 	m_graphHandle(-1),
 	m_transform(),
 	m_collsion(m_transform.position, kCircleRadius),
 	m_sealFlag(true),
-	m_bossHp(kMaxHp),
+	m_maxHp(kMaxHp),
+	m_currentHp(kMaxHp),
 	m_attackPower(kAttackPower)
 {
 	m_transform.Reset();
 }
 
-EnemyBoss::EnemyBoss(Vector3 position) :
+EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
+	GameObject(objManager),
 	m_graphHandle(-1),
 	m_transform(),
 	m_collsion(m_transform.position, kCircleRadius),
 	m_sealFlag(true),
-	m_bossHp(kMaxHp),
+	m_maxHp(kMaxHp),
+	m_currentHp(kMaxHp),
 	m_attackPower(kAttackPower)
 {
 	m_transform.Reset();
@@ -73,3 +77,4 @@ void EnemyBoss::Draw()
 	// 円の当たり判定の描画
 	m_collsion.DebugDraw();
 }
+

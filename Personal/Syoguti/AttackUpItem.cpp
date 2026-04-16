@@ -13,11 +13,13 @@ namespace {
 
 }
 
-AttackUpItem::AttackUpItem()
+AttackUpItem::AttackUpItem(ObjectManager* objManager):
+	ItemBase(objManager)
 {
 }
 
-AttackUpItem::AttackUpItem(Vector3 position)
+AttackUpItem::AttackUpItem(ObjectManager* objManager, Vector3 position):
+	ItemBase(objManager)
 {
 
 	// 座標のリセット
@@ -30,9 +32,7 @@ AttackUpItem::AttackUpItem(Vector3 position)
 }
 
 void AttackUpItem::Init()
-{
-	// 中心座標をセット
-	m_collision.SetPosition(m_transform.position);
+{	
 }
 
 void AttackUpItem::End()
@@ -43,6 +43,8 @@ void AttackUpItem::End()
 
 void AttackUpItem::Update()
 {
+	// 中心座標をセット
+	m_collision.SetPosition(m_transform.position);
 }
 
 void AttackUpItem::Draw()
