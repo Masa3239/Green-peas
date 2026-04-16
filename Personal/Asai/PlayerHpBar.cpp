@@ -84,8 +84,8 @@ PlayerUI::DrawType PlayerHpBar::GetDrawType() const
 void PlayerHpBar::SetPlayer(Player* pPlayer)
 {
 
-	m_value = pPlayer->GetGaugeCurrentValue(Player::Hp);
-	m_max = pPlayer->GetGaugeMaxValue(Player::Hp);
-	m_rate = pPlayer->GetGaugeRate(Player::Hp);
+	m_value = pPlayer->GetGaugeCurrentValue(Player::GaugeType::Hp);
+	m_max = pPlayer->GetGaugeMaxValue(Player::GaugeType::Hp);
+	m_rate = pPlayer->GetGaugeRate(Player::GaugeType::Hp);
 
 }

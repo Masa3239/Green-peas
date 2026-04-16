@@ -76,8 +76,8 @@ PlayerUI::DrawType PlayerAngerBar::GetDrawType() const
 void PlayerAngerBar::SetPlayer(Player* pPlayer)
 {
 
-    m_value = pPlayer->GetGaugeCurrentValue(Player::Anger);
-    m_max = pPlayer->GetGaugeMaxValue(Player::Anger);
-    m_rate = pPlayer->GetGaugeRate(Player::Anger);
+    m_value = pPlayer->GetGaugeCurrentValue(Player::GaugeType::Anger);
+    m_max = pPlayer->GetGaugeMaxValue(Player::GaugeType::Anger);
+    m_rate = pPlayer->GetGaugeRate(Player::GaugeType::Anger);
 
 }

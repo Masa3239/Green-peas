@@ -93,9 +93,9 @@ PlayerUI::DrawType PlayerStaminaBar::GetDrawType() const
 void PlayerStaminaBar::SetPlayer(Player* pPlayer)
 {
 
-	m_value = pPlayer->GetGaugeCurrentValue(Player::Stamina);
-	m_max = pPlayer->GetGaugeMaxValue(Player::Stamina);
-	m_rate = pPlayer->GetGaugeRate(Player::Stamina);
+	m_value = pPlayer->GetGaugeCurrentValue(Player::GaugeType::Stamina);
+	m_max = pPlayer->GetGaugeMaxValue(Player::GaugeType::Stamina);
+	m_rate = pPlayer->GetGaugeRate(Player::GaugeType::Stamina);
 
 	m_pos = pPlayer->GetTransform().position + kOffSet;
 
