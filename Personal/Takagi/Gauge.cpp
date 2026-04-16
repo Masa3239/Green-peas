@@ -19,18 +19,24 @@ void Gauge::End()
 {
 }
 
+void Gauge::Update()
+{
+}
+
 void Gauge::Increase(float value)
 {
 	// 現在の値に加算
 	m_currentValue += value;
-	// 最大値～最小値の範囲内で固定
-	m_currentValue = MyMath::Clamp(m_currentValue, m_minValue, m_maxValue);
 }
 
 void Gauge::Decrease(float value)
 {
 	// 現在の値に減算
 	m_currentValue -= value;
+}
+
+void Gauge::Clamp()
+{
 	// 最大値～最小値の範囲内で固定
 	m_currentValue = MyMath::Clamp(m_currentValue, m_minValue, m_maxValue);
 }
@@ -78,6 +84,10 @@ bool Gauge::CheckValue(float value, int check)
 	}
 	// checkValueが指定した値以上ならtrue
 	return checkValue >=value;
+}
+
+void Gauge::Debug()
+{
 }
 
 void Gauge::SetValue(float value, int set)

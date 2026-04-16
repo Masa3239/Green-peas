@@ -4,6 +4,7 @@
 #include"../../Personal/Asai/Camera.h"
 #include"../../Personal/Osawa/Scene/SceneSelection.h"
 #include"../../Chara/Collision.h"
+#include"../../Utility/Time.h"
 namespace {
 	Vector3 kBoxPos = { 200,200 ,0 };
 	Vector3 kBoxSize = { 50,70 ,0 };
@@ -37,6 +38,7 @@ void SceneTestTakagi::End()
 
 SceneBase* SceneTestTakagi::Update()
 {
+	Time::GetInstance().SetTimeScale(1);
 	m_pPlayer->Update();
 	//m_pPlayer->Update();
 	if (m_pPlayer->IsDead()) {
