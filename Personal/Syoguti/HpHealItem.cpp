@@ -2,6 +2,7 @@
 #include "../../Chara/Collision.h"
 #include "../../Utility/Transform.h"
 #include "DxLib.h"
+#include "../Takagi/Player.h"
 
 namespace {
 	
@@ -10,6 +11,8 @@ namespace {
 
 	// 円の当たり判定の半径
 	constexpr float kCircleRadius = 50.0f;
+
+	constexpr int kHealValue = 50;
 }
 
 HpHealItem::HpHealItem(ObjectManager* objManager):
@@ -28,7 +31,6 @@ HpHealItem::HpHealItem(ObjectManager* objManager,Vector3 position) :
 	m_transform.position = position;
 
 	m_collision = Collision::Circle(m_transform.position, kCircleRadius);
-	m_itemType = ItemType::Heal;
 }
 
 void HpHealItem::Init()
@@ -58,6 +60,6 @@ void HpHealItem::Draw()
 
 void HpHealItem::ItemAbility(Player* player)
 {
-
+	player->Heal(kHealValue);
 	printfDx("HPが回復しました\n");
 }

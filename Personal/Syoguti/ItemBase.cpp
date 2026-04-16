@@ -4,9 +4,7 @@ ItemBase::ItemBase(ObjectManager* objManager) :
 	GameObject(objManager),
 	m_transform(),
 	m_graphHandle(-1),
-	m_collision(),
-	m_itemType(ItemType::Max),
-	m_pPlayer(nullptr)
+	m_collision()
 {
 }
 

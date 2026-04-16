@@ -14,7 +14,8 @@ namespace {
 ItemManager::ItemManager() :
 	m_hpHealItemGraphHandle(-1),
 	m_attackUpItemGraphHandle(-1),
-	m_pObjectMgr(nullptr)
+	m_pObjectMgr(nullptr),
+	m_pPlayer(nullptr)
 {
 }
 
@@ -111,7 +112,7 @@ void ItemManager::Remove(int index)
 	m_items.erase(m_items.begin() + index);
 }
 
-ItemBase::ItemType ItemManager::CheckHitCollision(const Collision::Shape& other)
+void ItemManager::CheckHitCollision(const Collision::Shape& other)
 {
 
 	// 空きがあれば前詰めする前提の処理
@@ -120,13 +121,9 @@ ItemBase::ItemType ItemManager::CheckHitCollision(const Collision::Shape& other)
 		// アイテムのi番目と引数が当たっているか調べる
 		if (!m_items[i]->GetCollision().CheckCollision(other)) continue;
 
-		ItemBase::ItemType itemType;
-
-		itemType = m_items[i]->GetType();
-
-		m_items[i]->ItemAbility();
+		m_items[i]->ItemAbility(m_pPlayer);
 
 		Remove(i);
-		return itemType;
+		return;
 	}
 }

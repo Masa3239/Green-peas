@@ -2,6 +2,7 @@
 #include "../../Chara/Collision.h"
 #include "../../Utility/Transform.h"
 #include "DxLib.h"
+#include "../Takagi/Player.h"
 
 namespace {
 
@@ -11,6 +12,7 @@ namespace {
 	// 円の当たり判定の半径
 	constexpr float kCircleRadius = 50.0f;
 
+	constexpr float kPoewrUpValue = 0.2f;
 }
 
 AttackUpItem::AttackUpItem(ObjectManager* objManager):
@@ -30,7 +32,6 @@ AttackUpItem::AttackUpItem(ObjectManager* objManager, Vector3 position):
 
 	m_collision = Collision::Circle(m_transform.position, kCircleRadius);
 
-	m_itemType = ItemType::Attack;
 }
 
 void AttackUpItem::Init()
@@ -59,5 +60,6 @@ void AttackUpItem::Draw()
 
 void AttackUpItem::ItemAbility(Player* player)
 {
+	player->Damage(kPoewrUpValue);
 	printfDx("攻撃力が上がりました\n");
 }
