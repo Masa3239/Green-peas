@@ -37,9 +37,9 @@ void Arrow::Update()
 	m_circle.SetPosition(m_transform.position);
 
 	//移動距離を取得
-	float distance = (m_spawnPos - m_transform.position).GetLength();
+	float distance = (m_spawnPos - m_transform.position).GetSqLength();
 	//移動距離の最大値じゃないならスルー
-	if (distance <= kMaxMoveDistance)return;
+	if (distance <= kMaxMoveDistance* kMaxMoveDistance)return;
 
 	//非アクティブにする
 	m_isActive = false;
