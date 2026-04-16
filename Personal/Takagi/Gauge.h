@@ -33,21 +33,26 @@ public:
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
-	void Init();
+	virtual void Init();
 	/// <summary>
 	/// 終了処理
 	/// </summary>
-	void End();
+	virtual void End();
+	/// <summary>
+	/// 更新処理
+	/// </summary>
+	virtual void Update();
 	/// <summary>
 	/// 上昇
 	/// </summary>
 	/// <param name="value">上昇量</param>
-	void Increase(float value);
+	virtual void Increase(float value);
 	/// <summary>
 	/// 減少
 	/// </summary>
 	/// <param name="value">減少量</param>
-	void Decrease(float value);
+	virtual void Decrease(float value);
+	virtual void Clamp();
 	/// <summary>
 	/// ゲージをリセットする関数
 	/// </summary>
@@ -56,7 +61,7 @@ public:
 	/// Max -> 最大値でリセット
 	/// Min -> 最小値でリセット
 	/// </param>
-	void Reset(int set = Max);
+	virtual void Reset(int set = Max);
 	/// <summary>
 	/// 指定した値以上かどうかを調べる
 	/// </summary>
@@ -69,6 +74,8 @@ public:
 	/// </param>
 	/// <returns></returns>
 	bool CheckValue(float value, int check = Current);
+
+	virtual void Debug();
 public:// ゲッター・セッター =======================
 	/// <summary>
 	/// 最大・最小・現在の値を設定する関数
@@ -97,7 +104,7 @@ public:// ゲッター・セッター =======================
 	/// 割合を取得する関数
 	/// </summary>
 	/// <returns>現在の値を最大の値で割った割合</returns>
-	float GetRate() { return m_currentValue / m_maxValue; }
+	virtual float GetRate() { return m_currentValue / m_maxValue; }
 
 protected:
 	/// <summary>

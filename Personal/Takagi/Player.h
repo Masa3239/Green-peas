@@ -3,6 +3,7 @@
 #include"../Utility/Vector3.h"
 #include"../../Object/GameObject.h"
 #include"../../System/InputPad.h"
+#include"PlayerStatus.h"
 #include<memory>
 
 
@@ -31,10 +32,11 @@ class Gauge;
 class Camera;
 class Weapon;
 class Sword;
+class PlayerStatus;
 
 class Player:public GameObject {
 public:
-	enum {
+	enum class GaugeType{
 		Hp,
 		Stamina,
 		Anger,
@@ -109,9 +111,10 @@ public:
 	/// Hp      -> HPゲージ
 	/// Stamina -> スタミナゲージ
 	/// Anger   -> 怒りゲージ
+	/// Exp     -> 経験値ゲージ
 	/// </param>
 	/// <returns></returns>
-	float GetGaugeCurrentValue(int gauge);
+	float GetGaugeCurrentValue(GaugeType gauge);
 	/// <summary>
 	/// 選択したゲージの最大値を取得する関数
 	/// </summary>
@@ -120,9 +123,10 @@ public:
 	/// Hp      -> HPゲージ
 	/// Stamina -> スタミナゲージ
 	/// Anger   -> 怒りゲージ
+	/// Exp     -> 経験値ゲージ
 	/// </param>
 	/// <returns></returns>
-	float GetGaugeMaxValue(int gauge);
+	float GetGaugeMaxValue(GaugeType gauge);
 	/// <summary>
 	/// 選択したゲージの割合を取得する関数
 	/// </summary>
@@ -131,9 +135,10 @@ public:
 	/// Hp      -> HPゲージ
 	/// Stamina -> スタミナゲージ
 	/// Anger   -> 怒りゲージ
+	/// Exp     -> 経験値ゲージ
 	/// </param>
 	/// <returns></returns>
-	float GetGaugeRate(int gauge);
+	float GetGaugeRate(GaugeType gauge);
 	Collision::Circle GetCircle() { return m_circle; }
 
 private:
@@ -147,6 +152,7 @@ private:
 	/// </summary>
 	/// <returns>ダッシュ中ならtrue</returns>
 	bool CheckDashNow();
+	void LevelUp();
 private:
 
 	/// <summary>
@@ -178,7 +184,7 @@ private:
 	/// <summary>
 	/// ゲージの配列(HP・スタミナ・怒り)
 	/// </summary>
-	std::unique_ptr<Gauge> m_gauges[Max];
+	std::unique_ptr<Gauge> m_gauges[static_cast<int>(GaugeType::Max)];
 	Weapon* m_weapons;
 
 	Camera* m_camera;
@@ -188,5 +194,7 @@ private:
 	/// </summary>
 	Collision::AABB m_box;
 	Collision::Circle m_circle;
+
+	PlayerStatus m_status;
 
 };
