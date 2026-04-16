@@ -3,6 +3,7 @@
 #include<vector>
 #include<memory>
 #include "ItemBase.h"
+#include "../../System/ObjectManager.h"
 
 class ItemManager
 {
@@ -53,10 +54,16 @@ public:
 	void Remove(int index);
 
 	/// <summary>
-	/// 引数のサークルとアイテムが当たっているか調べる
+	/// 引数の形状とアイテムが当たっているか調べる
 	/// </summary>
 	/// <param name="other"></param>
-	void CheckHitCircle(const Collision::Circle other);
+	ItemBase::ItemType CheckHitCollision(const Collision::Shape& other);
+
+	/// <summary>
+	/// オブジェクトマネージャーのポインタをセットするセッター関数
+	/// </summary>
+	/// <param name="objectManager"></param>
+	void SetObjectManager(ObjectManager* objectManager) { m_pObjectMgr = objectManager; }
 
 private:
 
@@ -74,5 +81,10 @@ private:
 	/// 攻撃力アップアイテムの画像のグラフハンドル
 	/// </summary>
 	int m_attackUpItemGraphHandle;
+
+	/// <summary>
+	/// オブジェクトマネージャーのポインタ
+	/// </summary>
+	ObjectManager* m_pObjectMgr;
 };
 

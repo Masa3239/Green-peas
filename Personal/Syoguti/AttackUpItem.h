@@ -10,13 +10,13 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	AttackUpItem();
+	AttackUpItem(ObjectManager* objManager);
 
-	/// <summary>
+	/// <summary>result
 	/// 引数ありのコンストラクタ
 	/// </summary>
 	/// <param name="position"></param>
-	AttackUpItem(Vector3 position);
+	AttackUpItem(ObjectManager* objManager, Vector3 position);
 
 	/// <summary>
 	/// デストラクタ

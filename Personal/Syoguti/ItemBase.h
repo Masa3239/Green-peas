@@ -1,11 +1,12 @@
 #pragma once
 #include "../../Chara/Collision.h"
 #include "../../Utility/Transform.h"
+#include"../../Object/GameObject.h"
 
 /// <summary>
 /// アイテムの基本クラス
 /// </summary>
-class ItemBase
+class ItemBase : public GameObject
 {
 
 public:
@@ -16,7 +17,8 @@ public:
 	enum class ItemType {
 
 		Heal,
-		Attack
+		Attack,
+		Max
 	};
 
 public:
@@ -24,7 +26,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	ItemBase();
+	ItemBase(ObjectManager* objManager);
 
 	/// <summary>
 	/// デストラクタ
@@ -68,6 +70,12 @@ public:
 	/// <returns></returns>
 	virtual const Collision::Circle GetCollision() { return m_collision; }
 
+	/// <summary>
+	/// アイテムの種類を取得するゲッター関数
+	/// </summary>
+	/// <returns></returns>
+	ItemBase::ItemType GetType() { return m_itemType; }
+
 protected:
 
 	/// <summary>
@@ -84,6 +92,11 @@ protected:
 	/// 円の当たり判定
 	/// </summary>
 	Collision::Circle m_collision;
+
+	/// <summary>
+	/// アイテムの種類
+	/// </summary>
+	ItemType m_itemType;
 
 };
 

@@ -10,13 +10,13 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	HpHealItem();
+	HpHealItem(ObjectManager* objManager);
 
 	/// <summary>
 	/// 引数ありのコンストラクタ
 	/// </summary>
 	/// <param name="position"></param>
-	HpHealItem(Vector3 position);
+	HpHealItem(ObjectManager* objManager, Vector3 position);
 
 	/// <summary>
 	/// デストラクタ

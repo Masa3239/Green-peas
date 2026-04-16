@@ -4,7 +4,7 @@
 #include<memory>
 class Player;
 class Camera;
-
+class Map;
 class SceneTestTakagi : public SceneBase
 {
 public:
@@ -42,6 +42,6 @@ private:
 	std::unique_ptr<Camera> m_pCamera;
 
 
-
+	Map* m_pMap;
 
 };

@@ -66,20 +66,20 @@ Player::Player(ObjectManager* objManager) :
 	//}
 	m_weapons = new Sword(objManager);
 	m_weapons->Init();
-	for (int i = 0;i < static_cast<int>(Pad::Direction::Max);i++) {
+	for (int i = 0;i < static_cast<int>(MyMath::FourDirection::Max);i++) {
 		for (int& handle : m_graphHandle[i])
 			handle = -1;
 	}
 	int graph[12];
 	LoadDivGraph(kGraphPath, 12, 3, 4, 32, 32, graph);
 	int num = 0;
-	for (int i = 0;i < static_cast<int>(Pad::Direction::Max);i++) {
+	for (int i = 0;i < static_cast<int>(MyMath::FourDirection::Max);i++) {
 		for (int j = 0;j < 3;j++) {
 			m_graphHandle[i][j] = graph[num];
 			num++;
 		}
 	}
-	m_direction = Pad::Direction::Front;
+	m_direction = MyMath::Direction(GetTransform().rotation.y);
 }
 
 Player::~Player()
@@ -98,7 +98,7 @@ void Player::End()
 	delete m_camera;
 	m_weapons->End();
 	// アニメーションの破棄
-	for (int i = 0;i < static_cast<int>(Pad::Direction::Max);i++) {
+	for (int i = 0;i < static_cast<int>(MyMath::FourDirection::Max);i++) {
 		for (int& handle : m_graphHandle[i])
 			DeleteGraph(handle);
 	}

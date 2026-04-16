@@ -13,7 +13,8 @@ namespace {
 
 ItemManager::ItemManager() :
 	m_hpHealItemGraphHandle(-1),
-	m_attackUpItemGraphHandle(-1)
+	m_attackUpItemGraphHandle(-1),
+	m_pObjectMgr(nullptr)
 {
 }
 
@@ -38,6 +39,9 @@ void ItemManager::End()
 
 void ItemManager::Update()
 {
+	for (auto& e : m_items) {
+		e->Update();
+	}
 }
 
 void ItemManager::Draw()
@@ -62,7 +66,7 @@ void ItemManager::Create(ItemBase::ItemType type, Vector3 position)
 		// Healなら
 	case ItemBase::ItemType::Heal:
 		// HpHealItemのコンストラクタを呼んで座標を指定
-		items = std::make_unique<HpHealItem>(position);
+		items = std::make_unique<HpHealItem>( m_pObjectMgr, position);
 		// グラフハンドルを回復アイテムの画像に設定
 		graphHandle = m_hpHealItemGraphHandle;
 		break;
@@ -70,7 +74,7 @@ void ItemManager::Create(ItemBase::ItemType type, Vector3 position)
 		// Attackなら
 	case ItemBase::ItemType::Attack:
 		// AttackUpItemのコンストラクタを呼んで座標を指定
-		items = std::make_unique<AttackUpItem>(position);
+		items = std::make_unique<AttackUpItem>(m_pObjectMgr, position);
 		// グラフハンドルを攻撃力アップアイテムに設定
 		graphHandle = m_attackUpItemGraphHandle;
 		break;
@@ -107,7 +111,7 @@ void ItemManager::Remove(int index)
 	m_items.erase(m_items.begin() + index);
 }
 
-void ItemManager::CheckHitCircle(const Collision::Circle other)
+ItemBase::ItemType ItemManager::CheckHitCollision(const Collision::Shape& other)
 {
 
 	// 空きがあれば前詰めする前提の処理
@@ -115,8 +119,13 @@ void ItemManager::CheckHitCircle(const Collision::Circle other)
 
 		if (!m_items[i]->GetCollision().CheckCollision(other)) continue;
 
+		ItemBase::ItemType itemType;
+
+		itemType = m_items[i]->GetType();
+
 		m_items[i]->ItemAbility();
 
 		Remove(i);
+		return itemType;
 	}
 }

@@ -5,6 +5,7 @@
 #include "EnemyBoss.h"
 #include "../../Utility/Input.h"
 #include "../../Utility/Transform.h"
+#include "../../System/ObjectManager.h"
 
 namespace {
 
@@ -27,23 +28,28 @@ SceneTestSyoguti::~SceneTestSyoguti()
 
 void SceneTestSyoguti::Init()
 {
-	
 
 	 m_pItemMgr = std::make_unique<ItemManager>();
+
+	 m_pItemMgr->SetObjectManager(GetObjectManager());
+
 	 m_pItemMgr->Init();
-	 m_pEnemyBoss = std::make_unique<EnemyBoss>(kTestBossPos);
+
+	 m_pEnemyBoss = std::make_unique<EnemyBoss>( GetObjectManager(), kTestBossPos);
 	 m_pEnemyBoss->Init();
 
 }
 
 void SceneTestSyoguti::End()
 {
+	
 	m_pItemMgr->End();
 	m_pEnemyBoss->End();
 }
 
 SceneBase* SceneTestSyoguti::Update()
 {
+	m_pItemMgr->Update();
 	m_pEnemyBoss->Update();
 	if (Input::IsPressed(PAD_INPUT_10)) {
 		 m_pItemMgr->Create(ItemBase::ItemType::Heal, kTestHealPos);
@@ -54,6 +60,7 @@ SceneBase* SceneTestSyoguti::Update()
 
 void SceneTestSyoguti::Draw()
 {
+	
 	m_pItemMgr->Draw();
 	m_pEnemyBoss->Draw();
 	printfDx("SceneTestSyoguti\n");

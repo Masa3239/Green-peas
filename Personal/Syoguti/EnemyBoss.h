@@ -1,8 +1,9 @@
 #pragma once
 #include "../../Chara/Collision.h"
 #include "../../Utility/Transform.h"
+#include "../../Object/GameObject.h"
 
-class EnemyBoss
+class EnemyBoss : public GameObject
 {
 
 public:
@@ -17,12 +18,12 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	EnemyBoss();
+	EnemyBoss(ObjectManager* objManager);
 
 	/// <summary>
 	/// 引数ありのコンストラクタ
 	/// </summary>
-	EnemyBoss(Vector3 position);
+	EnemyBoss(ObjectManager* objManager, Vector3 position);
 
 	/// <summary>
 	/// デストラクタ
@@ -32,22 +33,35 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Init();
+	void Init() override;
 
 	/// <summary>
 	/// 終了
 	/// </summary>
-	void End();
+	void End() override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update() override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw() override;
+
+	/// <summary>
+	/// ボスの最大HPを取得するゲッター関数
+	/// </summary>
+	/// <returns></returns>
+	int GetBossMaxHp() { return m_maxHp; }
+
+	/// <summary>
+	/// ボスの現在のHPを取得するゲッター関数
+	/// </summary>
+	/// <returns></returns>
+	int GetBossCurrentHp() { return m_currentHp; }
+
 
 private:
 
@@ -72,9 +86,14 @@ private:
 	bool m_sealFlag;
 
 	/// <summary>
-	/// ボスの体力
+	/// ボスの最大体力
 	/// </summary>
-	int m_bossHp;
+	int m_maxHp;
+
+	/// <summary>
+	/// ボスの現在の体力
+	/// </summary>
+	int m_currentHp;
 
 	/// <summary>
 	/// ボスの攻撃力

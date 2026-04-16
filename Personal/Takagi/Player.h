@@ -36,7 +36,7 @@ class PlayerStatus;
 
 class Player:public GameObject {
 public:
-	enum class GaugeType{
+	enum class GaugeType {
 		Hp,
 		Stamina,
 		Anger,
@@ -163,7 +163,7 @@ private:
 	/// <summary>
 	/// プレイヤーのグラフィックハンドル
 	/// </summary>
-	int m_graphHandle[static_cast<int>(Pad::Direction::Max)][kPlayerFrame];
+	int m_graphHandle[static_cast<int>(MyMath::FourDirection::Max)][kPlayerFrame];
 
 	// プレイヤーが向いている方向(左右)
 	int m_directionX;
@@ -178,7 +178,7 @@ private:
 	// プレイヤーの移動量
 	Vector3 m_moveVector;
 
-	Pad::Direction m_direction;
+	MyMath::FourDirection m_direction;
 	float frame;
 
 	/// <summary>
