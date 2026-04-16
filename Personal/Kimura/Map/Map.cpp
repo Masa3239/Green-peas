@@ -9,7 +9,11 @@
 
 namespace {
 
-	
+	//マップのタイルの画像
+	const char* const kMapChip = "Image\\MapChip.png";
+	// CSVファイルパス（worldID / stageIDで変化）
+	const char* const kMapCsv = "Mapdata\\Map%d_%d.csv";
+
 }
 
 Map::Map():
@@ -19,9 +23,10 @@ m_mapBlockNumY(0),
 m_worldid(0),
 m_stageid(0)
 {
+	// グラフィックハンドル初期化
 	for (int i = 0; i < kMapTypeNum; i++)
 	{
-		m_graphHandle[i] = -1;
+		m_graphHandle[i] = 0;
 	}
 }
 
@@ -34,20 +39,14 @@ void Map::Init()
 	//マップチップの拡大率の初期化
 	m_chipScaleRate = (float)kMapBlockSize / (float)kMapChipSize;
 
-	//グラフィックハンドルの初期化
-	for (int i = 0; i < kMapTypeNum; i++) {
-		m_graphHandle[i] = 0;
-
-	}
-
 	//マップチップの読み込み
-	LoadDivGraph("Image\\MapChip.png",
+	LoadDivGraph(kMapChip,
 		55, 11, 5,
 		kMapChipSize, kMapChipSize, m_graphHandle);
 	
 	//IDの設定
 	m_worldid = 1;
-	m_stageid = 2;
+	m_stageid = 1;
 
 	////CSVデータを読み込む
 	LoadCSVToMapData(m_worldid, m_stageid);
@@ -55,6 +54,7 @@ void Map::Init()
 
 void Map::End()
 {
+	// マップデータ破棄
 	m_mapData.clear();
 }
 
@@ -86,7 +86,7 @@ void Map::Draw()
 
 void Map::Finalize()
 {
-	//グラフィックハンドルの破棄
+	//グラフィックハンドル解放
 	for (int i = 0; i < kMapTypeNum; i++) {
 
 		DeleteGraph(m_graphHandle[i]);
@@ -117,11 +117,12 @@ void Map::DebugShow()
 bool Map::LoadCSVToMapData(int worldNum, int stageNum)
 {
 	char fileNameCSV[256];
-	sprintf_s(fileNameCSV, 256, "Mapdata\\Map%d_%d.csv", worldNum, stageNum);
-
+	// CSVファイル名生成（ワールド・ステージ指定）
+	sprintf_s(fileNameCSV, 256, kMapCsv, worldNum, stageNum);
+	// マップサイズ取得（失敗したら読み込み終了）
 	if (!CheckMapSize(fileNameCSV)) return false;
 
-	// vectorでサイズ確保
+	//2次元配列サイズ確保
 	m_mapData.resize(m_mapBlockNumY);
 	for (int i = 0; i < m_mapBlockNumY; i++) {
 		m_mapData[i].resize(m_mapBlockNumX);

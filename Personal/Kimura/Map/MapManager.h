@@ -12,6 +12,7 @@
     // 列挙型
     enum MapChip
     {
-        Space = 9,
+        Space = 0,
+        IceTile=10,
         Wall  = 2,
     };
