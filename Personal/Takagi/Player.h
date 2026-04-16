@@ -2,6 +2,7 @@
 #include"../Utility/Transform.h"
 #include"../Utility/Vector3.h"
 #include"../../Object/GameObject.h"
+#include"../../System/InputPad.h"
 #include<memory>
 
 
@@ -18,10 +19,12 @@ namespace {
 		Dash,		// ダッシュ(回避)
 		Max
 	};
-
-
+	
 	// プレイヤーのアニメーションの枚数
-	constexpr int playerFrame = 8;
+	constexpr int playerFrame = 4;
+	// プレイヤーのアニメーションで何枚目のフレームを使うか
+	constexpr int kFlame[playerFrame] = { 0,1,2,1 };
+
 }
 
 class Gauge;
@@ -35,6 +38,7 @@ public:
 		Hp,
 		Stamina,
 		Anger,
+		Exp,
 		Max
 	};
 	/// <summary>
@@ -150,9 +154,13 @@ private:
 	/// </summary>
 	//Transform m_transform;
 
+	/// <summary>
+	/// プレイヤーのグラフィックハンドル
+	/// </summary>
+	int m_graphHandle[static_cast<int>(Pad::Direction::Max)][playerFrame];
 
 	// プレイヤーが向いている方向(左右)
-	int m_direction;
+	int m_directionX;
 
 	// 移動速度
 	float m_speed;
@@ -163,6 +171,8 @@ private:
 
 	// プレイヤーの移動量
 	Vector3 m_moveVector;
+
+	Pad::Direction m_direction;
 
 	/// <summary>
 	/// ゲージの配列(HP・スタミナ・怒り)
