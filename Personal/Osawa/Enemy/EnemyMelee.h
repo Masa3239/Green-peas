@@ -28,4 +28,8 @@ public:
 	/// •`‰æˆ—
 	/// </summary>
 	void Draw() override;
+
+protected:
+
+	void Attack() override;
 };

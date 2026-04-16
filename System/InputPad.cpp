@@ -223,6 +223,18 @@ namespace Pad {
 		return analogAmount[Stick][0];
 	}
 
+	Direction AnalogDirection(const Pad::Joystick stick, const Pad::Player padNum)
+	{
+		// “ü—Í‚³‚ê‚Ä‚¢‚È‚¢”»’è‚È‚ç‚Ç‚Ì•ûŒü‚à•Ô‚³‚È‚¢
+		if (!PadAnalogAmount(stick, padNum))return Direction::Max;
+		float angle = AnalogAngle(stick, padNum);
+		if (angle < 135 && angle>=45)return Direction::Right;
+		else if (angle <  45&& angle>=-45)return Direction::Back;
+		else if (angle < -45 && angle>=-135)return Direction::Left;
+		return Direction::Front;
+
+	}
+
 	void Debug() {
 		// ‰æ–Ê‚É XINPUT_STATE ‚Ì’†g‚ğ•`‰æ
 		int Color = GetColor(255, 255, 255);
