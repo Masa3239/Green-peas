@@ -74,7 +74,7 @@ Player::Player(ObjectManager* objManager) :
 	for (int i = 0;i < static_cast<int>(Pad::Direction::Max);i++) {
 		for (int j = 0;j < 3;j++) {
 			m_graphHandle[i][j] = graph[num];
-		num++;
+			num++;
 		}
 	}
 	m_direction = Pad::Direction::Front;
@@ -96,6 +96,11 @@ void Player::End()
 	m_camera = nullptr;
 	delete m_camera;
 	m_weapons->End();
+	// アニメーションの破棄
+	for (int i = 0;i < static_cast<int>(Pad::Direction::Max);i++) {
+		for (int& handle : m_graphHandle[i])
+			DeleteGraph(handle);
+	}
 }
 
 void Player::Update()
@@ -116,6 +121,8 @@ void Player::Update()
 	}
 
 	printfDx("m_direction : %d\n", static_cast<int>(m_direction));
+	frame += m_deltaTime * 2;
+	if (frame > kPlayerFrame)frame = 0;
 }
 
 void Player::Move()
@@ -201,7 +208,7 @@ void Player::Draw()
 	// プレイヤー座標に円を描画
 	DrawCircle(GetTransform().position.x, GetTransform().position.y, 30, GetColor(100, 100, 100));
 	DrawCircle(GetTransform().position.x, GetTransform().position.y, 10, GetColor(255, 0, 0));
-	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kPlayerScale, 0, m_graphHandle[static_cast<int>(m_direction)][0], TRUE);
+	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kPlayerScale, 0, m_graphHandle[static_cast<int>(m_direction)][kFrame[static_cast<int>(frame)]], TRUE);
 	// 現在向いている方向のデバッグ表示
 	Vector3 angle = { 0,0,0 };
 	angle.x = sinf(GetTransform().rotation.y);

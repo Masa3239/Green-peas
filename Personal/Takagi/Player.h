@@ -13,17 +13,17 @@ namespace Collision{
 }
 
 namespace {
-	enum class Status {
-		Stop,		// 停止状態
-		Walk,		// 歩行状態
-		Dash,		// ダッシュ(回避)
-		Max
-	};
+	//enum class Status {
+	//	Stop,		// 停止状態
+	//	Walk,		// 歩行状態
+	//	Dash,		// ダッシュ(回避)
+	//	Max
+	//};
 	
 	// プレイヤーのアニメーションの枚数
-	constexpr int playerFrame = 4;
+	constexpr int kPlayerFrame = 4;
 	// プレイヤーのアニメーションで何枚目のフレームを使うか
-	constexpr int kFlame[playerFrame] = { 0,1,2,1 };
+	constexpr int kFrame[kPlayerFrame] = { 0,1,2,1 };
 
 }
 
@@ -157,7 +157,7 @@ private:
 	/// <summary>
 	/// プレイヤーのグラフィックハンドル
 	/// </summary>
-	int m_graphHandle[static_cast<int>(Pad::Direction::Max)][playerFrame];
+	int m_graphHandle[static_cast<int>(Pad::Direction::Max)][kPlayerFrame];
 
 	// プレイヤーが向いている方向(左右)
 	int m_directionX;
@@ -173,6 +173,7 @@ private:
 	Vector3 m_moveVector;
 
 	Pad::Direction m_direction;
+	float frame;
 
 	/// <summary>
 	/// ゲージの配列(HP・スタミナ・怒り)
