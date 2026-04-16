@@ -54,11 +54,5 @@ void EnemyMelee::Draw()
 
 void EnemyMelee::Attack()
 {
-	auto player = GetPlayer();
-
-	if (!player) return;
-
-	if (!GetCollider().CheckCollision(GetPlayer()->GetCircle())) return;
-	
-	player->Damage(1);
+	GetPlayer()->Damage(1);
 }
