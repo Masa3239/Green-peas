@@ -12,7 +12,7 @@ public:
 	/// </summary>
 	AttackUpItem(ObjectManager* objManager);
 
-	/// <summary>
+	/// <summary>result
 	/// 引数ありのコンストラクタ
 	/// </summary>
 	/// <param name="position"></param>

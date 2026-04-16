@@ -111,7 +111,7 @@ void ItemManager::Remove(int index)
 	m_items.erase(m_items.begin() + index);
 }
 
-void ItemManager::CheckHitCircle(const Collision::Circle other)
+void ItemManager::CheckHitCollision(const Collision::Shape& other)
 {
 
 	// 空きがあれば前詰めする前提の処理

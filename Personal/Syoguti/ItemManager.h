@@ -54,10 +54,10 @@ public:
 	void Remove(int index);
 
 	/// <summary>
-	/// 引数のサークルとアイテムが当たっているか調べる
+	/// 引数の形状とアイテムが当たっているか調べる
 	/// </summary>
 	/// <param name="other"></param>
-	void CheckHitCircle(const Collision::Circle other);
+	void CheckHitCollision(const Collision::Shape& other);
 
 	/// <summary>
 	/// オブジェクトマネージャーのポインタをセットするセッター関数
