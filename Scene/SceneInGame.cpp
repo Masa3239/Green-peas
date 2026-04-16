@@ -50,6 +50,7 @@ void SceneInGame::Init()
 	m_pUIMgr->Init();
 
 	m_pItemMgr->Init();
+	m_pItemMgr->SetObjectManager(GetObjectManager());
 
 	m_pMap->Init();
 

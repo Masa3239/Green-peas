@@ -2,6 +2,7 @@
 #include "../Chara/Collision.h"
 #include "../Utility/Transform.h"
 #include "../Utility/Time.h"
+#include "../Personal/Takagi/Player.h"
 
 namespace
 {
@@ -35,9 +36,12 @@ void EnemyBase::Update()
 	}
 	else
 	{
-		Attack();
+		if (m_collider.CheckCollision(GetPlayer()->GetCircle()))
+		{
+			Attack();
 
-		m_attackCooltimeCounter = m_attackCooltime;
+			m_attackCooltimeCounter = m_attackCooltime;
+		}
 	}
 
 	m_collider.SetPosition(GetTransform().position);
