@@ -4,6 +4,7 @@
 #include<memory>
 
 #include"../Asai/PlayerAngerBar.h"
+#include"../Asai/PlayerExpBar.h"
 #include"../Asai/PlayerHpBar.h"
 #include"../Asai/PlayerStaminaBar.h"
 #include <cassert>
@@ -32,6 +33,12 @@ void PlayerUIManager::Init()
 	assert(staminaBar);
 	//配列に追加
 	m_pUIs.push_back(std::move(staminaBar));
+
+	//経験ゲージのUIを追加
+	std::unique_ptr<PlayerUIBase>expBar = std::make_unique<PlayerExpBar>();
+	assert(expBar);
+	//配列に追加
+	m_pUIs.push_back(std::move(expBar));
 
 	for (auto& UI : m_pUIs) {
 

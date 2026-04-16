@@ -10,11 +10,11 @@ namespace {
 
 	const char* const kGraphHandlePath = "";
 
-	constexpr Vector3 kOffSet{ 300.0f,0.0f,0.0f };
+	constexpr Vector3 kOffSet{ 50.0f,-10.0f,0.0f };
 
-	constexpr float kSizeX = 50;
+	constexpr float kSizeX = 12;
 
-	constexpr float kSizeY = 150;
+	constexpr float kSizeY = 50;
 
 }
 
@@ -41,6 +41,14 @@ void PlayerStaminaBar::Update()
 		m_isChanged = true;
 
 	}
+	else {
+		//変更されていない
+		m_isChanged = false;
+
+	}
+
+	//更新
+	m_prevValue = m_value;
 
 }
 
@@ -48,22 +56,22 @@ void PlayerStaminaBar::Draw()
 {
 
 	//描画しない設定なら描画しない
-	//if (m_isVisible || !m_isChanged)return;
+	if (m_isVisible || !m_isChanged)return;
 
 	//作成予定
 	//DrawRectGraph()
 
 	//仮
-	DrawBox(m_pos.x - kSizeX / 2, m_pos.y - kSizeY / 2, m_pos.x + kSizeX / 2, m_pos.y - kSizeY / 2, 0xffffff, true);
+	DrawBox(m_pos.x - kSizeX / 2, m_pos.y - kSizeY / 2, m_pos.x + kSizeX / 2, m_pos.y + kSizeY / 2, 0xffffff, true);
 
-	//float hpGaugeWidth = (kGaugeRight - 10) - (kGaugeLeft + 10);
+	float staminaGaugeHeight = (m_pos.y + kSizeY / 2) - (m_pos.y - kSizeY / 2);
 
-	//DrawBox(kGaugeRight - 10 - (hpGaugeWidth * m_rate),
-	//	kGaugeTop,
-	//	kGaugeRight - 10,
-	//	kGaugeBottom,
-	//	0x00ff00, TRUE
-	//);
+	DrawBox(
+		m_pos.x - kSizeX / 2,
+		m_pos.y + kSizeY / 2 - (staminaGaugeHeight * m_rate),
+		m_pos.x + kSizeX / 2,
+		m_pos.y + kSizeY / 2,
+		0xffff00, TRUE);
 
 }
 
@@ -71,12 +79,12 @@ void PlayerStaminaBar::DebugDraw()
 {
 
 	printfDx("UI playerStaminaValue %f\n", m_value);
-	printfDx("UI playerStaminaMax %f\n", m_max);
-	printfDx("UI playerStaminaRate %f\n", m_rate);
+	printfDx("UI playerStaminaprevValue %f\n", m_prevValue);
+	//printfDx("UI playerStaminaMax %f\n", m_max);
+	//printfDx("UI playerStaminaRate %f\n", m_rate);
 
-	printfDx("vectorX %f\n", m_pos.x);
-	printfDx("vectorY %f\n", m_pos.y);
-	printfDx("vectorZ %f\n", m_pos.z);
+	printfDx("%d\n", m_isVisible);
+	printfDx("%d\n", m_isChanged);
 
 }
 

@@ -6,12 +6,13 @@
 
 #include<DxLib.h>
 #include<math.h>
+#include"../../Utility/Time.h"
 
 namespace {
 	//当たり判定のサイズ
 	constexpr float kCollisionSize = 20.0f;
 	//スピード
-	constexpr float kSpeed = 6.0f;
+	constexpr float kSpeed = 300.0f;
 	//最大移動距離
 	constexpr float kMaxMoveDistance = 500.0f;
 
@@ -29,9 +30,13 @@ void Arrow::Init()
 
 void Arrow::Update()
 {
+
+	//デルタタイムを取得
+	float deltaTime = Time::GetInstance().GetDeltaTime();
+
 	//移動
-	m_transform.position.x += cosf(m_transform.rotation.y) * kSpeed;
-	m_transform.position.y += sinf(m_transform.rotation.y) * kSpeed;
+	m_transform.position.x += cosf(m_transform.rotation.y) * kSpeed * deltaTime;
+	m_transform.position.y += sinf(m_transform.rotation.y) * kSpeed * deltaTime;
 
 	//当たり判定の更新
 	m_circle.SetPosition(m_transform.position);
