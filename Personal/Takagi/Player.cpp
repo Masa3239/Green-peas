@@ -164,7 +164,7 @@ void Player::MoveAmount()
 	// 武器の更新処理
 	m_weapons->Update();
 	
-	if (Pad::IsPressed(Pad::Button::Y)) {
+	if (Pad::IsPressed(Pad::Button::X)) {
 		m_weapons->Attack();
 	}
 
@@ -226,7 +226,7 @@ void Player::Draw()
 
 void Player::Debug()
 {
-	if (Pad::IsPressed(Pad::Button::X)) {
+	if (Pad::IsPressed(Pad::Button::Y)) {
 		Damage(5);
 	}
 	printfDx("現在HP       : %f\n", m_gauges[Hp]->GetValue(Gauge::Current));
