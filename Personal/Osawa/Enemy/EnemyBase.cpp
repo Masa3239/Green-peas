@@ -11,7 +11,7 @@ namespace
 
 EnemyBase::EnemyBase(ObjectManager* objManager) :
 	GameObject(objManager),
-	m_hp(1),
+	m_hp(100),
 	m_collider(Collision::AABB{ Vector3(), kColliderSize }),
 	m_attackCooltimeCounter(0.0f),
 	m_attackCooltime(0.0f),

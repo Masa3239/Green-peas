@@ -1,8 +1,9 @@
 #include "SceneSelection.h"
 #include <DxLib.h>
-#include "../Personal/Osawa/Scene/SceneTestOsawa.h"
 #include "../Personal/Asai/SceneTestAsai.h"
 #include "../Personal/Kimura/SceneTestKimura.h"
+#include "../Personal/Osawa/Scene/SceneTestOsawa.h"
+#include "../Personal/Osawa/Scene/SceneTestOBB.h"
 #include "../Personal/Syoguti/SceneTestSyoguti.h"
 #include "../Personal/Takagi/SceneTestTakagi.h"
 #include "../Scene/SceneInGame.h"
@@ -49,6 +50,10 @@ SceneBase* SceneSelection::Update()
 	{
 		return new SceneInGame();
 	}
+	if (CheckHitKey(KEY_INPUT_G))
+	{
+		return new SceneTestOBB();
+	}
 
 	return this;
 }
@@ -61,4 +66,5 @@ void SceneSelection::Draw()
 	printfDx("4 - Syoguti Scene\n");
 	printfDx("5 - Takagi Scene\n");
 	printfDx("6 - InGame Scene (Main)\n");
+	printfDx("G - OBB Test\n");
 }

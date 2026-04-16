@@ -104,6 +104,11 @@ public:
 	Vector3& operator/=(float scale);
 
 	/// <summary>
+	/// 要素に添え字でアクセス
+	/// </summary>
+	float operator[](int index) const;
+
+	/// <summary>
 	/// ベクトルの比較 等しいかどうか
 	/// </summary>
 	/// <param name="vec"></param>
@@ -120,21 +125,12 @@ public:
 	/// <summary>
 	/// 内積を計算する
 	/// </summary>
-	constexpr float Dot(const Vector3& v)
-	{
-		return (x * v.x) + (y * v.y) + (z * v.z);
-	}
+	float Dot(const Vector3& v) const;
 
 	/// <summary>
 	/// 外積を計算する
 	/// </summary>
-	constexpr Vector3 Cross(const Vector3& v)
-	{
-		return Vector3(
-			y * v.z - z * v.y,
-			z * v.x - x * v.z,
-			x * v.y - y * v.x);
-	}
+	Vector3 Cross(const Vector3& v) const;
 
 	/// <summary>
 	/// ベクトルの長さを取得

@@ -75,6 +75,11 @@ Vector3& Vector3::operator/=(float scale)
 	return *this;
 }
 
+float Vector3::operator[](int index) const
+{
+	return *(&x + index);
+}
+
 bool Vector3::operator==(const Vector3& vec) const
 {
 	return x == vec.x && y == vec.y && z == vec.z;
@@ -83,6 +88,19 @@ bool Vector3::operator==(const Vector3& vec) const
 bool Vector3::operator!=(const Vector3& vec) const
 {
 	return x != vec.x || y != vec.y || z != vec.z;;
+}
+
+float Vector3::Dot(const Vector3& v) const
+{
+	return (x * v.x) + (y * v.y) + (z * v.z);
+}
+
+Vector3 Vector3::Cross(const Vector3& v) const
+{
+	return Vector3(
+		y * v.z - z * v.y,
+		z * v.x - x * v.z,
+		x * v.y - y * v.x);
 }
 
 float Vector3::GetLength() const

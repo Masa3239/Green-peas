@@ -40,6 +40,8 @@ void SceneInGame::Init()
 {
 	m_pPlayer->Init();
 	m_pPlayer->SetCamera(m_pCamera.get());
+	m_pPlayer->SetEnemyManager(m_pEnemyMgr.get());
+	m_pPlayer->SetItemManager(m_pItemMgr.get());
 
 	m_pCamera->Init();
 
