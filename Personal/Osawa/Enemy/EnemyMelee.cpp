@@ -1,15 +1,19 @@
 #include "EnemyMelee.h"
 #include "../Personal/Takagi/Player.h"
 #include "../Utility/Time.h"
+#include "../Chara/Collision.h"
 
 namespace
 {
 	constexpr float kMoveSpeed = 50.0f;
+
+	constexpr float kAttackCooltime = 1.0f;
 }
 
 EnemyMelee::EnemyMelee(ObjectManager* objManager) :
 	EnemyBase(objManager)
 {
+	SetAttackCooltime(kAttackCooltime);
 }
 
 EnemyMelee::~EnemyMelee()
@@ -36,8 +40,6 @@ void EnemyMelee::UpdateEnemy()
 		Vector3 vec = (targetPos - myPos).GetNormalize();
 
 		myPos += vec * kMoveSpeed * Time::GetInstance().GetDeltaTime();
-
-
 	}
 }
 
@@ -48,4 +50,15 @@ void EnemyMelee::Draw()
 	DrawBox(transform.position.x - 9, transform.position.y  -10, transform.position.x + 9, transform.position.y + 20, 0xff0000, 1);
 
 	GetCollider().DebugDraw();
+}
+
+void EnemyMelee::Attack()
+{
+	auto player = GetPlayer();
+
+	if (!player) return;
+
+	if (!GetCollider().CheckCollision(GetPlayer()->GetCircle())) return;
+	
+	player->Damage(1);
 }

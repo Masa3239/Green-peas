@@ -33,7 +33,6 @@ void SceneTestOsawa::Init()
 	m_enemyMgr->SetUIManager(m_uiMgr.get());
 
 	m_uiMgr->Init();
-	m_uiMgr->SetPlayer(m_player.get());
 
 	m_enemyMgr->AddEnemyTest();
 	m_enemyMgr->AddEnemyTest();
@@ -49,11 +48,13 @@ void SceneTestOsawa::End()
 
 SceneBase* SceneTestOsawa::Update()
 {
+	m_uiMgr->SetPlayer(m_player.get());
+
 	m_enemyMgr->Update();
 
 	m_player->Update();
 
-	m_enemyMgr->CheckHitEnemies(m_player->GetCircle(), 1);
+	//m_enemyMgr->CheckHitEnemies(m_player->GetCircle(), 1);
 
 	m_uiMgr->Update();
 
