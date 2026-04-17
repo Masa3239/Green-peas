@@ -17,6 +17,7 @@ Bow::Bow(ObjectManager* objManager) :
 	for (auto& arrows : m_pArrows) {
 		arrows = nullptr;
 		arrows = new Arrow(objManager);
+		arrows->Init();
 	}
 	m_graphHandle = LoadGraph(kHandlePath);
 }
