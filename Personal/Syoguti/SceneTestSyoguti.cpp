@@ -17,9 +17,11 @@ namespace {
 SceneTestSyoguti::SceneTestSyoguti() :
 	m_pItemMgr(nullptr),
 	m_pEnemyBoss(nullptr),
-	m_transform()
+	m_transform(),
+	m_buffRandom()
 {
 	m_transform.Reset();
+	m_buffRandom.Init();
 }
 
 SceneTestSyoguti::~SceneTestSyoguti()
@@ -52,8 +54,14 @@ SceneBase* SceneTestSyoguti::Update()
 	m_pItemMgr->Update();
 	m_pEnemyBoss->Update();
 	if (Input::IsPressed(PAD_INPUT_10)) {
+
+		
 		 m_pItemMgr->Create(ItemBase::ItemType::Heal, kTestHealPos);
 		 m_pItemMgr->Create(ItemBase::ItemType::Attack, kTestAttackPos);
+	}
+
+	if (Input::IsPressed(PAD_INPUT_1)) {
+		m_testDraw = m_buffRandom.GetRandomBuffs(3);
 	}
 	return this;
 }
@@ -61,6 +69,10 @@ SceneBase* SceneTestSyoguti::Update()
 void SceneTestSyoguti::Draw()
 {
 	
+	for (auto e : m_testDraw) {
+		printfDx("Buff: %d\n", (int)e);
+	}
+
 	m_pItemMgr->Draw();
 	m_pEnemyBoss->Draw();
 	printfDx("SceneTestSyoguti\n");
