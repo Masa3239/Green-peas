@@ -45,10 +45,7 @@ public:
 
 	/// <summary>
 	/// ワールドスクリーンを生成する
-	/// マップのサイズによってワールドスクリーンのサイズを変える
-	/// </summary>
-	/// <param name="pMap"></param>
-	void GenerateWorldScreen(Map* pMap);
+	void GenerateWorldScreen();
 
 	/// <summary>
 	/// ワールドスクリーンを取得する
