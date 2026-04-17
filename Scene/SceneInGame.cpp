@@ -9,6 +9,7 @@
 #include "../System/ObjectManager.h"
 
 #include "../Personal/Osawa/Scene/SceneSelection.h"
+#include "../Personal/Osawa/Scene/SceneTempResult.h"
 
 namespace {
 
@@ -89,7 +90,12 @@ SceneBase* SceneInGame::Update()
 	if (m_pPlayer->IsDead())
 	{
 		// 仮でシーン選択画面へ戻す
-		return new SceneSelection();
+		return new SceneTempResult("GAME OVER");
+	}
+
+	if (m_pEnemyMgr->GetDefeatedNum() >= 100)
+	{
+		return new SceneTempResult("GAME CLEAR");
 	}
 
 	return this;
@@ -117,4 +123,7 @@ void SceneInGame::PostDraw()
 
 	m_pUIMgr->ScreenDraw();
 	m_pUIMgr->DebugDraw();
+
+	DrawString(200, 200, "倒した数", 0xffffff);
+	DrawString(280, 200, std::to_string(m_pEnemyMgr->GetDefeatedNum()).c_str(), 0xffffff);
 }

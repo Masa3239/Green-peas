@@ -11,6 +11,9 @@
 
 namespace
 {
+	// ©“®¶¬‚³‚ê‚é“G‚ÌÅ‘å”
+	constexpr int kMaxEnemyNum = 100;
+
 	// “G¶¬‚ÌŠÔŠu
 	constexpr float kGenerateDuration = 0.5f;
 
@@ -22,7 +25,8 @@ EnemyManager::EnemyManager(ObjectManager* objManager) :
 	GameObject(objManager),
 	m_player(nullptr),
 	m_uiMgr(nullptr),
-	m_generateCounter(0.0f)
+	m_generateCounter(0.0f),
+	m_numDefeated(0)
 {
 }
 
@@ -52,7 +56,7 @@ void EnemyManager::Update()
 		m_enemies.back()->SetHP(0);
 	}
 
-	if (m_generateCounter <= 0)
+	if (m_generateCounter <= 0 && m_enemies.size() <= kMaxEnemyNum)
 	{
 		// “G‚ğ¶¬
 		GenerateEnemy(new EnemyMelee(GetObjectManager()));
@@ -141,6 +145,7 @@ void EnemyManager::CheckDead()
 		if (enemy->GetHP() <= 0)
 		{
 			iter = m_enemies.erase(iter);
+			m_numDefeated++;
 			continue;
 		}
 

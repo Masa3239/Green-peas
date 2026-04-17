@@ -182,6 +182,7 @@ namespace Collision
 	/// <summary>
 	/// 衝突判定のOBBの形状のクラス
 	/// 現在2次元専用
+	/// 参考：http://marupeke296.com/COL_3D_No13_OBBvsOBB.html
 	/// </summary>
 	class OBB : public Shape
 	{
