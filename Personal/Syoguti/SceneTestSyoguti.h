@@ -2,6 +2,7 @@
 
 #include "../Scene/SceneBase.h"
 #include "../../Utility/Transform.h"
+#include "BuffRandom.h"
 #include <memory>
 
 class ItemManager;
@@ -40,5 +41,6 @@ private:
 	std::unique_ptr<ItemManager>m_pItemMgr;
 	std::unique_ptr<EnemyBoss> m_pEnemyBoss;
 	Transform m_transform;
-	
+	BuffRandom m_buffRandom;
+	std::vector<Buff::BuffType> m_testDraw;
 };
