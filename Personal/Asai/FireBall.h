@@ -1,13 +1,13 @@
 #pragma once
 #include"../Asai/BulletBase.h"
 
-class Arrow :public BulletBase
+class FireBall :public BulletBase
 {
 
 public:
 
-	Arrow(ObjectManager* objManager);
-	~Arrow() = default;
+	FireBall(ObjectManager* objManager);
+	~FireBall() = default;
 
 	/// <summary>
 	/// 初期化処理
@@ -42,5 +42,32 @@ public:
 	/// </summary>
 	/// <param name="transform">生成したい位置・角度</param>
 	void Shot(Transform transform)override;
+
+private:
+
+	/// <summary>
+	/// StateがBallの時の更新処理
+	/// </summary>
+	void UpdateBall();
+
+	/// <summary>
+	/// StateがFieldの時の更新処理
+	/// </summary>
+	void UpdateField();
+
+private:
+
+	enum class State {
+
+		Ball=0,
+		Field,
+
+	};
+
+	State m_state;
+
+	float m_ballScale;
+
+	float m_fieldElapsedTime;
 
 };

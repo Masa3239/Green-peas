@@ -42,6 +42,4 @@ private:
 
 	int m_fontHandle;
 
-	//int
-
 };
