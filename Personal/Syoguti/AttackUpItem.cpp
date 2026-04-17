@@ -34,6 +34,12 @@ AttackUpItem::AttackUpItem(ObjectManager* objManager, Vector3 position):
 
 }
 
+AttackUpItem::~AttackUpItem()
+{
+	delete m_pPlayer;
+	m_pPlayer = nullptr;
+}
+
 void AttackUpItem::Init()
 {	
 }
@@ -60,6 +66,7 @@ void AttackUpItem::Draw()
 
 void AttackUpItem::ItemAbility(Player* player)
 {
-	player->Damage(kPoewrUpValue);
+	m_pPlayer = player;
+	m_pPlayer->Damage(kPoewrUpValue);
 	printfDx("攻撃力が上がりました\n");
 }

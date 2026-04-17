@@ -33,6 +33,12 @@ HpHealItem::HpHealItem(ObjectManager* objManager,Vector3 position) :
 	m_collision = Collision::Circle(m_transform.position, kCircleRadius);
 }
 
+HpHealItem::~HpHealItem()
+{
+	delete m_pPlayer;
+	m_pPlayer = nullptr;
+}
+
 void HpHealItem::Init()
 {
 }
@@ -60,6 +66,7 @@ void HpHealItem::Draw()
 
 void HpHealItem::ItemAbility(Player* player)
 {
-	player->Heal(kHealValue);
+	m_pPlayer = player;
+	m_pPlayer->Heal(kHealValue);
 	printfDx("HPが回復しました\n");
 }
