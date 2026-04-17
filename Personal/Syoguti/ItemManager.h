@@ -67,6 +67,12 @@ public:
 	/// <param name="objectManager"></param>
 	void SetObjectManager(ObjectManager* objectManager) { m_pObjectMgr = objectManager; }
 
+	/// <summary>
+	/// プレイヤーのポインタをセットするセッター関数
+	/// </summary>
+	/// <param name="player"></param>
+	void SetPlayer(Player* player) { m_pPlayer = player; }
+
 private:
 
 	/// <summary>
