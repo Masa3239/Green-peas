@@ -1,13 +1,16 @@
 #pragma once
 #include"Weapon.h"
-#include"../../Object/GameObject.h"
-#include"../../Chara/Collision.h"
 
-class Sword:public Weapon
+namespace {
+	constexpr int kArrownum = 10;
+}
+
+class Arrow;
+class Bow:public Weapon
 {
 public:
-	Sword(ObjectManager* objManager);
-	~Sword();
+	Bow(ObjectManager* bjManager);
+	~Bow();
 
 	void Init()override;
 	void End()override;
@@ -15,14 +18,12 @@ public:
 	void Draw()override;
 	void SetPos(const Vector3& pos) { GetTransform().position = pos; }
 	void Attack()override;
-	Collision::Circle GetCollision()override { return m_circle; }
 	bool CheckAttack()override;
+	Collision::Circle GetCollision()override;
 	void CheckCollision()override;
-
 private:
-	bool attack;
-	float m_desireRadian;
-	Collision::Circle m_circle;
-
+	//bool attack;
+	//float m_desireRadian;
+	Arrow* m_pArrows[kArrownum];
 };
 

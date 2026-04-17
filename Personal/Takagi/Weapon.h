@@ -3,6 +3,10 @@
 #include"../../Utility/Transform.h"
 #include"../../Utility/Vector3.h"
 #include"../../Chara/Collision.h"
+#include"PlayerStatus.h"
+class EnemyManager;
+class PlayerStatus;
+
 class Weapon:public GameObject
 {
 public:
@@ -15,7 +19,8 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	Weapon(ObjectManager* objManager) :GameObject(objManager), m_graphHandle(-1), m_swing(Transform()) {};
+	Weapon(ObjectManager* objManager);
+		
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
@@ -24,11 +29,31 @@ public:
 	//virtual void End()= 0;
 	//virtual void Update()= 0;
 	//virtual void Draw()= 0;
+	
+	/// <summary>
+	/// 攻撃処理
+	/// </summary>
 	virtual void Attack()=0;
+	/// <summary>
+	/// 当たり判定の取得
+	/// </summary>
+	/// <returns></returns>
 	virtual Collision::Circle GetCollision()=0;
+	/// <summary>
+	/// 攻撃中かどうかチェック
+	/// </summary>
+	/// <returns></returns>
 	virtual bool CheckAttack() = 0;
 
-
+	virtual void CheckCollision() = 0;
+	/// <summary>
+	/// 敵マネージャーの設定をする関数
+	/// </summary>
+	/// <param name="enemyMgr"></param>
+	void SetEnemyManager(EnemyManager* enemyMgr) {
+		m_pEnemyMgr = enemyMgr; 
+	}
+	void SetPlayerStatus(const PlayerStatus& status) { m_playerStatus = status; }
 protected:
 	/// <summary>
 	/// 武器のグラフィックハンドル
@@ -44,5 +69,12 @@ protected:
 	/// </summary>
 	Swing m_swingState;
 	float m_attackRadian;
+	/// <summary>
+	/// 敵マネージャーのポインタ
+	/// </summary>
+	EnemyManager* m_pEnemyMgr;
+
+	PlayerStatus m_playerStatus;
+	PlayerStatus m_weaponStatus;
 };
 
