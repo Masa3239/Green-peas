@@ -1,7 +1,18 @@
 #include "BuffRandom.h"
 
 #include "../../Utility/MyRandom.h"
+#include "../../Utility/Color.h"
 #include "Dxlib.h"
+
+namespace {
+
+    // テキストの座標
+    constexpr int kLeftBuffTextPosX = 50;
+    constexpr int kCenterBuffTextPosX = 300;
+    constexpr int kRightBuffTextPosX = 500;
+    constexpr int kBuffTextPosY = 300;
+
+}
 
 BuffRandom::BuffRandom()
 {
@@ -29,8 +40,31 @@ void BuffRandom::Update()
 {
 }
 
-void BuffRandom::Draw()
+void BuffRandom::Draw(const std::vector<Buff::BuffType>& buffs)
 {
+
+    
+    for (int i = 0; i < buffs.size(); i++) {
+
+        int drawX = 0;
+        int drawY = kBuffTextPosY;
+
+        if (i == 0) {
+
+            drawX = kLeftBuffTextPosX;
+        }
+        else if (i == 1) {
+
+            drawX = kCenterBuffTextPosX;
+        }
+        else if (i == 2) {
+
+            drawX = kRightBuffTextPosX;
+        }
+        const char* text = GetBuffText(buffs[i]);
+
+        DrawFormatString(drawX, drawY, Color::kBlue, "%s", text);
+    }
 }
 
 // ランダムでバフ取得
@@ -59,37 +93,31 @@ std::vector<Buff::BuffType> BuffRandom::GetRandomBuffs(int count)
     return result;
 }
 
-void BuffRandom::CheckBuff(Buff::BuffType type)
+const char* BuffRandom::GetBuffText(Buff::BuffType type)
 {
 
+    // 引数で渡されたバフのtypeを調べる
+    // returnで表示する文字を返す
     switch (type)
     {
     case Buff::BuffType::HpUpBuff:
-        printfDx("回復バフ\n");
-        break;
+        return "HPを回復するバフ";
     case Buff::BuffType::AttackUpBuff:
-        printfDx("攻撃バフ\n");
-        break;
+        return "攻撃力";
     case Buff::BuffType::TestBuff1:
-        printfDx("テスト1バフ\n");
-        break;
+        return "Test";
     case Buff::BuffType::TestBuff2:
-        printfDx("テスト2バフ\n");
-        break;
+        return "テスト2";
     case Buff::BuffType::TestBuff3:
-        printfDx("テスト3バフ\n");
-        break;
+        return "テスト3";
     case Buff::BuffType::TestBuff4:
-        printfDx("テスト4バフ\n");
-        break;
+        return "テスト4";
     case Buff::BuffType::TestBuff5:
-        printfDx("テスト5バフ\n");
-        break;
+        return "テスト5";
     case Buff::BuffType::Max:
-        break;
+        return "";
     default:
-        printfDx("エラー\n");
-        break;
+        return "エラー";
     }
-
 }
+    //m_level[static_cast<int>(type)] += 1;

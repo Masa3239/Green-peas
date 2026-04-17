@@ -36,7 +36,8 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	/// <param name="buffs"></param>
+	void Draw(const std::vector<Buff::BuffType>& buffs);
 
 	/// <summary>
 	/// バフをランダムに決める
@@ -46,14 +47,20 @@ public:
 	std::vector<Buff::BuffType> GetRandomBuffs(int count);
 
 	/// <summary>
-	/// バフの種類をチェックする
+	/// バフのテキストを取得する
 	/// </summary>
 	/// <param name="type"></param>
-	void CheckBuff(Buff::BuffType type);
+	/// <returns></returns>
+	const char* GetBuffText(Buff::BuffType type);
 
 private:
 
+	/// <summary>
+	/// BuffTypeの可変長配列
+	/// </summary>
 	std::vector<Buff::BuffType> m_buffs;
 	
+	// int m_level[static_cast<int>(Buff::BuffType::Max)];
+
 };
 
