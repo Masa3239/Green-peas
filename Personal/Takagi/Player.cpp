@@ -312,7 +312,7 @@ void Player::Damage(float value)
 void Player::Heal(float value)
 {
 	// HPの回復処理を行う
-	m_gauges[static_cast<int>(GaugeType::Hp)]->Decrease(value);
+	m_gauges[static_cast<int>(GaugeType::Hp)]->Increase(value);
 	// 最大・最小値よりも大ききくならないようにする
 	m_gauges[static_cast<int>(GaugeType::Hp)]->Clamp();
 }
