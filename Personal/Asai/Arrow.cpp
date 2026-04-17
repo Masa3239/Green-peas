@@ -63,7 +63,7 @@ void Arrow::Draw()
 	if (!m_isActive)return;
 
 	//画像の描画
-	DrawGraph(m_transform.position.x, m_transform.position.y, m_graphHandle, TRUE);
+	DrawRotaGraph(m_transform.position.x, m_transform.position.y, 1.0f, m_transform.rotation.y, m_graphHandle, TRUE);
 
 	DrawCircle(m_transform.position.x, m_transform.position.y, kCollisionSize, TRUE, 0xffff00);
 

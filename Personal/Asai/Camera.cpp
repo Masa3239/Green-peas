@@ -103,10 +103,10 @@ void Camera::StartDamage(float shakeDuration)
 
 }
 
-void Camera::GenerateWorldScreen(Map* pMap)
+void Camera::GenerateWorldScreen()
 {
 	//ワールドスクリーンを作成
-	m_worldScreen = MakeScreen(pMap->GetMapBlockNumX() * kMapBlockSize, pMap->GetMapBlockNumY() * kMapBlockSize, TRUE);
+	m_worldScreen = MakeScreen(m_pMap->GetMapBlockNumX() * kMapBlockSize, m_pMap->GetMapBlockNumY() * kMapBlockSize, TRUE);
 
 }
 
