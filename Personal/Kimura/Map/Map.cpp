@@ -10,9 +10,9 @@
 namespace {
 
 	//マップのタイルの画像
-	const char* const kMapChip = "Image\\MapChip.png";
+	const char* const kMapChip = "Resource\\MapChip.png";
 	// CSVファイルパス（worldID / stageIDで変化）
-	const char* const kMapCsv = "Mapdata\\Map%d_%d.csv";
+	const char* const kMapCsv = "Resource\\Map%d_%d.csv";
 
 }
 

@@ -31,10 +31,11 @@ namespace {
 class Gauge;
 class Camera;
 class Weapon;
-class Sword;
-class PlayerStatus;
+//class Sword;
 class EnemyManager;
 class ItemManager;
+
+struct PlayerStatus;
 
 class Player:public GameObject {
 public:
@@ -46,17 +47,17 @@ public:
 		Max
 	};
 
-	enum class Status {
-		Level,				// レベル
-		HP,					// HP
-		Attack,				// 攻撃力
-		Defence,			// 防御力
-		Speed,				// 移動速度
-		Stamina,			// スタミナ
-		CriticalRate,		// クリティカル率
-		CriticalDamage,		// クリティカル割合
-		Max,
-	};
+	//enum class Status {
+	//	Level,				// レベル
+	//	HP,					// HP
+	//	Attack,				// 攻撃力
+	//	Defence,			// 防御力
+	//	Speed,				// 移動速度
+	//	Stamina,			// スタミナ
+	//	CriticalRate,		// クリティカル率
+	//	CriticalDamage,		// クリティカル割合
+	//	Max,
+	//};
 	/// <summary>
 	/// プレイヤーのコンストラクタ
 	/// メンバ変数の初期設定を行う
@@ -160,7 +161,8 @@ public: // ゲッター・セッター=======================
 	/// <returns></returns>
 	float GetGaugeRate(GaugeType gauge);
 	Collision::Circle GetCircle() { return m_circle; }
-	void SetEnemyManager(EnemyManager* enemyManager) { m_pEnemyMgr = enemyManager; }
+	
+	void SetEnemyManager(EnemyManager* enemyManager);
 	void SetItemManager(ItemManager* itemManager) { m_pItemMgr = itemManager; }
 private:
 	/// <summary>
@@ -217,7 +219,7 @@ private:
 	Collision::AABB m_box;
 	Collision::Circle m_circle;
 
-	float m_status[static_cast<int>(Status::Max)];
+	PlayerStatus m_status;
 	EnemyManager* m_pEnemyMgr;
 	ItemManager* m_pItemMgr;
 };
