@@ -7,6 +7,7 @@
 #include"../System/InputPad.h"
 #include<math.h>
 #include<memory>
+#include<vector>
 #include"../Asai/Camera.h"
 #include"../Chara/Collision.h"
 #include"../../Object/GameObject.h"
@@ -19,6 +20,7 @@
 #include"../Syoguti/ItemBase.h"
 #include"../Osawa/Enemy/EnemyManager.h"
 #include"PlayerStatus.h"
+#include"PlayerBuff.h"
 
 namespace {
 	// ゲージの種類をキャスト(いちいちキャストするのが面倒なので用意)
@@ -44,9 +46,14 @@ namespace {
 	constexpr float kCircleSize = 15;
 	// プレイヤー画像のグラフィックハンドル
 	const char* const kGraphPath = "Image\\pipo-charachip_otaku01.png";
+	// 画像の表示倍率
 	constexpr float kPlayerScale = 1.5f;
+	// 初期ステータス
 	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 100, 5, 5, kMoveSpeed, 100, 10, 2);
+	// 成長倍率
 	constexpr PlayerStatus kGrowStatus = PlayerStatus(1, 1.05f, 1.1f, 1.1f, 1, 1, 1, 1);
+	// 初期座標
+	constexpr Vector3 kInitPos = { 300,300,0 };
 }
 
 Player::Player(ObjectManager* objManager) :
@@ -56,25 +63,36 @@ Player::Player(ObjectManager* objManager) :
 	m_accel(1),
 	m_deltaTime(0)
 {
-	GetTransform().position = {300,300,0};
-	m_camera = new Camera();
-	m_camera->Init();
+	// 初期座標の設定
+	GetTransform().position = kInitPos;
+	//m_camera = new Camera();
+	//m_camera->Init();
+
+	// 各ゲージの初期化
 	for (auto& gauge : m_gauges) {
 		gauge = std::make_unique<Gauge>();
 	}
-	m_gauges[static_cast<int>(GaugeType::Anger)]->Reset(Gauge::Value::Min);
+	// 経験値ゲージの初期化
 	m_gauges[static_cast<int>(GaugeType::Exp)] = std::make_unique<ExpGauge>();
+	// 怒りゲージを0に
+	m_gauges[static_cast<int>(GaugeType::Anger)]->Reset(Gauge::Value::Min);
 
-	m_box = Collision::AABB(GetTransform().position, kBoxSize);
+	//m_box = Collision::AABB(GetTransform().position, kBoxSize);
+	// 円の当たり判定を初期化
 	m_circle = Collision::Circle(GetTransform().position, kCircleSize);
 
 	//for (auto& weapon : m_weapons) {
 	//	weapon = nullptr;
 	//}
+	// 初期武器を設定
 	m_weapons = new Sword(objManager);
 	//m_weapons = new Bow(objManager);
+
+	// 武器に敵マネージャーのポインタを設定
 	m_weapons->SetEnemyManager(m_pEnemyMgr);
+	// 武器の初期設定
 	m_weapons->Init();
+
 	for (int i = 0;i < static_cast<int>(MyMath::FourDirection::Max);i++) {
 		for (int& handle : m_graphHandle[i])
 			handle = -1;
@@ -135,7 +153,7 @@ void Player::Update()
 	if (Time::GetInstance().GetDeltaTime()) {
 		Move();
 	}
-	m_box.SetPosition(GetTransform().position);
+	//m_box.SetPosition(GetTransform().position);
 	m_circle.SetPosition(GetTransform().position);
 	printfDx("deltatime : %f\n", m_deltaTime);
 	printfDx("移動量 : %f\n", m_moveVector.GetLength());
@@ -147,7 +165,7 @@ void Player::Update()
 	printfDx("m_direction : %d\n", static_cast<int>(m_direction));
 	frame += m_deltaTime * 2;
 	if (frame > kPlayerFrame)frame = 0;
-	m_direction = MyMath::Direction(GetTransform().rotation.y);
+	m_direction = MyMath::Direction(GetTransform().rotation.z);
 	if (m_gauges[static_cast<int>(GaugeType::Exp)]->CheckMax()) {
 		LevelUp();
 	}
@@ -176,7 +194,7 @@ void Player::MoveAmount()
 		// スティック入力の角度
 		float angle = Pad::AnalogAngle(Pad::Joystick::Left);
 		// 向いている方向を更新
-		GetTransform().rotation.y = angle * MyMath::ToRadian;
+		GetTransform().rotation.z = angle * MyMath::ToRadian;
 
 		m_gauges[static_cast<int>(GaugeType::Stamina)]->Increase(kStaminaHealValue * m_deltaTime);
 		m_gauges[static_cast<int>(GaugeType::Stamina)]->Clamp();
@@ -187,7 +205,7 @@ void Player::MoveAmount()
 		{
 			m_directionX = -1;
 		}
-		m_weapons->GetTransform().rotation.y = GetTransform().rotation.y;
+		m_weapons->GetTransform().rotation.z = GetTransform().rotation.z;
 	}
 	// 武器の座標を設定
 	m_weapons->GetTransform().position = GetTransform().position ;
@@ -205,8 +223,8 @@ void Player::MoveAmount()
 	// 移動量の初期化
 	m_moveVector = { 0,0,0 };
 	// 入力角度からX,Y方向の移動量を計算
-	m_moveVector.x = sinf(GetTransform().rotation.y);
-	m_moveVector.y = -cosf(GetTransform().rotation.y);
+	m_moveVector.x = sinf(GetTransform().rotation.z);
+	m_moveVector.y = -cosf(GetTransform().rotation.z);
 	// 正規化
 	m_moveVector = m_moveVector.GetNormalize();
 	// 移動速度を求める(入力量×移動速度×速度割合×時間)
@@ -240,14 +258,13 @@ void Player::Draw()
 	// プレイヤー・カメラが移動していることがわかるよう一定の位置に円を描画
 	DrawCircle(600, 400, 10, GetColor(0, 0, 255));
 	// プレイヤー座標に円を描画
-	DrawCircle(GetTransform().position.x, GetTransform().position.y, 30, GetColor(100, 100, 100));
 	DrawCircle(GetTransform().position.x, GetTransform().position.y, 10, GetColor(255, 0, 0));
 	// プレイヤー画像の表示
 	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kPlayerScale, 0, m_graphHandle[static_cast<int>(m_direction)][kFrame[static_cast<int>(frame)]], TRUE);
 	// 現在向いている方向のデバッグ表示
 	Vector3 angle = { 0,0,0 };
-	angle.x = sinf(GetTransform().rotation.y);
-	angle.y = -cosf(GetTransform().rotation.y);
+	angle.x = sinf(GetTransform().rotation.z);
+	angle.y = -cosf(GetTransform().rotation.z);
 	angle = angle.GetNormalize();
 	angle *= 10;
 	angle += GetTransform().position;
@@ -290,7 +307,7 @@ void Player::Debug()
 	printfDx("CriticalDamage : %f\n", m_status.CriticalDamage);
 
 	m_gauges[static_cast<int>(GaugeType::Exp)]->Debug();
-	m_box.DebugDraw();
+	//m_box.DebugDraw();
 	m_circle.DebugDraw();
 	printfDx("timeScale : %f\n", Time::GetInstance().GetTimeScale());
 }
@@ -315,6 +332,14 @@ void Player::Heal(float value)
 	m_gauges[static_cast<int>(GaugeType::Hp)]->Increase(value);
 	// 最大・最小値よりも大ききくならないようにする
 	m_gauges[static_cast<int>(GaugeType::Hp)]->Clamp();
+}
+
+void Player::AddBuff(const PlayerBuff& playerBuff) const
+{
+	PlayerBuff buf = playerBuff;
+	//m_buffs.push_back(buf);
+		//m_grasses.push_back(std::move(grass));
+	return;
 }
 
 bool Player::IsDead()

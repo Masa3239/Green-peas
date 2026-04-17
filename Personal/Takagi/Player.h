@@ -5,7 +5,7 @@
 #include"../../System/InputPad.h"
 #include"PlayerStatus.h"
 #include<memory>
-
+#include<vector>
 
 namespace Collision{
 	class Shape;
@@ -34,6 +34,7 @@ class Weapon;
 //class Sword;
 class EnemyManager;
 class ItemManager;
+class PlayerBuff;
 
 struct PlayerStatus;
 
@@ -111,6 +112,12 @@ public:
 	/// </summary>
 	/// <param name="value">回復量</param>
 	void Heal(float value);
+	/// <summary>
+	/// プレイヤーにバフを追加
+	/// </summary>
+	/// <param name="playerBuf"></param>
+	/// <returns></returns>
+	void AddBuff(const PlayerBuff& playerBuff)const;
 public: // ゲッター・セッター=======================
 	void SetCamera(Camera* camera) { m_camera = camera; }
 	/// <summary>
@@ -177,6 +184,7 @@ private:
 	bool CheckDashNow();
 	void CheckHit();
 	void LevelUp();
+	void BufUpdate();
 private:
 
 	/// <summary>
@@ -216,9 +224,13 @@ private:
 	/// <summary>
 	/// 四角の当たり判定
 	/// </summary>
-	Collision::AABB m_box;
+	//Collision::AABB m_box;
 	Collision::Circle m_circle;
-
+	/// <summary>
+	/// バフの配列
+	/// </summary>
+	//std::vector< std::unique_ptr<PlayerBuf>> m_buffs;
+	std::vector< PlayerBuff> m_buffs;
 	PlayerStatus m_status;
 	EnemyManager* m_pEnemyMgr;
 	ItemManager* m_pItemMgr;
