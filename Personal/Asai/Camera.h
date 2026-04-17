@@ -45,12 +45,19 @@ public:
 
 	/// <summary>
 	/// ワールドスクリーンを生成する
-	/// マップのサイズによってワールドスクリーンのサイズを変える
+	void GenerateWorldScreen();
+
+	/// <summary>
+	/// ワールドスクリーンを取得する
+	/// </summary>
+	/// <returns></returns>
+	int GetWorldScreen()const { return m_worldScreen; }
+
+	/// <summary>
+	/// マップのポインターをセットする
 	/// </summary>
 	/// <param name="pMap"></param>
-	void GenerateWorldScreen(Map* pMap);
-
-	int GetWorldScreen()const { return m_worldScreen; }
+	void SetMap(Map* pMap) { m_pMap = pMap; }
 
 private:
 
@@ -92,6 +99,11 @@ private:
 	/// ワールドスクリーン
 	/// </summary>
 	int m_worldScreen;
+
+	/// <summary>
+	/// マップのポインター
+	/// </summary>
+	Map* m_pMap;
 
 	/// <summary>
 	/// 振動の時間
