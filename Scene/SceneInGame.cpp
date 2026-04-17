@@ -44,10 +44,8 @@ void SceneInGame::Init()
 	m_pPlayer->SetEnemyManager(m_pEnemyMgr.get());
 	m_pPlayer->SetItemManager(m_pItemMgr.get());
 
-	m_pMap->Init();
-
 	m_pCamera->Init();
-	m_pCamera->GenerateWorldScreen(m_pMap.get());
+	m_pCamera->SetMap(m_pMap.get());
 
 	m_pEnemyMgr->Init();
 	m_pEnemyMgr->SetPlayer(m_pPlayer.get());
@@ -58,6 +56,10 @@ void SceneInGame::Init()
 	m_pItemMgr->Init();
 	m_pItemMgr->SetObjectManager(GetObjectManager());
 	m_pItemMgr->SetPlayer(m_pPlayer.get());
+
+	m_pMap->Init();
+
+	m_pCamera->GenerateWorldScreen();
 
 	// α版用
 	m_pItemMgr->Create(ItemBase::ItemType::Heal, kTestHealPos);
