@@ -3,6 +3,7 @@
 #include "../Object/GameObject.h"
 #include "../Utility/Transform.h"
 #include "../Chara/Collision.h"
+#include <array>
 
 class Player;
 
@@ -23,6 +24,8 @@ public:
 	/// </summary>
 	virtual void UpdateEnemy() = 0;
 
+	void PostUpdate() override;
+
 	/// <summary>
 	/// HPを取得
 	/// </summary>
@@ -35,7 +38,7 @@ public:
 	/// ダメージを与える
 	/// </summary>
 	/// <param name="damage">ダメージ量</param>
-	void Damage(const int damage) { m_hp -= damage; }
+	void Damage(const int damage);
 
 	Player* GetPlayer() const { return m_player; }
 	void SetPlayer(Player* player) { m_player = player; }
@@ -72,6 +75,17 @@ private:
 	/// 攻撃クールタイムの時間
 	/// </summary>
 	float m_attackCooltime;
+
+	/// <summary>
+	/// 無敵状態かどうか
+	/// </summary>
+	bool m_invincible;
+
+	/// <summary>
+	/// 
+	/// 攻撃判定に最初に触れたときかどうかを調べるために使う
+	/// </summary>
+	bool m_wasDamagedThisFrame;
 
 	/// <summary>
 	/// プレイヤーのポインタ
