@@ -26,6 +26,9 @@ Arrow::Arrow(ObjectManager* objManager):
 
 void Arrow::Init()
 {
+
+	m_isActive = false;
+
 }
 
 void Arrow::Update()
@@ -56,6 +59,8 @@ void Arrow::Draw()
 
 	//画像の描画
 	DrawGraph(m_transform.position.x, m_transform.position.y, m_graphHandle, TRUE);
+
+	DrawCircle(m_transform.position.x, m_transform.position.y, kCollisionSize, TRUE, 0xffff00);
 
 }
 
