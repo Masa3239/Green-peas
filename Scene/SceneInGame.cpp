@@ -78,8 +78,6 @@ SceneBase* SceneInGame::Update()
 
 	m_pEnemyMgr->Update();
 
-	m_pPlayer->Update();
-
 	m_pUIMgr->Update();
 
 	m_pItemMgr->Update();
@@ -93,7 +91,7 @@ SceneBase* SceneInGame::Update()
 		return new SceneTempResult("GAME OVER");
 	}
 
-	if (m_pEnemyMgr->GetDefeatedNum() >= 100)
+	if (m_pEnemyMgr->GetDefeatedNum() >= 50)
 	{
 		return new SceneTempResult("GAME CLEAR");
 	}

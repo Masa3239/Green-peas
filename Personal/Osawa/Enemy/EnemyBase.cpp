@@ -8,7 +8,7 @@ namespace
 {
 	constexpr Vector3 kColliderSize{ 25, 40, 0 };
 
-	constexpr int kMaxHp = 10;
+	constexpr int kMaxHp = 30;
 }
 
 EnemyBase::EnemyBase(ObjectManager* objManager) :

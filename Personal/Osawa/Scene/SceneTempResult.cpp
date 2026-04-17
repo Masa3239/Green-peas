@@ -33,4 +33,6 @@ SceneBase* SceneTempResult::Update()
 void SceneTempResult::Draw()
 {
 	DrawString(20, 20, m_string.c_str(), 0xffffff);
+
+	DrawString(20, 40, "RETRY -> B BUTTON", 0xffffff);
 }
