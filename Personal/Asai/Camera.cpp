@@ -22,6 +22,7 @@ Camera::Camera():
 	m_state(State::Follow),
 	m_transform(),
 	m_worldScreen(-1),
+	m_pMap(nullptr),
 	m_shakeDuration(0)
 {
 }
