@@ -39,7 +39,7 @@ void SceneTestSyoguti::Init()
 
 	 m_pEnemyBoss = std::make_unique<EnemyBoss>( GetObjectManager(), kTestBossPos);
 	 m_pEnemyBoss->Init();
-
+	 
 }
 
 void SceneTestSyoguti::End()
@@ -71,9 +71,10 @@ void SceneTestSyoguti::Draw()
 	m_pItemMgr->Draw();
 	m_pEnemyBoss->Draw();
 	printfDx("SceneTestSyoguti\n");
-	for (auto e : m_testDraw) {
-		m_buffRandom.CheckBuff(e);
-	}
 
+	m_buffRandom.Draw(m_testDraw);
 
+	//for (auto e : m_testDraw) {
+	//	m_buffRandom.CheckBuff(e);
+	//}
 }

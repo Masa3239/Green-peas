@@ -9,9 +9,9 @@
 
 namespace {
 
-	//マップのタイルの画像
+	// マップチップ画像
 	const char* const kMapChip = "Resource\\MapChip.png";
-	// CSVファイルパス（worldID / stageIDで変化）
+	// CSVファイルパス（worldid / stageIidで変化）
 	const char* const kMapCsv = "Resource\\Map%d_%d.csv";
 
 }
@@ -46,7 +46,7 @@ void Map::Init()
 	
 	//IDの設定
 	m_worldid = 1;
-	m_stageid = 1;
+	m_stageid = 2;
 
 	////CSVデータを読み込む
 	LoadCSVToMapData(m_worldid, m_stageid);
@@ -54,7 +54,6 @@ void Map::Init()
 
 void Map::End()
 {
-	// マップデータ破棄
 	m_mapData.clear();
 }
 
@@ -70,7 +69,7 @@ void Map::Draw()
 
 		for (int j = 0; j < m_mapBlockNumX; j++) {
 			
-			//0なら何もしない、１なら描画
+			// 空マスは描画しない
 			if (m_mapData[i][j] != MapChip::Space) {
 				DrawRotaGraph(j * kMapBlockSize + (kMapBlockSize / 2),
 					i * kMapBlockSize + (kMapBlockSize / 2),
@@ -81,7 +80,23 @@ void Map::Draw()
 		}
 
 	}
-	
+	for (int y = 0; y < m_mapBlockNumY; y++)
+	{
+		for (int x = 0; x < m_mapBlockNumX; x++)
+		{
+			if (IsWall(x, y))
+			{
+				DrawBox(
+					x * kMapBlockSize,
+					y * kMapBlockSize,
+					(x + 1) * kMapBlockSize,
+					(y + 1) * kMapBlockSize,
+					GetColor(255, 0, 0), // 赤
+					FALSE
+				);
+			}
+		}
+	}
 }
 
 void Map::Finalize()
@@ -91,27 +106,6 @@ void Map::Finalize()
 
 		DeleteGraph(m_graphHandle[i]);
 	}
-}
-
-void Map::DebugShow()
-{
-	//二次元配列MAP_BLOCK情報から描画する
-	for (int i = 0; i < m_mapBlockNumY; i++) {
-
-		for (int j = 0; j < m_mapBlockNumX; j++) {
-
-			//0なら何もしない、１なら描画
-			if (m_mapData[i][j] != MapChip::Space) {
-				DrawRotaGraph(j * kMapBlockSize + (kMapBlockSize / 2),
-					i * kMapBlockSize + (kMapBlockSize / 2),
-					m_chipScaleRate, 0.0f,
-					m_graphHandle[41], false, false);
-
-			}
-		}
-
-	}
-
 }
 
 bool Map::LoadCSVToMapData(int worldNum, int stageNum)
@@ -124,13 +118,14 @@ bool Map::LoadCSVToMapData(int worldNum, int stageNum)
 
 	//2次元配列サイズ確保
 	m_mapData.resize(m_mapBlockNumY);
-	for (int i = 0; i < m_mapBlockNumY; i++) {
+	for (int i = 0; i < m_mapBlockNumY; i++) 
+	{
 		m_mapData[i].resize(m_mapBlockNumX);
 	}
 
 	std::ifstream ifs(fileNameCSV);
-
 	std::string buf;
+	// 1行ずつ読み込み
 	for (int y = 0; y < m_mapBlockNumY; y++) {
 
 		
@@ -147,13 +142,86 @@ bool Map::LoadCSVToMapData(int worldNum, int stageNum)
 	return true;
 }
 
+bool Map::IsWall(int mapX, int mapY) {
+
+ // 範囲外はすべて壁扱い
+ if (mapX < 0 || mapX >= m_mapBlockNumX || mapY < 0 || mapY >= m_mapBlockNumY)
+ { 
+	 return true;
+ }
+
+ // マップデータからチップ情報を取得
+ MapChip chip = m_mapData[mapY][mapX];
+
+ // チップの種類によって判定を分ける
+ switch (chip) { 
+	// 通行可能なタイル
+   case MapChip::Space:
+   case MapChip::IceTile: 
+
+   return false; 
+   // それ以外はすべて壁扱い
+   default:
+	 return true; 
+ }
+
+}
+
+bool Map::IsWallByWorld(float worldX, float worldY) { 
+	// ワールド座標 → マップ座標へ変換
+	int mapX = static_cast<int>(worldX) / kMapBlockSize; 
+	int mapY = static_cast<int>(worldY) / kMapBlockSize;
+	// 変換後のマスが壁かどうかを判定
+	return IsWall(mapX, mapY); 
+
+}
+
+bool Map::IsWallRect(float left, float top, float right, float bottom) { 
+	// ワールド座標 → マップ座標へ変換
+	int mapLeft = static_cast<int>(left) / kMapBlockSize; 
+	int mapRight = static_cast<int>(right - 1) / kMapBlockSize; 
+	int mapTop = static_cast<int>(top) / kMapBlockSize; 
+	int mapBottom = static_cast<int>(bottom - 1) / kMapBlockSize;
+	// 範囲内のマップチップをすべてチェック
+	for (int y = mapTop; y <= mapBottom; y++) { 
+		//壁があれば衝突
+		for (int x = mapLeft; x <= mapRight; x++) { 
+			if (IsWall(x, y)) 
+			{ 
+				return true;
+			} 
+		} 
+	} 
+	// どこにも壁がなければ通れる
+	return false;
+}
+
+void Map::DebugDrawRect(float left, float top, float right, float bottom)
+{
+	for (int y = 0; y < m_mapBlockNumY; y++)
+	{
+		for (int x = 0; x < m_mapBlockNumX; x++)
+		{
+			// 壁だけ矩形表示
+			if (IsWall(x, y))
+			{
+				DrawBox(
+					x * kMapBlockSize,
+					y * kMapBlockSize,
+					(x + 1) * kMapBlockSize,
+					(y + 1) * kMapBlockSize,
+					GetColor(255, 0, 0), // 赤（壁）
+					FALSE
+				);
+			}
+		}
+	}
+}
+
 //1行の文字列をカンマで分割する
 std::vector<std::string>Map::Split(const std::string& str, char separate) {
 
-	//最終的にカンマがある毎に分割した配列を返したいが、
-	//読み込んだ１行のデータの中にカンマが何個あるのかこの時点ではわかっていない
-	//今まで勉強した配列は宣言時に要素数が決まっている必要があった配列（固定長配列なので
-	//要素数が何個あっても使える可変長配列というものをしようする
+	
 	std::vector<std::string>separatedList;
 
 	//引数で渡された文字列を分割しやすくする<sstream>

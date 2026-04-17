@@ -12,7 +12,20 @@
     // 列挙型
     enum MapChip
     {
-        Space = 0,
-        IceTile=10,
-        Wall  = 2,
+        //真っ黒のタイル 
+        Space = 0, 
+        //氷のタイル 
+        IceTile=10, 
+        //レンガの壁
+        Wall = 2, 
+        //薄い土タイル 
+        SoilTail1=48, 
+        //土タイル 
+        SoilTail2=44, 
+        //濃い土タイル 
+        SoilTail3=45,
+        //灰色レンガタイル
+        BrickTail=35, 
+        //灰色タイル 
+        grayTail=9,
     };
