@@ -65,9 +65,9 @@ void Sword::End()
 void Sword::Update()
 {
 	float time = Time::GetInstance().GetDeltaTime();
-	float differ = m_desireRadian - m_swing.rotation.y;
+	float differ = m_desireRadian - m_swing.rotation.z;
 	differ = MyMath::NormalizeAngle(differ * MyMath::ToDegree) * MyMath::ToRadian;
-	m_swing.rotation.y += differ*kLerpSwing * time;
+	m_swing.rotation.z += differ*kLerpSwing * time;
 	if (differ * differ < 0.1f * 0.1f) {
 		if (m_swingState == Swing::Up) {
 			m_desireRadian = m_attackRadian - kSwingRadian;
@@ -81,7 +81,7 @@ void Sword::Update()
 	}
 
 	Vector3 drawPos = GetTransform().position;
-	switch (MyMath::Direction(GetTransform().rotation.y)) {
+	switch (MyMath::Direction(GetTransform().rotation.z)) {
 	case MyMath::FourDirection::Right:
 		drawPos.x += kOffset.x;
 		//drawPos.y += kOffset.y;
@@ -99,8 +99,8 @@ void Sword::Update()
 	}
 
 	if (attack) {
-	drawPos.x = sinf(m_swing.rotation.y);
-	drawPos.y = -cosf(m_swing.rotation.y);
+	drawPos.x = sinf(m_swing.rotation.z);
+	drawPos.y = -cosf(m_swing.rotation.z);
 	drawPos = drawPos.GetNormalize();
 	//if (attack) {
 		drawPos *= 60;
@@ -112,13 +112,13 @@ void Sword::Update()
 	drawPos += GetTransform().position;
 	}
 	else {
-		if (GetTransform().rotation.y >= 0) {
+		if (GetTransform().rotation.z >= 0) {
 		m_desireRadian = -kInitRadian;
 		}
 		else {
 		m_desireRadian = kInitRadian;
 		}
-		m_attackRadian= GetTransform().rotation.y;
+		m_attackRadian= GetTransform().rotation.z;
 	}
 	m_swing.position += (drawPos - m_swing.position) * kLerpPos * time;
 	m_circle.SetPosition(drawPos);
@@ -127,7 +127,7 @@ void Sword::Update()
 void Sword::Draw()
 {
 	bool reverseX = false;
-	//switch (MyMath::Direction(GetTransform().rotation.y))
+	//switch (MyMath::Direction(GetTransform().rotation.z))
 	//{
 	//case MyMath::FourDirection::Right:
 	//case MyMath::FourDirection::Left:
@@ -140,7 +140,7 @@ void Sword::Draw()
 	//default:
 	//	break;
 	//}
-	if (GetTransform().rotation.y >= 0) {
+	if (GetTransform().rotation.z >= 0) {
 		reverseX = false;
 	}
 	else {
@@ -148,7 +148,7 @@ void Sword::Draw()
 
 	}
 
-	float radian = /*GetTransform().rotation.y+*/m_swing.rotation.y + (kShowRadian)*MyMath::Sign(GetTransform().rotation.y);
+	float radian = /*GetTransform().rotation.z+*/m_swing.rotation.z + (kShowRadian)*MyMath::Sign(GetTransform().rotation.z);
 	//if (reverseX)radian *= -1;
 	//if (attack) {
 	//}
@@ -157,7 +157,7 @@ void Sword::Draw()
 	//}
 
 	DrawRotaGraph(m_swing.position.x, m_swing.position.y, 1, radian, m_graphHandle, TRUE, reverseX);
-	printfDx("角度 : %f\n", GetTransform().rotation.y);
+	printfDx("角度 : %f\n", GetTransform().rotation.z);
 	printfDx("attack : %d\n", attack);
 	m_circle.DebugDraw();
 }
@@ -167,7 +167,7 @@ void Sword::Attack()
 	if (!Pad::IsPressed(Pad::Button::X))return;
 	if (m_swingState != Swing::Normal)return;
 	m_desireRadian = m_attackRadian + kSwingRadian;
-	m_swing.rotation.y = m_desireRadian;
+	m_swing.rotation.z = m_desireRadian;
 	attack = true;
 	m_swingState = Swing::Up;
 }

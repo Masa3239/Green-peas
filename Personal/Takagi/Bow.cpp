@@ -41,7 +41,7 @@ void Bow::Update()
 
 void Bow::Draw()
 {
-	float radian = GetTransform().rotation.y+kShowRadian /*+ (kShowRadian)*MyMath::Sign(GetTransform().rotation.y)*/;
+	float radian = GetTransform().rotation.z+kShowRadian /*+ (kShowRadian)*MyMath::Sign(GetTransform().rotation.z)*/;
 	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, 1, radian, m_graphHandle, TRUE);
 }
 
