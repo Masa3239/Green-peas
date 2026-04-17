@@ -21,7 +21,7 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~AttackUpItem() = default;
+	~AttackUpItem();
 
 	/// <summary>
 	/// 初期化

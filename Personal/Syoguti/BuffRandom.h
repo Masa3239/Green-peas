@@ -38,7 +38,18 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// バフをランダムに決める
+	/// </summary>
+	/// <param name="count"></param>
+	/// <returns></returns>
 	std::vector<Buff::BuffType> GetRandomBuffs(int count);
+
+	/// <summary>
+	/// バフの種類をチェックする
+	/// </summary>
+	/// <param name="type"></param>
+	void CheckBuff(Buff::BuffType type);
 
 private:
 

@@ -13,8 +13,12 @@
 #include"../../System/ObjectManager.h"
 #include"Weapon.h"
 #include"Sword.h"
+#include"Bow.h"
 #include"ExpGauge.h"
+#include"../Syoguti/ItemManager.h"
+#include"../Syoguti/ItemBase.h"
 #include"../Osawa/Enemy/EnemyManager.h"
+#include"PlayerStatus.h"
 
 namespace {
 	// ゲージの種類をキャスト(いちいちキャストするのが面倒なので用意)
@@ -39,9 +43,10 @@ namespace {
 	// 円の当たり判定の大きさ
 	constexpr float kCircleSize = 15;
 	// プレイヤー画像のグラフィックハンドル
-	const char* const kGraphPath = "Personal\\Takagi\\Resource\\pipo-charachip_otaku01.png";
+	const char* const kGraphPath = "Image\\pipo-charachip_otaku01.png";
 	constexpr float kPlayerScale = 1.5f;
-	constexpr float kInitStatus[static_cast<int>(Player::Status::Max)] = { 1,100,5,5,kMoveSpeed,100,10,2 };
+	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 100, 5, 5, kMoveSpeed, 100, 10, 2);
+	constexpr PlayerStatus kGrowStatus = PlayerStatus(1, 1.05f, 1.1f, 1.1f, 1, 1, 1, 1);
 }
 
 Player::Player(ObjectManager* objManager) :
@@ -67,6 +72,8 @@ Player::Player(ObjectManager* objManager) :
 	//	weapon = nullptr;
 	//}
 	m_weapons = new Sword(objManager);
+	//m_weapons = new Bow(objManager);
+	m_weapons->SetEnemyManager(m_pEnemyMgr);
 	m_weapons->Init();
 	for (int i = 0;i < static_cast<int>(MyMath::FourDirection::Max);i++) {
 		for (int& handle : m_graphHandle[i])
@@ -81,11 +88,11 @@ Player::Player(ObjectManager* objManager) :
 			num++;
 		}
 	}
-	for (int i = 0;i < static_cast<int>(Status::Max);i++) {
-		m_status[i] = kInitStatus[i];
-	}
-	m_gauges[static_cast<int>(GaugeType::Hp)]->SetValue(m_status[static_cast<int>(Status::HP)], Gauge::Value::Max);
-	m_gauges[static_cast<int>(GaugeType::Stamina)]->SetValue(m_status[static_cast<int>(Status::Stamina)], Gauge::Value::Max);
+	//for (int i = 0;i < static_cast<int>(Status::Max);i++) {
+	//}
+		m_status = kInitStatus;
+	m_gauges[static_cast<int>(GaugeType::Hp)]->SetValue(m_status.HP, Gauge::Value::Max);
+	m_gauges[static_cast<int>(GaugeType::Stamina)]->SetValue(m_status.Stamina, Gauge::Value::Max);
 }
 
 Player::~Player()
@@ -94,7 +101,6 @@ Player::~Player()
 
 void Player::Init()
 {
-
 }
 
 void Player::End()
@@ -115,6 +121,14 @@ void Player::End()
 void Player::Update()
 {
 
+	if (m_pItemMgr) {
+		if (Pad::IsPressed(Pad::Button::B)) {
+			m_pItemMgr->CheckHitCollision(GetCircle());
+		}
+		if (Pad::IsPressed(Pad::Button::Back)) {
+			m_pItemMgr->Create(ItemBase::ItemType::Heal, GetTransform().position);
+		}
+	}
 	m_camera->Update(GetTransform());
 	m_deltaTime = Time::GetInstance().GetDeltaTime();
 	// 時間が止まっていなければ移動処理を呼ぶ
@@ -180,7 +194,7 @@ void Player::MoveAmount()
 	// 武器の更新処理
 	m_weapons->Update();
 	
-	if (Pad::IsPressed(Pad::Button::X)) {
+	if (Pad::IsDown(Pad::Button::X)||Pad::IsReleased(Pad::Button::X)) {
 		m_weapons->Attack();
 	}
 	for (auto& gauge : m_gauges) {
@@ -196,7 +210,7 @@ void Player::MoveAmount()
 	// 正規化
 	m_moveVector = m_moveVector.GetNormalize();
 	// 移動速度を求める(入力量×移動速度×速度割合×時間)
-	float moveSpeed = inputAmount * m_status[static_cast<int>(Status::Speed)] * m_accel * Time::GetInstance().GetDeltaTime();
+	float moveSpeed = inputAmount * m_status.Speed * m_accel * Time::GetInstance().GetDeltaTime();
 	// プレイヤーの移動量に入力量と移動速度と時間をかける
 	m_moveVector *= moveSpeed;
 
@@ -249,23 +263,32 @@ void Player::Debug()
 	if (Pad::IsPressed(Pad::Button::Y)) {
 		Damage(5);
 	}
-	printfDx("現在HP       : %f\n", m_gauges[static_cast<int>(GaugeType::Hp)]->GetValue(Gauge::Value::Current));
-	printfDx("最大HP       : %f\n", m_gauges[static_cast<int>(GaugeType::Hp)]->GetValue(Gauge::Value::Max));
-	printfDx("最大HP       : %f\n", m_status[static_cast<int>(Status::HP)]);
-	printfDx("最小HP       : %f\n", m_gauges[static_cast<int>(GaugeType::Hp)]->GetValue(Gauge::Value::Min));
-	printfDx("割合HP       : %f\n", GetGaugeRate(GaugeType::Hp));
-	printfDx("現在スタミナ : %f\n", m_gauges[static_cast<int>(GaugeType::Stamina)]->GetValue(Gauge::Value::Current));
-	printfDx("最大スタミナ : %f\n", m_gauges[static_cast<int>(GaugeType::Stamina)]->GetValue(Gauge::Value::Max));
-	printfDx("最小スタミナ : %f\n", m_gauges[static_cast<int>(GaugeType::Stamina)]->GetValue(Gauge::Value::Min));
-	printfDx("割合スタミナ : %f\n", GetGaugeRate(GaugeType::Stamina));
-	printfDx("現在怒り     : %f\n", m_gauges[static_cast<int>(GaugeType::Anger)]->GetValue(Gauge::Value::Current));
-	printfDx("最大怒り     : %f\n", m_gauges[static_cast<int>(GaugeType::Anger)]->GetValue(Gauge::Value::Max));
-	printfDx("最小怒り     : %f\n", m_gauges[static_cast<int>(GaugeType::Anger)]->GetValue(Gauge::Value::Min));
-	printfDx("割合怒り     : %f\n", GetGaugeRate(GaugeType::Anger));
+	//printfDx("現在HP       : %f\n", m_gauges[static_cast<int>(GaugeType::Hp)]->GetValue(Gauge::Value::Current));
+	//printfDx("最大HP       : %f\n", m_gauges[static_cast<int>(GaugeType::Hp)]->GetValue(Gauge::Value::Max));
+	//printfDx("最大HP       : %f\n", m_status.HP);
+	//printfDx("最小HP       : %f\n", m_gauges[static_cast<int>(GaugeType::Hp)]->GetValue(Gauge::Value::Min));
+	//printfDx("割合HP       : %f\n", GetGaugeRate(GaugeType::Hp));
+	//printfDx("現在スタミナ : %f\n", m_gauges[static_cast<int>(GaugeType::Stamina)]->GetValue(Gauge::Value::Current));
+	//printfDx("最大スタミナ : %f\n", m_gauges[static_cast<int>(GaugeType::Stamina)]->GetValue(Gauge::Value::Max));
+	//printfDx("最小スタミナ : %f\n", m_gauges[static_cast<int>(GaugeType::Stamina)]->GetValue(Gauge::Value::Min));
+	//printfDx("割合スタミナ : %f\n", GetGaugeRate(GaugeType::Stamina));
+	//printfDx("現在怒り     : %f\n", m_gauges[static_cast<int>(GaugeType::Anger)]->GetValue(Gauge::Value::Current));
+	//printfDx("最大怒り     : %f\n", m_gauges[static_cast<int>(GaugeType::Anger)]->GetValue(Gauge::Value::Max));
+	//printfDx("最小怒り     : %f\n", m_gauges[static_cast<int>(GaugeType::Anger)]->GetValue(Gauge::Value::Min));
+	//printfDx("割合怒り     : %f\n", GetGaugeRate(GaugeType::Anger));
 	printfDx("現在経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Current));
 	printfDx("最大経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Max));
 	printfDx("最小経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Min));
 	printfDx("割合経験     : %f\n", GetGaugeRate(GaugeType::Exp));
+
+	printfDx("Level          : %d\n", m_status.Level);
+	printfDx("Attack         : %f\n", m_status.Attack);
+	printfDx("Defence        : %f\n", m_status.Defence);
+	printfDx("Speed          : %f\n", m_status.Speed);
+	printfDx("stamina        : %f\n", m_status.Stamina);
+	printfDx("CriticalRate   : %f\n", m_status.CriticalRate);
+	printfDx("CriticalDamage : %f\n", m_status.CriticalDamage);
+
 	m_gauges[static_cast<int>(GaugeType::Exp)]->Debug();
 	m_box.DebugDraw();
 	m_circle.DebugDraw();
@@ -289,7 +312,7 @@ void Player::Damage(float value)
 void Player::Heal(float value)
 {
 	// HPの回復処理を行う
-	m_gauges[static_cast<int>(GaugeType::Hp)]->Decrease(value);
+	m_gauges[static_cast<int>(GaugeType::Hp)]->Increase(value);
 	// 最大・最小値よりも大ききくならないようにする
 	m_gauges[static_cast<int>(GaugeType::Hp)]->Clamp();
 }
@@ -314,6 +337,11 @@ float Player::GetGaugeRate(GaugeType gauge)
 	return m_gauges[static_cast<int>(gauge)]->GetRate();
 }
 
+void Player::SetEnemyManager(EnemyManager* enemyManager)
+{
+	m_pEnemyMgr = enemyManager; m_weapons->SetEnemyManager(m_pEnemyMgr);
+}
+
 bool Player::CheckCanDash()
 {
 	// ダッシュ可能かどうかを調べる
@@ -335,27 +363,20 @@ void Player::CheckHit()
 	if (!m_pEnemyMgr)return;
 	if (!m_weapons)return;
 	if (!m_weapons->CheckAttack())return;
-
-	m_pEnemyMgr->CheckHitEnemies(m_weapons->GetCollision(), static_cast<int>(1 * m_status[static_cast<int>(Status::Attack)]));
+	m_weapons->CheckCollision();
+	//m_pEnemyMgr->CheckHitEnemies(m_weapons->GetCollision(), static_cast<int>(1 * m_status.Attack));
 
 }
 
 void Player::LevelUp()
 {
 	// レベル上昇前の最大HPを取得
-	float beforeMaxHp= m_status[static_cast<int>(Status::HP)];
-	for (int i = 0;i < static_cast<int>(Status::Max);i++) {
-		if (static_cast<Status>(i) == Status::Level ||
-			static_cast<Status>(i) == Status::CriticalRate ||
-			static_cast<Status>(i) == Status::CriticalDamage ||
-			static_cast<Status>(i) == Status::Speed ||
-			static_cast<Status>(i) == Status::Stamina) {
-			break;
-		}
-		m_status[i] *= 1.1f;
-	}
+	float beforeMaxHp= m_status.HP;
+	m_status.Level++;
+	m_status = m_status*kGrowStatus;
+	
 	// レベル上昇後の最大HPを取得
-	float maxHp = m_status[static_cast<int>(Status::HP)];
+	float maxHp = m_status.HP;
 	// 最大値を更新
 	m_gauges[static_cast<int>(GaugeType::Hp)]->SetValue(maxHp, Gauge::Value::Max);
 	// 現在のHPを取得

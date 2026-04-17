@@ -21,7 +21,7 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~HpHealItem() = default;
+	~HpHealItem();
 
 	/// <summary>
 	/// 初期化

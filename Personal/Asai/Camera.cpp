@@ -6,19 +6,23 @@
 #include"../../Utility/Time.h"
 #include"../../Utility/MyRandom.h"
 
+#include"../Kimura/Map/Map.h"
+#include"../Kimura/Map/MapManager.h"
+
 namespace {
 
 	//カメラの補間
-	constexpr float kFollowLatency = 0.1f;
+	constexpr float kFollowLatency = 3.0f;
 	//振動の大きさ
 	constexpr float kShakeMoveMargin = 3;
 
 }
 
 Camera::Camera():
-	m_state(),
+	m_state(State::Follow),
 	m_transform(),
 	m_worldScreen(-1),
+	m_pMap(nullptr),
 	m_shakeDuration(0)
 {
 }
@@ -74,11 +78,11 @@ void Camera::DebugDraw()
 
 	printfDx("Camera x %f\n", m_transform.position.x);
 	printfDx("Camera y %f\n", m_transform.position.y);
-	printfDx("Camera z %f\n", m_transform.position.z);
+	//printfDx("Camera z %f\n", m_transform.position.z);
 
-	printfDx("%d\n", m_worldScreen);
+	//printfDx("%d\n", m_worldScreen);
 
-	printfDx("Camera m_state %d\n", static_cast<int>(m_state));
+	//printfDx("Camera m_state %d\n", static_cast<int>(m_state));
 
 }
 
@@ -99,10 +103,18 @@ void Camera::StartDamage(float shakeDuration)
 
 }
 
+void Camera::GenerateWorldScreen()
+{
+	//ワールドスクリーンを作成
+	m_worldScreen = MakeScreen(m_pMap->GetMapBlockNumX() * kMapBlockSize, m_pMap->GetMapBlockNumY() * kMapBlockSize, TRUE);
+
+}
+
 void Camera::UpdateFollow(Transform cameraPos)
 {
+
 	//カメラの移動
-	m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency + m_transform.position;
+	m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency*Time::GetInstance().GetDeltaTime() + m_transform.position;
 
 }
 

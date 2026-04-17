@@ -39,7 +39,7 @@ public:
 	/// <summary>
 	/// 弾の生成
 	/// transformの位置に生成
-	/// transform.position.yの角度に弾が進む
+	/// m_transform.rotation.yの角度に弾が進む
 	/// この関数を呼ぶとm_isActiveがtrueになる
 	/// </summary>
 	/// <param name="transform">生成したい位置・角度</param>

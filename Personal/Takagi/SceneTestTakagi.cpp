@@ -7,6 +7,7 @@
 #include"../../Utility/Time.h"
 #include"../Kimura/Map/Map.h"
 #include"../Syoguti/ItemManager.h"
+#include"../Osawa/Enemy/EnemyManager.h"
 namespace {
 	Vector3 kBoxPos = { 200,200 ,0 };
 	Vector3 kBoxSize = { 50,70 ,0 };
@@ -19,6 +20,7 @@ SceneTestTakagi::SceneTestTakagi()
 	m_pCamera = std::make_unique<Camera>();
 	m_pMap = new Map();
 	m_pItemManager = new ItemManager();
+	m_pEnemyManager = new EnemyManager(GetObjectManager());
 }
 
 SceneTestTakagi::~SceneTestTakagi()
@@ -27,6 +29,7 @@ SceneTestTakagi::~SceneTestTakagi()
 
 void SceneTestTakagi::Init()
 {
+	m_pPlayer->SetEnemyManager(m_pEnemyManager);
 	m_pPlayer->Init();
 	m_pCamera->Init();
 	m_pMap->Init();

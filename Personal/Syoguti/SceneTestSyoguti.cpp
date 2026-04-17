@@ -68,12 +68,12 @@ SceneBase* SceneTestSyoguti::Update()
 
 void SceneTestSyoguti::Draw()
 {
-	
-	for (auto e : m_testDraw) {
-		printfDx("Buff: %d\n", (int)e);
-	}
-
 	m_pItemMgr->Draw();
 	m_pEnemyBoss->Draw();
 	printfDx("SceneTestSyoguti\n");
+	for (auto e : m_testDraw) {
+		m_buffRandom.CheckBuff(e);
+	}
+
+
 }

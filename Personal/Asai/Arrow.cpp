@@ -26,10 +26,15 @@ Arrow::Arrow(ObjectManager* objManager):
 
 void Arrow::Init()
 {
+
+	m_isActive = false;
+
 }
 
 void Arrow::Update()
 {
+	//非アクティブならスルー
+	if (!m_isActive)return;
 
 	//デルタタイムを取得
 	float deltaTime = Time::GetInstance().GetDeltaTime();
@@ -54,13 +59,21 @@ void Arrow::Update()
 void Arrow::Draw()
 {
 
+	//非アクティブならスルー
+	if (!m_isActive)return;
+
 	//画像の描画
-	DrawGraph(m_transform.position.x, m_transform.position.y, m_graphHandle, TRUE);
+	DrawRotaGraph(m_transform.position.x, m_transform.position.y, 1.0f, m_transform.rotation.y, m_graphHandle, TRUE);
+
+	DrawCircle(m_transform.position.x, m_transform.position.y, kCollisionSize, TRUE, 0xffff00);
 
 }
 
 void Arrow::DebugDraw()
 {
+
+	//非アクティブならスルー
+	if (!m_isActive)return;
 
 	printfDx(m_isActive ? "Arrow Active\n" : "Arrow !Active\n");
 
@@ -78,6 +91,10 @@ void Arrow::End()
 
 void Arrow::Shot(Transform transform)
 {
+
+	//アクティブならスルー
+	if (m_isActive)return;
+
 	//セット
 	m_transform = transform;
 	//アクティブにする

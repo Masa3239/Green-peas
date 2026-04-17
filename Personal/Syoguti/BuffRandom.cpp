@@ -1,6 +1,7 @@
 #include "BuffRandom.h"
 
 #include "../../Utility/MyRandom.h"
+#include "Dxlib.h"
 
 BuffRandom::BuffRandom()
 {
@@ -45,14 +46,50 @@ std::vector<Buff::BuffType> BuffRandom::GetRandomBuffs(int count)
 
     for (int i = 0; i < count; i++) {
 
-        // ランダムインデックス
+        // バフをランダムに決める
         int index = MyRandom::Int(0, static_cast<int>(temp.size()) - 1);
 
+        // 選択されたバフを入れる
         result.push_back(temp[index]);
 
-        // 重複防止（削除）
+        // 選んだバフを削除(重複防止)
         temp.erase(temp.begin() + index);
     }
 
     return result;
+}
+
+void BuffRandom::CheckBuff(Buff::BuffType type)
+{
+
+    switch (type)
+    {
+    case Buff::BuffType::HpUpBuff:
+        printfDx("回復バフ\n");
+        break;
+    case Buff::BuffType::AttackUpBuff:
+        printfDx("攻撃バフ\n");
+        break;
+    case Buff::BuffType::TestBuff1:
+        printfDx("テスト1バフ\n");
+        break;
+    case Buff::BuffType::TestBuff2:
+        printfDx("テスト2バフ\n");
+        break;
+    case Buff::BuffType::TestBuff3:
+        printfDx("テスト3バフ\n");
+        break;
+    case Buff::BuffType::TestBuff4:
+        printfDx("テスト4バフ\n");
+        break;
+    case Buff::BuffType::TestBuff5:
+        printfDx("テスト5バフ\n");
+        break;
+    case Buff::BuffType::Max:
+        break;
+    default:
+        printfDx("エラー\n");
+        break;
+    }
+
 }

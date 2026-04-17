@@ -91,5 +91,10 @@ protected:
 	/// </summary>
 	Collision::Circle m_collision;
 
+	/// <summary>
+	/// プレイヤーのポインタ
+	/// </summary>
+	Player* m_pPlayer;
+
 };
 
