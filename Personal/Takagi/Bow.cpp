@@ -48,7 +48,12 @@ void Bow::Draw()
 void Bow::Attack()
 {
 	if (!Pad::IsReleased(Pad::Button::X))return;
-	m_pArrows[0]->Shot(GetTransform());
+	for (auto& arrows : m_pArrows) {
+		if (arrows->GetIsActive())continue;
+
+		arrows->Shot(GetTransform());
+		break;
+	}
 }
 
 bool Bow::CheckAttack()
@@ -71,6 +76,7 @@ void Bow::CheckCollision()
 		damage *= m_weaponStatus.CriticalDamage;
 	}
 	for (auto& arrows : m_pArrows) {
+		if (!arrows->GetIsActive())continue;
 		m_pEnemyMgr->CheckHitEnemies(arrows->GetCollision(),damage);
 	}
 }

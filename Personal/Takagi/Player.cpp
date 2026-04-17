@@ -71,8 +71,8 @@ Player::Player(ObjectManager* objManager) :
 	//for (auto& weapon : m_weapons) {
 	//	weapon = nullptr;
 	//}
-	//m_weapons = new Sword(objManager);
-	m_weapons = new Bow(objManager);
+	m_weapons = new Sword(objManager);
+	//m_weapons = new Bow(objManager);
 	m_weapons->SetEnemyManager(m_pEnemyMgr);
 	m_weapons->Init();
 	for (int i = 0;i < static_cast<int>(MyMath::FourDirection::Max);i++) {
