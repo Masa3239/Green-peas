@@ -21,7 +21,8 @@ namespace {
 
 }
 
-PlayerHpBar::PlayerHpBar()
+PlayerHpBar::PlayerHpBar():
+	m_prevHp(0)
 {
 }
 
@@ -35,7 +36,7 @@ void PlayerHpBar::Init()
 
 void PlayerHpBar::Update()
 {
-
+	
 }
 
 void PlayerHpBar::Draw()

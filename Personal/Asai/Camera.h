@@ -1,6 +1,8 @@
 #pragma once
 #include"../Utility/Transform.h"
 
+class Map;
+
 class Camera
 {
 
@@ -41,6 +43,12 @@ public:
 	/// <param name="shakeDuration">振動時間　デフォルトは1秒</param>
 	void StartDamage(float shakeDuration = 1.0f);
 
+	/// <summary>
+	/// ワールドスクリーンを生成する
+	/// マップのサイズによってワールドスクリーンのサイズを変える
+	/// </summary>
+	/// <param name="pMap"></param>
+	void GenerateWorldScreen(Map* pMap);
 
 	int GetWorldScreen()const { return m_worldScreen; }
 
