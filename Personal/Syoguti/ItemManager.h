@@ -5,6 +5,8 @@
 #include "ItemBase.h"
 #include "../../System/ObjectManager.h"
 
+class Player;
+
 class ItemManager
 {
 
@@ -57,13 +59,19 @@ public:
 	/// 引数の形状とアイテムが当たっているか調べる
 	/// </summary>
 	/// <param name="other"></param>
-	ItemBase::ItemType CheckHitCollision(const Collision::Shape& other);
+	void CheckHitCollision(const Collision::Shape& other);
 
 	/// <summary>
 	/// オブジェクトマネージャーのポインタをセットするセッター関数
 	/// </summary>
 	/// <param name="objectManager"></param>
 	void SetObjectManager(ObjectManager* objectManager) { m_pObjectMgr = objectManager; }
+
+	/// <summary>
+	/// プレイヤーのポインタをセットするセッター関数
+	/// </summary>
+	/// <param name="player"></param>
+	void SetPlayer(Player* player) { m_pPlayer = player; }
 
 private:
 
@@ -86,5 +94,10 @@ private:
 	/// オブジェクトマネージャーのポインタ
 	/// </summary>
 	ObjectManager* m_pObjectMgr;
+
+	/// <summary>
+	/// プレイヤーのポインタ
+	/// </summary>
+	Player* m_pPlayer;
 };
 

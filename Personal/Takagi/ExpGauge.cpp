@@ -54,9 +54,19 @@ void ExpGauge::Debug()
 	printfDx("min   : %f\n", m_minExp);
 }
 
-void ExpGauge::Reset(int set)
+void ExpGauge::Reset(Value set)
 {
 
+}
+
+bool ExpGauge::CheckMax()
+{
+	// 最大経験値量を越したらレベルアップ
+	if (m_totalExp >= m_maxExp) {
+		LevelUp();
+		return true;
+	}
+	return false;
 }
 
 void ExpGauge::LevelUp()
@@ -86,7 +96,6 @@ void ExpGauge::CheckCurrent()
 	m_currentValue = m_totalExp - m_minExp;
 
 	// 経験値の最大量を求める
-	SetValue(m_maxExp - m_minExp, Max);
-	// 最大経験値量を越したらレベルアップ
-	if (m_totalExp >= m_maxExp)LevelUp();
+	SetValue(m_maxExp - m_minExp, Value::Max);
+
 }

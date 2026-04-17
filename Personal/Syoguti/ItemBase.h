@@ -2,6 +2,9 @@
 #include "../../Chara/Collision.h"
 #include "../../Utility/Transform.h"
 #include"../../Object/GameObject.h"
+#include <memory>
+
+class Player;
 
 /// <summary>
 /// アイテムの基本クラス
@@ -56,7 +59,7 @@ public:
 	/// <summary>
 	/// アイテムの効果
 	/// </summary>
-	virtual void ItemAbility() = 0;
+	virtual void ItemAbility(Player* player) = 0;
 
 	/// <summary>
 	/// グラフハンドルをセットするセッター関数
@@ -70,11 +73,6 @@ public:
 	/// <returns></returns>
 	virtual const Collision::Circle GetCollision() { return m_collision; }
 
-	/// <summary>
-	/// アイテムの種類を取得するゲッター関数
-	/// </summary>
-	/// <returns></returns>
-	ItemBase::ItemType GetType() { return m_itemType; }
 
 protected:
 
@@ -94,9 +92,9 @@ protected:
 	Collision::Circle m_collision;
 
 	/// <summary>
-	/// アイテムの種類
+	/// プレイヤーのポインタ
 	/// </summary>
-	ItemType m_itemType;
+	Player* m_pPlayer;
 
 };
 

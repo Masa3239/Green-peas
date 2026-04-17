@@ -97,6 +97,10 @@ void ObjectManager::UpdateGameObjects()
 	{
 		obj->Update();
 	}
+	for (const auto& obj : m_gameObjects)
+	{
+		obj->PostUpdate();
+	}
 	m_isUpdatingGameObject = false;
 
 	// ゲームオブジェクトの更新中に生成されたゲームオブジェクトを配列に移動させる

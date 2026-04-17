@@ -77,4 +77,11 @@ private:
 	/// 敵の生成待機のカウンター
 	/// </summary>
 	float m_generateCounter;
+
+public:
+	int GetDefeatedNum() const { return m_numDefeated; }
+private:
+	// α版用
+	// 倒された敵の数
+	int m_numDefeated;
 };

@@ -6,6 +6,8 @@
 #include"../../Chara/Collision.h"
 #include"../../Utility/Time.h"
 #include"../Kimura/Map/Map.h"
+#include"../Syoguti/ItemManager.h"
+#include"../Osawa/Enemy/EnemyManager.h"
 namespace {
 	Vector3 kBoxPos = { 200,200 ,0 };
 	Vector3 kBoxSize = { 50,70 ,0 };
@@ -17,6 +19,8 @@ SceneTestTakagi::SceneTestTakagi()
 	m_pPlayer = std::make_unique<Player>(GetObjectManager());
 	m_pCamera = std::make_unique<Camera>();
 	m_pMap = new Map();
+	m_pItemManager = new ItemManager();
+	m_pEnemyManager = new EnemyManager(GetObjectManager());
 }
 
 SceneTestTakagi::~SceneTestTakagi()
@@ -25,10 +29,12 @@ SceneTestTakagi::~SceneTestTakagi()
 
 void SceneTestTakagi::Init()
 {
+	m_pPlayer->SetEnemyManager(m_pEnemyManager);
 	m_pPlayer->Init();
 	m_pCamera->Init();
-	m_pPlayer->SetCamera(m_pCamera.get());
 	m_pMap->Init();
+	m_pPlayer->SetCamera(m_pCamera.get());
+	m_pPlayer->SetItemManager(m_pItemManager);
 }
 
 void SceneTestTakagi::End()
@@ -36,7 +42,11 @@ void SceneTestTakagi::End()
 	m_pPlayer->End();
 	m_pCamera->End();
 	m_pMap->End();
-
+	m_pMap = nullptr;
+	delete m_pMap;
+	m_pItemManager->End();
+	m_pItemManager = nullptr;
+	delete m_pItemManager;
 }
 
 SceneBase* SceneTestTakagi::Update()
@@ -66,7 +76,7 @@ SceneBase* SceneTestTakagi::Update()
 	m_pMap->Update();
 
 
-
+	m_pItemManager->Update();
 
 
 	return this;
@@ -76,6 +86,7 @@ void SceneTestTakagi::Draw()
 {
 	printfDx("SceneTestTakagi\n");
 	box.DebugDraw();
+	
 }
 
 void SceneTestTakagi::PreDraw()

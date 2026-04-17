@@ -31,8 +31,11 @@ namespace {
 class Gauge;
 class Camera;
 class Weapon;
-class Sword;
-class PlayerStatus;
+//class Sword;
+class EnemyManager;
+class ItemManager;
+
+struct PlayerStatus;
 
 class Player:public GameObject {
 public:
@@ -43,6 +46,18 @@ public:
 		Exp,
 		Max
 	};
+
+	//enum class Status {
+	//	Level,				// レベル
+	//	HP,					// HP
+	//	Attack,				// 攻撃力
+	//	Defence,			// 防御力
+	//	Speed,				// 移動速度
+	//	Stamina,			// スタミナ
+	//	CriticalRate,		// クリティカル率
+	//	CriticalDamage,		// クリティカル割合
+	//	Max,
+	//};
 	/// <summary>
 	/// プレイヤーのコンストラクタ
 	/// メンバ変数の初期設定を行う
@@ -89,8 +104,14 @@ public:
 	/// <summary>
 	/// ダメージを受ける関数
 	/// </summary>
-	void Damage(float damage);
-
+	/// <param name="value">ダメージ量</param>
+	void Damage(float value);
+	/// <summary>
+	/// 回復をする関数
+	/// </summary>
+	/// <param name="value">回復量</param>
+	void Heal(float value);
+public: // ゲッター・セッター=======================
 	void SetCamera(Camera* camera) { m_camera = camera; }
 	/// <summary>
 	/// プレイヤーの角度を取得する関数
@@ -140,7 +161,9 @@ public:
 	/// <returns></returns>
 	float GetGaugeRate(GaugeType gauge);
 	Collision::Circle GetCircle() { return m_circle; }
-
+	
+	void SetEnemyManager(EnemyManager* enemyManager);
+	void SetItemManager(ItemManager* itemManager) { m_pItemMgr = itemManager; }
 private:
 	/// <summary>
 	/// ダッシュ可能かどうかを調べる関数
@@ -152,6 +175,7 @@ private:
 	/// </summary>
 	/// <returns>ダッシュ中ならtrue</returns>
 	bool CheckDashNow();
+	void CheckHit();
 	void LevelUp();
 private:
 
@@ -196,5 +220,6 @@ private:
 	Collision::Circle m_circle;
 
 	PlayerStatus m_status;
-
+	EnemyManager* m_pEnemyMgr;
+	ItemManager* m_pItemMgr;
 };

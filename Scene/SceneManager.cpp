@@ -1,6 +1,7 @@
 #include <cassert>
 #include "SceneManager.h"
 #include "../Personal/Osawa/Scene/SceneSelection.h"
+#include "../Scene/SceneInGame.h"
 #include "../Utility/Input.h"
 #include "../System/InputPad.h"
 #include "../System/ObjectManager.h"
@@ -14,7 +15,12 @@ SceneManager::~SceneManager() {}
 
 void SceneManager::Init() {
 
+#ifdef _DEBUG
 	m_pScene = new SceneSelection();
+#else
+	m_pScene = new SceneInGame();
+#endif
+
 	m_pScene->Init();
 	Pad::Init();
 }

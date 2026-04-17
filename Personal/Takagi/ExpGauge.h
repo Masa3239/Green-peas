@@ -35,12 +35,17 @@ public:
 	/// Max -> 最大値でリセット
 	/// Min -> 最小値でリセット
 	/// </param>
-	virtual void Reset(int set = Max);
+	virtual void Reset(Value set = Value::Max);
 	/// <summary>
 	/// 割合を取得する関数
 	/// </summary>
 	/// <returns>現在の値を最大の値で割った割合</returns>
 	//virtual float GetRate();
+	/// <summary>
+	/// 最大かどうか
+	/// </summary>
+	/// <returns>最大以上ならtrue</returns>
+	virtual bool CheckMax()override;
 	/// <summary>
 	/// レベルを上昇させる関数
 	/// </summary>

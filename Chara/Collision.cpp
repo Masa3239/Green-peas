@@ -1,5 +1,6 @@
 #include "Collision.h"
 #include <cassert>
+#include <cmath>
 #include <DxLib.h>
 #include "../Utility/Color.h"
 
@@ -148,5 +149,182 @@ namespace Collision
 
 		// 最短距離を返す
 		return min;
+	}
+
+	OBB::OBB(const Vector3& center, const Vector3& size) :
+		m_centerPos(center),
+		m_halfSize(size * 0.5f),
+		m_radian(0.0f)
+	{
+		UpdateDirVector();
+	}
+
+	OBB::OBB(const Vector3& center, const Vector3& size, float radian) :
+		m_centerPos(center),
+		m_halfSize(size * 0.5f),
+		m_radian(radian)
+	{
+		UpdateDirVector();
+	}
+
+	bool OBB::CheckCollision(const Shape& other) const
+	{
+		switch (other.GetType())
+		{
+		case Type::OBB:
+		{
+			const OBB* checkBox = dynamic_cast<const OBB*>(&other);
+
+			assert(checkBox);
+
+			// 各軸を用意
+			const Vector3 ea1 = m_dirVector[Dir::Width] * m_halfSize.x;
+			const Vector3 ea2 = m_dirVector[Dir::Height] * m_halfSize.y;
+			const Vector3 eb1 = checkBox->m_dirVector[Dir::Width] * checkBox->m_halfSize.x;
+			const Vector3 eb2 = checkBox->m_dirVector[Dir::Height] * checkBox->m_halfSize.y;
+
+			// 2つの距離
+			const Vector3 dist = m_centerPos - checkBox->m_centerPos;
+
+			// 分離軸
+			Vector3 separateAxis;
+
+			// 投影線分の長さ
+			float ra = 0.0f;
+			float rb = 0.0f;
+
+			float interval = 0.0f;
+
+			// 分離軸 = ea1
+			separateAxis = m_dirVector[Dir::Width];
+			ra = m_halfSize.x;
+			rb = GetProjectionLength(separateAxis, eb1, eb2);
+			interval = std::abs(dist.Dot(separateAxis));
+			if (interval >= ra + rb) return false;
+
+			// 分離軸 = ea2
+			separateAxis = m_dirVector[Dir::Height];
+			ra = m_halfSize.y;
+			rb = GetProjectionLength(separateAxis, eb1, eb2);
+			interval = std::abs(dist.Dot(separateAxis));
+			if (interval >= ra + rb) return false;
+
+			// 分離軸 = eb1
+			separateAxis = checkBox->m_dirVector[Dir::Width];
+			ra = GetProjectionLength(separateAxis, ea1, ea2);
+			rb = checkBox->m_halfSize.x;
+			interval = std::abs(dist.Dot(separateAxis));
+			if (interval >= ra + rb) return false;
+
+			// 分離軸 = eb2
+			separateAxis = checkBox->m_dirVector[Dir::Height];
+			ra = GetProjectionLength(separateAxis, ea1, ea2);
+			rb = checkBox->m_halfSize.y;
+			interval = std::abs(dist.Dot(separateAxis));
+			if (interval >= ra + rb) return false;
+
+			break;
+		}
+
+		case Type::Circle:
+		{
+			const Circle* checkCircle = dynamic_cast<const Circle*>(&other);
+
+			assert(checkCircle);
+
+			Vector3 dist;
+
+			// 各軸を調べる
+			for (int i = 0; i < 3; i++)
+			{
+				float len = m_halfSize[i];
+				if (len <= 0) continue;
+
+				Vector3 d = checkCircle->GetPosition() - m_centerPos;
+
+				float s = d.Dot(m_dirVector[i]) / len;
+
+				s = std::abs(s);
+				if (s > 1)
+				{
+					dist += m_dirVector[i] * (1 - s) * len;
+				}
+			}
+
+			if (dist.GetLength() >= checkCircle->GetRadius()) return false;
+
+			break;
+		}
+		}
+
+		// ここまで来たら当たっている
+		return true;
+	}
+
+	void OBB::SetRadian(const float radian)
+	{
+		m_radian = radian;
+
+		UpdateDirVector();
+	}
+
+	void OBB::DebugDraw() const
+	{
+		Vector3 dirLeftTop = Vector3(-m_halfSize.x, -m_halfSize.y, 0.0f);
+		Vector3 dirRightTop = Vector3(m_halfSize.x, -m_halfSize.y, 0.0f);
+		Vector3 dirLeftBottom = Vector3(-m_halfSize.x, m_halfSize.y, 0.0f);
+		Vector3 dirRightBottom = Vector3(m_halfSize.x, m_halfSize.y, 0.0f);
+
+		Vector3 vertices[4];
+
+		vertices[0] = m_centerPos + RotateVector(dirLeftTop);		// 左上
+		vertices[1] = m_centerPos + RotateVector(dirRightTop);		// 右上
+		vertices[2] = m_centerPos + RotateVector(dirLeftBottom);	// 左下
+		vertices[3] = m_centerPos + RotateVector(dirRightBottom);	// 右下
+
+		DrawLine(vertices[0].x, vertices[0].y, vertices[1].x, vertices[1].y, Color::kWhite);
+		DrawLine(vertices[1].x, vertices[1].y, vertices[3].x, vertices[3].y, Color::kWhite);
+		DrawLine(vertices[3].x, vertices[3].y, vertices[2].x, vertices[2].y, Color::kWhite);
+		DrawLine(vertices[2].x, vertices[2].y, vertices[0].x, vertices[0].y, Color::kWhite);
+
+		DrawBox(m_centerPos.x + dirLeftTop.x, m_centerPos.y + dirLeftTop.y, m_centerPos.x + dirRightBottom.x, m_centerPos.y + dirRightBottom.y, Color::kGray, 0);
+	}
+
+	void OBB::UpdateDirVector()
+	{
+		// 幅用の三角関数の値
+		float sinParamWidth = std::sin(m_radian);
+		float cosParamWidth = std::cos(m_radian);
+
+		// 高さ用の三角関数の値
+		float sinParamHeight = std::sin(m_radian - DX_PI_F * 0.5f);
+		float cosParamHeight = std::cos(m_radian - DX_PI_F * 0.5f);
+
+		m_dirVector[Dir::Width] = Vector3(cosParamWidth, sinParamWidth, 0.0f);
+
+		m_dirVector[Dir::Height] = Vector3(cosParamHeight, sinParamHeight, 0.0f);
+
+		m_dirVector[Dir::Depth] = Vector3();
+	}
+
+	float OBB::GetProjectionLength(const Vector3& separate, const Vector3& e1, const Vector3& e2) const
+	{
+		float result = std::abs(separate.Dot(e1)) + std::abs(separate.Dot(e2));
+
+		return result;
+	}
+
+	Vector3 OBB::RotateVector(Vector3 vec) const
+	{
+		Vector3 vector = Vector3();
+
+		float sinParam = std::sin(-m_radian);
+		float cosParam = std::cos(-m_radian);
+
+		vector.x = -vec.x * cosParam - vec.y * sinParam;
+		vector.y = vec.x * sinParam - vec.y * cosParam;
+		vector.z = 0.0f;
+
+		return vector;
 	}
 }

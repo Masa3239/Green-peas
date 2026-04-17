@@ -6,8 +6,8 @@
 namespace {
 
 	// 画像のファイルパス
-	const char* const kSealBossGraphHandlePath = ".\\Personal\\Syoguti\\Resource\\EnemyBossTest1.png";
-	const char* const kBossGraphHandlePath = ".\\Personal\\Syoguti\\Resource\\EnemyBossTest2.png";
+	const char* const kSealBossGraphHandlePath = ".\\Resource\\EnemyBossTest1.png";
+	const char* const kBossGraphHandlePath = ".\\Resource\\EnemyBossTest2.png";
 
 	// 画像のサイズ
 	constexpr float kGraphScale = 0.1f;

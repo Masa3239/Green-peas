@@ -21,7 +21,7 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~HpHealItem() = default;
+	~HpHealItem();
 
 	/// <summary>
 	/// 初期化
@@ -46,13 +46,13 @@ public:
 	/// <summary>
 	/// アイテムの効果
 	/// </summary>
-	virtual void ItemAbility() override;
+	void ItemAbility(Player* player) override;
 
 	/// <summary>
 	/// グラフハンドルをセットするセッター関数
 	/// </summary>
 	/// <param name="graphHandlePath"></param>
-	virtual void SetGraphHandle(int graphHandle) override{ m_graphHandle = graphHandle; }
+	void SetGraphHandle(int graphHandle) override{ m_graphHandle = graphHandle; }
 
 };
 

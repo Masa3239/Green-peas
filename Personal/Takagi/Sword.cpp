@@ -1,14 +1,17 @@
 #include "Sword.h"
+#include "Weapon.h"
 #include"../../Object/GameObject.h"
 #include"../../Utility/MyMath.h"
 #include"../../Utility/Transform.h"
 #include"../../Utility/Vector3.h"
 #include"../../Utility/Time.h"
 #include"../../System/InputPad.h"
+#include"../Osawa/Enemy/EnemyManager.h"
 #include<DxLib.h>
 #include<math.h>
+#include"PlayerStatus.h"
 namespace {
-	const char* const kFilePath = "Personal\\Takagi\\Resource\\Golden Sword.png";
+	const char* const kFilePath = "Image\\Golden Sword.png";
 	/// <summary>
 	/// 武器の表示座標
 	/// </summary>
@@ -23,6 +26,9 @@ namespace {
 	constexpr float kShowRadian = -45 * MyMath::ToRadian;
 	constexpr float kSwingRadian = 60 * MyMath::ToRadian;
 	constexpr float kColRadius = 10;
+	constexpr float kInitRadian = 150*MyMath::ToRadian;
+	constexpr PlayerStatus kStatus = { 0,0,15,0,0,0,10,2 };
+
 }
 
 Sword::Sword(ObjectManager* objManager) :
@@ -49,6 +55,7 @@ Sword::~Sword()
 
 void Sword::Init()
 {
+	m_weaponStatus = kStatus;
 }
 
 void Sword::End()
@@ -106,10 +113,10 @@ void Sword::Update()
 	}
 	else {
 		if (GetTransform().rotation.y >= 0) {
-		m_desireRadian = -150*MyMath::ToRadian;
+		m_desireRadian = -kInitRadian;
 		}
 		else {
-		m_desireRadian = 150*MyMath::ToRadian;
+		m_desireRadian = kInitRadian;
 		}
 		m_attackRadian= GetTransform().rotation.y;
 	}
@@ -157,9 +164,31 @@ void Sword::Draw()
 
 void Sword::Attack()
 {
+	if (!Pad::IsPressed(Pad::Button::X))return;
 	if (m_swingState != Swing::Normal)return;
 	m_desireRadian = m_attackRadian + kSwingRadian;
 	m_swing.rotation.y = m_desireRadian;
 	attack = true;
 	m_swingState = Swing::Up;
+}
+
+bool Sword::CheckAttack()
+{
+
+	return attack;
+}
+
+void Sword::CheckCollision()
+{
+	if (!m_pEnemyMgr)return;
+
+	float damage = 0;
+	damage = m_playerStatus.Attack + m_weaponStatus.Attack;
+	float criticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
+	if (GetRand(100) < criticalRate) {
+		damage *= m_weaponStatus.CriticalDamage;
+	}
+
+	m_pEnemyMgr->CheckHitEnemies(GetCollision(), damage);
+
 }

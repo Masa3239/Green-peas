@@ -49,6 +49,11 @@ public:
 	virtual void Update() = 0;
 
 	/// <summary>
+	/// XV‚ÌŒãˆ—
+	/// </summary>
+	virtual void PostUpdate() {};
+
+	/// <summary>
 	/// •`‰æˆ—
 	/// </summary>
 	virtual void Draw() = 0;
