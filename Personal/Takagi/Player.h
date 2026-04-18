@@ -2,16 +2,10 @@
 #include"../Utility/Transform.h"
 #include"../Utility/Vector3.h"
 #include"../../Object/GameObject.h"
-#include"../../System/InputPad.h"
+//#include"../../System/InputPad.h"
 #include"PlayerStatus.h"
 #include<memory>
 #include<vector>
-
-namespace Collision{
-	class Shape;
-	class Circle;
-	class AABB;
-}
 
 namespace {
 	//enum class Status {
@@ -31,12 +25,9 @@ namespace {
 class Gauge;
 class Camera;
 class Weapon;
-//class Sword;
 class EnemyManager;
 class ItemManager;
 class PlayerBuff;
-
-struct PlayerStatus;
 
 class Player:public GameObject {
 public:
@@ -217,7 +208,7 @@ private:
 	/// ゲージの配列(HP・スタミナ・怒り)
 	/// </summary>
 	std::unique_ptr<Gauge> m_gauges[static_cast<int>(GaugeType::Max)];
-	Weapon* m_weapons;
+	std::vector< std::unique_ptr<Weapon>>m_weapons;
 
 	Camera* m_camera;
 
