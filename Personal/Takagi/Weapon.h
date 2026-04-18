@@ -38,7 +38,7 @@ public:
 	/// 当たり判定の取得
 	/// </summary>
 	/// <returns></returns>
-	virtual Collision::Circle GetCollision()=0;
+	//virtual Collision::Circle GetCollision()=0;
 	/// <summary>
 	/// 攻撃中かどうかチェック
 	/// </summary>
@@ -54,6 +54,7 @@ public:
 		m_pEnemyMgr = enemyMgr; 
 	}
 	void SetPlayerStatus(const PlayerStatus& status) { m_playerStatus = status; }
+	void SetActive(bool active) { m_active = active; }
 protected:
 	/// <summary>
 	/// 武器のグラフィックハンドル
@@ -76,5 +77,6 @@ protected:
 
 	PlayerStatus m_playerStatus;
 	PlayerStatus m_weaponStatus;
+	bool m_active;
 };
 
