@@ -15,7 +15,8 @@ namespace Collision
 	{
 		Circle,		// 円
 		AABB,		// Axis Aligne Bounding Box	回転しない
-		OBB			// Oriented Bounding Box	回転する
+		OBB,			// Oriented Bounding Box	回転する
+		Capsule		// カプセル
 	};
 	/// <summary>
 	/// 衝突判定の形状の抽象クラス
@@ -169,6 +170,8 @@ namespace Collision
 		/// <param name="pos"></param>
 		/// <returns></returns>
 		float Measure(const Vector3& pos)const;
+		 Vector3 GetMaxPos()const { return m_maxPos; }
+		Vector3 GetMinPos()const { return m_minPos; }
 	private:
 
 		void SetSize(const Vector3& size);
@@ -276,5 +279,74 @@ namespace Collision
 		/// 方向ベクトル
 		/// </summary>
 		std::array<Vector3, Dir::Length> m_dirVector;
+	};
+	/// <summary>
+/// 衝突判定の円の形状のクラス
+/// </summary>
+	class Capsule : public Shape
+	{
+	public:
+
+		Capsule() = default;
+		Capsule(const Vector3& start,const Vector3& end, float radius) : m_start(start),m_end(end), m_radius(radius) {}
+
+		~Capsule() = default;
+
+		/// <summary>
+		/// 形状データの取得
+		/// </summary>
+		/// <returns></returns>
+		Type GetType() const override { return Type::Capsule; }
+
+		/// <summary>
+		/// 衝突判定
+		/// </summary>
+		/// <param name="other"></param>
+		/// <returns></returns>
+		bool CheckCollision(const Shape& other) const override;
+		/// <summary>
+		/// 中心座標を更新する
+		/// </summary>
+		void SetPosition(const Vector3& pos) override {}
+		/// <summary>
+		/// 中心座標を取得する
+		/// </summary>
+		Vector3 GetStartPos() const { return m_start; }
+		Vector3 GetEndPos() const { return m_end; }
+		Vector3 GetPosition() const override { return (m_start+m_end)/2; }
+		/// <summary>
+		/// 座標の更新 始点
+		/// </summary>
+		/// <param name="pos"></param>
+		void SetStartPos(const Vector3& pos) { m_start = pos; }
+		/// <summary>
+		/// 座標の更新 終点
+		/// </summary>
+		/// <param name="pos"></param>
+		void SetEndPos(const Vector3& pos) { m_end = pos; }
+
+		/// <summary>
+		/// 円の半径の取得
+		/// </summary>
+		/// <returns></returns>
+		float GetRadius() const { return m_radius; }
+
+		/// <summary>
+		/// 球のデバッグ描画
+		/// </summary>
+		void DebugDraw() const override;
+
+	private:
+
+		/// <summary>
+		/// 球の中心座標
+		/// </summary>
+		Vector3 m_start;
+		Vector3 m_end;
+
+		/// <summary>
+		/// 球の半径
+		/// </summary>
+		float m_radius;
 	};
 };
