@@ -87,9 +87,9 @@ Player::Player(ObjectManager* objManager) :
 	//}
 	// 初期武器を設定
 	
-	m_weapons.push_back(std::make_unique<Sword>(objManager));
+	//m_weapons.push_back(std::make_unique<Sword>(objManager));
 	m_weapons.push_back(std::make_unique<Boomerang>(objManager));
-	//m_weapons.push_back(std::make_unique<Bow>(objManager));
+	m_weapons.push_back(std::make_unique<Bow>(objManager));
 	//m_weapons.push_back(std::make_unique<Bow>(objManager));
 
 	for (auto& weapons : m_weapons) {

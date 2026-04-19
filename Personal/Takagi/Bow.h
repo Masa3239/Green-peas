@@ -21,6 +21,7 @@ public:
 	bool CheckAttack()override;
 	//Collision::Circle GetCollision()override;
 	void CheckCollision()override;
+	void Shot(const Transform& transform);
 private:
 	//bool attack;
 	//float m_desireRadian;
