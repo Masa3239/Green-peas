@@ -78,5 +78,6 @@ protected:
 	PlayerStatus m_playerStatus;
 	PlayerStatus m_weaponStatus;
 	bool m_active;
+	float m_scale;
 };
 

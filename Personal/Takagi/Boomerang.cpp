@@ -10,10 +10,12 @@ namespace {
     constexpr float kDeccel = kSpeed*1.2f;
     constexpr float kCatch = 25;
     constexpr float kCatchDistance = kCatch*kCatch;
-    constexpr float kColRadius = 15;
+    constexpr float kColRadius = 20;
+    constexpr float kGraphScale = 2;
     constexpr PlayerStatus kStatus = { 0,0,10,0,0,0,10,2 };
     const char* const kFilePath = "Image\\Boomerang.png";
     constexpr float kRotationSpeed = 720;
+
 }
 
 Boomerang::Boomerang(ObjectManager* objManager):
@@ -26,6 +28,8 @@ Boomerang::Boomerang(ObjectManager* objManager):
     m_attack.Reset();
     m_weaponStatus = kStatus;
     m_graphHandle = LoadGraph(kFilePath);
+    m_scale = 1;
+    m_scale = 3;
 }
 
 Boomerang::~Boomerang()
@@ -70,18 +74,22 @@ void Boomerang::Update()
         m_drawAngle = 0;
     }
     m_circle.SetPosition(m_attack.position);
+    m_circle.SetRadius(kColRadius * m_scale);
 }
 
 void Boomerang::Draw()
 {
-    DrawCircle(m_attack.position.x, m_attack.position.y, 10, Color::kMagenta);
+    if (!m_active&&!m_attackFlag)return;
+
+    //DrawCircle(m_attack.position.x, m_attack.position.y, kColRadius*m_scale, Color::kMagenta);
    /* printfDx("ぼーーーーーーーーー\n");
     printfDx("m_tramsform.x : %f\n", m_attack.position.x);
     printfDx("m_tramsform.y : %f\n", m_attack.position.y);
     printfDx("m_tramsform.z : %f\n", m_attack.position.z);
     Vector3 debug = RadToPos(m_attack.rotation.z, 15, m_attack.position);
     DrawCircle(debug.x, debug.y, 5, Color::kGreen);*/
-    DrawRotaGraph(m_attack.position.x, m_attack.position.y, 4, m_drawAngle * MyMath::ToRadian, m_graphHandle, TRUE);
+    DrawRotaGraph(m_attack.position.x, m_attack.position.y, kGraphScale*m_scale
+        , m_drawAngle * MyMath::ToRadian, m_graphHandle, TRUE);
 }
 
 void Boomerang::Attack()

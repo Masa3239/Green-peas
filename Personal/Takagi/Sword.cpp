@@ -61,6 +61,7 @@ Sword::Sword(ObjectManager* objManager) :
 	}
 	LoadDivGraph(kSlashPath, 5, 5, 1, 120, 120, m_effectHandle);
 	m_effectTransform.Reset();
+	m_scale = 1;
 }
 
 Sword::~Sword()
@@ -119,7 +120,7 @@ void Sword::Update()
 	drawPos = drawPos.GetNormalize();
 	drawPos *= 60;
 	drawPos += GetTransform().position;*/
-		drawPos = RadToPos(m_swing.rotation.z, kAttackDistance, GetTransform().position);
+		drawPos = RadToPos(m_swing.rotation.z, kAttackDistance*m_scale, GetTransform().position);
 	}
 	else {
 		if (GetTransform().rotation.z >= 0) {
@@ -137,12 +138,14 @@ void Sword::Update()
 	//m_effectTransform.position = pos;
 	m_effectFrame += time * kEffectAnimSpeed;
 	m_effectFrame = MyMath::Clamp(m_effectFrame, 0.0f, static_cast<float>(kEffectFrame - 1));
-	m_effectTransform.position = RadToPos(m_effectTransform.rotation.z, kEffectDistance, GetTransform().position);
+	m_effectTransform.position = RadToPos(m_effectTransform.rotation.z, kEffectDistance*m_scale, GetTransform().position);
 
 
 	m_cupsule.SetStartPos(GetTransform().position);
-	Vector3 colEnd = RadToPos(m_swing.rotation.z, kEffectDistance*1.3f, GetTransform().position);
+	Vector3 colEnd = RadToPos(m_swing.rotation.z, kEffectDistance*1.3f*m_scale, GetTransform().position);
 	m_cupsule.SetEndPos(colEnd);
+	m_cupsule.SetRadius(kColRadius * m_scale);
+	m_scale = 3;
 }
 
 void Sword::Draw()
@@ -176,13 +179,13 @@ void Sword::Draw()
 	//else {
 	//	radian = 0;
 	//}
-	m_cupsule.DebugDraw();
+	//m_cupsule.DebugDraw();
 	Vector3 effectPos = m_effectTransform.position;
 	float effectRadian = m_effectTransform.rotation.z + kEffectDrawRadian;
 	int handle = m_effectHandle[static_cast<int>(m_effectFrame)];
-	DrawRotaGraph(effectPos.x, effectPos.y, kEffectScale, effectRadian, handle, TRUE);
+	DrawRotaGraph(effectPos.x, effectPos.y, kEffectScale*m_scale, effectRadian, handle, TRUE);
 	if (!m_active)return;
-	DrawRotaGraph(m_swing.position.x, m_swing.position.y, 1, radian, m_graphHandle, TRUE, reverseX);
+	DrawRotaGraph(m_swing.position.x, m_swing.position.y, m_scale, radian, m_graphHandle, TRUE, reverseX);
 	printfDx("角度 : %f\n", GetTransform().rotation.z);
 	printfDx("attack : %d\n", m_attack);
 }
