@@ -27,5 +27,6 @@ private:
 	float m_speed;
 	bool m_attackFlag;
 	Collision::Circle m_circle;
+	float m_drawAngle;
 };
 

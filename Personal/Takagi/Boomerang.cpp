@@ -6,26 +6,31 @@
 #include"../Osawa/Enemy/EnemyManager.h"
 
 namespace {
-    constexpr float kSpeed = 30000;
-    constexpr float kDeccel = kSpeed*0.7f;
-    constexpr float kCatch = 15;
+    constexpr float kSpeed = 50000;
+    constexpr float kDeccel = kSpeed*1.2f;
+    constexpr float kCatch = 25;
     constexpr float kCatchDistance = kCatch*kCatch;
     constexpr float kColRadius = 15;
     constexpr PlayerStatus kStatus = { 0,0,10,0,0,0,10,2 };
+    const char* const kFilePath = "Image\\Boomerang.png";
+    constexpr float kRotationSpeed = 720;
 }
 
 Boomerang::Boomerang(ObjectManager* objManager):
     Weapon(objManager),
     m_attack(),
     m_speed(0),
-    m_circle(Collision::Circle(GetTransform().position,kColRadius))
+    m_circle(Collision::Circle(GetTransform().position,kColRadius)),
+    m_drawAngle(0)
 {
     m_attack.Reset();
     m_weaponStatus = kStatus;
+    m_graphHandle = LoadGraph(kFilePath);
 }
 
 Boomerang::~Boomerang()
 {
+    DeleteGraph(m_graphHandle);
 }
 
 void Boomerang::Init()
@@ -58,9 +63,11 @@ void Boomerang::Update()
     if (m_attackFlag) {
         moveVec = RadToPos(m_attack.rotation.z, m_speed*time/**MyMath::Sign(m_speed)*/);
         m_attack.position += moveVec * time;
+        m_drawAngle += kRotationSpeed * time;
     }
     else {
         m_attack = GetTransform();
+        m_drawAngle = 0;
     }
     m_circle.SetPosition(m_attack.position);
 }
@@ -68,12 +75,13 @@ void Boomerang::Update()
 void Boomerang::Draw()
 {
     DrawCircle(m_attack.position.x, m_attack.position.y, 10, Color::kMagenta);
-    printfDx("ぼーーーーーーーーー\n");
+   /* printfDx("ぼーーーーーーーーー\n");
     printfDx("m_tramsform.x : %f\n", m_attack.position.x);
     printfDx("m_tramsform.y : %f\n", m_attack.position.y);
     printfDx("m_tramsform.z : %f\n", m_attack.position.z);
     Vector3 debug = RadToPos(m_attack.rotation.z, 15, m_attack.position);
-    DrawCircle(debug.x, debug.y, 5, Color::kGreen);
+    DrawCircle(debug.x, debug.y, 5, Color::kGreen);*/
+    DrawRotaGraph(m_attack.position.x, m_attack.position.y, 4, m_drawAngle * MyMath::ToRadian, m_graphHandle, TRUE);
 }
 
 void Boomerang::Attack()
