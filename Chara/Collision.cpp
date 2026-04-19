@@ -100,13 +100,16 @@ namespace Collision
 			Vector3 rightTop = { m_maxPos.x,m_minPos.y,0 };
 			Vector3 leftBottom = { m_minPos.x,m_maxPos.y,0 };
 			float distance = Segment_Segment_MinLength(start.ToVECTOR(), end.ToVECTOR(), m_minPos.ToVECTOR(), rightTop.ToVECTOR());
-			if (distance > check->GetRadius())return false;
+			if (distance <= check->GetRadius())return true;
 			distance = Segment_Segment_MinLength(start.ToVECTOR(), end.ToVECTOR(), m_minPos.ToVECTOR(), leftBottom.ToVECTOR());
-			if (distance > check->GetRadius())return false;
+			if (distance <= check->GetRadius())return true;
 			distance = Segment_Segment_MinLength(start.ToVECTOR(), end.ToVECTOR(), leftBottom.ToVECTOR(), m_maxPos.ToVECTOR());
-			if (distance > check->GetRadius())return false;
+			if (distance <= check->GetRadius())return true;
 			distance = Segment_Segment_MinLength(start.ToVECTOR(), end.ToVECTOR(), m_maxPos.ToVECTOR(), rightTop.ToVECTOR());
-			if (distance > check->GetRadius())return false;
+			if (distance <= check->GetRadius())return true;
+			if (CheckPointInAABB(check->GetStartPos()))return true;
+			if (CheckPointInAABB(check->GetEndPos()))return true;
+			return false;
 		}
 		// ‚±‚±‚Ü‚Å—ˆ‚½‚ç“–‚½‚Á‚Ä‚¢‚é
 		return true;
@@ -374,6 +377,8 @@ namespace Collision
 			if (distance <= m_radius)return true;
 			distance = Segment_Segment_MinLength(m_start.ToVECTOR(), m_end.ToVECTOR(), rightBottom.ToVECTOR(), rightTop.ToVECTOR());
 			if (distance <= m_radius)return true;
+			if (check->CheckPointInAABB(m_start))return true;
+			if (check->CheckPointInAABB(m_end))return true;
 			break;
 		}
 			break;
@@ -384,6 +389,7 @@ namespace Collision
 	}
 	void Capsule::DebugDraw() const
 	{
-
+		DrawCircle(m_start.x, m_start.y, m_radius, Color::kCyan, TRUE);
+		DrawCircle(m_end.x, m_end.y, m_radius, Color::kCyan, TRUE);
 	}
 }
