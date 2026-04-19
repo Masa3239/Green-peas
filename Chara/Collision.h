@@ -96,6 +96,11 @@ namespace Collision
 		/// <returns></returns>
 		Vector3 GetPosition() const override { return m_center; }
 		/// <summary>
+		/// ‰~‚Ì”¼Œa‚Ìİ’è
+		/// </summary>
+		/// <param name="radius"></param>
+		void SetRadius(float radius) { m_radius = radius; }
+		/// <summary>
 		/// ‰~‚Ì”¼Œa‚Ìæ“¾
 		/// </summary>
 		/// <returns></returns>
@@ -324,7 +329,11 @@ namespace Collision
 		/// </summary>
 		/// <param name="pos"></param>
 		void SetEndPos(const Vector3& pos) { m_end = pos; }
-
+		/// <summary>
+		/// ”¼Œa‚Ìİ’è
+		/// </summary>
+		/// <param name="radius"></param>
+		void SetRadius(float radius) { m_radius = radius; }
 		/// <summary>
 		/// ‰~‚Ì”¼Œa‚Ìæ“¾
 		/// </summary>
