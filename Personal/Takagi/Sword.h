@@ -16,7 +16,7 @@ public:
 	void End()override;
 	void Update()override;
 	void Draw()override;
-	void SetPos(const Vector3& pos) { GetTransform().position = pos; }
+	//void SetPos(const Vector3& pos) { GetTransform().position = pos; }
 	void Attack()override;
 	//Collision::Capsule GetCollision()override { return m_circle; }
 	bool CheckAttack()override;
