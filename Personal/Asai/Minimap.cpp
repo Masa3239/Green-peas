@@ -6,6 +6,7 @@
 #include"../Asai/Camera.h"
 
 #include"../Takagi/Player.h"
+#include"../Syoguti/ItemManager.h"
 
 namespace {
 	//ミニマップのサイズ
@@ -62,6 +63,15 @@ void Minimap::Draw()
 	//DrawCircle(playerPos.x, playerPos.y, 5.0f, 0xffffff, TRUE);
 
 	DrawRotaGraph(playerPos.x, playerPos.y, 0.3f, m_pPlayer->GetTransform().rotation.z+kOffSetRadian, m_playerUIGrahpHandle, TRUE);
+
+	for (int i = 0;i < m_pItemMgr->GetArraySize();i++) {
+
+		Vector3 itemPos = ToMinimapPos(m_pItemMgr->GetItemPos(i));
+
+		DrawCircle(itemPos.x, itemPos.y, 5, 0xffffff, TRUE);
+
+	}
+
 
 }
 

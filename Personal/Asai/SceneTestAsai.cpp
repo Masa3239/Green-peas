@@ -7,16 +7,19 @@
 #include"../Asai/Arrow.h"
 #include"../Asai/FireBall.h"
 #include"../Asai/Minimap.h"
+#include"../Asai/ThunderBall.h"
 
 #include"../Takagi/Player.h"
 #include"../Kimura/Map/Map.h"
+#include"../Syoguti/ItemManager.h"
 
 UIManager* uiMgr;
 Arrow* arrow;
 FireBall* fire;
 Camera* camera;
 Minimap* miniMap;
-
+ThunderBall* thunder;
+ItemManager* ItemMgr;
 Player* pPlayer;
 Map* map;
 
@@ -45,6 +48,9 @@ void SceneTestAsai::Init()
 	fire = new FireBall(GetObjectManager());
 	fire->Init();
 
+	thunder = new ThunderBall(GetObjectManager());
+	thunder->Init();
+
 	map = new Map();
 	map->Init();
 
@@ -53,12 +59,19 @@ void SceneTestAsai::Init()
 	camera->SetMap(map);
 	camera->GenerateWorldScreen();
 
+	ItemMgr = new ItemManager();
+	ItemMgr->SetObjectManager(GetObjectManager());
+	ItemMgr->SetPlayer(pPlayer);
+	ItemMgr->Init();
+
 	miniMap = new Minimap();
 	miniMap->SetCamera(camera);
 	miniMap->SetPlayer(pPlayer);
+	miniMap->SetItemManager(ItemMgr);
 	miniMap->Init();
 
 	pPlayer->SetCamera(camera);
+	pPlayer->SetItemManager(ItemMgr);
 
 }
 
@@ -72,22 +85,25 @@ SceneBase* SceneTestAsai::Update()
 	uiMgr->SetPlayer(pPlayer);
 	uiMgr->Update();
 
-	pPlayer->Update();
+	ItemMgr->Update();
 
-	fire->Update();
+	map->Update();
+	pPlayer->Update();
+	thunder->Update();
 
 	if (CheckHitKey(KEY_INPUT_1)) {
 		transform.position.x++;
 		transform.position.y++;
 		transform.rotation.z += 0.1f;
 		pPlayer->Damage(1);
-		fire->SetScale(transform.rotation.z);
+		thunder->SetScale(transform.rotation.z);
 	}
 
 	if (CheckHitKey(KEY_INPUT_2)) {
 
 		uiMgr->CreateDamagePopUpText(transform.position,5);
-		fire->Shot(pPlayer->GetTransform());
+		//thunder->Shot(pPlayer->GetTransform());
+		ItemMgr->Create(ItemBase::ItemType::Heal, pPlayer->GetTransform().position);
 	}
 
 	if (CheckHitKey(KEY_INPUT_0)) {
@@ -100,7 +116,9 @@ SceneBase* SceneTestAsai::Update()
 	printfDx(" deg %f\n", MyMath::RadToDeg(transform.rotation.z));
 	printfDx(" rad %f\n", transform.rotation.z);
 
-	arrow->DebugDraw();
+	//arrow->DebugDraw();
+
+	//thunder->DebugDraw();
 
 	printfDx("%f", Time::GetInstance().GetDeltaTime());
 
