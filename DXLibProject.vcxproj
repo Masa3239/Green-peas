@@ -112,6 +112,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,13 +140,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Personal\Asai\Arrow.cpp" />
+    <ClCompile Include="Personal\Asai\BulletBase.cpp" />
+    <ClCompile Include="Personal\Asai\FireBall.cpp" />
+    <ClCompile Include="Personal\Asai\PlayerAngerBar.cpp" />
+    <ClCompile Include="Personal\Asai\PlayerExpBar.cpp" />
+    <ClCompile Include="Personal\Asai\PlayerStaminaBar.cpp" />
+    <ClCompile Include="Personal\Asai\PopUpText.cpp" />
+    <ClCompile Include="Personal\Asai\PopUpTextManager.cpp" />
+    <ClCompile Include="Personal\Kimura\Map\Map.cpp" />
     <ClCompile Include="Personal\Osawa\Enemy\EnemyMelee.cpp" />
     <ClCompile Include="Object\ExampleObject.cpp" />
     <ClCompile Include="Object\GameObject.cpp" />
     <ClCompile Include="Personal\Asai\PlayerHpBar.cpp" />
     <ClCompile Include="Personal\Asai\PlayerUIBase.cpp" />
     <ClCompile Include="Personal\Asai\PlayerUIManager.cpp" />
+    <ClCompile Include="Personal\Syoguti\AttackUpItem.cpp" />
+    <ClCompile Include="Personal\Syoguti\BuffRandom.cpp" />
     <ClCompile Include="Personal\Syoguti\EnemyBoss.cpp" />
+    <ClCompile Include="Personal\Takagi\Boomerang.cpp" />
+    <ClCompile Include="Personal\Takagi\Bow.cpp" />
+    <ClCompile Include="Personal\Takagi\ExpGauge.cpp" />
     <ClCompile Include="Personal\Takagi\Gauge.cpp" />
     <ClCompile Include="Personal\Asai\Camera.cpp" />
     <ClCompile Include="Chara\AnimationController.cpp" />
@@ -166,7 +181,14 @@
     <ClCompile Include="Personal\Syoguti\ItemManager.cpp" />
     <ClCompile Include="Personal\Syoguti\SceneTestSyoguti.cpp" />
     <ClCompile Include="Personal\Takagi\Player.cpp" />
+    <ClCompile Include="Personal\Takagi\PlayerBuff.cpp" />
+    <ClCompile Include="Personal\Takagi\PlayerStatus.cpp" />
     <ClCompile Include="Personal\Takagi\SceneTestTakagi.cpp" />
+    <ClCompile Include="Personal\Takagi\Sword.cpp" />
+    <ClCompile Include="Personal\Takagi\Weapon.cpp" />
+    <ClCompile Include="Personal\Osawa\Scene\SceneTestOBB.cpp" />
+    <ClCompile Include="Personal\Osawa\Scene\SceneTempResult.cpp" />
+    <ClCompile Include="Scene\SceneInGame.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Scene\SceneTest.cpp" />
@@ -180,16 +202,49 @@
     <ClCompile Include="Utility\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Image\Bow.png" />
     <Image Include="Image\Cloud.png" />
+    <Image Include="Image\Golden Sword.png" />
+    <Image Include="Image\MapChip.png" />
+    <Image Include="Image\pipo-btleffect001.png" />
+    <Image Include="Image\pipo-charachip_otaku01.png" />
+    <Image Include="Personal\Kimura\Image\MapChip.png" />
+    <Image Include="Personal\Syoguti\Resource\EnemyBossTest1.png" />
+    <Image Include="Personal\Syoguti\Resource\EnemyBossTest2.png" />
+    <Image Include="Personal\Syoguti\Resource\ItemTest1.png" />
+    <Image Include="Personal\Takagi\Resource\Golden Sword.png" />
+    <Image Include="Personal\Takagi\Resource\pipo-btleffect001.png" />
+    <Image Include="Personal\Takagi\Resource\pipo-charachip_otaku01.png" />
+    <Image Include="Resource\EnemyBossTest1.png" />
+    <Image Include="Resource\EnemyBossTest2.png" />
+    <Image Include="Resource\ItemTest1.png" />
+    <Image Include="Resource\ItemTest2.png" />
+    <Image Include="Resource\MapChip.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Personal\Asai\Arrow.h" />
+    <ClInclude Include="Personal\Asai\BulletBase.h" />
+    <ClInclude Include="Personal\Asai\FireBall.h" />
+    <ClInclude Include="Personal\Asai\PlayerAngerBar.h" />
+    <ClInclude Include="Personal\Asai\PlayerExpBar.h" />
+    <ClInclude Include="Personal\Asai\PlayerStaminaBar.h" />
+    <ClInclude Include="Personal\Asai\PopUpText.h" />
+    <ClInclude Include="Personal\Asai\PopUpTextManager.h" />
+    <ClInclude Include="Personal\Kimura\Map\Map.h" />
+    <ClInclude Include="Personal\Kimura\Map\MapManager.h" />
     <ClInclude Include="Personal\Osawa\Enemy\EnemyMelee.h" />
     <ClInclude Include="Object\ExampleObject.h" />
     <ClInclude Include="Object\GameObject.h" />
     <ClInclude Include="Personal\Asai\PlayerHpBar.h" />
     <ClInclude Include="Personal\Asai\PlayerUIBase.h" />
     <ClInclude Include="Personal\Asai\PlayerUIManager.h" />
+    <ClInclude Include="Personal\Syoguti\AttackUpItem.h" />
+    <ClInclude Include="Personal\Syoguti\Buff.h" />
+    <ClInclude Include="Personal\Syoguti\BuffRandom.h" />
     <ClInclude Include="Personal\Syoguti\EnemyBoss.h" />
+    <ClInclude Include="Personal\Takagi\Boomerang.h" />
+    <ClInclude Include="Personal\Takagi\Bow.h" />
+    <ClInclude Include="Personal\Takagi\ExpGauge.h" />
     <ClInclude Include="Personal\Takagi\Gauge.h" />
     <ClInclude Include="Personal\Asai\Camera.h" />
     <ClInclude Include="Chara\Animation.h" />
@@ -213,7 +268,15 @@
     <ClInclude Include="Personal\Syoguti\SceneTestSyoguti.h" />
     <ClInclude Include="Personal\Takagi\deleteThis5.h" />
     <ClInclude Include="Personal\Takagi\Player.h" />
+    <ClInclude Include="Personal\Takagi\PlayerBuff.h" />
+    <ClInclude Include="Personal\Takagi\PlayerStatus.h" />
+    <ClInclude Include="Personal\Takagi\RadToPos.h" />
     <ClInclude Include="Personal\Takagi\SceneTestTakagi.h" />
+    <ClInclude Include="Personal\Takagi\Sword.h" />
+    <ClInclude Include="Personal\Takagi\Weapon.h" />
+    <ClInclude Include="Personal\Osawa\Scene\SceneTestOBB.h" />
+    <ClInclude Include="Personal\Osawa\Scene\SceneTempResult.h" />
+    <ClInclude Include="Scene\SceneInGame.h" />
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Scene\SceneTest.h" />
@@ -232,6 +295,11 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="okjuigh.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Mapdata\Map1_1.csv" />
+    <None Include="Resource\Map1_1.csv" />
+    <None Include="Resource\Map1_2.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
