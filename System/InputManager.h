@@ -9,6 +9,10 @@ struct Vector2;
 class InputDeviceBase;
 class IInputModifier;
 
+// 入力デバイスであることを表すコンセプト
+template <class T>
+concept InputDevice = std::derived_from<T, InputDeviceBase>;
+
 // 参考元
 // ・https://zenn.dev/kd_gamegikenblg/articles/736fd9b9b1cf8c
 // ・Unity InputSystem
@@ -141,7 +145,7 @@ private:
 	/// </summary>
 	/// <typeparam name="T">登録したいデバイス</typeparam>
 	/// <param name="type">デバイスの種類</param>
-	template <class T>
+	template <InputDevice T>
 	void RegisterDevice(Input::Device type);
 
 	// 各アクションのバインド情報の配列
@@ -158,7 +162,7 @@ private:
 	std::unordered_map<Input::Device, std::unique_ptr<InputDeviceBase>> mDevices;
 };
 
-template<class T>
+template<InputDevice T>
 inline void InputManager::RegisterDevice(Input::Device type)
 {
 	std::unique_ptr<T> device = std::make_unique<T>();
