@@ -56,6 +56,16 @@ public:
 	void StartDamage(float shakeDuration = 1.0f);
 
 	/// <summary>
+	/// 追従状態に変更
+	/// </summary>
+	void ChangeFollow() { m_state = CameraState::Type::Follow; }
+
+	/// <summary>
+	/// 怒り状態のカメラに変更
+	/// </summary>
+	void ChangeAnger() { m_state = CameraState::Type::Anger; }
+
+	/// <summary>
 	/// ワールドスクリーンを生成する
 	void GenerateWorldScreen();
 
