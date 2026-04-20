@@ -34,11 +34,13 @@ public:
 	/// HPを設定
 	/// </summary>
 	void SetHP(const int hp) { m_hp = hp; }
+	
 	/// <summary>
 	/// ダメージを与える
 	/// </summary>
 	/// <param name="damage">ダメージ量</param>
-	void Damage(const int damage);
+	/// <returns>ダメージを与えられたらtrue</returns>
+	bool Damage(const int damage);
 
 	Player* GetPlayer() const { return m_player; }
 	void SetPlayer(Player* player) { m_player = player; }
