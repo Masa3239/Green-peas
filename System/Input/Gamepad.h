@@ -54,7 +54,7 @@ private:
 	/// <summary>
 	/// キーボードの押下状態
 	/// </summary>
-	std::array<XINPUT_STATE, 4> mState;
+	std::array<XINPUT_STATE, kMaxSlotNum> mState;
 
 	/// <summary>
 	/// 接続しているゲームパッドの数
