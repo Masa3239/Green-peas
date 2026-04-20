@@ -46,6 +46,8 @@ void SceneTestTakagi::Init()
 	m_pEnemyManager->SetPlayer(m_pPlayer.get());
 	m_pEnemyManager->SetUIManager(m_pUIManager.get());
 	m_pUIManager->Init();
+	m_pCamera->SetMap(m_pMap.get());
+	m_pCamera->GenerateWorldScreen();
 }
 
 void SceneTestTakagi::End()
