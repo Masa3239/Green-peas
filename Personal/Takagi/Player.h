@@ -2,16 +2,10 @@
 #include"../Utility/Transform.h"
 #include"../Utility/Vector3.h"
 #include"../../Object/GameObject.h"
-#include"../../System/InputPad.h"
+//#include"../../System/InputPad.h"
 #include"PlayerStatus.h"
 #include<memory>
-
-
-namespace Collision{
-	class Shape;
-	class Circle;
-	class AABB;
-}
+#include<vector>
 
 namespace {
 	//enum class Status {
@@ -31,11 +25,9 @@ namespace {
 class Gauge;
 class Camera;
 class Weapon;
-//class Sword;
 class EnemyManager;
 class ItemManager;
-
-struct PlayerStatus;
+class PlayerBuff;
 
 class Player:public GameObject {
 public:
@@ -111,6 +103,12 @@ public:
 	/// </summary>
 	/// <param name="value">回復量</param>
 	void Heal(float value);
+	/// <summary>
+	/// プレイヤーにバフを追加
+	/// </summary>
+	/// <param name="playerBuf"></param>
+	/// <returns></returns>
+	void AddBuff(const PlayerBuff& playerBuff)const;
 public: // ゲッター・セッター=======================
 	void SetCamera(Camera* camera) { m_camera = camera; }
 	/// <summary>
@@ -177,6 +175,9 @@ private:
 	bool CheckDashNow();
 	void CheckHit();
 	void LevelUp();
+	void BufUpdate();
+	bool CheckAngerButton();
+	void UpdateAngerButton();
 private:
 
 	/// <summary>
@@ -191,7 +192,7 @@ private:
 
 	// プレイヤーが向いている方向(左右)
 	int m_directionX;
-
+	float m_moveAmount;
 	// 移動速度
 	float m_speed;
 	// 速さの割合
@@ -209,17 +210,24 @@ private:
 	/// ゲージの配列(HP・スタミナ・怒り)
 	/// </summary>
 	std::unique_ptr<Gauge> m_gauges[static_cast<int>(GaugeType::Max)];
-	Weapon* m_weapons;
+	std::vector< std::unique_ptr<Weapon>>m_weapons;
 
 	Camera* m_camera;
 
 	/// <summary>
 	/// 四角の当たり判定
 	/// </summary>
-	Collision::AABB m_box;
+	//Collision::AABB m_box;
 	Collision::Circle m_circle;
-
+	/// <summary>
+	/// バフの配列
+	/// </summary>
+	//std::vector< std::unique_ptr<PlayerBuf>> m_buffs;
+	std::vector< PlayerBuff> m_buffs;
 	PlayerStatus m_status;
 	EnemyManager* m_pEnemyMgr;
 	ItemManager* m_pItemMgr;
+	bool m_angerButton[2];
+
+	bool m_anger;
 };

@@ -84,7 +84,8 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, int damage)
 	{
 		if (!enemy->GetCollider().CheckCollision(shape)) continue;
 		
-		enemy->Damage(damage);
+		// ダメージを与えられなかったらスキップ
+		if (!enemy->Damage(damage)) continue;
 
 		m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, damage);
 

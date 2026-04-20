@@ -31,5 +31,5 @@ public:
 	/// </summary>
 	void Draw() override;
 private:
-	Map m_map;
+	Map* m_pMap;
 };

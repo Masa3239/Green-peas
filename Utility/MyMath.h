@@ -7,7 +7,7 @@ namespace MyMath {
 	// ラジアン角に変更する定数
 	constexpr float ToRadian = DX_PI_F / 180.0f;
 	// デグリー角に変更する定数
-	constexpr float ToDegree= 180.0f / DX_PI_F;
+	constexpr float ToDegree = 180.0f / DX_PI_F;
 
 	/// <summary>
 	/// デグリー角度からラジアン角度へ変換
@@ -96,5 +96,4 @@ namespace MyMath {
 		else if (angle < -45 && angle >= -135)return FourDirection::Left;
 		return FourDirection::Front;
 	}
-
 }

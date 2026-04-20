@@ -60,14 +60,16 @@ void EnemyBase::PostUpdate()
 	m_wasDamagedThisFrame = false;
 }
 
-void EnemyBase::Damage(const int damage)
+bool EnemyBase::Damage(const int damage)
 {
 	m_wasDamagedThisFrame = true;
 
 	// 攻撃判定に当たった瞬間ではないなら早期リターン
-	if (m_invincible) return;
+	if (m_invincible) return false;
 
 	m_invincible = true;
 
 	m_hp -= damage;
+
+	return true;
 }
