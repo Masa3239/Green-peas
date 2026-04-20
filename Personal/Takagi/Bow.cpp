@@ -47,7 +47,7 @@ void Bow::Draw()
 {
 	if (!m_active)return;
 	float radian = GetTransform().rotation.z+kDrawRadian /*+ (kShowRadian)*MyMath::Sign(GetTransform().rotation.z)*/;
-	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, 1, radian, m_graphHandle, TRUE);
+	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, m_scale, radian, m_graphHandle, TRUE);
 }
 
 void Bow::Attack()
@@ -79,7 +79,7 @@ void Bow::CheckCollision()
 {
 	if (!m_pEnemyMgr)return;
 	float damage = 0;
-	damage = m_playerStatus.Attack + m_weaponStatus.Attack;
+	damage = m_playerStatus.Attack * m_weaponStatus.Attack;
 	float criticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
 	if (GetRand(100) < criticalRate) {
 		damage *= m_weaponStatus.CriticalDamage;

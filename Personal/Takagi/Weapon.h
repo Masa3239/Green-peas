@@ -55,6 +55,7 @@ public:
 	}
 	void SetPlayerStatus(const PlayerStatus& status) { m_playerStatus = status; }
 	void SetActive(bool active) { m_active = active; }
+	void SetScale(float scale) { m_scale = scale; }
 protected:
 	/// <summary>
 	/// 武器のグラフィックハンドル

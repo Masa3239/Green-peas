@@ -29,7 +29,6 @@ Boomerang::Boomerang(ObjectManager* objManager):
     m_weaponStatus = kStatus;
     m_graphHandle = LoadGraph(kFilePath);
     m_scale = 1;
-    m_scale = 3;
 }
 
 Boomerang::~Boomerang()
@@ -113,7 +112,7 @@ void Boomerang::CheckCollision()
     if (!m_attackFlag)return;
     
     float damage = 0;
-    damage = m_playerStatus.Attack + m_weaponStatus.Attack;
+    damage = m_playerStatus.Attack * m_weaponStatus.Attack;
     float criticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
     if (GetRand(100) < criticalRate) {
         damage *= m_weaponStatus.CriticalDamage;

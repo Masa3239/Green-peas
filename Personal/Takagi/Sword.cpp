@@ -145,7 +145,6 @@ void Sword::Update()
 	Vector3 colEnd = RadToPos(m_swing.rotation.z, kEffectDistance*1.3f*m_scale, GetTransform().position);
 	m_cupsule.SetEndPos(colEnd);
 	m_cupsule.SetRadius(kColRadius * m_scale);
-	m_scale = 3;
 }
 
 void Sword::Draw()
@@ -216,7 +215,7 @@ void Sword::CheckCollision()
 	if (!m_pEnemyMgr)return;
 
 	float damage = 0;
-	damage = m_playerStatus.Attack + m_weaponStatus.Attack;
+	damage = m_playerStatus.Attack * m_weaponStatus.Attack;
 	float criticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
 	if (GetRand(100) < criticalRate) {
 		damage *= m_weaponStatus.CriticalDamage;
