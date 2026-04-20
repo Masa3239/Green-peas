@@ -39,15 +39,18 @@ void SceneTestTakagi::Init()
 {
 	m_pPlayer->SetEnemyManager(m_pEnemyManager.get());
 	m_pPlayer->Init();
-	m_pCamera->Init();
-	m_pMap->Init();
 	m_pPlayer->SetCamera(m_pCamera.get());
 	m_pPlayer->SetItemManager(m_pItemManager.get());
+	m_pCamera->Init();
+	m_pMap->Init();
 	m_pEnemyManager->SetPlayer(m_pPlayer.get());
 	m_pEnemyManager->SetUIManager(m_pUIManager.get());
 	m_pUIManager->Init();
 	m_pCamera->SetMap(m_pMap.get());
 	m_pCamera->GenerateWorldScreen();
+	m_pItemManager->Init();
+	m_pItemManager->SetObjectManager(GetObjectManager());
+	m_pItemManager->SetPlayer(m_pPlayer.get());
 }
 
 void SceneTestTakagi::End()
