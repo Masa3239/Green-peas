@@ -7,6 +7,8 @@
 #include "../Personal/Asai/UIManager.h"
 
 #include "EnemyMelee.h"
+#include "EnemyShooter.h"
+#include "EnemyMiniBoss.h"
 #include <DxLib.h>
 
 namespace
@@ -36,7 +38,7 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::Init()
 {
-
+	//GenerateEnemy(new EnemyMiniBoss(GetObjectManager()));
 }
 
 void EnemyManager::End()
@@ -59,7 +61,7 @@ void EnemyManager::Update()
 	if (m_generateCounter <= 0 && m_enemies.size() <= kMaxEnemyNum)
 	{
 		// “G‚ð¶¬
-		GenerateEnemy(new EnemyMelee(GetObjectManager()));
+		GenerateEnemy(new EnemyShooter(GetObjectManager()));
 
 		m_generateCounter = kGenerateDuration;
 	}

@@ -31,7 +31,7 @@ namespace {
 	//constexpr int kAngerNum = static_cast<int>(Anger);
 	
 	// 通常の移動速度
-	constexpr float kMoveSpeed = 20000.0f;
+	constexpr float kDistanceSpeed = 20000.0f;
 	// ダッシュの移動速度
 	constexpr float kDashSpeed = 10.0f;
 	// ダッシュの減速量
@@ -51,7 +51,7 @@ namespace {
 	// 画像の表示倍率
 	constexpr float kPlayerScale = 1.5f;
 	// 初期ステータス
-	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 100, 1, 0.8f, kMoveSpeed, 100, 10, 2);
+	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 100, 1, 0.8f, kDistanceSpeed, 100, 10, 2);
 	// 成長倍率
 	constexpr PlayerStatus kGrowStatus = PlayerStatus(1, 1.05f, 1.1f, 1.1f, 1, 1, 1, 1);
 	// 怒り状態時のステータス
@@ -63,7 +63,7 @@ namespace {
 Player::Player(ObjectManager* objManager) :
 	GameObject(objManager),
 	m_directionX(1),
-	m_speed (kMoveSpeed),
+	m_speed (kDistanceSpeed),
 	m_accel(1),
 	m_deltaTime(0),
 	m_angerButton(),

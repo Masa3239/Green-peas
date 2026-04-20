@@ -112,7 +112,7 @@ bool InputManager::IsHeld(Input::Action action, int frame) const
 
 float InputManager::GetAsFloat(Input::Action action) const
 {
-	const Input::ActionProperty actionProperty = mActions.at(action);
+	const Input::ActionProperty& actionProperty = mActions.at(action);
 
 	float result = 0.0f;
 
@@ -121,6 +121,7 @@ float InputManager::GetAsFloat(Input::Action action) const
 	{
 		auto device = mDevices.at(bind.device).get();
 		
+		// 値を取得する
 		Vector2 value = device->GetValue(bind.keyCode);
 
 		// バインドに割り当てられた加工をする
@@ -138,7 +139,7 @@ float InputManager::GetAsFloat(Input::Action action) const
 
 const Vector2& InputManager::GetAsVector2(Input::Action action) const
 {
-	const Input::ActionProperty actionProperty = mActions.at(action);
+	const Input::ActionProperty& actionProperty = mActions.at(action);
 
 	Vector2 result = Vector2::zero;
 
@@ -147,6 +148,7 @@ const Vector2& InputManager::GetAsVector2(Input::Action action) const
 	{
 		auto device = mDevices.at(bind.device).get();
 		
+		// 値を取得する
 		Vector2 value = device->GetValue(bind.keyCode);
 
 		// バインドに割り当てられた加工をする
@@ -183,7 +185,7 @@ float InputManager::GetAnalog2DAmount(Input::Action action) const
 
 bool InputManager::GetState(Input::Action action, InputType inputType, int frame) const
 {
-	const Input::ActionProperty actionProperty = mActions.at(action);
+	const Input::ActionProperty& actionProperty = mActions.at(action);
 
 	// アクションに割り当てられたボタンをすべてチェックする
 	for (const auto& bind : actionProperty.binds)

@@ -148,13 +148,10 @@ private:
 	template <InputDevice T>
 	void RegisterDevice(Input::Device type);
 
-	// 各アクションのバインド情報の配列
-	using Actions = std::unordered_map<Input::Action, Input::ActionProperty>;
-
 	/// <summary>
 	/// アクションのデータ
 	/// </summary>
-	Actions mActions;
+	std::unordered_map<Input::Action, Input::ActionProperty> mActions;
 
 	/// <summary>
 	/// 入力デバイス
