@@ -6,14 +6,19 @@
 #include"../Asai/UIManager.h"
 #include"../Asai/Arrow.h"
 #include"../Asai/FireBall.h"
+#include"../Asai/Minimap.h"
 
 #include"../Takagi/Player.h"
+#include"../Kimura/Map/Map.h"
 
 UIManager* uiMgr;
 Arrow* arrow;
 FireBall* fire;
+Camera* camera;
+Minimap* miniMap;
 
 Player* pPlayer;
+Map* map;
 
 Transform transform;
 
@@ -40,6 +45,19 @@ void SceneTestAsai::Init()
 	fire = new FireBall(GetObjectManager());
 	fire->Init();
 
+	map = new Map();
+	map->Init();
+
+	camera = new Camera();
+	camera->Init();
+	camera->SetMap(map);
+	camera->GenerateWorldScreen();
+
+	miniMap = new Minimap();
+	miniMap->Init();
+
+	pPlayer->SetCamera(camera);
+
 }
 
 void SceneTestAsai::End()
@@ -59,14 +77,14 @@ SceneBase* SceneTestAsai::Update()
 	if (CheckHitKey(KEY_INPUT_1)) {
 		transform.position.x++;
 		transform.position.y++;
-		transform.rotation.y += 0.1f;
+		transform.rotation.z += 0.1f;
 		pPlayer->Damage(1);
 	}
 
 	if (CheckHitKey(KEY_INPUT_2)) {
 
 		uiMgr->CreateDamagePopUpText(transform.position,5);
-		fire->Shot(transform);
+		fire->Shot(pPlayer->GetTransform());
 	}
 
 	if (CheckHitKey(KEY_INPUT_0)) {
@@ -76,6 +94,9 @@ SceneBase* SceneTestAsai::Update()
 		Time::GetInstance().SetTimeScale(1);
 	}
 	
+	printfDx(" deg %f\n", MyMath::RadToDeg(transform.rotation.z));
+	printfDx(" rad %f\n", transform.rotation.z);
+
 	printfDx("%f", Time::GetInstance().GetDeltaTime());
 
 	return this;
@@ -85,14 +106,30 @@ SceneBase* SceneTestAsai::Update()
 void SceneTestAsai::Draw()
 {
 
-	fire->DebugDraw();
-
 	printfDx("x %f\n", transform.position.x);
 	printfDx("y %f\n",transform.position.y);
 
 	printfDx("SceneTestAsai\n");
 
-	uiMgr->WorldDraw();
-	uiMgr->ScreenDraw();
+	fire->DebugDraw();
+
+}
+
+void SceneTestAsai::PreDraw()
+{
+
+	SetDrawScreen(camera->GetWorldScreen());
+	ClearDrawScreen();
+	map->Draw();
+
+}
+
+void SceneTestAsai::PostDraw()
+{
+
+	SetDrawScreen(DX_SCREEN_BACK);
+
+	camera->Draw();
+	miniMap->Draw();
 
 }

@@ -22,7 +22,7 @@ void PopUpTextManager::Init()
 
 	m_textFonts.resize(static_cast<int>(PopUpText::Type::Max));
 
-	m_textFonts[static_cast<int>(PopUpText::Type::Damage)] = CreateFontToHandle(NULL, 40, 3);
+	m_textFonts[static_cast<int>(PopUpText::Type::Damage)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 
 	for (int i = 0;i < m_pTexts.size();i++) {
 

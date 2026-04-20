@@ -73,6 +73,11 @@ private:
 	/// <param name="cameraPos"></param>
 	void UpdateDamege(Transform cameraPos);
 
+	/// <summary>
+	/// ワールドスクリーンの外を描画しないようにする
+	/// </summary>
+	void KeepInWorldScreen();
+
 private:
 
 	/// <summary>
@@ -109,5 +114,25 @@ private:
 	/// 振動の時間
 	/// </summary>
 	float m_shakeDuration;
+
+	/// <summary>
+	/// ワールドスクリーンの左端
+	/// </summary>
+	float m_worldScreenLeft;
+
+	/// <summary>
+	/// ワールドスクリーンの右端
+	/// </summary>
+	float m_worldScreenRight;
+
+	/// <summary>
+	/// ワールドスクリーンの上端
+	/// </summary>
+	float m_worldScreenTop;
+
+	/// <summary>
+	/// ワールドスクリーンの下端
+	/// </summary>
+	float m_worldScreenBottom;
 
 };

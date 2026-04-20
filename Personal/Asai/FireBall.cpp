@@ -23,7 +23,6 @@ namespace {
 FireBall::FireBall(ObjectManager* objManager) :
 	BulletBase(objManager),
 	m_state(State::Ball),
-	m_ballScale(1),
 	m_fieldElapsedTime(0)
 {
 }
@@ -89,8 +88,8 @@ void FireBall::UpdateBall()
 	float deltaTime = Time::GetInstance().GetDeltaTime();
 
 	//移動
-	m_transform.position.x += cosf(m_transform.rotation.y) * kSpeed * deltaTime;
-	m_transform.position.y += sinf(m_transform.rotation.y) * kSpeed * deltaTime;
+	m_transform.position.x += sinf(m_transform.rotation.z) * kSpeed * deltaTime;
+	m_transform.position.y += -cosf(m_transform.rotation.z) * kSpeed * deltaTime;
 
 	//当たり判定を更新
 	m_circle.SetPosition(m_transform.position);

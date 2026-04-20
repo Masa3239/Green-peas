@@ -58,6 +58,9 @@ void Camera::Update(Transform cameraPos)
 		break;
 	}
 
+	//画面の外を写さない
+	KeepInWorldScreen();
+
 }
 
 void Camera::Draw()
@@ -92,6 +95,8 @@ void Camera::End()
 	//作成したワールドスクリーンを削除
 	DeleteGraph(m_worldScreen);
 
+	m_pMap = nullptr;
+
 }
 
 void Camera::StartDamage(float shakeDuration)
@@ -105,8 +110,25 @@ void Camera::StartDamage(float shakeDuration)
 
 void Camera::GenerateWorldScreen()
 {
+
+	if (m_pMap == nullptr) {
+
+		//ワールドスクリーンを作成
+		m_worldScreen = MakeScreen(10000, 10000, TRUE);
+		return;
+	}
+
 	//ワールドスクリーンを作成
 	m_worldScreen = MakeScreen(m_pMap->GetMapBlockNumX() * kMapBlockSize, m_pMap->GetMapBlockNumY() * kMapBlockSize, TRUE);
+
+	//ワールドスクリーンの左端の座標を設定する
+	m_worldScreenLeft = 0;
+	//ワールドスクリーンの右端の座標を設定する
+	m_worldScreenRight = m_pMap->GetMapBlockNumX() * kMapBlockSize;
+	//ワールドスクリーンの上端の座標を設定する
+	m_worldScreenTop = 0;
+	//ワールドスクリーンの下端の座標を設定する
+	m_worldScreenBottom = m_pMap->GetMapBlockNumY() * kMapBlockSize;
 
 }
 
@@ -114,7 +136,7 @@ void Camera::UpdateFollow(Transform cameraPos)
 {
 
 	//カメラの移動
-	m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency*Time::GetInstance().GetDeltaTime() + m_transform.position;
+	m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency * Time::GetInstance().GetDeltaTime() + m_transform.position;
 
 }
 
@@ -122,7 +144,8 @@ void Camera::UpdateDamege(Transform cameraPos)
 {
 
 	//カメラの移動
-	m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency + m_transform.position;
+	//m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency + m_transform.position;
+	m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency * Time::GetInstance().GetDeltaTime() + m_transform.position;
 
 	int direction = MyRandom::Int(0, 3);
 
@@ -163,6 +186,36 @@ void Camera::UpdateDamege(Transform cameraPos)
 		m_shakeDuration = 0;
 		//ステータスを変更
 		m_state = State::Follow;
+
+	}
+
+}
+
+void Camera::KeepInWorldScreen()
+{
+
+	//ワールドスクリーンの左端を描画していたら
+	if (m_transform.position.x - Game::kScreenWidth / 2 < m_worldScreenLeft) {
+		//ワールドスクリーンの左端を描画しないようにする
+		m_transform.position.x = m_worldScreenLeft + Game::kScreenWidth / 2;
+
+	}
+	//ワールドスクリーンの右端を描画していたら
+	if (m_transform.position.x + Game::kScreenWidth / 2 > m_worldScreenRight) {
+		//ワールドスクリーンの右端を描画しないようにする
+		m_transform.position.x = m_worldScreenRight - Game::kScreenWidth / 2;
+
+	}
+	//ワールドスクリーンの上端を描画していたら
+	if (m_transform.position.y - Game::kScreenHeight / 2 < m_worldScreenTop) {
+		//ワールドスクリーンの上端を描画しないようにする
+		m_transform.position.y = m_worldScreenTop + Game::kScreenHeight / 2;
+
+	}
+	//ワールドスクリーンの下端を描画していたら
+	if (m_transform.position.y + Game::kScreenHeight / 2 > m_worldScreenBottom) {
+		//ワールドスクリーンの下端を描画しないようにする
+		m_transform.position.y = m_worldScreenBottom - Game::kScreenHeight / 2;
 
 	}
 
