@@ -61,7 +61,7 @@ public:
 	/// <returns>‰Ÿ‰ºó‘Ô</returns>
 	bool IsHeld(KeyCode::Button keyCode, int frame) const;
 
-	Vector2 GetValue(KeyCode::Button keyCode) const;
+	const Vector2& GetValue(KeyCode::Button keyCode) const;
 
 protected:
 

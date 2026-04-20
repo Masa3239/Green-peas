@@ -13,6 +13,6 @@ public:
 
 	bool CheckButtonState(const KeyCode::Button keyCode) override;
 
-	Vector2 GetValue(const KeyCode::Button keyCode) override;
+	const Vector2& GetValue(const KeyCode::Button keyCode) override;
 };
 

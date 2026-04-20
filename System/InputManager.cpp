@@ -11,6 +11,7 @@
 #include "../System/Input/Device/InputDeviceGamepad.h"
 #include "../System/Input/Literal/InputProperty.h"
 #include "../System/Input/Literal/InputActions.h"
+#include "../System/Input/Modifier/InputModifierDeadzone.h"
 #include "../System/Input/Modifier/InputModifierNegate.h"
 #include "../System/Input/Modifier/InputModifierSwizzleAxis.h"
 #include "../Utility/MyMath.h"
@@ -50,7 +51,11 @@ bool InputManager::Initialize()
 	Bind(Input::Action::Left, Input::Device::Gamepad, KeyCode::Button::GpFaceLeft);
 	Bind(Input::Action::Right, Input::Device::Gamepad, KeyCode::Button::GpFaceRight);
 
-	Bind(Input::Action::Move, Input::Device::Gamepad, KeyCode::Button::GpLeftThumb, {std::make_shared<InputModifierNegate>(false, true)});
+	Bind(Input::Action::Move, Input::Device::Gamepad, KeyCode::Button::GpLeftThumb,
+		{
+			std::make_shared<InputModifierNegate>(false, true),
+			std::make_shared<InputModifierDeadzone>()
+		});
 	Bind(Input::Action::Move, Input::Device::Keyboard, KeyCode::Button::W,
 		{
 			std::make_shared<InputModifierNegate>(true, true),
@@ -100,7 +105,7 @@ bool InputManager::IsReleased(Input::Action action) const
 	return GetState(action, InputType::Released);
 }
 
-int InputManager::IsHeld(Input::Action action, int frame) const
+bool InputManager::IsHeld(Input::Action action, int frame) const
 {
 	return GetState(action, InputType::Held, frame);
 }
@@ -131,7 +136,7 @@ float InputManager::GetAsFloat(Input::Action action) const
 	return result;
 }
 
-Vector2 InputManager::GetAsVector2(Input::Action action) const
+const Vector2& InputManager::GetAsVector2(Input::Action action) const
 {
 	const Input::ActionProperty actionProperty = mActions.at(action);
 
@@ -211,7 +216,7 @@ bool InputManager::GetState(Input::Action action, InputType inputType, int frame
 	return false;
 }
 
-void InputManager::Bind(Input::Action action, Input::Device device, KeyCode::Button button, std::vector<std::shared_ptr<IInputModifier>> modifiers, int slot)
+void InputManager::Bind(Input::Action action, Input::Device device, KeyCode::Button button, std::vector<std::shared_ptr<IInputModifier>> modifiers, Input::PadSlot slot)
 {
 	Input::BindProperty bind;
 	bind.device = device;

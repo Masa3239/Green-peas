@@ -18,7 +18,7 @@ bool InputFormatMouseButton::CheckButtonState(const KeyCode::Button keyCode)
 	return result;
 }
 
-Vector2 InputFormatMouseButton::GetValue(const KeyCode::Button keyCode)
+const Vector2& InputFormatMouseButton::GetValue(const KeyCode::Button keyCode)
 {
-	return Vector2(static_cast<int>(CheckButtonState(keyCode)), 0.0f);
+	return Vector2(static_cast<float>(CheckButtonState(keyCode)), 0.0f);
 }

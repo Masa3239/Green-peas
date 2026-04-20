@@ -2,7 +2,8 @@
 
 #include <unordered_map>
 #include "../System/Input/Literal/KeyCodes.h"
-#include "../Utility/Vector3.h"
+
+struct Vector2;
 
 /// <summary>
 /// キーコードから入力状態を検知するクラス
@@ -41,7 +42,7 @@ public:
 	/// <returns>自作キーコードを元のキーコードに紐づけるマップ</returns>
 	const LinkToKeyCode& GetLinkToKeyCode() const { return mLinkToKeyCode; };
 
-	virtual Vector2 GetValue(const KeyCode::Button keyCode) = 0;
+	virtual const Vector2& GetValue(const KeyCode::Button keyCode) = 0;
 
 private:
 

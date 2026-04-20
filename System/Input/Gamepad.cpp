@@ -19,15 +19,17 @@ void Gamepad::Update()
 	}
 }
 
-bool Gamepad::IsDown(int keyCode, int slot)
+bool Gamepad::IsDown(int keyCode, Input::PadSlot slot)
 {
-	if (slot > mConnectedNum)
+	int s = static_cast<int>(slot);
+
+	if (s > mConnectedNum)
 	{
 		assert(false && "接続されていないゲームパッドにアクセスしました");
 		return false;
 	}
 
-	return mState[slot - 1].Buttons[keyCode];
+	return mState[s].Buttons[keyCode];
 }
 
 Gamepad::Gamepad() :

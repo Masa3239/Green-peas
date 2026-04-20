@@ -6,10 +6,22 @@
 #include"PlayerStatus.h"
 class EnemyManager;
 class PlayerStatus;
-
+namespace {
+	// 斬撃エフェクト画像のフレーム数
+	constexpr int kEffectFrame = 16;
+}
 class Weapon:public GameObject
 {
 public:
+	/// <summary>
+	/// 武器の種類
+	/// </summary>
+	enum {
+		Sword,		// 剣
+		Boomerang,	// ブーメラン
+		Bow,		// 弓
+		Max
+	};
 	enum class Swing {
 		Normal,
 		Up,
@@ -55,7 +67,7 @@ public:
 	}
 	void SetPlayerStatus(const PlayerStatus& status) { m_playerStatus = status; }
 	void SetActive(bool active) { m_active = active; }
-	void SetScale(float scale) { m_scale = scale; }
+	virtual void SetScale(float scale) { m_scale = scale; }
 protected:
 	/// <summary>
 	/// 武器のグラフィックハンドル

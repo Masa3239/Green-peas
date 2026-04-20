@@ -75,7 +75,7 @@ public:
 	/// <param name="action">アクションID</param>
 	/// <param name="frame">押した判定にするしきい値</param>
 	/// <returns>押下状態</returns>
-	int IsHeld(Input::Action action, int frame) const;
+	bool IsHeld(Input::Action action, int frame) const;
 
 	/// <summary>
 	/// floatのアナログ値として取得する
@@ -85,7 +85,7 @@ public:
 	/// <summary>
 	/// Vector2のアナログ値として取得する
 	/// </summary>
-	Vector2 GetAsVector2(Input::Action action) const;
+	const Vector2& GetAsVector2(Input::Action action) const;
 
 	/// <summary>
 	/// アナログ2Dの入力角度を取得する
@@ -138,7 +138,7 @@ private:
 	/// <param name="button">キーコード</param>
 	/// <param name="modifiers">値を加工する機能の配列</param>
 	/// <param name="slot">ゲームパッドの識別番号</param>
-	void Bind(Input::Action action, Input::Device device, KeyCode::Button button, std::vector<std::shared_ptr<IInputModifier>> modifiers = {}, int slot = 0);
+	void Bind(Input::Action action, Input::Device device, KeyCode::Button button, std::vector<std::shared_ptr<IInputModifier>> modifiers = {}, Input::PadSlot slot = Input::PadSlot::Player1);
 
 	/// <summary>
 	/// 入力デバイスを登録する

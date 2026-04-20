@@ -14,6 +14,7 @@
 #include"../../System/ObjectManager.h"
 #include"Weapon.h"
 #include"Sword.h"
+#include"JpSword.h"
 #include"Bow.h"
 #include"Boomerang.h"
 #include"ExpGauge.h"
@@ -46,13 +47,15 @@ namespace {
 	// 円の当たり判定の大きさ
 	constexpr float kCircleSize = 15;
 	// プレイヤー画像のグラフィックハンドル
-	const char* const kGraphPath = "Image\\pipo-charachip_otaku01.png";
+	const char* const kGraphPath = "Resource\\pipo-charachip_otaku01.png";
 	// 画像の表示倍率
 	constexpr float kPlayerScale = 1.5f;
 	// 初期ステータス
 	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 100, 1, 0.8f, kMoveSpeed, 100, 10, 2);
 	// 成長倍率
 	constexpr PlayerStatus kGrowStatus = PlayerStatus(1, 1.05f, 1.1f, 1.1f, 1, 1, 1, 1);
+	// 怒り状態時のステータス
+	constexpr PlayerStatus kAngerStatus = PlayerStatus(1, 1, 1.5f, 1, 2, 1, 1.5f, 2);
 	// 初期座標
 	constexpr Vector3 kInitPos = { 300,300,0 };
 }
@@ -91,9 +94,9 @@ Player::Player(ObjectManager* objManager) :
 	//}
 	// 初期武器を設定
 	
-	//m_weapons.push_back(std::make_unique<Sword>(objManager));
-	m_weapons.push_back(std::make_unique<Boomerang>(objManager));
-	m_weapons.push_back(std::make_unique<Bow>(objManager));
+	m_weapons.push_back(std::make_unique<JpSword>(objManager));
+	m_weapons.push_back(std::make_unique<Sword>(objManager));
+	//m_weapons.push_back(std::make_unique<Boomerang>(objManager));
 	//m_weapons.push_back(std::make_unique<Bow>(objManager));
 
 	for (auto& weapons : m_weapons) {
@@ -172,7 +175,7 @@ void Player::Update()
 	/*
 	if (Pad::IsDown(Pad::Button::LB)) {
 	}*/
-		m_gauges[static_cast<int>(GaugeType::Exp)]->Increase(10*m_deltaTime);
+		//m_gauges[static_cast<int>(GaugeType::Exp)]->Increase(10*m_deltaTime);
 
 	printfDx("m_direction : %d\n", static_cast<int>(m_direction));
 	frame += m_deltaTime * 2;
@@ -209,6 +212,10 @@ void Player::MoveAmount()
 	// 入力量を取得
 	float inputAmount = Pad::PadAnalogAmount(Pad::Joystick::Left);
 	printfDx("入力量 : %f\n", inputAmount);
+	PlayerStatus status = m_status;
+	if (m_anger) {
+		status *= kAngerStatus;
+	}
 	// ダッシュ中なら
 	if (CheckDashNow()) {
 	}
@@ -234,7 +241,8 @@ void Player::MoveAmount()
 		weapons->GetTransform().position = GetTransform().position;
 		// 武器の更新処理
 		//weapons->Update();
-		weapons->SetPlayerStatus(m_status);
+	
+		weapons->SetPlayerStatus(status);
 		if (m_anger) {
 			weapons->SetScale(3);
 		}
@@ -245,6 +253,7 @@ void Player::MoveAmount()
 	}
 	
 	if (Pad::IsDown(Pad::Button::X)||Pad::IsReleased(Pad::Button::X)) {
+		if(!CheckDashNow())
 		m_weapons[0]->Attack();
 	}
 	if (Pad::IsPressed(Pad::Button::Y)) {
@@ -273,7 +282,7 @@ void Player::MoveAmount()
 	// 正規化
 	m_moveVector = m_moveVector.GetNormalize();
 	// 移動速度を求める(入力量×移動速度×速度割合×時間)
-	float moveSpeed = inputAmount * m_status.Speed * m_accel * Time::GetInstance().GetDeltaTime();
+	float moveSpeed = inputAmount * status.Speed * m_accel * m_deltaTime;
 	// プレイヤーの移動量に入力量と移動速度と時間をかける
 	m_moveVector *= moveSpeed;
 
@@ -281,6 +290,7 @@ void Player::MoveAmount()
 		m_direction = Pad::AnalogDirection(Pad::Joystick::Left);
 	}
 	
+	printfDx("moveSpeed : %f\n",moveSpeed);
 }
 
 void Player::SpeedUpdate()
@@ -310,7 +320,7 @@ void Player::Draw()
 	angle.x = sinf(GetTransform().rotation.z);
 	angle.y = -cosf(GetTransform().rotation.z);
 	angle = angle.GetNormalize();
-	angle *= 10;
+	angle *= 10 * Pad::PadAnalogAmount(Pad::Joystick::Left);
 	angle += GetTransform().position;
 	DrawCircle(angle.x, angle.y, 3, GetColor(0, 255, 0));
 	Debug();
@@ -339,9 +349,7 @@ void Player::Debug()
 	//printfDx("最大経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Max));
 	//printfDx("最小経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Min));
 	//printfDx("割合経験     : %f\n", GetGaugeRate(GaugeType::Exp));
-	if (CheckAngerButton()) {
-		int s;
-	}
+
 	printfDx("m_angerButton : %d\n", CheckAngerButton());
 	printfDx("Level          : %d\n", m_status.Level);
 	printfDx("Attack         : %f\n", m_status.Attack);
