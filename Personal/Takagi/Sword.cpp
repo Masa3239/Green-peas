@@ -12,8 +12,8 @@
 #include"PlayerStatus.h"
 #include"RadToPos.h"
 namespace {
-	const char* const kFilePath = "Image\\Golden Sword.png";
-	const char* const kSlashPath = "Image\\pipo-btleffect001.png";
+	const char* const kFilePath = "Resource\\Golden Sword.png";
+	const char* const kSlashPath = "Resource\\pipo-btleffect001.png";
 	/// <summary>
 	/// 武器の表示座標
 	/// </summary>
@@ -29,7 +29,8 @@ namespace {
 	constexpr float kSwingRadian = 60 * MyMath::ToRadian;
 	constexpr float kColRadius = 10;
 	constexpr float kInitRadian = 150*MyMath::ToRadian;
-	constexpr PlayerStatus kStatus = { 0,0,15,0,0,0,10,2 };
+	constexpr PlayerStatus kStatus = { 0,0,15,0,0,0,10,1.1f };
+	constexpr PlayerStatus kChargeStatus = { 0,0,3,0,0,0,3,1.1f };
 	// 剣を振る際の距離
 	constexpr float kAttackDistance = 60;
 	constexpr float kEffectDistance = 80;
@@ -37,6 +38,8 @@ namespace {
 	constexpr float kEffectScale = 1.3f;
 	constexpr float kEffectAnimSpeed = 15;
 	constexpr float kEffectDrawRadian = 60 * MyMath::ToRadian;
+
+	constexpr float kChargeTime = 0.5f;
 }
 
 Sword::Sword(ObjectManager* objManager) :
@@ -80,6 +83,8 @@ void Sword::End()
 
 void Sword::Update()
 {
+	m_scaleEx = 1;
+	if (m_chargeFlag)m_scaleEx = 2;
 	float time = Time::GetInstance().GetDeltaTime();
 	float differ = m_desireRadian - m_swing.rotation.z;
 	differ = MyMath::NormalizeAngle(differ * MyMath::ToDegree) * MyMath::ToRadian;
@@ -93,6 +98,8 @@ void Sword::Update()
 			m_desireRadian = m_attackRadian;
 			m_attack = false;
 			m_swingState = Swing::Normal;
+			m_charge = 0;
+
 		}
 	}
 
@@ -142,9 +149,10 @@ void Sword::Update()
 
 
 	m_cupsule.SetStartPos(GetTransform().position);
-	Vector3 colEnd = RadToPos(m_swing.rotation.z, kEffectDistance*1.3f*m_scale, GetTransform().position);
+	Vector3 colEnd = RadToPos(m_swing.rotation.z, kEffectDistance*1.6f*m_scale, GetTransform().position);
 	m_cupsule.SetEndPos(colEnd);
 	m_cupsule.SetRadius(kColRadius * m_scale);
+	m_chargeFlag = (m_charge >= kChargeTime);
 }
 
 void Sword::Draw()
@@ -191,8 +199,16 @@ void Sword::Draw()
 
 void Sword::Attack()
 {
-	if (!Pad::IsPressed(Pad::Button::X))return;
 	if (m_swingState != Swing::Normal)return;
+	if (Pad::IsDown(Pad::Button::X)) {
+		m_weaponStatus = kStatus;
+		//if (!Pad::IsPressed(Pad::Button::X))return;
+		m_charge += Time::GetInstance().GetDeltaTime();
+	}
+	if (!Pad::IsReleased(Pad::Button::X))return;
+	if (m_charge >= kChargeTime) {
+		m_weaponStatus *= kChargeStatus;
+	}
 	m_desireRadian = m_attackRadian + kSwingRadian;
 	m_swing.rotation.z = m_desireRadian;
 	m_attack = true;
@@ -217,10 +233,8 @@ void Sword::CheckCollision()
 	float damage = 0;
 	damage = m_playerStatus.Attack * m_weaponStatus.Attack;
 	float criticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
-	if (GetRand(100) < criticalRate) {
-		damage *= m_weaponStatus.CriticalDamage;
-	}
+	float criticalDamage = m_weaponStatus.CriticalDamage + m_playerStatus.CriticalDamage;
+	m_pEnemyMgr->CheckHitEnemies(m_cupsule, damage, criticalRate, criticalDamage);
 
-	m_pEnemyMgr->CheckHitEnemies(m_cupsule, damage);
 
 }

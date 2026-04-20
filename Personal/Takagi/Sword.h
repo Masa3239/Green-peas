@@ -2,10 +2,7 @@
 #include"Weapon.h"
 #include"../../Object/GameObject.h"
 #include"../../Chara/Collision.h"
-namespace {
-	// 斬撃エフェクト画像のフレーム数
-	constexpr int kEffectFrame = 8;
-}
+
 class Sword:public Weapon
 {
 public:
@@ -21,6 +18,7 @@ public:
 	//Collision::Capsule GetCollision()override { return m_circle; }
 	bool CheckAttack()override;
 	void CheckCollision()override;
+	void SetScale(float scale)override { m_scale = scale*m_scaleEx; }
 
 private:
 	int m_effectHandle[kEffectFrame];
@@ -29,5 +27,8 @@ private:
 	bool m_attack;
 	float m_desireRadian;
 	Collision::Capsule m_cupsule;
+	float m_charge;
+	bool m_chargeFlag;
+	float m_scaleEx;
 };
 
