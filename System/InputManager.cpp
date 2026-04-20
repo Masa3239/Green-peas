@@ -11,6 +11,7 @@
 #include "../System/Input/Device/InputDeviceGamepad.h"
 #include "../System/Input/Literal/InputProperty.h"
 #include "../System/Input/Literal/InputActions.h"
+#include "../System/Input/Modifier/InputModifierDeadzone.h"
 #include "../System/Input/Modifier/InputModifierNegate.h"
 #include "../System/Input/Modifier/InputModifierSwizzleAxis.h"
 #include "../Utility/MyMath.h"
@@ -50,7 +51,11 @@ bool InputManager::Initialize()
 	Bind(Input::Action::Left, Input::Device::Gamepad, KeyCode::Button::GpFaceLeft);
 	Bind(Input::Action::Right, Input::Device::Gamepad, KeyCode::Button::GpFaceRight);
 
-	Bind(Input::Action::Move, Input::Device::Gamepad, KeyCode::Button::GpLeftThumb, {std::make_shared<InputModifierNegate>(false, true)});
+	Bind(Input::Action::Move, Input::Device::Gamepad, KeyCode::Button::GpLeftThumb,
+		{
+			std::make_shared<InputModifierNegate>(false, true),
+			std::make_shared<InputModifierDeadzone>()
+		});
 	Bind(Input::Action::Move, Input::Device::Keyboard, KeyCode::Button::W,
 		{
 			std::make_shared<InputModifierNegate>(true, true),
