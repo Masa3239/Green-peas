@@ -94,9 +94,9 @@ Player::Player(ObjectManager* objManager) :
 	//}
 	// 初期武器を設定
 	
-	m_weapons.push_back(std::make_unique<JpSword>(objManager));
+	//m_weapons.push_back(std::make_unique<JpSword>(objManager));
 	m_weapons.push_back(std::make_unique<Sword>(objManager));
-	//m_weapons.push_back(std::make_unique<Boomerang>(objManager));
+	m_weapons.push_back(std::make_unique<Boomerang>(objManager));
 	//m_weapons.push_back(std::make_unique<Bow>(objManager));
 
 	for (auto& weapons : m_weapons) {
@@ -161,6 +161,9 @@ void Player::Update()
 		if (Pad::IsPressed(Pad::Button::Back)) {
 			m_pItemMgr->Create(ItemBase::ItemType::Heal, GetTransform().position);
 		}
+		if (Pad::IsPressed(Pad::Button::Back)) {
+			m_pItemMgr->Create(ItemBase::ItemType::Heal, GetTransform().position);
+		}
 	}
 	m_camera->Update(GetTransform());
 	m_deltaTime = Time::GetInstance().GetDeltaTime();
@@ -210,8 +213,8 @@ void Player::Move()
 void Player::MoveAmount()
 {
 	// 入力量を取得
-	float inputAmount = Pad::PadAnalogAmount(Pad::Joystick::Left);
-	printfDx("入力量 : %f\n", inputAmount);
+	m_moveAmount = Pad::PadAnalogAmount(Pad::Joystick::Left);
+	printfDx("入力量 : %f\n", m_moveAmount);
 	PlayerStatus status = m_status;
 	if (m_anger) {
 		status *= kAngerStatus;
@@ -282,11 +285,11 @@ void Player::MoveAmount()
 	// 正規化
 	m_moveVector = m_moveVector.GetNormalize();
 	// 移動速度を求める(入力量×移動速度×速度割合×時間)
-	float moveSpeed = inputAmount * status.Speed * m_accel * m_deltaTime;
+	float moveSpeed = m_moveAmount * status.Speed * m_accel * m_deltaTime;
 	// プレイヤーの移動量に入力量と移動速度と時間をかける
 	m_moveVector *= moveSpeed;
 
-	if (inputAmount) {
+	if (m_moveAmount) {
 		m_direction = Pad::AnalogDirection(Pad::Joystick::Left);
 	}
 	
@@ -302,6 +305,7 @@ void Player::SpeedUpdate()
 		m_gauges[static_cast<int>(GaugeType::Stamina)]->Clamp();
 	}
 	if (CheckDashNow()) {
+		m_moveAmount = 1;
 		m_accel -= kDeccel * m_deltaTime;
 		m_accel = MyMath::Clamp(m_accel, 1.0f, 100.0f);
 	}
