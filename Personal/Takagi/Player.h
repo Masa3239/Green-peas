@@ -176,6 +176,8 @@ private:
 	void CheckHit();
 	void LevelUp();
 	void BufUpdate();
+	bool CheckAngerButton();
+	void UpdateAngerButton();
 private:
 
 	/// <summary>
@@ -190,7 +192,7 @@ private:
 
 	// プレイヤーが向いている方向(左右)
 	int m_directionX;
-
+	float m_moveAmount;
 	// 移動速度
 	float m_speed;
 	// 速さの割合
@@ -225,4 +227,7 @@ private:
 	PlayerStatus m_status;
 	EnemyManager* m_pEnemyMgr;
 	ItemManager* m_pItemMgr;
+	bool m_angerButton[2];
+
+	bool m_anger;
 };

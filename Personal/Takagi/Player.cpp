@@ -50,7 +50,7 @@ namespace {
 	// 画像の表示倍率
 	constexpr float kPlayerScale = 1.5f;
 	// 初期ステータス
-	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 100, 5, 5, kMoveSpeed, 100, 10, 2);
+	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 100, 1, 0.8f, kMoveSpeed, 100, 10, 2);
 	// 成長倍率
 	constexpr PlayerStatus kGrowStatus = PlayerStatus(1, 1.05f, 1.1f, 1.1f, 1, 1, 1, 1);
 	// 初期座標
@@ -62,8 +62,12 @@ Player::Player(ObjectManager* objManager) :
 	m_directionX(1),
 	m_speed (kMoveSpeed),
 	m_accel(1),
-	m_deltaTime(0)
+	m_deltaTime(0),
+	m_angerButton(),
+	m_anger(false)
 {
+	m_angerButton[0] = false;
+	m_angerButton[1] = false;
 	// 初期座標の設定
 	GetTransform().position = kInitPos;
 	//m_camera = new Camera();
@@ -165,10 +169,10 @@ void Player::Update()
 	m_circle.SetPosition(GetTransform().position);
 	printfDx("deltatime : %f\n", m_deltaTime);
 	printfDx("移動量 : %f\n", m_moveVector.GetLength());
-	
+	/*
 	if (Pad::IsDown(Pad::Button::LB)) {
+	}*/
 		m_gauges[static_cast<int>(GaugeType::Exp)]->Increase(10*m_deltaTime);
-	}
 
 	printfDx("m_direction : %d\n", static_cast<int>(m_direction));
 	frame += m_deltaTime * 2;
@@ -178,6 +182,16 @@ void Player::Update()
 		LevelUp();
 	}
 	CheckHit();
+	UpdateAngerButton();
+	if (/*m_gauges[static_cast<int>(GaugeType::Anger)]->CheckMax() &&*/
+		CheckAngerButton()) {
+		m_anger = true;
+	}
+	if (m_gauges[static_cast<int>(GaugeType::Anger)]->CheckMin()) {
+		m_anger = false;
+	}if (m_anger) {
+		m_gauges[static_cast<int>(GaugeType::Anger)]->Decrease(3.3f * m_deltaTime);
+	}
 }
 
 void Player::Move()
@@ -221,6 +235,13 @@ void Player::MoveAmount()
 		// 武器の更新処理
 		//weapons->Update();
 		weapons->SetPlayerStatus(m_status);
+		if (m_anger) {
+			weapons->SetScale(3);
+		}
+		else {
+			weapons->SetScale(1);
+
+		}
 	}
 	
 	if (Pad::IsDown(Pad::Button::X)||Pad::IsReleased(Pad::Button::X)) {
@@ -301,9 +322,6 @@ void Player::Draw()
 
 void Player::Debug()
 {
-	if (Pad::IsPressed(Pad::Button::LT)) {
-		Damage(5);
-	}
 	//printfDx("現在HP       : %f\n", m_gauges[static_cast<int>(GaugeType::Hp)]->GetValue(Gauge::Value::Current));
 	//printfDx("最大HP       : %f\n", m_gauges[static_cast<int>(GaugeType::Hp)]->GetValue(Gauge::Value::Max));
 	//printfDx("最大HP       : %f\n", m_status.HP);
@@ -317,11 +335,14 @@ void Player::Debug()
 	//printfDx("最大怒り     : %f\n", m_gauges[static_cast<int>(GaugeType::Anger)]->GetValue(Gauge::Value::Max));
 	//printfDx("最小怒り     : %f\n", m_gauges[static_cast<int>(GaugeType::Anger)]->GetValue(Gauge::Value::Min));
 	//printfDx("割合怒り     : %f\n", GetGaugeRate(GaugeType::Anger));
-	printfDx("現在経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Current));
-	printfDx("最大経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Max));
-	printfDx("最小経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Min));
-	printfDx("割合経験     : %f\n", GetGaugeRate(GaugeType::Exp));
-
+	//printfDx("現在経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Current));
+	//printfDx("最大経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Max));
+	//printfDx("最小経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Min));
+	//printfDx("割合経験     : %f\n", GetGaugeRate(GaugeType::Exp));
+	if (CheckAngerButton()) {
+		int s;
+	}
+	printfDx("m_angerButton : %d\n", CheckAngerButton());
 	printfDx("Level          : %d\n", m_status.Level);
 	printfDx("Attack         : %f\n", m_status.Attack);
 	printfDx("Defence        : %f\n", m_status.Defence);
@@ -333,13 +354,14 @@ void Player::Debug()
 	m_gauges[static_cast<int>(GaugeType::Exp)]->Debug();
 	//m_box.DebugDraw();
 	m_circle.DebugDraw();
-	printfDx("timeScale : %f\n", Time::GetInstance().GetTimeScale());
+	//printfDx("timeScale : %f\n", Time::GetInstance().GetTimeScale());
 }
 
 void Player::Damage(float value)
 {
 	// ダッシュ中なら処理しない
 	if (CheckDashNow())return;
+	if (m_anger)return;
 	// ダメージ処理を行う
 	m_gauges[static_cast<int>(GaugeType::Hp)]->Decrease(value);
 	// 最大・最小値よりも大ききくならないようにする
@@ -440,4 +462,25 @@ void Player::LevelUp()
 	// 現在のHPの更新
 	m_gauges[static_cast<int>(GaugeType::Hp)]->SetValue(currentHp, Gauge::Value::Current);
 
+}
+
+bool Player::CheckAngerButton()
+{
+
+	return (m_angerButton[0] && !m_angerButton[1]);
+}
+
+void Player::UpdateAngerButton()
+{
+	m_angerButton[1] = m_angerButton[0];
+	if (Pad::IsDown(Pad::Button::RT) &&
+		Pad::IsDown(Pad::Button::LT) &&
+		Pad::IsDown(Pad::Button::RB) &&
+		Pad::IsDown(Pad::Button::LB)) {
+		m_angerButton[0] = true;
+		//return true;
+	}
+	else {
+		m_angerButton[0] = false;
+	}
 }
