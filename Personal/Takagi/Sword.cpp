@@ -94,7 +94,7 @@ void Sword::Update()
 			m_desireRadian = m_attackRadian - kSwingRadian;
 			m_swingState = Swing::Down;
 		}
-		else if (m_swingState == Swing::Down) {
+		else if (m_swingState == Swing::Down && m_effectHandle[static_cast<int>(m_effectFrame)]==-1) {
 			m_desireRadian = m_attackRadian;
 			m_attack = false;
 			m_swingState = Swing::Normal;
