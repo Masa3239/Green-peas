@@ -50,7 +50,7 @@ public:
 	/// <summary>
 	/// マウスホイールの回転量を取得する
 	/// </summary>
-	Vector2 GetWheelRot() const { return mWheelRot; }
+	const Vector2& GetWheelRot() const { return mWheelRot; }
 
 	/// <summary>
 	/// 座標モードを設定する

@@ -26,7 +26,7 @@ bool InputFormatGamepadTrigger::CheckButtonState(const KeyCode::Button keyCode)
 	return false;
 }
 
-Vector2 InputFormatGamepadTrigger::GetValue(const KeyCode::Button keyCode)
+const Vector2& InputFormatGamepadTrigger::GetValue(const KeyCode::Button keyCode)
 {
 	switch (keyCode)
 	{

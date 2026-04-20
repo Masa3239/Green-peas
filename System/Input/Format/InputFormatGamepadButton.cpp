@@ -24,11 +24,11 @@ void InputFormatGamepadButton::Init()
 bool InputFormatGamepadButton::CheckButtonState(const KeyCode::Button keyCode)
 {
 	int linkedKeyCode = GetLinkToKeyCode().at(keyCode);
-	bool result = Gamepad::GetInstance().IsDown(linkedKeyCode, DX_INPUT_PAD1);
+	bool result = Gamepad::GetInstance().IsDown(linkedKeyCode);
 	return result;
 }
 
-Vector2 InputFormatGamepadButton::GetValue(const KeyCode::Button keyCode)
+const Vector2& InputFormatGamepadButton::GetValue(const KeyCode::Button keyCode)
 {
 	return Vector2(static_cast<float>(CheckButtonState(keyCode)), 0.0f);
 }

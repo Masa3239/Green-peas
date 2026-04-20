@@ -17,6 +17,16 @@ namespace Input
 		Length
 	};
 
+	// ゲームパッドの識別子
+	enum class PadSlot
+	{
+		Player1,
+		Player2,
+		Player3,
+		Player4,
+		Length
+	};
+
 	// バインド情報
 	struct BindProperty
 	{
@@ -30,7 +40,7 @@ namespace Input
 		std::vector<std::shared_ptr<IInputModifier>> modifiers;
 
 		// スロット番号（ゲームパッド用、他では無視される）
-		int slot = 1;
+		PadSlot slot = PadSlot::Player1;
 	};
 
 	// アクション情報

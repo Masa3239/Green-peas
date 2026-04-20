@@ -130,7 +130,7 @@ bool InputFormatKeyboard::CheckButtonState(const KeyCode::Button keyCode)
 	return result;
 }
 
-Vector2 InputFormatKeyboard::GetValue(const KeyCode::Button keyCode)
+const Vector2& InputFormatKeyboard::GetValue(const KeyCode::Button keyCode)
 {
 	return Vector2(static_cast<float>(CheckButtonState(keyCode)), 0.0f);
 }

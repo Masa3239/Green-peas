@@ -61,7 +61,7 @@ bool InputDeviceBase::IsHeld(KeyCode::Button keyCode, int frame) const
 	else return mPressedFrameLogs.at(keyCode) <= frame;
 }
 
-Vector2 InputDeviceBase::GetValue(KeyCode::Button keyCode) const
+const Vector2& InputDeviceBase::GetValue(KeyCode::Button keyCode) const
 {
 	for (const auto& format : mFormats)
 	{

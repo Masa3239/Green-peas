@@ -100,7 +100,7 @@ bool InputManager::IsReleased(Input::Action action) const
 	return GetState(action, InputType::Released);
 }
 
-int InputManager::IsHeld(Input::Action action, int frame) const
+bool InputManager::IsHeld(Input::Action action, int frame) const
 {
 	return GetState(action, InputType::Held, frame);
 }
@@ -131,7 +131,7 @@ float InputManager::GetAsFloat(Input::Action action) const
 	return result;
 }
 
-Vector2 InputManager::GetAsVector2(Input::Action action) const
+const Vector2& InputManager::GetAsVector2(Input::Action action) const
 {
 	const Input::ActionProperty actionProperty = mActions.at(action);
 
@@ -211,7 +211,7 @@ bool InputManager::GetState(Input::Action action, InputType inputType, int frame
 	return false;
 }
 
-void InputManager::Bind(Input::Action action, Input::Device device, KeyCode::Button button, std::vector<std::shared_ptr<IInputModifier>> modifiers, int slot)
+void InputManager::Bind(Input::Action action, Input::Device device, KeyCode::Button button, std::vector<std::shared_ptr<IInputModifier>> modifiers, Input::PadSlot slot)
 {
 	Input::BindProperty bind;
 	bind.device = device;
