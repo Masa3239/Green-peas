@@ -40,8 +40,8 @@ void Arrow::Update()
 	float deltaTime = Time::GetInstance().GetDeltaTime();
 
 	//移動
-	m_transform.position.x += cosf(m_transform.rotation.y) * kSpeed * deltaTime;
-	m_transform.position.y += sinf(m_transform.rotation.y) * kSpeed * deltaTime;
+	m_transform.position.x += cosf(m_transform.rotation.z) * kSpeed * deltaTime;
+	m_transform.position.y += sinf(m_transform.rotation.z) * kSpeed * deltaTime;
 
 	//当たり判定の更新
 	m_circle.SetPosition(m_transform.position);
@@ -63,7 +63,7 @@ void Arrow::Draw()
 	if (!m_isActive)return;
 
 	//画像の描画
-	DrawRotaGraph(m_transform.position.x, m_transform.position.y, 1.0f, m_transform.rotation.y, m_graphHandle, TRUE);
+	DrawRotaGraph(m_transform.position.x, m_transform.position.y, 1.0f, m_transform.rotation.z, m_graphHandle, TRUE);
 
 	DrawCircle(m_transform.position.x, m_transform.position.y, kCollisionSize, TRUE, 0xffff00);
 
