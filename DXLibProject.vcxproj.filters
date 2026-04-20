@@ -105,12 +105,144 @@
     <ClCompile Include="Personal\Syoguti\EnemyBoss.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Personal\Osawa\Enemy\EnemyMelee.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\ExampleObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\GameObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\PlayerHpBar.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\PlayerUIBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\PlayerUIManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\ObjectManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Sword.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Weapon.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\PlayerAngerBar.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\PopUpTextManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\PopUpText.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Syoguti\AttackUpItem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Kimura\Map\Map.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneInGame.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\Scene\SceneTestOBB.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\Arrow.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\BulletBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\PlayerStaminaBar.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\ExpGauge.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\PlayerExpBar.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\Scene\SceneTempResult.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\FireBall.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Syoguti\BuffRandom.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Bow.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\PlayerStatus.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Boomerang.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\PlayerBuff.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Image\Cloud.png">
       <Filter>リソース ファイル</Filter>
     </Image>
+    <Image Include="Personal\Syoguti\Resource\EnemyBossTest1.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Personal\Syoguti\Resource\EnemyBossTest2.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
     <Image Include="Personal\Syoguti\Resource\ItemTest1.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Personal\Kimura\Image\MapChip.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Personal\Takagi\Resource\Golden Sword.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Personal\Takagi\Resource\pipo-btleffect001.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Personal\Takagi\Resource\pipo-charachip_otaku01.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Image\MapChip.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Image\Bow.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Image\Golden Sword.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Image\pipo-btleffect001.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Image\pipo-charachip_otaku01.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\EnemyBossTest1.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\EnemyBossTest2.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\ItemTest1.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\ItemTest2.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\MapChip.png">
       <Filter>リソース ファイル</Filter>
     </Image>
   </ItemGroup>
@@ -232,8 +364,106 @@
     <ClInclude Include="Personal\Syoguti\EnemyBoss.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Personal\Osawa\Enemy\EnemyMelee.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\ExampleObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\GameObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\PlayerHpBar.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\PlayerUIBase.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\PlayerUIManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\ObjectManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Sword.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Weapon.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\PlayerAngerBar.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\PopUpTextManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\PopUpText.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Syoguti\AttackUpItem.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Kimura\Map\MapManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Kimura\Map\Map.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneInGame.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Scene\SceneTestOBB.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\Arrow.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\BulletBase.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\PlayerStaminaBar.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\PlayerStatus.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\ExpGauge.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\PlayerExpBar.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Scene\SceneTempResult.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\FireBall.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Syoguti\Buff.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Syoguti\BuffRandom.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Bow.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Boomerang.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\PlayerBuff.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\RadToPos.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="okjuigh.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Mapdata\Map1_1.csv" />
+    <None Include="Resource\Map1_1.csv" />
+    <None Include="Resource\Map1_2.csv" />
   </ItemGroup>
 </Project>
