@@ -2,12 +2,12 @@
 
 #include "InputFormatBase.h"
 
-class InputFormatGamepadTrigger : public InputFormatBase
+class InputFormatMouseDelta : public InputFormatBase
 {
 public:
 
-	InputFormatGamepadTrigger() = default;
-	~InputFormatGamepadTrigger() = default;
+	InputFormatMouseDelta() = default;
+	~InputFormatMouseDelta() = default;
 
 	void Init() override;
 

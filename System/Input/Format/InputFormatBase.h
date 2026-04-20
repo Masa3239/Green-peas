@@ -2,7 +2,8 @@
 
 #include <unordered_map>
 #include "../System/Input/Literal/KeyCodes.h"
-#include "../Utility/Vector3.h"
+
+struct Vector2;
 
 /// <summary>
 /// キーコードから入力状態を検知するクラス
