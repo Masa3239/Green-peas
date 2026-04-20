@@ -8,6 +8,10 @@
 
 class InputFormatBase;
 
+// 入力フォーマットであることを表すコンセプト
+template <class T>
+concept InputFormat = std::derived_from<T, InputFormatBase>;
+
 /// <summary>
 /// フォーマットを管理する入力デバイスのクラス
 /// </summary>
@@ -63,7 +67,7 @@ protected:
 
 	virtual void InitDevice() = 0;
 
-	template <class T>
+	template <InputFormat T>
 	void RegisterFormat();
 
 private:
@@ -83,7 +87,7 @@ private:
 	std::vector<std::unique_ptr<InputFormatBase>> mFormats;
 };
 
-template<class T>
+template<InputFormat T>
 inline void InputDeviceBase::RegisterFormat()
 {
 	std::unique_ptr<T> format = std::make_unique<T>();

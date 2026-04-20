@@ -24,8 +24,6 @@ public:
 	/// </summary>
 	virtual void UpdateEnemy() = 0;
 
-	void PostUpdate() override;
-
 	/// <summary>
 	/// HPを取得
 	/// </summary>
@@ -79,15 +77,9 @@ private:
 	float m_attackCooltime;
 
 	/// <summary>
-	/// 無敵状態かどうか
+	/// 無敵時間のカウンタ
 	/// </summary>
-	bool m_invincible;
-
-	/// <summary>
-	/// 
-	/// 攻撃判定に最初に触れたときかどうかを調べるために使う
-	/// </summary>
-	bool m_wasDamagedThisFrame;
+	float m_invCounter;
 
 	/// <summary>
 	/// プレイヤーのポインタ
