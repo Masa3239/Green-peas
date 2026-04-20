@@ -2,12 +2,12 @@
 
 #include "InputFormatBase.h"
 
-class InputFormatGamepadButton : public InputFormatBase
+class InputFormatMouseWheel : public InputFormatBase
 {
 public:
 
-	InputFormatGamepadButton() = default;
-	~InputFormatGamepadButton() = default;
+	InputFormatMouseWheel() = default;
+	~InputFormatMouseWheel() = default;
 
 	void Init() override;
 

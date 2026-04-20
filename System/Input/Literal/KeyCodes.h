@@ -118,8 +118,16 @@ namespace KeyCode
 		MbMiddleClick,
 		MbSideBack,
 		MbSideFront,
-		MbDelta,
-		MbWheel,
+		MbDeltaUp,		// float
+		MbDeltaDown,	// float
+		MbDeltaLeft,	// float
+		MbDeltaRight,	// float
+		MbWheelUp,		// float
+		MbWheelDown,	// float
+		MbWheelLeft,	// float
+		MbWheelRight,	// float
+		MbDelta,		// Vector2
+		MbWheel,		// Vector2
 
 		GpFaceUp,
 		GpFaceDown,
@@ -135,17 +143,17 @@ namespace KeyCode
 		GpRightShoulder,
 		GpLeftThumbPress,
 		GpRightThumbPress,
-		GpLeftThumbUp,
-		GpLeftThumbDown,
-		GpLeftThumbLeft,
-		GpLeftThumbRight,
-		GpRightThumbUp,
-		GpRightThumbDown,
-		GpRightThumbLeft,
-		GpRightThumbRight,
-		GpLeftTrigger,
-		GpRightTrigger,
-		GpLeftThumb,
-		GpRightThumb,
+		GpLeftThumbUp,		// float
+		GpLeftThumbDown,	// float
+		GpLeftThumbLeft,	// float
+		GpLeftThumbRight,	// float
+		GpRightThumbUp,		// float
+		GpRightThumbDown,	// float
+		GpRightThumbLeft,	// float
+		GpRightThumbRight,	// float
+		GpLeftTrigger,		// float
+		GpRightTrigger,		// float
+		GpLeftThumb,		// Vector2
+		GpRightThumb,		// Vector2
 	};
 }

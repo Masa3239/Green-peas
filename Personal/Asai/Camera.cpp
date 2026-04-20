@@ -31,7 +31,6 @@ Camera::Camera():
 	m_worldScreenTop(0),
 	m_worldScreenBottom(0)
 {
-	m_state = CameraState::Type::Anger;
 }
 
 Camera::~Camera()

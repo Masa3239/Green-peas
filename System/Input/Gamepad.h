@@ -2,6 +2,7 @@
 
 #include <DxLib.h>
 #include <array>
+#include "../System/Input/Literal/InputProperty.h"
 
 /// <summary>
 /// ゲームパッドの入力管理
@@ -14,9 +15,6 @@ public:
 	/// インスタンスの生成、取得を行う
 	/// </summary>
 	static Gamepad& GetInstance();
-
-	// 接続できるゲームパッドの最大数
-	static constexpr int kMaxSlotNum = 4;
 
 	~Gamepad() = default;
 
@@ -31,13 +29,13 @@ public:
 	/// <param name="keyCode">キーコード</param>
 	/// <param name="slot">ゲームパッドの識別番号</param>
 	/// <returns>押下状態</returns>
-	bool IsDown(int keyCode, int slot = 1);
+	bool IsDown(int keyCode, Input::PadSlot slot = Input::PadSlot::Player1);
 
 	/// <summary>
 	/// 入力状態を取得
 	/// </summary>
 	/// <param name="slot">ゲームパッドの識別番号</param>
-	const XINPUT_STATE& GetState(int slot = 1) const { return mState[slot - 1]; }
+	const XINPUT_STATE& GetState(Input::PadSlot slot = Input::PadSlot::Player1) const { return mState[static_cast<int>(slot)]; }
 
 private:
 
@@ -54,7 +52,7 @@ private:
 	/// <summary>
 	/// キーボードの押下状態
 	/// </summary>
-	std::array<XINPUT_STATE, 4> mState;
+	std::array<XINPUT_STATE, static_cast<int>(Input::PadSlot::Length)> mState;
 
 	/// <summary>
 	/// 接続しているゲームパッドの数

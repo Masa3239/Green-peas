@@ -1,6 +1,7 @@
 #include "InputFormatKeyboard.h"
 #include <DxLib.h>
 #include "../System/Input/Keyboard.h"
+#include "../Utility/Vector3.h"
 
 void InputFormatKeyboard::Init()
 {
@@ -129,7 +130,7 @@ bool InputFormatKeyboard::CheckButtonState(const KeyCode::Button keyCode)
 	return result;
 }
 
-Vector2 InputFormatKeyboard::GetValue(const KeyCode::Button keyCode)
+const Vector2& InputFormatKeyboard::GetValue(const KeyCode::Button keyCode)
 {
-	return Vector2(static_cast<int>(CheckButtonState(keyCode)), 0.0f);
+	return Vector2(static_cast<float>(CheckButtonState(keyCode)), 0.0f);
 }

@@ -13,9 +13,5 @@ public:
 
 	bool CheckButtonState(const KeyCode::Button keyCode) override;
 
-	Vector2 GetValue(const KeyCode::Button keyCode) override;
-
-private:
-
-	float Filter1D(int axis);
+	const Vector2& GetValue(const KeyCode::Button keyCode) override;
 };
