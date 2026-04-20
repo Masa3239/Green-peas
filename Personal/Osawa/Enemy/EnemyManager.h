@@ -45,6 +45,16 @@ public:
 	/// <returns>敵に触れていたらtrue</returns>
 	bool CheckHitEnemies(const Collision::Shape& shape, int damage);
 
+	/// <summary>
+	/// コライダーが敵に触れているかチェック
+	/// </summary>
+	/// <param name="shape">コライダー</param>
+	/// <param name="damage">基礎ダメージ量</param>
+	/// <param name="criticalChance">クリティカル率</param>
+	/// <param name="criticalDamage">クリティカルダメージ</param>
+	/// <returns>敵に触れていたらtrue</returns>
+	bool CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage);
+
 	void AddEnemyTest();
 
 	void SetPlayer(Player* player) { m_player = player; }

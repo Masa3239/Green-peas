@@ -96,6 +96,35 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, int damage)
 	return result;
 }
 
+bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage)
+{
+	bool result = false;
+
+	int finalDamage = 0;
+
+	for (const auto& enemy : m_enemies)
+	{
+		if (!enemy->GetCollider().CheckCollision(shape)) continue;
+
+		finalDamage = damage;
+
+		if (GetRand(100) < criticalChance)
+		{
+			finalDamage = damage * criticalDamage;
+		}
+
+		// ダメージを与えられなかったらスキップ
+		if (!enemy->Damage(finalDamage)) continue;
+
+		m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, finalDamage);
+
+		// 誰か一人でも当たっていたらtrueになる
+		result = true;
+	}
+
+	return result;
+}
+
 void EnemyManager::AddEnemyTest()
 {
 	auto enemy = new EnemyMelee(GetObjectManager());
