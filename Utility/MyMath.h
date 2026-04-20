@@ -143,7 +143,7 @@ namespace MyMath {
 	/// <param name="deadzoneMin">デッドゾーンの最小割合</param>
 	/// <param name="deadzoneMax">デッドゾーンの最大割合</param>
 	/// <returns>デッドゾーンを適用して正規化した軸</returns>
-	inline Vector2& Filter2D(int axisX, int axisY, int maxValue, float deadzoneMin, float deadzoneMax)
+	inline Vector2& Filter2D(float axisX, float axisY, float maxValue, float deadzoneMin, float deadzoneMax)
 	{
 		// デッドゾーンをmaxValueの割合に変換
 		const int dzMin = maxValue * deadzoneMin;

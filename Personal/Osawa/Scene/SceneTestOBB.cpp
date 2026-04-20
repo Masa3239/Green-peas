@@ -35,7 +35,7 @@ void SceneTestOBB::End()
 SceneBase* SceneTestOBB::Update()
 {
 	Vector2 v;
-	v += InputManager::GetInstance().GetAsVector2(Input::Action::Move);
+	v += InputManager::GetInstance().GetAsVector2(Input::Action::Move) * 5;
 
 	m_obb.SetPosition(m_obb.GetPosition() + Vector3(v.x, v.y, 0.0f));
 
