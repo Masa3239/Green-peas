@@ -54,6 +54,8 @@ void SceneTestAsai::Init()
 	camera->GenerateWorldScreen();
 
 	miniMap = new Minimap();
+	miniMap->SetCamera(camera);
+	miniMap->SetPlayer(pPlayer);
 	miniMap->Init();
 
 	pPlayer->SetCamera(camera);
@@ -86,7 +88,6 @@ SceneBase* SceneTestAsai::Update()
 
 		uiMgr->CreateDamagePopUpText(transform.position,5);
 		fire->Shot(pPlayer->GetTransform());
-
 	}
 
 	if (CheckHitKey(KEY_INPUT_0)) {
@@ -130,10 +131,10 @@ void SceneTestAsai::PreDraw()
 
 void SceneTestAsai::PostDraw()
 {
-
+	uiMgr->WorldDraw();
 	SetDrawScreen(DX_SCREEN_BACK);
-
 	camera->Draw();
+	uiMgr->ScreenDraw();
 	miniMap->Draw();
 
 }

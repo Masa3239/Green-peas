@@ -1,4 +1,4 @@
-#include "FireBall.h"
+#include "ThunderBall.h"
 #include"../Asai/BulletBase.h"
 
 #include<DxLib.h>
@@ -20,28 +20,31 @@ namespace {
 
 }
 
-FireBall::FireBall(ObjectManager* objManager) :
+ThunderBall::ThunderBall(ObjectManager* objManager):
 	BulletBase(objManager),
 	m_state(State::Ball),
 	m_fieldElapsedTime(0)
 {
 }
 
-void FireBall::Init()
+void ThunderBall::Init()
 {
 }
 
-void FireBall::Update()
+void ThunderBall::Update()
 {
+
+	//非アクティブならリターン
+	if (!m_isActive)return;
 
 	switch (m_state)
 	{
-	case FireBall::State::Ball:
+	case ThunderBall::State::Ball:
 		//State::Ballの更新処理
 		UpdateBall();
 		break;
 
-	case FireBall::State::Field:
+	case ThunderBall::State::Field:
 		//State::Fieldの更新処理
 		UpdateField();
 		break;
@@ -52,24 +55,25 @@ void FireBall::Update()
 
 }
 
-void FireBall::Draw()
+void ThunderBall::Draw()
 {
-}
-
-void FireBall::DebugDraw()
-{
-
-
-	//当たり判定を表示
-	m_circle.DebugDraw();
+	//非アクティブならリターン
+	if (!m_isActive)return;
 
 }
 
-void FireBall::End()
+void ThunderBall::DebugDraw()
+{
+	//非アクティブならリターン
+	if (!m_isActive)return;
+
+}
+
+void ThunderBall::End()
 {
 }
 
-void FireBall::Shot(Transform transform)
+void ThunderBall::Shot(Transform transform)
 {
 	//セット
 	m_transform = transform;
@@ -84,7 +88,7 @@ void FireBall::Shot(Transform transform)
 
 }
 
-void FireBall::SetScale(float scale)
+void ThunderBall::SetScale(float scale)
 {
 	//m_scaleの変更
 	m_scale = scale;
@@ -93,7 +97,7 @@ void FireBall::SetScale(float scale)
 
 }
 
-void FireBall::UpdateBall()
+void ThunderBall::UpdateBall()
 {
 	//デルタタイムを取得
 	float deltaTime = Time::GetInstance().GetDeltaTime();
@@ -119,7 +123,7 @@ void FireBall::UpdateBall()
 
 }
 
-void FireBall::UpdateField()
+void ThunderBall::UpdateField()
 {
 	//タイマーを加算
 	m_fieldElapsedTime += Time::GetInstance().GetDeltaTime();
@@ -129,5 +133,6 @@ void FireBall::UpdateField()
 
 	//非アクティブにする
 	m_isActive = false;
+
 
 }
