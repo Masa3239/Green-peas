@@ -1,6 +1,6 @@
 #include "SceneTestOBB.h"
 #include "../Utility/Vector3.h"
-#include "../System/InputPad.h"
+#include "../System/InputManager.h"
 
 namespace
 {
@@ -34,11 +34,10 @@ void SceneTestOBB::End()
 
 SceneBase* SceneTestOBB::Update()
 {
-	Vector3 v;
-	v.x = (CheckHitKey(KEY_INPUT_RIGHT) - CheckHitKey(KEY_INPUT_LEFT)) * 5;
-	v.y = (CheckHitKey(KEY_INPUT_DOWN) - CheckHitKey(KEY_INPUT_UP)) * 5;
+	Vector2 v;
+	v += InputManager::GetInstance().GetAsVector2(Input::Action::Move);
 
-	m_obb.SetPosition(m_obb.GetPosition() + v);
+	m_obb.SetPosition(m_obb.GetPosition() + Vector3(v.x, v.y, 0.0f));
 
 	return this;
 }

@@ -5,6 +5,7 @@
 #include "Scene/SceneManager.h"
 #include "../Utility/MyRandom.h"
 #include "../Utility/Time.h"
+#include "System/InputManager.h"
 
 //========================================================
 // WinMain関数　ここからプログラムが始まる
@@ -23,6 +24,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	Time::GetInstance();
 
+	InputManager::GetInstance().Initialize();
+
 	// シーン制御のポインタを生成
 	SceneManager* pSceneMgr;
 	pSceneMgr = new SceneManager();
@@ -40,6 +43,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		ClearDrawScreen();		// 画面の初期化
 		clsDx();				// デバッグ文字の初期化
+
+		InputManager::GetInstance().Update();
 
 		pSceneMgr->Update();
 		pSceneMgr->Draw();
