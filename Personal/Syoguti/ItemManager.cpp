@@ -112,7 +112,7 @@ void ItemManager::Remove(int index)
 	m_items.erase(m_items.begin() + index);
 }
 
-void ItemManager::CheckHitCollision(const Collision::Shape& other)
+bool ItemManager::CheckHitCollision(const Collision::Shape& other)
 {
 
 	// 空きがあれば前詰めする前提の処理
@@ -124,6 +124,9 @@ void ItemManager::CheckHitCollision(const Collision::Shape& other)
 		m_items[i]->ItemAbility(m_pPlayer);
 
 		Remove(i);
-		return;
+		// 当たっていたらtrueを返す
+		return true;
 	}
+	// 当たっていなければfalseを返す
+	return false;
 }
