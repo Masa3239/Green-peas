@@ -22,6 +22,7 @@ public:
 	//Collision::Circle GetCollision()override;
 	void CheckCollision()override;
 	void Shot(const Transform& transform);
+	void SetScale(float scale)override { m_scale = scale; }
 private:
 	//bool attack;
 	//float m_desireRadian;

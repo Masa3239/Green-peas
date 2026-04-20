@@ -7,10 +7,10 @@
 
 namespace {
 	constexpr float kDrawRadian = -45 * MyMath::ToRadian;
-	const char* const kHandlePath = "Image\\Bow.png";
+	const char* const kHandlePath = "Resource\\Bow.png";
 	constexpr PlayerStatus kStatus = { 0,0,15,0,0,0,10,2 };
 	// 複数同時発射する際の角度
-	constexpr float kTriShotRadian = 40.0f * MyMath::ToRadian;
+	constexpr float kTriShotRadian = 25.0f * MyMath::ToRadian;
 }
 
 Bow::Bow(ObjectManager* objManager) :
@@ -81,12 +81,14 @@ void Bow::CheckCollision()
 	float damage = 0;
 	damage = m_playerStatus.Attack * m_weaponStatus.Attack;
 	float criticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
-	if (GetRand(100) < criticalRate) {
+	/*if (GetRand(100) < criticalRate) {
 		damage *= m_weaponStatus.CriticalDamage;
-	}
+	}*/
+	float criticalDamage = m_weaponStatus.CriticalDamage + m_playerStatus.CriticalDamage;
+	//m_pEnemyMgr->CheckHitEnemies(m_circle, damage);
 	for (auto& arrows : m_pArrows) {
 		if (!arrows->GetIsActive())continue;
-		m_pEnemyMgr->CheckHitEnemies(arrows->GetCollision(), damage);
+		m_pEnemyMgr->CheckHitEnemies(arrows->GetCollision(), damage, criticalRate, criticalDamage);
 	}
 }
 
@@ -96,6 +98,7 @@ void Bow::Shot(const Transform& transform)
 		if (arrows->GetIsActive())continue;
 
 		arrows->Shot(transform);
+		//arrows->SetScale(4);
 		break;
 	}
 }

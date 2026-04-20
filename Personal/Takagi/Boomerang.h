@@ -22,6 +22,7 @@ public:
 	//Collision::Capsule GetCollision()override { return m_circle; }
 	bool CheckAttack()override;
 	void CheckCollision()override;
+	void SetScale(float scale)override { m_scale = scale; }
 private:
 	Transform m_attack;
 	float m_speed;
