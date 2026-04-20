@@ -16,7 +16,7 @@ namespace {
 	constexpr float kMaxMoveDistance = 500;
 
 	//フィールドに残る時間
-	constexpr float kFieldLifetime = 3.0f;
+	constexpr float kFieldLifetime = 1.0f;
 
 }
 
