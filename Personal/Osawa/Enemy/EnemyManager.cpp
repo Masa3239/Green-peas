@@ -106,6 +106,8 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 	{
 		if (!enemy->GetCollider().CheckCollision(shape)) continue;
 
+		finalDamage = damage;
+
 		if (GetRand(100) < criticalChance)
 		{
 			finalDamage = damage * criticalDamage;
