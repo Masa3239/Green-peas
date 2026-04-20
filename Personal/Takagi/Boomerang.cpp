@@ -6,8 +6,8 @@
 #include"../Osawa/Enemy/EnemyManager.h"
 
 namespace {
-    constexpr float kSpeed = 50000;
-    constexpr float kDeccel = kSpeed*1.2f;
+    constexpr float kSpeed = 80000;
+    constexpr float kDeccel = kSpeed*2.5f;
     constexpr float kCatch = 25;
     constexpr float kCatchDistance = kCatch*kCatch;
     constexpr float kColRadius = 20;
