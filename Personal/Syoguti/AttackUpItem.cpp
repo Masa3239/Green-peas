@@ -25,12 +25,12 @@ AttackUpItem::AttackUpItem(ObjectManager* objManager, Vector3 position):
 {
 
 	// 座標のリセット
-	m_transform.Reset();
+	GetTransform().Reset();
 
 	// 指定された座標を受け取る
-	m_transform.position = position;
+	GetTransform().position = position;
 
-	m_collision = Collision::Circle(m_transform.position, kCircleRadius);
+	m_collision = Collision::Circle(GetTransform().position, kCircleRadius);
 
 }
 
@@ -53,13 +53,13 @@ void AttackUpItem::End()
 void AttackUpItem::Update()
 {
 	// 中心座標をセット
-	m_collision.SetPosition(m_transform.position);
+	m_collision.SetPosition(GetTransform().position);
 }
 
 void AttackUpItem::Draw()
 {
 	// 画像の描画
-	DrawRotaGraph(m_transform.position.x, m_transform.position.y, kGraphScale, 0.0f, m_graphHandle, TRUE);
+	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kGraphScale, 0.0f, m_graphHandle, TRUE);
 	// 当たり判定の描画
 	m_collision.DebugDraw();
 }
