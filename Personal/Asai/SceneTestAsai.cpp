@@ -79,12 +79,14 @@ SceneBase* SceneTestAsai::Update()
 		transform.position.y++;
 		transform.rotation.z += 0.1f;
 		pPlayer->Damage(1);
+		fire->SetScale(transform.rotation.z);
 	}
 
 	if (CheckHitKey(KEY_INPUT_2)) {
 
 		uiMgr->CreateDamagePopUpText(transform.position,5);
 		fire->Shot(pPlayer->GetTransform());
+
 	}
 
 	if (CheckHitKey(KEY_INPUT_0)) {
@@ -96,6 +98,8 @@ SceneBase* SceneTestAsai::Update()
 	
 	printfDx(" deg %f\n", MyMath::RadToDeg(transform.rotation.z));
 	printfDx(" rad %f\n", transform.rotation.z);
+
+	arrow->DebugDraw();
 
 	printfDx("%f", Time::GetInstance().GetDeltaTime());
 

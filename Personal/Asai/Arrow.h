@@ -43,4 +43,10 @@ public:
 	/// <param name="transform">生成したい位置・角度</param>
 	void Shot(Transform transform)override;
 
+	/// <summary>
+	/// 拡大率の設定
+	/// </summary>
+	/// <param name="scale"></param>
+	void SetScale(float scale)override;
+
 };

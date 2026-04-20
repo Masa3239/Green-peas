@@ -78,7 +78,16 @@ void FireBall::Shot(Transform transform)
 	//玉の状態にする
 	m_state = State::Ball;
 	//当たり判定を変更する
-	m_circle = Collision::Circle(m_transform.position, kCollisionBallSize);
+	m_circle = Collision::Circle(m_transform.position, kCollisionBallSize * m_scale);
+
+}
+
+void FireBall::SetScale(float scale)
+{
+	//m_scaleの変更
+	m_scale = scale;
+	//当たり判定のサイズを変更
+	m_circle = Collision::Circle(m_transform.position, kCollisionBallSize * scale);
 
 }
 
@@ -102,7 +111,7 @@ void FireBall::UpdateBall()
 	//移動距離の最大になったら状態を変更
 	m_state = State::Field;
 	//当たり判定のサイズを変更
-	m_circle = Collision::Circle(m_transform.position, kCollisionFieldSize);
+	m_circle = Collision::Circle(m_transform.position, kCollisionFieldSize * m_scale);
 	//タイマーをリセット
 	m_fieldElapsedTime = 0;
 

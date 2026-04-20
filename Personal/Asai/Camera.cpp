@@ -15,16 +15,23 @@ namespace {
 	constexpr float kFollowLatency = 3.0f;
 	//振動の大きさ
 	constexpr float kShakeMoveMargin = 3;
+	//怒り状態でのカメラの振動
+	constexpr float kAngerShakeAmount = 1.0f;
 
 }
 
 Camera::Camera():
-	m_state(State::Follow),
+	m_state(CameraState::Type::Follow),
 	m_transform(),
 	m_worldScreen(-1),
 	m_pMap(nullptr),
-	m_shakeDuration(0)
+	m_shakeDuration(0),
+	m_worldScreenLeft(0),
+	m_worldScreenRight(0),
+	m_worldScreenTop(0),
+	m_worldScreenBottom(0)
 {
+	m_state = CameraState::Type::Anger;
 }
 
 Camera::~Camera()
@@ -33,10 +40,6 @@ Camera::~Camera()
 
 void Camera::Init()
 {
-
-	//仮
-	m_worldScreen = MakeScreen(5000, 5000, FALSE);
-
 }
 
 void Camera::Update(Transform cameraPos)
@@ -45,12 +48,16 @@ void Camera::Update(Transform cameraPos)
 	switch (m_state)
 	{
 
-	case Camera::State::Follow:
+	case CameraState::Type::Follow:
 		UpdateFollow(cameraPos);
 		break;
 
-	case Camera::State::Damege:
-		UpdateDamege(cameraPos);
+	case CameraState::Type::Damage:
+		UpdateDamage(cameraPos);
+		break;
+
+	case CameraState::Type::Anger:
+		UpdateAnger(cameraPos);
 		break;
 
 	default:
@@ -85,7 +92,7 @@ void Camera::DebugDraw()
 
 	//printfDx("%d\n", m_worldScreen);
 
-	//printfDx("Camera m_state %d\n", static_cast<int>(m_state));
+	printfDx("Camera m_state %d\n", static_cast<int>(m_state));
 
 }
 
@@ -104,7 +111,7 @@ void Camera::StartDamage(float shakeDuration)
 	//振動時間をセット
 	m_shakeDuration = shakeDuration;
 	//ステータスを変更
-	m_state = State::Damege;
+	m_state = CameraState::Type::Damage;
 
 }
 
@@ -132,7 +139,7 @@ void Camera::GenerateWorldScreen()
 
 }
 
-void Camera::UpdateFollow(Transform cameraPos)
+void Camera::Lerp(Transform cameraPos)
 {
 
 	//カメラの移動
@@ -140,12 +147,21 @@ void Camera::UpdateFollow(Transform cameraPos)
 
 }
 
-void Camera::UpdateDamege(Transform cameraPos)
+void Camera::UpdateFollow(Transform cameraPos)
+{
+
+	//カメラの移動
+	Lerp(cameraPos);
+
+}
+
+void Camera::UpdateDamage(Transform cameraPos)
 {
 
 	//カメラの移動
 	//m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency + m_transform.position;
-	m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency * Time::GetInstance().GetDeltaTime() + m_transform.position;
+	//m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency * Time::GetInstance().GetDeltaTime() + m_transform.position;
+	Lerp(cameraPos);
 
 	int direction = MyRandom::Int(0, 3);
 
@@ -185,7 +201,46 @@ void Camera::UpdateDamege(Transform cameraPos)
 		//タイマーをリセット
 		m_shakeDuration = 0;
 		//ステータスを変更
-		m_state = State::Follow;
+		m_state = CameraState::Type::Follow;
+
+	}
+
+}
+
+void Camera::UpdateAnger(Transform cameraPos)
+{
+
+	//カメラの移動
+	Lerp(cameraPos);
+
+	int direction = MyRandom::Int(0, 3);
+
+	switch (direction)
+	{
+
+	case 0:
+
+		m_transform.position.x -= kAngerShakeAmount;
+
+		break;
+
+	case 1:
+
+		m_transform.position.x += kAngerShakeAmount;
+
+		break;
+
+	case 2:
+
+		m_transform.position.y -= kAngerShakeAmount;
+
+		break;
+
+	case 3:
+
+		m_transform.position.y += kAngerShakeAmount;
+
+		break;
 
 	}
 

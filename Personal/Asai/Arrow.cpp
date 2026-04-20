@@ -40,8 +40,8 @@ void Arrow::Update()
 	float deltaTime = Time::GetInstance().GetDeltaTime();
 
 	//移動
-	m_transform.position.x += cosf(m_transform.rotation.z) * kSpeed * deltaTime;
-	m_transform.position.y += sinf(m_transform.rotation.z) * kSpeed * deltaTime;
+	m_transform.position.x += sinf(m_transform.rotation.z) * kSpeed * deltaTime;
+	m_transform.position.y += -cosf(m_transform.rotation.z) * kSpeed * deltaTime;
 
 	//当たり判定の更新
 	m_circle.SetPosition(m_transform.position);
@@ -65,7 +65,7 @@ void Arrow::Draw()
 	//画像の描画
 	DrawRotaGraph(m_transform.position.x, m_transform.position.y, 1.0f, m_transform.rotation.z, m_graphHandle, TRUE);
 
-	DrawCircle(m_transform.position.x, m_transform.position.y, kCollisionSize, TRUE, 0xffff00);
+	DrawCircle(m_transform.position.x, m_transform.position.y, kCollisionSize * m_scale, TRUE, 0xffff00);
 
 }
 
@@ -76,6 +76,7 @@ void Arrow::DebugDraw()
 	if (!m_isActive)return;
 
 	printfDx(m_isActive ? "Arrow Active\n" : "Arrow !Active\n");
+	printfDx("Arrow Scale %f\n", m_scale);
 
 	//当たり判定の描画
 	m_circle.DebugDraw();
@@ -101,5 +102,14 @@ void Arrow::Shot(Transform transform)
 	m_isActive = true;
 	//スポーン位置を設定
 	m_spawnPos = transform.position;
+
+}
+
+void Arrow::SetScale(float scale)
+{
+	//m_scaleの変更
+	m_scale = scale;
+	//当たり判定のサイズを変更
+	m_circle = Collision::Circle(m_transform.position, kCollisionSize * scale);
 
 }

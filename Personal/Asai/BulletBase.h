@@ -63,6 +63,12 @@ public:
 	/// <param name="graphHandle"></param>
 	virtual void SetGraphHandle(int graphHandle) { m_graphHandle = graphHandle; }
 
+	/// <summary>
+	/// 拡大率の変更
+	/// </summary>
+	/// <param name="scale"></param>
+	virtual void SetScale(float scale) = 0;
+
 protected:
 
 	/// <summary>
@@ -74,6 +80,11 @@ protected:
 	/// トランスフォーム
 	/// </summary>
 	Transform m_transform;
+
+	/// <summary>
+	/// 拡大率
+	/// </summary>
+	float m_scale;
 
 	/// <summary>
 	/// 生成された座標

@@ -3,6 +3,18 @@
 
 class Map;
 
+namespace CameraState {
+
+	enum class Type {
+
+		Follow,
+		Damage,
+		Anger,
+
+	};
+
+}
+
 class Camera
 {
 
@@ -62,6 +74,12 @@ public:
 private:
 
 	/// <summary>
+	/// 線形補間
+	/// </summary>
+	/// <param name="cameraPos"></param>
+	void Lerp(Transform cameraPos);
+
+	/// <summary>
 	/// カメラの追従
 	/// </summary>
 	/// <param name="cameraPos">カメラの位置を設定する</param>
@@ -70,8 +88,14 @@ private:
 	/// <summary>
 	/// カメラのダメージ演出
 	/// </summary>
-	/// <param name="cameraPos"></param>
-	void UpdateDamege(Transform cameraPos);
+	/// <param name="cameraPos">カメラの位置を設定する</param>
+	void UpdateDamage(Transform cameraPos);
+
+	/// <summary>
+	/// 怒り状態のカメラの更新処理
+	/// </summary>
+	/// <param name="cameraPos">カメラの位置を設定する</param>
+	void UpdateAnger(Transform cameraPos);
 
 	/// <summary>
 	/// ワールドスクリーンの外を描画しないようにする
@@ -83,17 +107,7 @@ private:
 	/// <summary>
 	/// カメラのステータス
 	/// </summary>
-	enum class State {
-
-		Follow,
-		Damege,
-
-	};
-
-	/// <summary>
-	/// カメラのステータス
-	/// </summary>
-	State m_state;
+	CameraState::Type m_state;
 
 	/// <summary>
 	/// カメラの座標に使う
