@@ -68,10 +68,13 @@ void Minimap::Draw()
 
 		Vector3 itemPos = ToMinimapPos(m_pItemMgr->GetItemPos(i));
 
-		DrawCircle(itemPos.x, itemPos.y, 5, 0xffffff, TRUE);
+		DrawCircle(itemPos.x, itemPos.y, 5, 0xffff00, TRUE);
 
+		printfDx("%f\n", m_pItemMgr->GetItemPos(i).x);
+		printfDx("%d\n", i);
 	}
 
+	printfDx("%d\n", m_pItemMgr->GetArraySize());
 
 }
 

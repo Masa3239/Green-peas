@@ -72,7 +72,7 @@ void FireBall::End()
 void FireBall::Shot(Transform transform)
 {
 	//セット
-	m_transform = transform;
+	GetTransform() = transform;
 	//アクティブにする
 	m_isActive = true;
 	//スポーン位置を設定
@@ -80,7 +80,7 @@ void FireBall::Shot(Transform transform)
 	//玉の状態にする
 	m_state = State::Ball;
 	//当たり判定を変更する
-	m_circle = Collision::Circle(m_transform.position, kCollisionBallSize * m_scale);
+	m_circle = Collision::Circle(GetTransform().position, kCollisionBallSize * m_scale);
 
 }
 
@@ -89,7 +89,7 @@ void FireBall::SetScale(float scale)
 	//m_scaleの変更
 	m_scale = scale;
 	//当たり判定のサイズを変更
-	m_circle = Collision::Circle(m_transform.position, kCollisionBallSize * scale);
+	m_circle = Collision::Circle(GetTransform().position, kCollisionBallSize * scale);
 
 }
 
@@ -99,21 +99,21 @@ void FireBall::UpdateBall()
 	float deltaTime = Time::GetInstance().GetDeltaTime();
 
 	//移動
-	m_transform.position.x += sinf(m_transform.rotation.z) * kSpeed * deltaTime;
-	m_transform.position.y += -cosf(m_transform.rotation.z) * kSpeed * deltaTime;
+	GetTransform().position.x += sinf(GetTransform().rotation.z) * kSpeed * deltaTime;
+	GetTransform().position.y += -cosf(GetTransform().rotation.z) * kSpeed * deltaTime;
 
 	//当たり判定を更新
-	m_circle.SetPosition(m_transform.position);
+	m_circle.SetPosition(GetTransform().position);
 
 	//移動距離を取得
-	float distance = (m_spawnPos - m_transform.position).GetSqLength();
+	float distance = (m_spawnPos - GetTransform().position).GetSqLength();
 	//移動距離の最大値じゃないならスルー
 	if (distance <= kMaxMoveDistance * kMaxMoveDistance)return;
 
 	//移動距離の最大になったら状態を変更
 	m_state = State::Field;
 	//当たり判定のサイズを変更
-	m_circle = Collision::Circle(m_transform.position, kCollisionFieldSize * m_scale);
+	m_circle = Collision::Circle(GetTransform().position, kCollisionFieldSize * m_scale);
 	//タイマーをリセット
 	m_fieldElapsedTime = 0;
 
