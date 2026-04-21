@@ -77,11 +77,6 @@ protected:
 	int m_graphHandle;
 
 	/// <summary>
-	/// トランスフォーム
-	/// </summary>
-	Transform m_transform;
-
-	/// <summary>
 	/// 拡大率
 	/// </summary>
 	float m_scale;
