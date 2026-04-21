@@ -29,4 +29,9 @@ public:
 	/// •`‰æˆ—
 	/// </summary>
 	void Draw() override;
+
+	void PreDraw()override;
+	void PostDraw()override;
+
+
 };

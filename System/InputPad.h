@@ -31,7 +31,7 @@ namespace Pad {
 		Right = XINPUT_BUTTON_DPAD_RIGHT,	// 十字右
 		Left = XINPUT_BUTTON_DPAD_LEFT,		// 十字左
 		Start=XINPUT_BUTTON_START,			// STARTボタン		
-		Back=XINPUT_BUTTON_START,			// BACKボタン
+		Back=XINPUT_BUTTON_BACK,			// BACKボタン
 	};
 	enum class Joystick {
 		Right,								// 右スティック

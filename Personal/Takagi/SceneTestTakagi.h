@@ -7,6 +7,7 @@ class Camera;
 class Map;
 class ItemManager;
 class EnemyManager;
+class UIManager;
 
 class SceneTestTakagi : public SceneBase
 {
@@ -44,8 +45,10 @@ private:
 	std::unique_ptr<Player> m_pPlayer;
 	std::unique_ptr<Camera> m_pCamera;
 
-	EnemyManager* m_pEnemyManager;
-	ItemManager* m_pItemManager;
-	Map* m_pMap;
+	std::unique_ptr<EnemyManager> m_pEnemyManager;
+	std::unique_ptr<ItemManager> m_pItemManager;
+	std::unique_ptr<Map>m_pMap;
+
+	std::unique_ptr<UIManager>m_pUIManager;
 
 };

@@ -7,6 +7,8 @@
 
 class ItemManager;
 class EnemyBoss;
+class Player;
+class Camera;
 
 class SceneTestSyoguti : public SceneBase
 {
@@ -40,7 +42,11 @@ private:
 
 	std::unique_ptr<ItemManager>m_pItemMgr;
 	std::unique_ptr<EnemyBoss> m_pEnemyBoss;
+	std::unique_ptr<Player> m_pPlayer;
+	std::unique_ptr<Camera> m_pCamera;
+
+	std::vector<Buff::BuffType> m_testDraw;
+
 	Transform m_transform;
 	BuffRandom m_buffRandom;
-	std::vector<Buff::BuffType> m_testDraw;
 };

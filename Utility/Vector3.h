@@ -1,6 +1,135 @@
 #pragma once
 
 #include <DxLib.h>
+#include <cassert>
+#include <cmath>
+
+/// <summary>
+/// 2次元ベクトル
+/// </summary>
+struct Vector2
+{
+	// 座標
+	float x, y;
+
+	/// <summary>
+	/// 各成分を0で初期化
+	/// </summary>
+	constexpr Vector2() : x(0.0f), y(0.0f) {};
+
+	/// <summary>
+	/// 各成分を指定して初期化
+	/// </summary>
+	constexpr Vector2(float x, float y) : x(x), y(y) {};
+
+	// 演算子
+
+	constexpr Vector2 operator-() const { return Vector2(-x, -y); }
+
+	constexpr Vector2 operator+(const Vector2& v) const { return Vector2(x + v.x, y + v.y); }
+	constexpr Vector2 operator-(const Vector2& v) const { return Vector2(x - v.x, y - v.y); }
+	constexpr Vector2 operator*(const float s) const { return Vector2(x * s, y * s); }
+	constexpr Vector2 operator/(const float s) const
+	{
+		if (s == 0.0f)
+		{
+			assert(false && "Vector2 // 0除算が行われました");
+			return Vector2();
+		}
+
+		return Vector2(x / s, y / s);
+	}
+
+	constexpr Vector2& operator+=(const Vector2& v)
+	{
+		x += v.x;
+		y += v.y;
+
+		return *this;
+	}
+	constexpr Vector2& operator-=(const Vector2& v)
+	{
+		x -= v.x;
+		y -= v.y;
+
+		return *this;
+	}
+	constexpr Vector2& operator*=(const float s)
+	{
+		x *= s;
+		y *= s;
+
+		return *this;
+	}
+	constexpr Vector2& operator/=(const float s)
+	{
+		if (s == 0.0f)
+		{
+			assert(false && "Vector2 // 0除算が行われました");
+			return *this;
+		}
+
+		x /= s;
+		y /= s;
+
+		return *this;
+	}
+
+	constexpr bool operator==(const Vector2& v) const { return x == v.x && y == v.y; }
+	constexpr bool operator!=(const Vector2& v) const { return x != v.x || y != v.y; }
+
+	// ヘルパー関数
+
+	/// <summary>
+	/// 内積を計算する
+	/// </summary>
+	constexpr float Dot(const Vector2& v)
+	{
+		return (x * v.x) + (y * v.y);
+	}
+
+	/// <summary>
+	/// 外積を計算する
+	/// </summary>
+	constexpr float Cross(const Vector2& v)
+	{
+		return (x * v.y) - (y * v.x);
+	}
+
+	/// <summary>
+	/// ベクトルの長さを取得する
+	/// 処理が重いため非推奨
+	/// </summary>
+	inline float GetLength() const
+	{
+		return std::sqrt(GetSqLength());
+	}
+
+	/// <summary>
+	/// ベクトルの長さの2乗を取得する
+	/// </summary>
+	constexpr float GetSqLength() const
+	{
+		return x * x + y * y;
+	}
+
+	/// <summary>
+	/// 正規化したベクトルを取得する
+	/// </summary>
+	constexpr Vector2 GetNormalize()
+	{
+		return *this / GetLength();
+	}
+
+	// 定数
+
+	static const Vector2 zero;
+	static const Vector2 one;
+	static const Vector2 up;
+	static const Vector2 down;
+	static const Vector2 left;
+	static const Vector2 right;
+};
 
 /// <summary>
 /// 3次元ベクトル構造体
@@ -156,4 +285,15 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	VECTOR ToVECTOR() const;
+
+	// 定数
+
+	static const Vector3 zero;
+	static const Vector3 one;
+	static const Vector3 up;
+	static const Vector3 down;
+	static const Vector3 left;
+	static const Vector3 right;
+	static const Vector3 forward;
+	static const Vector3 back;
 };

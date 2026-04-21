@@ -59,7 +59,7 @@ public:
 	/// 引数の形状とアイテムが当たっているか調べる
 	/// </summary>
 	/// <param name="other"></param>
-	void CheckHitCollision(const Collision::Shape& other);
+	bool CheckHitCollision(const Collision::Shape& other);
 
 	/// <summary>
 	/// オブジェクトマネージャーのポインタをセットするセッター関数
@@ -72,6 +72,19 @@ public:
 	/// </summary>
 	/// <param name="player"></param>
 	void SetPlayer(Player* player) { m_pPlayer = player; }
+
+	/// <summary>
+	/// アイテムの場所を取得するゲッター関数
+	/// </summary>
+	/// <param name="index"></param>
+	/// <returns></returns>
+	Vector3 GetItemPos(int index) { return m_items[index]->GetTransform().position;}
+
+	/// <summary>
+	/// アイテムの量を取得するゲッター関数
+	/// </summary>
+	/// <returns></returns>
+	int GetArraySize() { return m_items.size(); }
 
 private:
 

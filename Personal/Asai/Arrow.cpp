@@ -21,7 +21,7 @@ namespace {
 Arrow::Arrow(ObjectManager* objManager):
 	BulletBase(objManager)
 {
-	m_circle = Collision::Circle(m_transform.position, kCollisionSize);
+	m_circle = Collision::Circle(GetTransform().position, kCollisionSize);
 }
 
 void Arrow::Init()
@@ -40,14 +40,14 @@ void Arrow::Update()
 	float deltaTime = Time::GetInstance().GetDeltaTime();
 
 	//移動
-	m_transform.position.x += cosf(m_transform.rotation.y) * kSpeed * deltaTime;
-	m_transform.position.y += sinf(m_transform.rotation.y) * kSpeed * deltaTime;
+	GetTransform().position.x += sinf(GetTransform().rotation.z) * kSpeed * deltaTime;
+	GetTransform().position.y += -cosf(GetTransform().rotation.z) * kSpeed * deltaTime;
 
 	//当たり判定の更新
-	m_circle.SetPosition(m_transform.position);
+	m_circle.SetPosition(GetTransform().position);
 
 	//移動距離を取得
-	float distance = (m_spawnPos - m_transform.position).GetSqLength();
+	float distance = (m_spawnPos - GetTransform().position).GetSqLength();
 	//移動距離の最大値じゃないならスルー
 	if (distance <= kMaxMoveDistance* kMaxMoveDistance)return;
 
@@ -63,9 +63,9 @@ void Arrow::Draw()
 	if (!m_isActive)return;
 
 	//画像の描画
-	DrawRotaGraph(m_transform.position.x, m_transform.position.y, 1.0f, m_transform.rotation.y, m_graphHandle, TRUE);
+	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, 1.0f, GetTransform().rotation.z, m_graphHandle, TRUE);
 
-	DrawCircle(m_transform.position.x, m_transform.position.y, kCollisionSize, TRUE, 0xffff00);
+	DrawCircle(GetTransform().position.x, GetTransform().position.y, kCollisionSize * m_scale, TRUE, 0xffff00);
 
 }
 
@@ -76,6 +76,7 @@ void Arrow::DebugDraw()
 	if (!m_isActive)return;
 
 	printfDx(m_isActive ? "Arrow Active\n" : "Arrow !Active\n");
+	printfDx("Arrow Scale %f\n", m_scale);
 
 	//当たり判定の描画
 	m_circle.DebugDraw();
@@ -96,10 +97,19 @@ void Arrow::Shot(Transform transform)
 	if (m_isActive)return;
 
 	//セット
-	m_transform = transform;
+	GetTransform() = transform;
 	//アクティブにする
 	m_isActive = true;
 	//スポーン位置を設定
 	m_spawnPos = transform.position;
+
+}
+
+void Arrow::SetScale(float scale)
+{
+	//m_scaleの変更
+	m_scale = scale;
+	//当たり判定のサイズを変更
+	m_circle = Collision::Circle(GetTransform().position, kCollisionSize * scale);
 
 }

@@ -37,11 +37,17 @@ public:
 	/// <summary>
 	/// 弾の生成
 	/// transformの位置に生成
-	/// m_transform.rotation.yの角度に弾が進む
+	/// transform.rotation.zの角度に弾が進む
 	/// この関数を呼ぶとm_isActiveがtrueになる
 	/// </summary>
 	/// <param name="transform">生成したい位置・角度</param>
 	void Shot(Transform transform)override;
+
+	/// <summary>
+	/// 拡大率の設定
+	/// </summary>
+	/// <param name="scale"></param>
+	void SetScale(float scale)override;
 
 private:
 
@@ -65,8 +71,6 @@ private:
 	};
 
 	State m_state;
-
-	float m_ballScale;
 
 	float m_fieldElapsedTime;
 

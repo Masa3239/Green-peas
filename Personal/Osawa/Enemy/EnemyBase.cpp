@@ -9,6 +9,8 @@ namespace
 	constexpr Vector3 kColliderSize{ 25, 40, 0 };
 
 	constexpr int kMaxHp = 30;
+
+	constexpr float kInvTime = 0.5f;
 }
 
 EnemyBase::EnemyBase(ObjectManager* objManager) :
@@ -17,8 +19,7 @@ EnemyBase::EnemyBase(ObjectManager* objManager) :
 	m_collider(Collision::AABB{ Vector3(), kColliderSize }),
 	m_attackCooltimeCounter(0.0f),
 	m_attackCooltime(0.0f),
-	m_invincible(false),
-	m_wasDamagedThisFrame(false),
+	m_invCounter(0.0f),
 	m_player(nullptr)
 {
 }
@@ -47,27 +48,21 @@ void EnemyBase::Update()
 		}
 	}
 
+	// 当たり判定の座標更新
 	m_collider.SetPosition(GetTransform().position);
+
+	// 無敵時間をカウントダウン
+	if (m_invCounter > 0) m_invCounter -= Time::GetInstance().GetDeltaTime();
 }
 
-void EnemyBase::PostUpdate()
+bool EnemyBase::Damage(const int damage)
 {
-	if (!m_wasDamagedThisFrame)
-	{
-		m_invincible = false;
-	}
-
-	m_wasDamagedThisFrame = false;
-}
-
-void EnemyBase::Damage(const int damage)
-{
-	m_wasDamagedThisFrame = true;
-
 	// 攻撃判定に当たった瞬間ではないなら早期リターン
-	if (m_invincible) return;
+	if (m_invCounter > 0) return false;
 
-	m_invincible = true;
+	m_invCounter = kInvTime;
 
 	m_hp -= damage;
+
+	return true;
 }

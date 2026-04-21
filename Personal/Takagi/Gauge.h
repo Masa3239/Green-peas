@@ -110,6 +110,11 @@ public:// ゲッター・セッター =======================
 	/// </summary>
 	/// <returns>最大以上ならtrue</returns>
 	virtual bool CheckMax() { return (m_currentValue >= m_maxValue); }
+	/// <summary>
+	/// 最小かどうか
+	/// </summary>
+	/// <returns>最小以下ならtrue</returns>
+	virtual bool CheckMin() { return (m_currentValue <= m_minValue); }
 protected:
 	/// <summary>
 	/// 最大値

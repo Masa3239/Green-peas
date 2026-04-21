@@ -10,3 +10,4 @@
 
 座標管理　Transform
 管理系 〇〇Manager
+回転軸 Z

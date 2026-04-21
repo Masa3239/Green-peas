@@ -39,7 +39,7 @@ public:
 	/// <summary>
 	/// 弾の生成
 	/// transformの位置に生成
-	/// m_transform.rotation.yの角度に弾が進む
+	/// transform.rotation.zの角度に弾が進む
 	/// この関数を呼ぶとm_isActiveがtrueになる
 	/// </summary>
 	/// <param name="transform">生成したい位置・角度</param>
@@ -63,6 +63,12 @@ public:
 	/// <param name="graphHandle"></param>
 	virtual void SetGraphHandle(int graphHandle) { m_graphHandle = graphHandle; }
 
+	/// <summary>
+	/// 拡大率の変更
+	/// </summary>
+	/// <param name="scale"></param>
+	virtual void SetScale(float scale) = 0;
+
 protected:
 
 	/// <summary>
@@ -71,9 +77,9 @@ protected:
 	int m_graphHandle;
 
 	/// <summary>
-	/// トランスフォーム
+	/// 拡大率
 	/// </summary>
-	Transform m_transform;
+	float m_scale;
 
 	/// <summary>
 	/// 生成された座標

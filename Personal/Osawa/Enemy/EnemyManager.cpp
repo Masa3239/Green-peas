@@ -7,6 +7,8 @@
 #include "../Personal/Asai/UIManager.h"
 
 #include "EnemyMelee.h"
+#include "EnemyShooter.h"
+#include "EnemyMiniBoss.h"
 #include <DxLib.h>
 
 namespace
@@ -36,7 +38,7 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::Init()
 {
-
+	//GenerateEnemy(new EnemyMiniBoss(GetObjectManager()));
 }
 
 void EnemyManager::End()
@@ -59,7 +61,7 @@ void EnemyManager::Update()
 	if (m_generateCounter <= 0 && m_enemies.size() <= kMaxEnemyNum)
 	{
 		// 敵を生成
-		GenerateEnemy(new EnemyMelee(GetObjectManager()));
+		GenerateEnemy(new EnemyShooter(GetObjectManager()));
 
 		m_generateCounter = kGenerateDuration;
 	}
@@ -84,9 +86,39 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, int damage)
 	{
 		if (!enemy->GetCollider().CheckCollision(shape)) continue;
 		
-		enemy->Damage(damage);
+		// ダメージを与えられなかったらスキップ
+		if (!enemy->Damage(damage)) continue;
 
 		m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, damage);
+
+		// 誰か一人でも当たっていたらtrueになる
+		result = true;
+	}
+
+	return result;
+}
+
+bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage)
+{
+	bool result = false;
+
+	int finalDamage = 0;
+
+	for (const auto& enemy : m_enemies)
+	{
+		if (!enemy->GetCollider().CheckCollision(shape)) continue;
+
+		finalDamage = damage;
+
+		if (GetRand(100) < criticalChance)
+		{
+			finalDamage = damage * criticalDamage;
+		}
+
+		// ダメージを与えられなかったらスキップ
+		if (!enemy->Damage(finalDamage)) continue;
+
+		m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, finalDamage);
 
 		// 誰か一人でも当たっていたらtrueになる
 		result = true;

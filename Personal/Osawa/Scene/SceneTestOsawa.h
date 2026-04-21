@@ -7,6 +7,8 @@ class Player;
 class Camera;
 class EnemyManager;
 class UIManager;
+class Map;
+class ItemManager;
 
 class SceneTestOsawa : public SceneBase
 {
@@ -42,11 +44,33 @@ public:
 
 private:
 
-	std::unique_ptr<Player> m_player;
+	/// <summary>
+	/// プレイヤー
+	/// </summary>
+	std::unique_ptr<Player> m_pPlayer;
 
-	std::unique_ptr<Camera> m_camera;
+	/// <summary>
+	/// カメラ
+	/// </summary>
+	std::unique_ptr<Camera> m_pCamera;
 
-	std::unique_ptr<EnemyManager> m_enemyMgr;
+	/// <summary>
+	/// 敵のマネージャー
+	/// </summary>
+	std::unique_ptr<EnemyManager> m_pEnemyMgr;
 
-	std::unique_ptr<UIManager> m_uiMgr;
+	/// <summary>
+	/// UIのマネージャー
+	/// </summary>
+	std::unique_ptr<UIManager> m_pUIMgr;
+
+	/// <summary>
+	/// アイテムのマネージャー
+	/// </summary>
+	std::unique_ptr<ItemManager> m_pItemMgr;
+
+	/// <summary>
+	/// マップ
+	/// </summary>
+	std::unique_ptr<Map> m_pMap;
 };

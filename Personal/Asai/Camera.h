@@ -3,6 +3,18 @@
 
 class Map;
 
+namespace CameraState {
+
+	enum class Type {
+
+		Follow,
+		Damage,
+		Anger,
+
+	};
+
+}
+
 class Camera
 {
 
@@ -44,6 +56,16 @@ public:
 	void StartDamage(float shakeDuration = 1.0f);
 
 	/// <summary>
+	/// 追従状態に変更
+	/// </summary>
+	void ChangeFollow() { m_state = CameraState::Type::Follow; }
+
+	/// <summary>
+	/// 怒り状態のカメラに変更
+	/// </summary>
+	void ChangeAnger() { m_state = CameraState::Type::Anger; }
+
+	/// <summary>
 	/// ワールドスクリーンを生成する
 	void GenerateWorldScreen();
 
@@ -62,6 +84,12 @@ public:
 private:
 
 	/// <summary>
+	/// 線形補間
+	/// </summary>
+	/// <param name="cameraPos"></param>
+	void Lerp(Transform cameraPos);
+
+	/// <summary>
 	/// カメラの追従
 	/// </summary>
 	/// <param name="cameraPos">カメラの位置を設定する</param>
@@ -70,25 +98,26 @@ private:
 	/// <summary>
 	/// カメラのダメージ演出
 	/// </summary>
-	/// <param name="cameraPos"></param>
-	void UpdateDamege(Transform cameraPos);
+	/// <param name="cameraPos">カメラの位置を設定する</param>
+	void UpdateDamage(Transform cameraPos);
+
+	/// <summary>
+	/// 怒り状態のカメラの更新処理
+	/// </summary>
+	/// <param name="cameraPos">カメラの位置を設定する</param>
+	void UpdateAnger(Transform cameraPos);
+
+	/// <summary>
+	/// ワールドスクリーンの外を描画しないようにする
+	/// </summary>
+	void KeepInWorldScreen();
 
 private:
 
 	/// <summary>
 	/// カメラのステータス
 	/// </summary>
-	enum class State {
-
-		Follow,
-		Damege,
-
-	};
-
-	/// <summary>
-	/// カメラのステータス
-	/// </summary>
-	State m_state;
+	CameraState::Type m_state;
 
 	/// <summary>
 	/// カメラの座標に使う
@@ -109,5 +138,25 @@ private:
 	/// 振動の時間
 	/// </summary>
 	float m_shakeDuration;
+
+	/// <summary>
+	/// ワールドスクリーンの左端
+	/// </summary>
+	float m_worldScreenLeft;
+
+	/// <summary>
+	/// ワールドスクリーンの右端
+	/// </summary>
+	float m_worldScreenRight;
+
+	/// <summary>
+	/// ワールドスクリーンの上端
+	/// </summary>
+	float m_worldScreenTop;
+
+	/// <summary>
+	/// ワールドスクリーンの下端
+	/// </summary>
+	float m_worldScreenBottom;
 
 };

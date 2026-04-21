@@ -2,6 +2,9 @@
 #include "../../Chara/Collision.h"
 #include "../../Utility/Transform.h"
 #include "../../Object/GameObject.h"
+#include <vector>
+
+class Player;
 
 class EnemyBoss : public GameObject
 {
@@ -10,7 +13,12 @@ public:
 
 	enum class BossStatus {
 
-	
+		Idle,
+		CloseRangeAttack,
+		LongRangeAttack,
+		ApproachMove,
+		LeaveMove,
+		Max
 	};
 
 public:
@@ -62,6 +70,50 @@ public:
 	/// <returns></returns>
 	int GetBossCurrentHp() { return m_currentHp; }
 
+	/// <summary>
+	/// ボスが封印解除されているかどうか
+	/// </summary>
+	/// <param name="maxKey"></param>
+	/// <returns></returns>
+	bool SealReleaseFlag(int maxKey);
+
+	/// <summary>
+	/// ボスの行動をランダムに決める
+	/// </summary>
+	void GetRandomStatus();
+
+	/// <summary>
+	/// プレイヤーに近づく処理
+	/// </summary>
+	void ApproachPlayer(const Vector3& playerPos);
+
+	/// <summary>
+	/// 目的地に近づく処理(プレイヤーから離れる処理)
+	/// </summary>
+	void LeavePlayer(const Vector3& playerPos);
+
+	/// <summary>
+	/// 近距離攻撃
+	/// </summary>
+	void CloseRangeAttack();
+
+	/// <summary>
+	/// 遠距離攻撃
+	/// </summary>
+	void LongRangeAttack();
+
+	/// <summary>
+	/// ボスの攻撃
+	/// </summary>
+	/// <param name="other"></param>
+	void ChangeTheAttack(const Collision::Shape& other);
+
+	/// <summary>
+	/// プレイヤーのポインタをセットするセッター関数
+	/// </summary>
+	/// <param name="player"></param>
+	/// <returns></returns>
+	void const SetPlayer(Player* player) {m_pPlayer = player; }
 
 private:
 
@@ -81,9 +133,14 @@ private:
 	Collision::Circle m_collsion;
 
 	/// <summary>
-	/// 封印状態かどうか
+	/// 行動する時に使う円の判定
 	/// </summary>
-	bool m_sealFlag;
+	Collision::Circle m_actionCollsion;
+
+	/// <summary>
+	/// 近距離攻撃の当たり判定
+	/// </summary>
+	Collision::AABB m_closeRangeAttackCollision;
 
 	/// <summary>
 	/// ボスの最大体力
@@ -99,5 +156,31 @@ private:
 	/// ボスの攻撃力
 	/// </summary>
 	int m_attackPower;
+
+	/// <summary>
+	/// 鍵の数
+	/// </summary>
+	int m_getKey;
+
+	/// <summary>
+	/// 封印解除解除されたかどうか
+	/// </summary>
+	bool m_sealRelease;
+
+	/// <summary>
+	/// ボスのステータス
+	/// </summary>
+	BossStatus m_status;
+
+	/// <summary>
+	/// ランダムに行動を決めるまでの時間
+	/// </summary>
+	float m_getRandomTime;
+
+	/// <summary>
+	/// プレイヤーのポインタ
+	/// </summary>
+	Player* m_pPlayer;
+
 };
 

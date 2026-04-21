@@ -5,7 +5,7 @@
 
 namespace
 {
-	constexpr float kMoveSpeed = 50.0f;
+	constexpr float kDistanceSpeed = 50.0f;
 
 	constexpr float kAttackCooltime = 1.0f;
 }
@@ -39,7 +39,7 @@ void EnemyMelee::UpdateEnemy()
 
 		Vector3 vec = (targetPos - myPos).GetNormalize();
 
-		myPos += vec * kMoveSpeed * Time::GetInstance().GetDeltaTime();
+		myPos += vec * kDistanceSpeed * Time::GetInstance().GetDeltaTime();
 	}
 }
 

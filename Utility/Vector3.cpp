@@ -3,6 +3,24 @@
 #include <cassert>
 #include <cmath>
 
+// Vector2
+const Vector2 Vector2::zero = Vector2(0.0f, 0.0f);
+const Vector2 Vector2::one = Vector2(1.0f, 1.0f);
+const Vector2 Vector2::up = Vector2(0.0f, 1.0f);
+const Vector2 Vector2::down = Vector2(0.0f, -1.0f);
+const Vector2 Vector2::left = Vector2(-1.0f, 0.0f);
+const Vector2 Vector2::right = Vector2(1.0f, 0.0f);
+
+// Vector3
+const Vector3 Vector3::zero = Vector3(0.0f, 0.0f, 0.0f);
+const Vector3 Vector3::one = Vector3(1.0f, 1.0f, 1.0f);
+const Vector3 Vector3::up = Vector3(0.0f, 1.0f, 0.0f);
+const Vector3 Vector3::down = Vector3(0.0f, -1.0f, 0.0f);
+const Vector3 Vector3::left = Vector3(-1.0f, 0.0f, 0.0f);
+const Vector3 Vector3::right = Vector3(1.0f, 0.0f, 0.0f);
+const Vector3 Vector3::forward = Vector3(0.0f, 0.0f, 1.0f);
+const Vector3 Vector3::back = Vector3(0.0f, 0.0f, -1.0f);
+
 Vector3 Vector3::operator-() const
 {
 	return Vector3(-x, -y, -z);

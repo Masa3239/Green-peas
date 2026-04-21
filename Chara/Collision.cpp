@@ -37,7 +37,13 @@ namespace Collision
 			const Circle checkCircle = Circle(GetPosition(), GetRadius());
 			if (other.CheckCollision(checkCircle))return true;
 		}
-
+		else if (other.GetType() == Type::Capsule) {
+			const Capsule* check = dynamic_cast<const Capsule*>(&other);
+			Vector3 start = check->GetStartPos();
+			Vector3 end = check->GetEndPos();
+			const float distance = Segment_Point_MinLength(start.ToVECTOR(), end.ToVECTOR(), m_center.ToVECTOR());
+			if (distance <= m_radius + check->GetRadius())return true;
+		}
 		return false;
 	}
 
@@ -86,6 +92,24 @@ namespace Collision
 				return false;
 			}
 		
+		}
+		else if (other.GetType() == Type::Capsule) {
+			const Capsule* check = dynamic_cast<const Capsule*>(&other);
+			Vector3 start = check->GetStartPos();
+			Vector3 end = check->GetEndPos();
+			Vector3 rightTop = { m_maxPos.x,m_minPos.y,0 };
+			Vector3 leftBottom = { m_minPos.x,m_maxPos.y,0 };
+			float distance = Segment_Segment_MinLength(start.ToVECTOR(), end.ToVECTOR(), m_minPos.ToVECTOR(), rightTop.ToVECTOR());
+			if (distance <= check->GetRadius())return true;
+			distance = Segment_Segment_MinLength(start.ToVECTOR(), end.ToVECTOR(), m_minPos.ToVECTOR(), leftBottom.ToVECTOR());
+			if (distance <= check->GetRadius())return true;
+			distance = Segment_Segment_MinLength(start.ToVECTOR(), end.ToVECTOR(), leftBottom.ToVECTOR(), m_maxPos.ToVECTOR());
+			if (distance <= check->GetRadius())return true;
+			distance = Segment_Segment_MinLength(start.ToVECTOR(), end.ToVECTOR(), m_maxPos.ToVECTOR(), rightTop.ToVECTOR());
+			if (distance <= check->GetRadius())return true;
+			if (CheckPointInAABB(check->GetStartPos()))return true;
+			if (CheckPointInAABB(check->GetEndPos()))return true;
+			return false;
 		}
 		// ‚±‚±‚Ü‚Å—ˆ‚½‚ç“–‚½‚Á‚Ä‚¢‚é
 		return true;
@@ -286,8 +310,6 @@ namespace Collision
 		DrawLine(vertices[1].x, vertices[1].y, vertices[3].x, vertices[3].y, Color::kWhite);
 		DrawLine(vertices[3].x, vertices[3].y, vertices[2].x, vertices[2].y, Color::kWhite);
 		DrawLine(vertices[2].x, vertices[2].y, vertices[0].x, vertices[0].y, Color::kWhite);
-
-		DrawBox(m_centerPos.x + dirLeftTop.x, m_centerPos.y + dirLeftTop.y, m_centerPos.x + dirRightBottom.x, m_centerPos.y + dirRightBottom.y, Color::kGray, 0);
 	}
 
 	void OBB::UpdateDirVector()
@@ -326,5 +348,46 @@ namespace Collision
 		vector.z = 0.0f;
 
 		return vector;
+	}
+	bool Capsule::CheckCollision(const Shape& other) const
+	{
+		switch (other.GetType())
+		{
+		case Type::Circle:
+		{
+			const Circle* check = dynamic_cast<const Circle*>(&other);
+			const float distance = Segment_Point_MinLength(m_start.ToVECTOR(), m_end.ToVECTOR(), other.GetPosition().ToVECTOR());
+			if (distance <= m_radius + check->GetRadius())return true;
+			break;
+		}
+		case Type::AABB:
+		{
+			const AABB* check = dynamic_cast<const AABB*>(&other);
+			Vector3 rightTop = { check->GetMaxPos().x,check->GetMinPos().y,0 };
+			Vector3 leftTop = { check->GetMinPos().x,check->GetMinPos().y,0 };
+			Vector3 leftBottom = { check->GetMinPos().x,check->GetMaxPos().y,0 };
+			Vector3 rightBottom = { check->GetMaxPos().x,check->GetMaxPos().y,0 };
+			float distance = Segment_Segment_MinLength(m_start.ToVECTOR(), m_end.ToVECTOR(), leftTop.ToVECTOR(), rightTop.ToVECTOR());
+			if (distance <= m_radius)return true;
+			distance = Segment_Segment_MinLength(m_start.ToVECTOR(), m_end.ToVECTOR(), leftTop.ToVECTOR(), leftBottom.ToVECTOR());
+			if (distance <= m_radius)return true;
+			distance = Segment_Segment_MinLength(m_start.ToVECTOR(), m_end.ToVECTOR(), leftBottom.ToVECTOR(), rightBottom.ToVECTOR());
+			if (distance <= m_radius)return true;
+			distance = Segment_Segment_MinLength(m_start.ToVECTOR(), m_end.ToVECTOR(), rightBottom.ToVECTOR(), rightTop.ToVECTOR());
+			if (distance <= m_radius)return true;
+			if (check->CheckPointInAABB(m_start))return true;
+			if (check->CheckPointInAABB(m_end))return true;
+			break;
+		}
+			break;
+		default:
+			break;
+		}
+		return false;
+	}
+	void Capsule::DebugDraw() const
+	{
+		DrawCircle(m_start.x, m_start.y, m_radius, Color::kCyan, TRUE);
+		DrawCircle(m_end.x, m_end.y, m_radius, Color::kCyan, TRUE);
 	}
 }
