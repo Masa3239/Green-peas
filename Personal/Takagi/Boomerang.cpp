@@ -12,7 +12,7 @@ namespace {
     constexpr float kCatchDistance = kCatch*kCatch;
     constexpr float kColRadius = 20;
     constexpr float kGraphScale = 2;
-    constexpr PlayerStatus kStatus = { 0,0,10,0,0,0,10,2 };
+    constexpr PlayerStatus kStatus = { 0,0,10,0,0,0,5,3 };
     const char* const kFilePath = "Resource\\Boomerang.png";
     constexpr float kRotationSpeed = 720;
 
@@ -27,8 +27,10 @@ Boomerang::Boomerang(ObjectManager* objManager):
 {
     m_attack.Reset();
     m_weaponStatus = kStatus;
+    m_graphHandle = -1;
     m_graphHandle = LoadGraph(kFilePath);
     m_scale = 1;
+    m_active = true;
 }
 
 Boomerang::~Boomerang()
@@ -89,16 +91,19 @@ void Boomerang::Draw()
     DrawCircle(debug.x, debug.y, 5, Color::kGreen);*/
     DrawRotaGraph(m_attack.position.x, m_attack.position.y, kGraphScale*m_scale
         , m_drawAngle * MyMath::ToRadian, m_graphHandle, TRUE);
+    m_circle.DebugDraw();
+    m_catchCol.DebugDraw();
 }
 
-void Boomerang::Attack()
+bool Boomerang::Attack()
 {
-    if (m_attackFlag)return;
-    if (!Pad::IsPressed(Pad::Button::X))return;
+    if (m_attackFlag)return false;
+    if (!Pad::IsPressed(Pad::Button::X))return false;
     m_attack.position = GetTransform().position;
     m_attack.rotation.z = GetTransform().rotation.z;
     m_speed = kSpeed;
     m_attackFlag = true;
+    return true;
 }
 
 bool Boomerang::CheckAttack()
@@ -113,11 +118,8 @@ void Boomerang::CheckCollision()
     
     float damage = 0;
     damage = m_playerStatus.Attack * m_weaponStatus.Attack;
-    float criticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
-    /*if (GetRand(100) < criticalRate) {
-        damage *= m_weaponStatus.CriticalDamage;
-    }*/
-    float criticalDamage = m_weaponStatus.CriticalDamage + m_playerStatus.CriticalDamage;
+    float criticalRate = m_playerStatus.CriticalRate * m_weaponStatus.CriticalRate;
+    float criticalDamage = m_weaponStatus.CriticalDamage * m_playerStatus.CriticalDamage;
     //m_pEnemyMgr->CheckHitEnemies(m_circle, damage);
     m_pEnemyMgr->CheckHitEnemies(m_circle, damage, criticalRate, criticalDamage);
 
