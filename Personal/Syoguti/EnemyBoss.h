@@ -6,6 +6,12 @@
 
 class Player;
 
+namespace {
+
+	constexpr int kCharactorMotionNum = 25;
+	//constexpr int kCharactorStatusNum = static_cast<int>(EnemyBoss::BossStatus::Max);
+}
+
 class EnemyBoss : public GameObject
 {
 
@@ -18,6 +24,14 @@ public:
 		LongRangeAttack,
 		ApproachMove,
 		LeaveMove,
+		Max
+	};
+
+	enum class BossAction {
+
+		Idle,
+		CloseRangeAttack,
+		LongRangeAttack,
 		Max
 	};
 
@@ -85,12 +99,17 @@ public:
 	/// <summary>
 	/// プレイヤーに近づく処理
 	/// </summary>
-	void ApproachPlayer(const Vector3& playerPos);
+	bool ApproachPlayer(const Vector3& playerPos);
 
 	/// <summary>
 	/// 目的地に近づく処理(プレイヤーから離れる処理)
 	/// </summary>
-	void LeavePlayer(const Vector3& playerPos);
+	bool LeavePlayer(const Vector3& playerPos);
+
+	/// <summary>
+	/// 目的地を決める処理
+	/// </summary>
+	Vector3 TargetPos(const Vector3& playerPos);
 
 	/// <summary>
 	/// 近距離攻撃
@@ -101,12 +120,6 @@ public:
 	/// 遠距離攻撃
 	/// </summary>
 	void LongRangeAttack();
-
-	/// <summary>
-	/// ボスの攻撃
-	/// </summary>
-	/// <param name="other"></param>
-	void ChangeTheAttack(const Collision::Shape& other);
 
 	/// <summary>
 	/// プレイヤーのポインタをセットするセッター関数
@@ -120,12 +133,28 @@ private:
 	/// <summary>
 	/// 画像のハンドル
 	/// </summary>
-	int m_graphHandle;
+	int m_graphHandle[static_cast<int>(BossStatus::Max)][kCharactorMotionNum];
+
+	// モーション制御用のカウンタ
+	int m_motionCounter;
+
+	// 描画するモーションのフレーム
+	int m_motionFrame;
+
+	/// <summary>
+	/// 各アニメーションのフレーム数
+	/// </summary>
+	int m_motionMaxFrame[static_cast<int>(BossStatus::Max)];
+
+	/// <summary>
+	/// 各アニメーションのループフラグ
+	/// </summary>
+	bool m_isLoop[static_cast<int>(BossStatus::Max)];
 
 	/// <summary>
 	/// 座標
 	/// </summary>
-	Transform m_transform;
+	// Transform m_transform;
 
 	/// <summary>
 	/// 円の当たり判定
@@ -172,10 +201,17 @@ private:
 	/// </summary>
 	BossStatus m_status;
 
+	BossAction m_action;
+
 	/// <summary>
 	/// ランダムに行動を決めるまでの時間
 	/// </summary>
 	float m_getRandomTime;
+
+	/// <summary>
+	/// 目標の座標
+	/// </summary>
+	Vector3 m_targetPos;
 
 	/// <summary>
 	/// プレイヤーのポインタ
