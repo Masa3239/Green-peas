@@ -54,8 +54,8 @@ void EnemyManager::Update()
 	if (m_generateCounter <= 0 && m_enemies.size() <= kMaxEnemyNum)
 	{
 		// “G‚ğ¶¬
-		GenerateEnemy(new EnemyMelee(GetObjectManager()));
-		//GenerateEnemy(new EnemyShooter(GetObjectManager()));
+		//GenerateEnemy(new EnemyMelee(GetObjectManager()));
+		GenerateEnemy(new EnemyShooter(GetObjectManager()));
 
 		m_generateCounter = kGenerateDuration;
 	}

@@ -4,6 +4,7 @@
 #include "../Personal/Takagi/Player.h"
 #include "../Utility/Time.h"
 #include "../Chara/Collision.h"
+#include "../Enemy/EnemyBullet.h"
 
 namespace
 {
@@ -14,7 +15,7 @@ namespace
 	// 追跡するときの速度
 	constexpr float kFollowSpeed = 200.0f;
 
-	constexpr float kAttackCooltime = 1.0f;
+	constexpr float kMeleeAttackCooltime = 1.0f;
 
 	// プレイヤーを追跡開始する範囲
 	constexpr float kStartFollowDistance = 300;
@@ -24,13 +25,15 @@ namespace
 
 	// プレイヤーから距離をとり始める距離
 	constexpr float kStartBackDistance = 150;
+
+	constexpr float kBulletAttackCooltime = 1.0f;
 }
 
 EnemyShooter::EnemyShooter(ObjectManager* objManager) :
 	EnemyBase(objManager),
-	mAction(Action::Idle)
+	m_action(Action::Idle),
+	m_attackCooltimeCounter(0.0f)
 {
-	SetAttackCooltime(kAttackCooltime);
 }
 
 EnemyShooter::~EnemyShooter()
@@ -39,69 +42,88 @@ EnemyShooter::~EnemyShooter()
 
 void EnemyShooter::Init()
 {
+	for (auto& bullet : m_bullets)
+	{
+		bullet = std::make_unique<EnemyBullet>(GetObjectManager());
+		bullet->Init();
+	}
 }
 
 void EnemyShooter::End()
 {
+	for (auto& bullet : m_bullets)
+	{
+		bullet->End();
+	}
 }
 
 void EnemyShooter::UpdateEnemy()
 {
-	if (auto player = GetPlayer())
+	auto player = GetPlayer();
+	
+	const Vector3& targetPos = player->GetTransform().position;
+	Vector3& myPos = GetTransform().position;
+
+	float sqDistance = (targetPos - myPos).GetSqLength();
+
+	Vector3 move;
+
+	// 距離を取られたら
+	if (sqDistance > kStartFollowDistance * kStartFollowDistance)
 	{
-		const Vector3& targetPos = player->GetTransform().position;
-		Vector3& myPos = GetTransform().position;
+		m_action = Action::Follow;
+	}
+	else if (sqDistance < kStartBackDistance * kStartBackDistance)
+	{
+		m_action = Action::Back;
+	}
 
-		float sqDistance = (targetPos - myPos).GetSqLength();
+	switch (m_action)
+	{
+	case EnemyShooter::Action::Idle: break;
 
-		Vector3 move;
+	case EnemyShooter::Action::Follow:
 
-		// 距離を取られたら
-		if (sqDistance > kStartFollowDistance * kStartFollowDistance)
+		move = (targetPos - myPos).GetNormalize() * kFollowSpeed;
+
+		if (sqDistance < kBaseDistance * kBaseDistance)
 		{
-			mAction = Action::Follow;
-		}
-		else if (sqDistance < kStartBackDistance * kStartBackDistance)
-		{
-			mAction = Action::Back;
-		}
-
-		switch (mAction)
-		{
-		case EnemyShooter::Action::Idle: break;
-
-		case EnemyShooter::Action::Follow:
-
-			move = (targetPos - myPos).GetNormalize() * kFollowSpeed;
-
-			if (sqDistance < kBaseDistance * kBaseDistance)
-			{
-				mAction = Action::Distance;
-			}
-
-			break;
-
-		case EnemyShooter::Action::Distance:
-		{
-			Vector3 vec = (targetPos - myPos);
-
-			float s = std::sin(DX_PI_F / 2);
-			float c = std::cos(DX_PI_F / 2);
-
-			vec = Vector3(vec.x * c - vec.y * s, vec.x * s + vec.y * c, 0.0f);
-			move = vec * Time::GetInstance().GetDeltaTime() * kArcSpeed;
-
-			break;
+			m_action = Action::Distance;
 		}
 
-		case EnemyShooter::Action::Back:
+		break;
 
-			move = (targetPos - myPos).GetNormalize() * -kDistanceSpeed;
+	case EnemyShooter::Action::Distance:
+	{
+		Vector3 vec = (targetPos - myPos);
 
-			break;
-		}
+		float s = std::sin(DX_PI_F / 2);
+		float c = std::cos(DX_PI_F / 2);
 
-		myPos += move * Time::GetInstance().GetDeltaTime();
+		vec = Vector3(vec.x * c - vec.y * s, vec.x * s + vec.y * c, 0.0f);
+		move = vec * Time::GetInstance().GetDeltaTime() * kArcSpeed;
+
+		break;
+	}
+
+	case EnemyShooter::Action::Back:
+
+		move = (targetPos - myPos).GetNormalize() * -kDistanceSpeed;
+
+		break;
+	}
+
+	myPos += move * Time::GetInstance().GetDeltaTime();
+
+	if (m_attackCooltimeCounter > 0)
+	{
+		m_attackCooltimeCounter -= Time::GetInstance().GetDeltaTime();
+	}
+	else
+	{
+		Attack();
+
+		m_attackCooltimeCounter = kMeleeAttackCooltime;
 	}
 }
 
@@ -116,5 +138,21 @@ void EnemyShooter::Draw()
 
 void EnemyShooter::Attack()
 {
-	//GetPlayer()->Damage(1);
+	// 一番手前の無効状態の弾を生成
+	for (const auto& bullet : m_bullets)
+	{
+		if (bullet->GetState() == State::Active) continue;
+
+		const Vector3& pos = GetTransform().position - GetPlayer()->GetTransform().position;
+
+		const float dir = std::atan2(pos.y, pos.x);
+
+		const Vector3& rot = Vector3(0.0f, 0.0f, dir);
+
+		bullet->Create(GetTransform().position, rot);
+
+		m_attackCooltimeCounter = kMeleeAttackCooltime;
+
+		break;
+	}
 }

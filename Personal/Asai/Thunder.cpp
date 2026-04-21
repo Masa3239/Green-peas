@@ -15,12 +15,12 @@ namespace {
 	constexpr float kCollisionInfectionSize = 80.0f;
 
 	//移動速度
-	constexpr float kSpeed = 60.0f;
+	constexpr float kSpeed = 120.0f;
 	//移動の最大距離
 	constexpr float kMaxMoveDistance = 500;
 
 	//フィールドに残る時間
-	constexpr float kFieldLifetime = 1.0f;
+	constexpr float kFieldLifetime = 0.3f;
 
 	//伝染回数
 	constexpr int kMaxInfection = 5;
@@ -189,6 +189,18 @@ void Thunder::UpdateInfection()
 	std::vector<EnemyBase*>enemies;
 	enemies.clear();
 
+	//m_pEnemies.clear();
+	m_pEnemies.insert(m_pEnemies.end(), enemies.begin(), enemies.end());
+
+	//雷の当たった敵を調べる
+	for (auto& enemy : m_pEnemies) {
+		//当たり判定を作る
+		auto circle = Collision::Circle(enemy->GetTransform().position, kCollisionInfectionSize * m_scale);
+		//当たっていなければスルー
+		m_pEnemyMgr->CheckHitEnemies(circle, 3, 1, 1, Weapon::Sword, 1);
+
+	}
+
 	for (auto& enemy : m_pEnemies)
 	{
 		auto circle = Collision::Circle(enemy->GetTransform().position, kCollisionInfectionSize * m_scale);
@@ -197,19 +209,11 @@ void Thunder::UpdateInfection()
 
 		enemies.insert(enemies.end(), check.begin(), check.end());
 
-	}
-
-	//m_pEnemies.clear();
-	//m_pEnemies.insert(m_pEnemies.end(), enemies.begin(), enemies.end());
-
-	//雷の当たった敵を調べる
-	for (auto& enemy : m_pEnemies) {
-		//当たり判定を作る
-		auto circle = Collision::Circle(enemy->GetTransform().position, kCollisionInfectionSize * m_scale);
-		//当たっていなければスルー
-		m_pEnemyMgr->CheckHitEnemies(circle, 3, 1, 1, Weapon::Thunder, 1);
+		DrawCircle(enemy->GetTransform().position.x, enemy->GetTransform().position.y, kCollisionInfectionSize * m_scale, 0x000000, TRUE);
 
 	}
+
+	m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Sword, 1);
 
 	if (m_infectionCount > kMaxInfection) {
 		m_isActive = false;

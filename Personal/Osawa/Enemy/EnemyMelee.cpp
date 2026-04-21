@@ -7,13 +7,13 @@ namespace
 {
 	constexpr float kDistanceSpeed = 50.0f;
 
-	constexpr float kAttackCooltime = 1.0f;
+	constexpr float kMeleeAttackCooltime = 1.0f;
 }
 
 EnemyMelee::EnemyMelee(ObjectManager* objManager) :
-	EnemyBase(objManager)
+	EnemyBase(objManager),
+	m_attackCooltimeCounter(0.0f)
 {
-	SetAttackCooltime(kAttackCooltime);
 }
 
 EnemyMelee::~EnemyMelee()
@@ -30,16 +30,29 @@ void EnemyMelee::End()
 
 void EnemyMelee::UpdateEnemy()
 {
-	if (auto player = GetPlayer())
+	auto player = GetPlayer();
+	
+	const Vector3& targetPos = player->GetTransform().position;
+	Vector3& myPos = GetTransform().position;
+
+	if (targetPos == myPos) return;
+
+	Vector3 vec = (targetPos - myPos).GetNormalize();
+
+	myPos += vec * kDistanceSpeed * Time::GetInstance().GetDeltaTime();
+
+	if (m_attackCooltimeCounter > 0)
 	{
-		const Vector3& targetPos = player->GetTransform().position;
-		Vector3& myPos = GetTransform().position;
+		m_attackCooltimeCounter -= Time::GetInstance().GetDeltaTime();
+	}
+	else
+	{
+		if (GetCollider().CheckCollision(GetPlayer()->GetCircle()))
+		{
+			Attack();
 
-		if (targetPos == myPos) return;
-
-		Vector3 vec = (targetPos - myPos).GetNormalize();
-
-		myPos += vec * kDistanceSpeed * Time::GetInstance().GetDeltaTime();
+			m_attackCooltimeCounter = kMeleeAttackCooltime;
+		}
 	}
 }
 

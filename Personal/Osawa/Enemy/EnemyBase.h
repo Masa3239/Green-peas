@@ -69,8 +69,6 @@ public:
 
 protected:
 
-	void SetAttackCooltime(const float time) { m_attackCooltime = time; }
-
 	/// <summary>
 	/// 攻撃処理
 	/// </summary>
@@ -98,16 +96,6 @@ private:
 	/// コライダー
 	/// </summary>
 	Collision::AABB m_collider;
-
-	/// <summary>
-	/// 攻撃クールタイムのカウンター
-	/// </summary>
-	float m_attackCooltimeCounter;
-
-	/// <summary>
-	/// 攻撃クールタイムの時間
-	/// </summary>
-	float m_attackCooltime;
 
 	std::array<std::vector<bool>, Weapon::Max> m_damageFlag;
 
