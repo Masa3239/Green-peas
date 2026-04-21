@@ -74,9 +74,13 @@ void SceneTestAsai::Init()
 	enemyMgr = new EnemyManager(GetObjectManager());
 	enemyMgr->Init();
 	enemyMgr->SetPlayer(pPlayer);
+	enemyMgr->SetUIManager(uiMgr);
 
 	pPlayer->SetCamera(camera);
+	pPlayer->SetEnemyManager(enemyMgr);
 	pPlayer->SetItemManager(ItemMgr);
+
+	thunder->SetEnemyManager(enemyMgr);
 
 }
 
@@ -94,7 +98,7 @@ SceneBase* SceneTestAsai::Update()
 
 	map->Update();
 	pPlayer->Update();
-	thunder->Update();
+	//thunder->Update();
 
 	enemyMgr->Update();
 
@@ -142,7 +146,6 @@ void SceneTestAsai::Draw()
 	printfDx("SceneTestAsai\n");
 
 	fire->DebugDraw();
-	thunder->DebugDraw();
 
 }
 
@@ -153,6 +156,7 @@ void SceneTestAsai::PreDraw()
 	ClearDrawScreen();
 	map->Draw();
 
+
 }
 
 void SceneTestAsai::PostDraw()
@@ -162,5 +166,9 @@ void SceneTestAsai::PostDraw()
 	camera->Draw();
 	uiMgr->ScreenDraw();
 	miniMap->Draw();
+
+	clsDx();
+
+	thunder->DebugDraw();
 
 }

@@ -67,13 +67,18 @@ private:
 	/// </summary>
 	void UpdateField();
 
+	/// <summary>
+	/// 伝染状態のアップデート
+	/// </summary>
+	void UpdateInfection();
+
 private:
 
 	enum class State {
 
 		Ball = 0,
 		Field,
-
+		Infection,
 	};
 
 	/// <summary>
@@ -90,6 +95,8 @@ private:
 	/// 伝染のカウント
 	/// </summary>
 	int m_infectionCount;
+
+	float m_infectionTimer;
 
 	/// <summary>
 	/// 敵の座標を取得する為に使う

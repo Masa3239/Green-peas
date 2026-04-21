@@ -6,11 +6,13 @@
 #include<DxLib.h>
 #include<math.h>
 #include"../../Utility/Time.h"
+#include"../Takagi/Weapon.h"
 
 namespace {
 	//当たり判定のサイズ
 	constexpr float kCollisionBallSize = 20.0f;
-	constexpr float kCollisionFieldSize = 40.0f;
+	constexpr float kCollisionFieldSize = 70.0f;
+	constexpr float kCollisionInfectionSize = 80.0f;
 
 	//移動速度
 	constexpr float kSpeed = 60.0f;
@@ -23,7 +25,7 @@ namespace {
 	//伝染回数
 	constexpr int kMaxInfection = 5;
 	//伝染感覚
-	constexpr float kInterval = 0.1f;
+	constexpr float kInterval = 1.0f;
 
 }
 
@@ -33,6 +35,7 @@ Thunder::Thunder(ObjectManager* objManager):
 	m_state(State::Ball),
 	m_fieldElapsedTime(0),
 	m_infectionCount(0),
+	m_infectionTimer(0),
 	m_pEnemyMgr(nullptr),
 	m_pEnemies()
 {
@@ -61,6 +64,10 @@ void Thunder::Update()
 		UpdateField();
 		break;
 
+	case Thunder::State::Infection:
+		UpdateInfection();
+		break;
+
 	default:
 		break;
 	}
@@ -70,16 +77,21 @@ void Thunder::Update()
 void Thunder::Draw()
 {
 	//非アクティブならリターン
-	if (!m_isActive)return;
+	//if (!m_isActive)return;
+
+	m_circle.DebugDraw();
 
 }
 
 void Thunder::DebugDraw()
 {
 	//非アクティブならリターン
-	if (!m_isActive)return;
+	//if (!m_isActive)return;
 
-	m_circle.DebugDraw();
+	printfDx("m_pEnemies.size() %d\n", m_pEnemies.size());
+	printfDx("m_infectionCount %d\n", m_infectionCount);
+	printfDx("m_infectionTimer %f\n", m_infectionTimer);
+	printfDx("state%d\n", static_cast<int>(m_state));
 
 }
 
@@ -122,6 +134,8 @@ void Thunder::UpdateBall()
 
 	//当たり判定を更新
 	m_circle.SetPosition(GetTransform().position);
+	//当たった敵を取得
+	m_pEnemies = (m_pEnemyMgr->GetHitEnemies(m_circle, 1));
 
 	//移動距離を取得
 	float distance = (m_spawnPos - GetTransform().position).GetSqLength();
@@ -129,11 +143,13 @@ void Thunder::UpdateBall()
 	if (distance <= kMaxMoveDistance * kMaxMoveDistance)return;
 
 	//移動距離の最大になったら状態を変更
-	m_state = State::Field;
-	//当たり判定のサイズを変更
-	m_circle = Collision::Circle(GetTransform().position, kCollisionFieldSize * m_scale);
-	//タイマーをリセット
-	m_fieldElapsedTime = 0;
+	m_state = State::Infection;
+	m_circle = Collision::Circle(GetTransform().position, kCollisionInfectionSize * m_scale);
+
+	//当たり前を更新
+	m_circle.SetPosition(GetTransform().position);
+	//当たった敵を取得
+	m_pEnemies = (m_pEnemyMgr->GetHitEnemies(m_circle, 1));
 
 }
 
@@ -141,11 +157,64 @@ void Thunder::UpdateField()
 {
 	//タイマーを加算
 	m_fieldElapsedTime += Time::GetInstance().GetDeltaTime();
+	
 
 	//消える時間じゃないならスルー
 	if (m_fieldElapsedTime < kFieldLifetime)return;
 
 	//非アクティブにする
-	m_isActive = false;
+	//m_isActive = false;
+
+	//伝染
+	m_state = State::Infection;
+	//当たり前を更新
+	m_circle.SetPosition(GetTransform().position);
+	//当たった敵を取得
+	m_pEnemies = (m_pEnemyMgr->GetHitEnemies(m_circle, 1));
+
+}
+
+void Thunder::UpdateInfection()
+{
+
+	m_infectionTimer += Time::GetInstance().GetDeltaTime();
+
+	//時間じゃないならスルー
+	if (m_infectionTimer <= kInterval)return;
+	//タイマーをリセット
+	m_infectionTimer = 0;
+	//伝染回数を加算する
+	m_infectionCount++;
+
+	std::vector<EnemyBase*>enemies;
+	enemies.clear();
+
+	for (auto& enemy : m_pEnemies)
+	{
+		auto circle = Collision::Circle(enemy->GetTransform().position, kCollisionInfectionSize * m_scale);
+
+		auto check = (m_pEnemyMgr->GetHitEnemies(circle, EnemyBase::kStatePalsy));
+
+		enemies.insert(enemies.end(), check.begin(), check.end());
+
+	}
+
+	//m_pEnemies.clear();
+	//m_pEnemies.insert(m_pEnemies.end(), enemies.begin(), enemies.end());
+
+	//雷の当たった敵を調べる
+	for (auto& enemy : m_pEnemies) {
+		//当たり判定を作る
+		auto circle = Collision::Circle(enemy->GetTransform().position, kCollisionInfectionSize * m_scale);
+		//当たっていなければスルー
+		m_pEnemyMgr->CheckHitEnemies(circle, 3, 1, 1, Weapon::Thunder, 1);
+
+	}
+
+	if (m_infectionCount > kMaxInfection) {
+		m_isActive = false;
+		m_infectionCount = 0;
+		m_infectionTimer = 0;
+	}
 
 }
