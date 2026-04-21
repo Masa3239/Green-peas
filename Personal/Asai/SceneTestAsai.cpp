@@ -7,8 +7,8 @@
 #include"../Asai/Arrow.h"
 #include"../Asai/FireBall.h"
 #include"../Asai/Minimap.h"
-#include"../Asai/ThunderBall.h"
-
+#include"../Asai/Thunder.h"
+#include"../Osawa/Enemy/EnemyManager.h"
 #include"../Takagi/Player.h"
 #include"../Kimura/Map/Map.h"
 #include"../Syoguti/ItemManager.h"
@@ -18,8 +18,9 @@ Arrow* arrow;
 FireBall* fire;
 Camera* camera;
 Minimap* miniMap;
-ThunderBall* thunder;
+Thunder* thunder;
 ItemManager* ItemMgr;
+EnemyManager* enemyMgr;
 Player* pPlayer;
 Map* map;
 
@@ -48,7 +49,7 @@ void SceneTestAsai::Init()
 	fire = new FireBall(GetObjectManager());
 	fire->Init();
 
-	thunder = new ThunderBall(GetObjectManager());
+	thunder = new Thunder(GetObjectManager());
 	thunder->Init();
 
 	map = new Map();
@@ -70,8 +71,16 @@ void SceneTestAsai::Init()
 	miniMap->SetItemManager(ItemMgr);
 	miniMap->Init();
 
+	enemyMgr = new EnemyManager(GetObjectManager());
+	enemyMgr->Init();
+	enemyMgr->SetPlayer(pPlayer);
+	enemyMgr->SetUIManager(uiMgr);
+
 	pPlayer->SetCamera(camera);
+	pPlayer->SetEnemyManager(enemyMgr);
 	pPlayer->SetItemManager(ItemMgr);
+
+	thunder->SetEnemyManager(enemyMgr);
 
 }
 
@@ -89,7 +98,9 @@ SceneBase* SceneTestAsai::Update()
 
 	map->Update();
 	pPlayer->Update();
-	thunder->Update();
+	//thunder->Update();
+
+	enemyMgr->Update();
 
 	if (CheckHitKey(KEY_INPUT_1)) {
 		transform.position.x++;
@@ -102,8 +113,8 @@ SceneBase* SceneTestAsai::Update()
 	if (CheckHitKey(KEY_INPUT_2)) {
 
 		uiMgr->CreateDamagePopUpText(transform.position,5);
-		//thunder->Shot(pPlayer->GetTransform());
-		ItemMgr->Create(ItemBase::ItemType::Heal, pPlayer->GetTransform().position);
+		thunder->Shot(pPlayer->GetTransform());
+		//ItemMgr->Create(ItemBase::ItemType::Heal, pPlayer->GetTransform().position);
 	}
 
 	if (CheckHitKey(KEY_INPUT_0)) {
@@ -145,6 +156,7 @@ void SceneTestAsai::PreDraw()
 	ClearDrawScreen();
 	map->Draw();
 
+
 }
 
 void SceneTestAsai::PostDraw()
@@ -154,5 +166,9 @@ void SceneTestAsai::PostDraw()
 	camera->Draw();
 	uiMgr->ScreenDraw();
 	miniMap->Draw();
+
+	clsDx();
+
+	thunder->DebugDraw();
 
 }

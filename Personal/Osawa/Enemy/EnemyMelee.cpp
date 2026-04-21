@@ -47,7 +47,9 @@ void EnemyMelee::Draw()
 {
 	auto& transform = GetTransform();
 	
-	DrawBox(transform.position.x - 9, transform.position.y  -10, transform.position.x + 9, transform.position.y + 20, 0xff0000, 1);
+	unsigned int color = (GetMyState() & EnemyBase::kStatePalsy) ? 0xffff00 : 0xff0000;
+
+	DrawBox(transform.position.x - 9, transform.position.y  -10, transform.position.x + 9, transform.position.y + 20, color, 1);
 
 	GetCollider().DebugDraw();
 }

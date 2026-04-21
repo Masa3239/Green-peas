@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Map/MapManager.h"
+#include"Struct.h"
 
 #include<vector>//Split関数で使用する
 #include<string>//Split関数で使用する
@@ -55,6 +56,8 @@ public:
 	//矩形による壁判定
 	bool IsWallRect(float left, float top, float right, float bottom);
 	void DebugDrawRect(float left, float top, float right, float bottom);
+
+	bool CheckMapChipToRect(Rect rect, MapChip mapChip);
 
 	std::vector<std::string>Split(const std::string& str, char separate);
 
