@@ -17,7 +17,7 @@ namespace
 	constexpr int kMaxEnemyNum = 100;
 
 	// “G¶¬‚ÌŠÔŠu
-	constexpr float kGenerateDuration = 0.5f;
+	constexpr float kGenerateDuration = 1.5f;
 
 	// ¶¬‚ÉƒvƒŒƒCƒ„[‚©‚ç—£‚·‹——£
 	constexpr float kGenerateOffsetPos = 500.0f;

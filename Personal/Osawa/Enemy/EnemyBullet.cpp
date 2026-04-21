@@ -8,7 +8,7 @@ namespace
 	constexpr float kSpeed = 200.0f;
 
 	// 弾が残る時間
-	constexpr float kLiveTime = 2.0f;
+	constexpr float kLiveTime = 5.0f;
 
 	constexpr float kColliderRadius = 7.5f;
 }
@@ -36,8 +36,8 @@ void EnemyBullet::Update()
 
 	Vector3 move;
 
-	move.x = std::sin(transform.rotation.z) * kSpeed;
-	move.y = -std::cos(transform.rotation.z) * kSpeed;
+	move.x = -std::cos(transform.rotation.z) * kSpeed;
+	move.y = -std::sin(transform.rotation.z) * kSpeed;
 	move *= Time::GetInstance().GetDeltaTime();
 
 	transform.Translate(move);

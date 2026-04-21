@@ -9,6 +9,7 @@ class EnemyManager;
 class UIManager;
 class Map;
 class ItemManager;
+class WeaponManager;
 
 class SceneTestOsawa : public SceneBase
 {
@@ -73,4 +74,6 @@ private:
 	/// ƒ}ƒbƒv
 	/// </summary>
 	std::unique_ptr<Map> m_pMap;
+
+	std::unique_ptr<WeaponManager> m_pWeaponManager;
 };

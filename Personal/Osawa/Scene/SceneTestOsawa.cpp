@@ -6,6 +6,7 @@
 #include "../Personal/Osawa/Enemy/EnemyManager.h"
 #include "../Personal/Syoguti/ItemManager.h"
 #include "../Personal/Takagi/Player.h"
+#include "../Personal/Takagi/WeaponManager.h"
 #include "../System/ObjectManager.h"
 
 #include "../Personal/Osawa/Scene/SceneSelection.h"
@@ -16,7 +17,8 @@ SceneTestOsawa::SceneTestOsawa() :
 	m_pEnemyMgr(nullptr),
 	m_pUIMgr(nullptr),
 	m_pItemMgr(nullptr),
-	m_pMap(nullptr)
+	m_pMap(nullptr),
+	m_pWeaponManager(nullptr)
 {
 	m_pPlayer = std::make_unique<Player>(GetObjectManager());
 	m_pCamera = std::make_unique<Camera>();
@@ -24,6 +26,7 @@ SceneTestOsawa::SceneTestOsawa() :
 	m_pUIMgr = std::make_unique<UIManager>();
 	m_pItemMgr = std::make_unique<ItemManager>();
 	m_pMap = std::make_unique<Map>();
+	m_pWeaponManager = std::make_unique<WeaponManager>();
 }
 
 SceneTestOsawa::~SceneTestOsawa()
@@ -39,6 +42,7 @@ void SceneTestOsawa::Init()
 
 	m_pCamera->Init();
 	m_pCamera->SetMap(m_pMap.get());
+	m_pCamera->GenerateWorldScreen();
 
 	m_pEnemyMgr->Init();
 	m_pEnemyMgr->SetPlayer(m_pPlayer.get());
@@ -52,11 +56,15 @@ void SceneTestOsawa::Init()
 
 	m_pMap->Init();
 
-	m_pCamera->GenerateWorldScreen();
+	m_pWeaponManager->SetPlayer(m_pPlayer.get());
+	m_pWeaponManager->SetObjManager(GetObjectManager());
+	m_pWeaponManager->SetEnemyManager(m_pEnemyMgr.get());
+	m_pWeaponManager->Init();
 }
 
 void SceneTestOsawa::End()
 {
+	m_pWeaponManager->End();
 	m_pMap->End();
 	m_pItemMgr->End();
 	m_pUIMgr->End();
@@ -76,6 +84,8 @@ SceneBase* SceneTestOsawa::Update()
 	m_pItemMgr->Update();
 
 	m_pMap->Update();
+
+	m_pWeaponManager->Update();
 
 	return this;
 }
@@ -104,4 +114,6 @@ void SceneTestOsawa::PostDraw()
 
 	m_pUIMgr->ScreenDraw();
 	m_pUIMgr->DebugDraw();
+
+	clsDx();
 }
