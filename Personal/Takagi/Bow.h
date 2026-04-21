@@ -17,12 +17,13 @@ public:
 	void Update()override;
 	void Draw()override;
 	void SetPos(const Vector3& pos) { GetTransform().position = pos; }
-	void Attack()override;
+	bool Attack()override;
 	bool CheckAttack()override;
 	//Collision::Circle GetCollision()override;
 	void CheckCollision()override;
 	void Shot(const Transform& transform);
 	void SetScale(float scale)override { m_scale = scale; }
+	int GetWeaponType()override { return Weapon::Bow; }
 private:
 	//bool attack;
 	//float m_desireRadian;

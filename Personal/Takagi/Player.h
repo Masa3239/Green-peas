@@ -19,7 +19,7 @@ namespace {
 	constexpr int kPlayerFrame = 4;
 	// プレイヤーのアニメーションで何枚目のフレームを使うか
 	constexpr int kFrame[kPlayerFrame] = { 0,1,2,1 };
-
+	constexpr int kWeaponMaxNum = 2;
 }
 
 class Gauge;
@@ -81,6 +81,11 @@ public:
 	/// 移動量の計算
 	/// </summary>
 	void MoveAmount();
+	/// <summary>
+	/// スタミナを消費するかどうか
+	/// </summary>
+	/// <param name="stamina"></param>
+	void Dash(bool stamina=true);
 	/// <summary>
 	/// 移動速度の更新処理
 	/// </summary>
@@ -162,6 +167,7 @@ public: // ゲッター・セッター=======================
 	
 	void SetEnemyManager(EnemyManager* enemyManager);
 	void SetItemManager(ItemManager* itemManager) { m_pItemMgr = itemManager; }
+	void SetWeapon(Weapon* weapon);
 private:
 	/// <summary>
 	/// ダッシュ可能かどうかを調べる関数
@@ -210,7 +216,7 @@ private:
 	/// ゲージの配列(HP・スタミナ・怒り)
 	/// </summary>
 	std::unique_ptr<Gauge> m_gauges[static_cast<int>(GaugeType::Max)];
-	std::vector< std::unique_ptr<Weapon>>m_weapons;
+	Weapon* m_weapons[kWeaponMaxNum];
 
 	Camera* m_camera;
 
@@ -230,4 +236,5 @@ private:
 	bool m_angerButton[2];
 
 	bool m_anger;
+	float m_cameraShakeCount;
 };

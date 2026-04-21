@@ -8,6 +8,7 @@ class Map;
 class ItemManager;
 class EnemyManager;
 class UIManager;
+class WeaponManager;
 
 class SceneTestTakagi : public SceneBase
 {
@@ -50,5 +51,6 @@ private:
 	std::unique_ptr<Map>m_pMap;
 
 	std::unique_ptr<UIManager>m_pUIManager;
+	std::unique_ptr<WeaponManager>m_pWeaponManager;
 
 };
