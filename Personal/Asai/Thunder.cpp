@@ -1,5 +1,7 @@
-#include "ThunderBall.h"
+#include "Thunder.h"
 #include"../Asai/BulletBase.h"
+#include"../Osawa/Enemy/EnemyBase.h"
+#include"../Osawa/Enemy/EnemyManager.h"
 
 #include<DxLib.h>
 #include<math.h>
@@ -18,20 +20,30 @@ namespace {
 	//フィールドに残る時間
 	constexpr float kFieldLifetime = 1.0f;
 
+	//伝染回数
+	constexpr int kMaxInfection = 5;
+	//伝染感覚
+	constexpr float kInterval = 0.1f;
+
 }
 
-ThunderBall::ThunderBall(ObjectManager* objManager):
+
+Thunder::Thunder(ObjectManager* objManager):
 	BulletBase(objManager),
 	m_state(State::Ball),
-	m_fieldElapsedTime(0)
+	m_fieldElapsedTime(0),
+	m_infectionCount(0),
+	m_pEnemyMgr(nullptr),
+	m_pEnemies()
+{
+	m_pEnemies.clear();
+}
+
+void Thunder::Init()
 {
 }
 
-void ThunderBall::Init()
-{
-}
-
-void ThunderBall::Update()
+void Thunder::Update()
 {
 
 	//非アクティブならリターン
@@ -39,12 +51,12 @@ void ThunderBall::Update()
 
 	switch (m_state)
 	{
-	case ThunderBall::State::Ball:
+	case Thunder::State::Ball:
 		//State::Ballの更新処理
 		UpdateBall();
 		break;
 
-	case ThunderBall::State::Field:
+	case Thunder::State::Field:
 		//State::Fieldの更新処理
 		UpdateField();
 		break;
@@ -55,25 +67,27 @@ void ThunderBall::Update()
 
 }
 
-void ThunderBall::Draw()
+void Thunder::Draw()
 {
 	//非アクティブならリターン
 	if (!m_isActive)return;
 
 }
 
-void ThunderBall::DebugDraw()
+void Thunder::DebugDraw()
 {
 	//非アクティブならリターン
 	if (!m_isActive)return;
 
+	m_circle.DebugDraw();
+
 }
 
-void ThunderBall::End()
+void Thunder::End()
 {
 }
 
-void ThunderBall::Shot(Transform transform)
+void Thunder::Shot(Transform transform)
 {
 	//セット
 	GetTransform() = transform;
@@ -88,7 +102,7 @@ void ThunderBall::Shot(Transform transform)
 
 }
 
-void ThunderBall::SetScale(float scale)
+void Thunder::SetScale(float scale)
 {
 	//m_scaleの変更
 	m_scale = scale;
@@ -97,7 +111,7 @@ void ThunderBall::SetScale(float scale)
 
 }
 
-void ThunderBall::UpdateBall()
+void Thunder::UpdateBall()
 {
 	//デルタタイムを取得
 	float deltaTime = Time::GetInstance().GetDeltaTime();
@@ -123,7 +137,7 @@ void ThunderBall::UpdateBall()
 
 }
 
-void ThunderBall::UpdateField()
+void Thunder::UpdateField()
 {
 	//タイマーを加算
 	m_fieldElapsedTime += Time::GetInstance().GetDeltaTime();
@@ -133,6 +147,5 @@ void ThunderBall::UpdateField()
 
 	//非アクティブにする
 	m_isActive = false;
-
 
 }

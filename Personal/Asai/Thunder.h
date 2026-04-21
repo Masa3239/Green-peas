@@ -1,13 +1,17 @@
 #pragma once
 #include"../Asai/BulletBase.h"
+#include<vector>
 
-class ThunderBall :public BulletBase
+class EnemyManager;
+class EnemyBase;
+
+class Thunder :public BulletBase
 {
 
 public:
 
-	ThunderBall(ObjectManager* objManager);
-	~ThunderBall() = default;
+	Thunder(ObjectManager* objManager);
+	~Thunder() = default;
 
 	/// <summary>
 	/// 初期化処理
@@ -49,6 +53,8 @@ public:
 	/// <param name="scale"></param>
 	void SetScale(float scale)override;
 
+	void SetEnemyManager(EnemyManager* pEnemyMgr) { m_pEnemyMgr = pEnemyMgr; }
+
 private:
 
 	/// <summary>
@@ -70,8 +76,29 @@ private:
 
 	};
 
+	/// <summary>
+	/// 雷の状態
+	/// </summary>
 	State m_state;
 
+	/// <summary>
+	/// 経過時間
+	/// </summary>
 	float m_fieldElapsedTime;
+
+	/// <summary>
+	/// 伝染のカウント
+	/// </summary>
+	int m_infectionCount;
+
+	/// <summary>
+	/// 敵の座標を取得する為に使う
+	/// </summary>
+	EnemyManager* m_pEnemyMgr;
+
+	/// <summary>
+	/// 雷が当たった敵を調べる
+	/// </summary>
+	std::vector<EnemyBase*>m_pEnemies;
 
 };
