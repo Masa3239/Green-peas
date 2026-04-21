@@ -155,14 +155,13 @@ bool Map::IsWall(int mapX, int mapY) {
 
  // チップの種類によって判定を分ける
  switch (chip) { 
-	// 通行可能なタイル
-   case MapChip::Space:
-   case MapChip::IceTile: 
+	// 壁タイル
+   case MapChip::Wall:
 
-   return false; 
+   return true; 
    // それ以外はすべて壁扱い
    default:
-	 return true; 
+	 return false; 
  }
 
 }

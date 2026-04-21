@@ -28,4 +28,14 @@
         BrickTail=35, 
         //灰色タイル 
         grayTail=9,
+        //マグマタイル
+        MagmaTail=23,
+        //闇タイル
+        DarkTail=35,
+        //草原タイル
+        PrairieTail=50,
+        //岩タイル
+        RockTail=9,
+        //溶岩タイル
+        LavaBrack=7,
     };
