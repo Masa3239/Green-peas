@@ -90,7 +90,7 @@ void Bow::CheckCollision()
 	//m_pEnemyMgr->CheckHitEnemies(m_circle, damage);
 	for (auto& arrows : m_pArrows) {
 		if (!arrows->GetIsActive())continue;
-		m_pEnemyMgr->CheckHitEnemies(arrows->GetCollision(), damage, criticalRate, criticalDamage);
+		//m_pEnemyMgr->CheckHitEnemies(arrows->GetCollision(), damage, criticalRate, criticalDamage);
 	}
 }
 

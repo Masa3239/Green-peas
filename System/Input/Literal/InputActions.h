@@ -12,6 +12,14 @@ namespace Input
 		Left,
 		Right,
 		Move,
+		Dash,
+		Attack,
+		PickUp,
+		Weapon,
+		Anger1,
+		Anger2,
+		Anger3,
+		Anger4,
 		Length
 	};
 }

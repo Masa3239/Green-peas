@@ -124,5 +124,5 @@ void Katana::CheckCollision()
 	damage = m_playerStatus.Attack * m_weaponStatus.Attack;
 	float criticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
 	float criticalDamage = m_weaponStatus.CriticalDamage + m_playerStatus.CriticalDamage;
-	m_pEnemyMgr->CheckHitEnemies(m_circle, damage, criticalRate, criticalDamage);
+	//m_pEnemyMgr->CheckHitEnemies(m_circle, damage, criticalRate, criticalDamage);
 }

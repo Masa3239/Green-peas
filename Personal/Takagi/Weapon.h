@@ -25,6 +25,7 @@ public:
 		Boomerang,	// ブーメラン
 		Bow,		// 弓
 		Katana,		// 刀
+		Thunder,
 		Max
 	};
 	enum class Swing {

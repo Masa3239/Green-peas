@@ -4,7 +4,7 @@
 #include"../Utility/Transform.h"
 #include"../Utility/Vector3.h"
 #include"../Utility/Time.h"
-#include"../System/InputPad.h"
+//#include"../System/InputPad.h"
 #include<math.h>
 #include<memory>
 #include<vector>
@@ -23,6 +23,9 @@
 #include"../Osawa/Enemy/EnemyManager.h"
 #include"PlayerStatus.h"
 #include"PlayerBuff.h"
+#include"../../System/InputManager.h"
+#include"../../System/Input/Keyboard.h"
+#include"../../System/Input/Gamepad.h"
 
 namespace {
 	// ゲージの種類をキャスト(いちいちキャストするのが面倒なので用意)
@@ -170,13 +173,10 @@ void Player::Update()
 		m_camera->ChangeFollow();
 	}
 	if (m_pItemMgr) {
-		if (Pad::IsPressed(Pad::Button::B)) {
+		if (InputManager::GetInstance().IsPressed(Input::Action::PickUp)) {
 			m_pItemMgr->CheckHitCollision(GetCircle());
 		}
-		if (Pad::IsPressed(Pad::Button::Back)) {
-			m_pItemMgr->Create(ItemBase::ItemType::Heal, GetTransform().position);
-		}
-		if (Pad::IsPressed(Pad::Button::Back)) {
+		if (Gamepad::GetInstance().IsDown(XINPUT_BUTTON_BACK)) {
 			m_pItemMgr->Create(ItemBase::ItemType::Heal, GetTransform().position);
 		}
 	}
@@ -189,9 +189,7 @@ void Player::Update()
 	m_circle.SetPosition(GetTransform().position);
 	printfDx("deltatime : %f\n", m_deltaTime);
 	printfDx("移動量 : %f\n", m_moveVector.GetLength());
-	/*
-	if (Pad::IsDown(Pad::Button::LB)) {
-	}*/
+
 		//m_gauges[static_cast<int>(GaugeType::Exp)]->Increase(10*m_deltaTime);
 
 	printfDx("m_direction : %d\n", static_cast<int>(m_direction));
@@ -235,10 +233,10 @@ void Player::MoveAmount()
 	if (CheckDashNow()) {
 	}
 	else {
-	m_moveAmount = Pad::PadAnalogAmount(Pad::Joystick::Left);
+	m_moveAmount = InputManager::GetInstance().GetAnalog2DAmount(Input::Action::Move);
 	// 入力量を取得
 		// スティック入力の角度
-		float angle = Pad::AnalogAngle(Pad::Joystick::Left);
+		float angle = InputManager::GetInstance().GetAnalog2DAngle(Input::Action::Move);
 		// 向いている方向を更新
 		GetTransform().rotation.z = angle * MyMath::ToRadian;
 
@@ -270,7 +268,8 @@ void Player::MoveAmount()
 		}
 	}
 	
-	if (Pad::IsDown(Pad::Button::X)||Pad::IsReleased(Pad::Button::X)) {
+	if (InputManager::GetInstance().IsDown(Input::Action::Attack)||
+		InputManager::GetInstance().IsReleased(Input::Action::Attack)) {
 		if(!CheckDashNow())
 		if (m_weapons[0]->Attack()&&m_weapons[0]->GetWeaponType() == Weapon::Katana) {
 			Dash(false);
@@ -278,7 +277,7 @@ void Player::MoveAmount()
 
 	}
 	// 指定のボタンを押したとき かつ 武器を複数持っているとき
-	if (Pad::IsPressed(Pad::Button::Y)&&
+	if (InputManager::GetInstance().IsPressed(Input::Action::Weapon) &&
 		m_weapons[1]) {
 		Weapon* change;
 		change = m_weapons[1];
@@ -299,8 +298,8 @@ void Player::MoveAmount()
 	// 移動量の初期化
 	m_moveVector = { 0,0,0 };
 	// 入力角度からX,Y方向の移動量を計算
-	m_moveVector.x = sinf(GetTransform().rotation.z);
-	m_moveVector.y = -cosf(GetTransform().rotation.z);
+	m_moveVector.x = cosf(GetTransform().rotation.z);
+	m_moveVector.y = sinf(GetTransform().rotation.z);
 	// 正規化
 	m_moveVector = m_moveVector.GetNormalize();
 	// 移動速度を求める(入力量×移動速度×速度割合×時間)
@@ -309,11 +308,11 @@ void Player::MoveAmount()
 	m_moveVector *= moveSpeed;
 
 	if (m_moveAmount) {
-		m_direction = Pad::AnalogDirection(Pad::Joystick::Left);
+		m_direction = MyMath::Direction(GetTransform().rotation.z);
 	}
 	
 	printfDx("moveSpeed : %f\n",moveSpeed);
-	if (Pad::IsPressed(Pad::Button::Up)) {
+	if (Keyboard::GetInstance().IsDown(KEY_INPUT_K)) {
 		Damage(3);
 	}
 }
@@ -329,7 +328,8 @@ void Player::Dash(bool stamina)
 void Player::SpeedUpdate()
 {
 	// ダッシュしていないとき
-	if (Pad::IsPressed(Pad::Button::A) && CheckCanDash()) {
+	if (InputManager::GetInstance().IsPressed(Input::Action::Dash) && 
+		CheckCanDash()) {
 		Dash();
 	}
 	if (CheckDashNow()) {
@@ -352,7 +352,7 @@ void Player::Draw()
 	angle.x = sinf(GetTransform().rotation.z);
 	angle.y = -cosf(GetTransform().rotation.z);
 	angle = angle.GetNormalize();
-	angle *= 10 * Pad::PadAnalogAmount(Pad::Joystick::Left);
+	angle *= 10 * m_moveAmount;
 	angle += GetTransform().position;
 	DrawCircle(angle.x, angle.y, 3, GetColor(0, 255, 0));
 	Debug();
@@ -529,10 +529,10 @@ bool Player::CheckAngerButton()
 void Player::UpdateAngerButton()
 {
 	m_angerButton[1] = m_angerButton[0];
-	if (Pad::IsDown(Pad::Button::RT) &&
-		Pad::IsDown(Pad::Button::LT) &&
-		Pad::IsDown(Pad::Button::RB) &&
-		Pad::IsDown(Pad::Button::LB)) {
+	if (InputManager::GetInstance().IsDown(Input::Action::Anger1) &&
+		InputManager::GetInstance().IsDown(Input::Action::Anger2) &&
+		InputManager::GetInstance().IsDown(Input::Action::Anger3) &&
+		InputManager::GetInstance().IsDown(Input::Action::Anger4)) {
 		m_angerButton[0] = true;
 		//return true;
 	}
