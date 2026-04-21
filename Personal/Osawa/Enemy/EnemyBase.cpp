@@ -59,6 +59,16 @@ bool EnemyBase::Damage(const int damage)
 
 bool EnemyBase::Damage(const int damage, int weapon, int index)
 {
+	// 雷攻撃を受けたなら
+	if (weapon == 0/*仮*/)
+	{
+		// 痺れ状態ならダメージを受けない
+		if (GetMyState() & kStatePalsy) return false;
+
+		// 痺れ状態にする
+		AddState(kStatePalsy);
+	}
+
 	// 足りない分を追加
 	CheckDamageFlagSize(weapon, index);
 
