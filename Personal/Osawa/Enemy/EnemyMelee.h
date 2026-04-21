@@ -32,4 +32,11 @@ public:
 protected:
 
 	void Attack() override;
+
+private:
+
+	/// <summary>
+	/// 攻撃クールタイムのカウンター
+	/// </summary>
+	float m_attackCooltimeCounter;
 };

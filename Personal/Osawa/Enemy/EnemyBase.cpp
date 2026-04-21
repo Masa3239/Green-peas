@@ -15,8 +15,6 @@ EnemyBase::EnemyBase(ObjectManager* objManager) :
 	GameObject(objManager),
 	m_hp(kMaxHp),
 	m_collider(Collision::AABB{ Vector3(), kColliderSize }),
-	m_attackCooltimeCounter(0.0f),
-	m_attackCooltime(0.0f),
 	m_variableStatus(0),
 	m_player(nullptr)
 {
@@ -31,20 +29,6 @@ void EnemyBase::Update()
 	m_collider.SetPosition(GetTransform().position);
 	
 	UpdateEnemy();
-
-	if (m_attackCooltimeCounter > 0)
-	{
-		m_attackCooltimeCounter -= Time::GetInstance().GetDeltaTime();
-	}
-	else
-	{
-		if (m_collider.CheckCollision(GetPlayer()->GetCircle()))
-		{
-			Attack();
-
-			m_attackCooltimeCounter = m_attackCooltime;
-		}
-	}
 
 	// 当たり判定の座標更新
 	m_collider.SetPosition(GetTransform().position);
