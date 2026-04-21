@@ -86,6 +86,7 @@ void SceneTestAsai::Init()
 
 void SceneTestAsai::End()
 {
+	pPlayer->End();
 }
 
 SceneBase* SceneTestAsai::Update()
@@ -167,7 +168,7 @@ void SceneTestAsai::PostDraw()
 	uiMgr->ScreenDraw();
 	miniMap->Draw();
 
-	clsDx();
+	//clsDx();
 
 	thunder->DebugDraw();
 
