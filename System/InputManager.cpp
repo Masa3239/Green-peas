@@ -70,6 +70,14 @@ bool InputManager::Initialize()
 			std::make_shared<InputModifierNegate>(true, true)
 		});
 	Bind(Input::Action::Move, Input::Device::Keyboard, KeyCode::Button::D);
+	Bind(Input::Action::Dash, Input::Device::Gamepad, KeyCode::Button::GpFaceDown);
+	Bind(Input::Action::Attack, Input::Device::Gamepad, KeyCode::Button::GpFaceLeft);
+	Bind(Input::Action::PickUp, Input::Device::Gamepad, KeyCode::Button::GpFaceRight);
+	Bind(Input::Action::Weapon, Input::Device::Gamepad, KeyCode::Button::GpFaceUp);
+	Bind(Input::Action::Anger1, Input::Device::Gamepad, KeyCode::Button::GpLeftTrigger);
+	Bind(Input::Action::Anger2, Input::Device::Gamepad, KeyCode::Button::GpRightTrigger);
+	Bind(Input::Action::Anger3, Input::Device::Gamepad, KeyCode::Button::GpRightShoulder);
+	Bind(Input::Action::Anger4, Input::Device::Gamepad, KeyCode::Button::GpLeftShoulder);
 
 	return true;
 }

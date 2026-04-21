@@ -21,9 +21,12 @@ Bow::Bow(ObjectManager* objManager) :
 		arrows = new Arrow(objManager);
 		arrows->Init();
 	}
+	m_scale = 1;
+	m_graphHandle = -1;
 	m_graphHandle = LoadGraph(kHandlePath);
 	m_weaponStatus = kStatus;
 	m_active = true;
+
 }
 
 Bow::~Bow()
@@ -48,11 +51,12 @@ void Bow::Draw()
 	if (!m_active)return;
 	float radian = GetTransform().rotation.z+kDrawRadian /*+ (kShowRadian)*MyMath::Sign(GetTransform().rotation.z)*/;
 	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, m_scale, radian, m_graphHandle, TRUE);
+	m_catchCol.DebugDraw();
 }
 
-void Bow::Attack()
+bool Bow::Attack()
 {
-	if (!Pad::IsReleased(Pad::Button::X))return;
+	if (!Pad::IsReleased(Pad::Button::X))return false;
 	Shot(GetTransform());
 	if (true) {
 		Transform shot = GetTransform();
@@ -62,6 +66,7 @@ void Bow::Attack()
 		shot.rotation.z -= kTriShotRadian;
 		Shot(shot);
 	}
+	return true;
 }
 
 bool Bow::CheckAttack()
@@ -80,15 +85,12 @@ void Bow::CheckCollision()
 	if (!m_pEnemyMgr)return;
 	float damage = 0;
 	damage = m_playerStatus.Attack * m_weaponStatus.Attack;
-	float criticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
-	/*if (GetRand(100) < criticalRate) {
-		damage *= m_weaponStatus.CriticalDamage;
-	}*/
-	float criticalDamage = m_weaponStatus.CriticalDamage + m_playerStatus.CriticalDamage;
+	float criticalRate = m_playerStatus.CriticalRate * m_weaponStatus.CriticalRate;
+	float criticalDamage = m_weaponStatus.CriticalDamage * m_playerStatus.CriticalDamage;
 	//m_pEnemyMgr->CheckHitEnemies(m_circle, damage);
 	for (auto& arrows : m_pArrows) {
 		if (!arrows->GetIsActive())continue;
-		m_pEnemyMgr->CheckHitEnemies(arrows->GetCollision(), damage, criticalRate, criticalDamage);
+		//m_pEnemyMgr->CheckHitEnemies(arrows->GetCollision(), damage, criticalRate, criticalDamage);
 	}
 }
 

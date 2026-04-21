@@ -51,16 +51,10 @@ void EnemyManager::End()
 
 void EnemyManager::Update()
 {
-	if (CheckHitKey(KEY_INPUT_SPACE))
-	{
-		if (m_enemies.size() <= 1) return;
-		
-		m_enemies.back()->SetHP(0);
-	}
-
 	if (m_generateCounter <= 0 && m_enemies.size() <= kMaxEnemyNum)
 	{
 		// 敵を生成
+		//GenerateEnemy(new EnemyMelee(GetObjectManager()));
 		GenerateEnemy(new EnemyShooter(GetObjectManager()));
 
 		m_generateCounter = kGenerateDuration;
@@ -70,12 +64,30 @@ void EnemyManager::Update()
 		m_generateCounter -= Time::GetInstance().GetDeltaTime();
 	}
 
+	m_enemies[0]->AddState(EnemyBase::kStatePalsy);
+
 	CheckDead();
 }
 
 void EnemyManager::Draw()
 {
 	printfDx("Enemy Num: %d\n", m_enemies.size());
+}
+
+std::vector<EnemyBase*> EnemyManager::GetHitEnemies(const Collision::Shape& shape, const unsigned int elimState)
+{
+	std::vector<EnemyBase*> enemies;
+
+	for (const auto& enemy : m_enemies)
+	{
+		if (enemy->GetMyState() & elimState) continue;
+
+		if (!enemy->GetCollider().CheckCollision(shape)) continue;
+
+		enemies.emplace_back(enemy);
+	}
+
+	return enemies;
 }
 
 bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, int damage)
@@ -98,7 +110,7 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, int damage)
 	return result;
 }
 
-bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage)
+bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage, int weapon, int index)
 {
 	bool result = false;
 
@@ -112,11 +124,11 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 
 		if (GetRand(100) < criticalChance)
 		{
-			finalDamage = damage * criticalDamage;
+			finalDamage *= criticalDamage;
 		}
 
 		// ダメージを与えられなかったらスキップ
-		if (!enemy->Damage(finalDamage)) continue;
+		if (!enemy->Damage(finalDamage, weapon, index)) continue;
 
 		m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, finalDamage);
 
@@ -125,6 +137,16 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 	}
 
 	return result;
+}
+
+bool EnemyManager::ResetEnemyDamageFlag(int weapon, int index)
+{
+	for (const auto& enemy : m_enemies)
+	{
+		enemy->ResetDamageFlag(weapon, index);
+	}
+
+	return false;
 }
 
 void EnemyManager::AddEnemyTest()

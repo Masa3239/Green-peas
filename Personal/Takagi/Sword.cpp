@@ -18,7 +18,7 @@ namespace {
 	/// 武器の表示座標
 	/// </summary>
 	constexpr Vector3 kOffset = { -13.0f,15.0,0.0f };
-	constexpr float kLerpSwing = 18.0f;
+	constexpr float kLerpSwing = 24.0f;
 	constexpr float kLerpPos =50.0f;
 	//constexpr Transform kSwingUp = {
 	//	{0,0,0},
@@ -29,17 +29,16 @@ namespace {
 	constexpr float kSwingRadian = 60 * MyMath::ToRadian;
 	constexpr float kColRadius = 10;
 	constexpr float kInitRadian = 150*MyMath::ToRadian;
-	constexpr PlayerStatus kStatus = { 0,0,15,0,0,0,10,1.1f };
-	constexpr PlayerStatus kChargeStatus = { 0,0,3,0,0,0,3,1.1f };
+	constexpr PlayerStatus kStatus = { 0,0,15,0,0,0,1,1.2f };
+	constexpr PlayerStatus kChargeStatus = { 0,0,3,0,0,0,7,1.3f };
 	// 剣を振る際の距離
 	constexpr float kAttackDistance = 60;
 	constexpr float kEffectDistance = 80;
 
 	constexpr float kEffectScale = 1.3f;
-	constexpr float kEffectAnimSpeed = 15;
+	constexpr float kEffectAnimSpeed =30;
 	constexpr float kEffectDrawRadian = 60 * MyMath::ToRadian;
 
-	constexpr float kChargeTime = 0.5f;
 }
 
 Sword::Sword(ObjectManager* objManager) :
@@ -47,6 +46,7 @@ Sword::Sword(ObjectManager* objManager) :
 	m_attack(false)
 {
 	// グラフィックハンドルの読み込み
+	m_graphHandle = -1;
 	m_graphHandle = LoadGraph(kFilePath);
 
 	// トランスフォームの初期設定
@@ -191,24 +191,22 @@ void Sword::Draw()
 	float effectRadian = m_effectTransform.rotation.z + kEffectDrawRadian;
 	int handle = m_effectHandle[static_cast<int>(m_effectFrame)];
 	DrawRotaGraph(effectPos.x, effectPos.y, kEffectScale*m_scale, effectRadian, handle, TRUE);
+	m_catchCol.DebugDraw();
 	if (!m_active)return;
 	DrawRotaGraph(m_swing.position.x, m_swing.position.y, m_scale, radian, m_graphHandle, TRUE, reverseX);
 	printfDx("角度 : %f\n", GetTransform().rotation.z);
 	printfDx("attack : %d\n", m_attack);
 }
 
-void Sword::Attack()
+bool Sword::Attack()
 {
-	if (m_swingState != Swing::Normal)return;
+	if (m_swingState != Swing::Normal)return false;
 	if (Pad::IsDown(Pad::Button::X)) {
 		m_weaponStatus = kStatus;
 		//if (!Pad::IsPressed(Pad::Button::X))return;
 		m_charge += Time::GetInstance().GetDeltaTime();
 	}
-	if (!Pad::IsReleased(Pad::Button::X))return;
-	if (m_charge >= kChargeTime) {
-		m_weaponStatus *= kChargeStatus;
-	}
+	if (!Pad::IsReleased(Pad::Button::X))return false;
 	m_desireRadian = m_attackRadian + kSwingRadian;
 	m_swing.rotation.z = m_desireRadian;
 	m_attack = true;
@@ -218,6 +216,10 @@ void Sword::Attack()
 	float radian=GetTransform().rotation.z;
 
 	m_effectTransform.rotation.z = radian;
+	if (m_charge >= kChargeTime) {
+		m_weaponStatus *= kChargeStatus;
+	}
+	return true;
 }
 
 bool Sword::CheckAttack()
@@ -232,9 +234,9 @@ void Sword::CheckCollision()
 
 	float damage = 0;
 	damage = m_playerStatus.Attack * m_weaponStatus.Attack;
-	float criticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
-	float criticalDamage = m_weaponStatus.CriticalDamage + m_playerStatus.CriticalDamage;
-	m_pEnemyMgr->CheckHitEnemies(m_cupsule, damage, criticalRate, criticalDamage);
+	float criticalRate = m_playerStatus.CriticalRate * m_weaponStatus.CriticalRate;
+	float criticalDamage = m_weaponStatus.CriticalDamage * m_playerStatus.CriticalDamage;
+	//m_pEnemyMgr->CheckHitEnemies(m_cupsule, damage, criticalRate, criticalDamage);
 
 
 }
