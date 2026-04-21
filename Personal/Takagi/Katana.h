@@ -3,22 +3,23 @@
 #include"../../Chara/Collision.h"
 #include"../../Utility/Transform.h"
 
-class JpSword:public Weapon
+class Katana:public Weapon
 {
 public:
-	JpSword(ObjectManager* objManager);
-	~JpSword();
+	Katana(ObjectManager* objManager);
+	~Katana();
 
 	void Init()override;
 	void End()override;
 	void Update()override;
 	void Draw()override;
 	//void SetPos(const Vector3& pos) { GetTransform().position = pos; }
-	void Attack()override;
+	bool Attack()override;
 	//Collision::Capsule GetCollision()override { return m_circle; }
 	bool CheckAttack()override;
 	void CheckCollision()override;
 	void SetScale(float scale)override { m_scale = scale; }
+	int GetWeaponType()override { return Weapon::Katana; }
 
 private:
 	int m_effectHandle[kEffectFrame];
@@ -29,5 +30,6 @@ private:
 	Collision::Circle m_circle;
 	float m_charge;
 	bool m_chargeFlag;
+	float m_chaergeScale;
 };
 
