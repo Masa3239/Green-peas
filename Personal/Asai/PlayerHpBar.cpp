@@ -9,7 +9,7 @@
 
 namespace {
 
-	const char* const kGraphHandlePath = "";
+	const char* const kGraphHandlePath = ".\\Personal\\Asai\\Graph\\barGreen_horizontalMid.png";
 	
 	constexpr float kGaugeLeft = Game::kScreenWidth / 2;
 
@@ -30,7 +30,7 @@ void PlayerHpBar::Init()
 {
 
 	//画像の読み込み予定
-	//m_graphHandle = LoadGraph(kGraphHandlePath);
+	m_graphHandle = LoadGraph(kGraphHandlePath);
 
 }
 
@@ -45,20 +45,20 @@ void PlayerHpBar::Draw()
 	//描画しない設定なら描画しない
 	if (m_isVisible)return;
 
-	//作成予定
-	//DrawRectGraph()
-
 	//仮
 	DrawBox(kGaugeLeft, kGaugeTop, kGaugeRight, kGaugeBottom, 0xffffff, true);
 
 	float hpGaugeWidth = (kGaugeRight - 10) - (kGaugeLeft + 10);
 
-	DrawBox(kGaugeRight - 10 - (hpGaugeWidth * m_rate),
-		kGaugeTop,
-		kGaugeRight - 10,
-		kGaugeBottom,
-		0x00ff00, TRUE
-	);
+	//画像の描画
+	DrawExtendGraph(kGaugeRight - 10 - (hpGaugeWidth * m_rate), kGaugeTop, kGaugeRight - 10, kGaugeBottom, m_graphHandle, FALSE);
+
+	//DrawBox(kGaugeRight - 10 - (hpGaugeWidth * m_rate),
+	//	kGaugeTop,
+	//	kGaugeRight - 10,
+	//	kGaugeBottom,
+	//	0x00ff00, TRUE
+	//);
 
 }
 
