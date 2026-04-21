@@ -3,7 +3,9 @@
 #include "../Object/GameObject.h"
 #include "../Utility/Transform.h"
 #include "../Chara/Collision.h"
+#include "../Personal/Takagi/Weapon.h"
 #include <array>
+#include <vector>
 
 class Player;
 
@@ -49,6 +51,16 @@ public:
 	/// <param name="damage">ダメージ量</param>
 	/// <returns>ダメージを与えられたらtrue</returns>
 	bool Damage(const int damage);
+	/// <summary>
+	/// ダメージを与える
+	/// </summary>
+	/// <param name="damage">ダメージ量</param>
+	/// <param name="weapon">武器のID</param>
+	/// <param name="index">武器のインデックス</param>
+	/// <returns>ダメージを与えられたらtrue</returns>
+	bool Damage(const int damage, int weapon, int index);
+
+	bool ResetDamageFlag(int weapon, int index);
 
 	Player* GetPlayer() const { return m_player; }
 	void SetPlayer(Player* player) { m_player = player; }
@@ -73,6 +85,11 @@ private:
 	void RemoveState(unsigned int state) { m_variableStatus &= ~state; }
 
 	/// <summary>
+	/// ダメージフラグの範囲外を使おうとしたら範囲を追加する
+	/// </summary>
+	void CheckDamageFlagSize(int weapon, int index);
+
+	/// <summary>
 	/// 自身のHP
 	/// </summary>
 	int m_hp;
@@ -92,10 +109,7 @@ private:
 	/// </summary>
 	float m_attackCooltime;
 
-	/// <summary>
-	/// 無敵時間のカウンタ
-	/// </summary>
-	float m_invCounter;
+	std::array<std::vector<bool>, Weapon::Max> m_damageFlag;
 
 	/// <summary>
 	/// 状態異常

@@ -59,8 +59,12 @@ public:
 	/// <param name="damage">基礎ダメージ量</param>
 	/// <param name="criticalChance">クリティカル率</param>
 	/// <param name="criticalDamage">クリティカルダメージ</param>
+	/// <param name="weapon">武器のID</param>
+	/// <param name="index">武器のインデックス</param>
 	/// <returns>敵に触れていたらtrue</returns>
-	bool CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage);
+	bool CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage, int weapon, int index);
+
+	bool ResetEnemyDamageFlag(int weapon, int index);
 
 	void AddEnemyTest();
 

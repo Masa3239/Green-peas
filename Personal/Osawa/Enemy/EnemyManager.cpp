@@ -110,7 +110,7 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, int damage)
 	return result;
 }
 
-bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage)
+bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage, int weapon, int index)
 {
 	bool result = false;
 
@@ -124,11 +124,11 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 
 		if (GetRand(100) < criticalChance)
 		{
-			finalDamage = damage * criticalDamage;
+			finalDamage *= criticalDamage;
 		}
 
 		// ダメージを与えられなかったらスキップ
-		if (!enemy->Damage(finalDamage)) continue;
+		if (!enemy->Damage(finalDamage, weapon, index)) continue;
 
 		m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, finalDamage);
 
@@ -137,6 +137,16 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 	}
 
 	return result;
+}
+
+bool EnemyManager::ResetEnemyDamageFlag(int weapon, int index)
+{
+	for (const auto& enemy : m_enemies)
+	{
+		enemy->ResetDamageFlag(weapon, index);
+	}
+
+	return false;
 }
 
 void EnemyManager::AddEnemyTest()
