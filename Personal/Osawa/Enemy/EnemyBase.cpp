@@ -20,6 +20,7 @@ EnemyBase::EnemyBase(ObjectManager* objManager) :
 	m_attackCooltimeCounter(0.0f),
 	m_attackCooltime(0.0f),
 	m_invCounter(0.0f),
+	m_variableStatus(0),
 	m_player(nullptr)
 {
 }

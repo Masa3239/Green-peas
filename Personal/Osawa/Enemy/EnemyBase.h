@@ -11,6 +11,9 @@ class EnemyBase : public GameObject
 {
 public:
 
+	// 状態異常：痺れ
+	constexpr static unsigned int kStatePalsy = (1 << 0);
+
 	EnemyBase(ObjectManager* objManager);
 	virtual ~EnemyBase();
 
@@ -25,13 +28,20 @@ public:
 	virtual void UpdateEnemy() = 0;
 
 	/// <summary>
+	/// 状態異常を付与する
+	/// </summary>
+	/// <param name="state">状態異常のビット</param>
+	void AddState(unsigned int state) { m_variableStatus |= state; }
+	/// <summary>
+	/// 状態異常の取得
+	/// </summary>
+	/// <param name="state">状態異常のビット</param>
+	const unsigned int GetMyState() { return m_variableStatus; }
+
+	/// <summary>
 	/// HPを取得
 	/// </summary>
 	int GetHP() const { return m_hp; }
-	/// <summary>
-	/// HPを設定
-	/// </summary>
-	void SetHP(const int hp) { m_hp = hp; }
 	
 	/// <summary>
 	/// ダメージを与える
@@ -57,6 +67,12 @@ protected:
 private:
 
 	/// <summary>
+	/// 状態異常の削除
+	/// </summary>
+	/// <param name="state">状態異常のビット</param>
+	void RemoveState(unsigned int state) { m_variableStatus &= ~state; }
+
+	/// <summary>
 	/// 自身のHP
 	/// </summary>
 	int m_hp;
@@ -80,6 +96,11 @@ private:
 	/// 無敵時間のカウンタ
 	/// </summary>
 	float m_invCounter;
+
+	/// <summary>
+	/// 状態異常
+	/// </summary>
+	unsigned int m_variableStatus;
 
 	/// <summary>
 	/// プレイヤーのポインタ
