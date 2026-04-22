@@ -5,6 +5,7 @@
 #include"Sword.h"
 #include"Katana.h"
 #include"Bow.h"
+#include"FlameWand.h"
 #include"Boomerang.h"
 #include<vector>
 #include<memory>
@@ -36,8 +37,8 @@ void WeaponManager::Init()
 	//	assert(false && "playerのポインタがない");
 	//}
 	
-	m_weapons.push_back(std::make_unique<Katana>(m_objManager));
-	m_weapons.push_back(std::make_unique<Boomerang>(m_objManager));
+	m_weapons.push_back(std::make_unique<FlameWand>(m_objManager));
+	m_weapons.push_back(std::make_unique<FlameWand>(m_objManager));
 	for (auto& weapons : m_weapons) {
 		weapons->SetEnemyManager(m_enemyManager);
 		weapons->SetChatch(true);
