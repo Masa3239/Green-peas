@@ -36,9 +36,9 @@ namespace {
 	// 通常の移動速度
 	constexpr float kDistanceSpeed = 20000.0f;
 	// ダッシュの移動速度
-	constexpr float kDashSpeed = 10.0f;
+	constexpr float kDashSpeed = 7.0f;
 	// ダッシュの減速量
-	constexpr float kDeccel = kDashSpeed * 5.0f;
+	constexpr float kDeccel = kDashSpeed * 3.0f;
 	// ダッシュ時のスタミナ消費量
 	constexpr float kDashStaimina = 30;
 	// スタミナの自動回復量
@@ -132,6 +132,7 @@ Player::Player(ObjectManager* objManager) :
 		m_status = kInitStatus;
 	m_gauges[static_cast<int>(GaugeType::Hp)]->SetValue(m_status.HP, Gauge::Value::Max);
 	m_gauges[static_cast<int>(GaugeType::Stamina)]->SetValue(m_status.Stamina, Gauge::Value::Max);
+	m_cameraTransform.Reset();
 }
 
 Player::~Player()
@@ -180,7 +181,7 @@ void Player::Update()
 			m_pItemMgr->Create(ItemBase::ItemType::Heal, GetTransform().position);
 		}
 	}
-	m_camera->Update(GetTransform());
+	m_camera->Update(m_cameraTransform);
 	// 時間が止まっていなければ移動処理を呼ぶ
 	if (Time::GetInstance().GetDeltaTime()) {
 		Move();
@@ -233,28 +234,32 @@ void Player::MoveAmount()
 	if (CheckDashNow()) {
 	}
 	else {
-	m_moveAmount = InputManager::GetInstance().GetAnalog2DAmount(Input::Action::Move);
-	// 入力量を取得
-		// スティック入力の角度
-		float angle = InputManager::GetInstance().GetAnalog2DAngle(Input::Action::Move);
-		// 向いている方向を更新
-		GetTransform().rotation.z = angle * MyMath::ToRadian;
+		// 入力量を取得
+		m_moveAmount = InputManager::GetInstance().GetAnalog2DAmount(Input::Action::Move);
+		if (m_moveAmount) {
+			// スティック入力の角度
+			float angle = InputManager::GetInstance().GetAnalog2DAngle(Input::Action::Move);
+			// 向いている方向を更新
+			GetTransform().rotation.z = angle * MyMath::ToRadian;
+			if (angle > 0) {
+				m_directionX = 1;
+			}
+			else
+			{
+				m_directionX = -1;
+			}
+		}
+	}
+	if (m_moveAmount) {
 
 		m_gauges[static_cast<int>(GaugeType::Stamina)]->Increase(kStaminaHealValue * m_deltaTime);
 		m_gauges[static_cast<int>(GaugeType::Stamina)]->Clamp();
-		if (angle > 0) {
-			m_directionX = 1;
-		}
-		else
-		{
-			m_directionX = -1;
-		}
 	}
 	for (auto& weapons : m_weapons) {
 		if (!weapons)continue;
-		weapons->GetTransform().rotation.z = GetTransform().rotation.z;
-		// 武器の座標を設定
-		weapons->GetTransform().position = GetTransform().position;
+		// 武器の座標・回転を設定
+		weapons->GetTransform() = GetTransform();
+		//weapons->GetTransform().position = GetTransform().position;
 		// 武器の更新処理
 		//weapons->Update();
 	
@@ -275,6 +280,10 @@ void Player::MoveAmount()
 			Dash(false);
 		}
 
+
+	}
+	if (m_weapons[0]->CheckCameraUpdate()) {
+		m_cameraTransform = GetTransform();
 	}
 	// 指定のボタンを押したとき かつ 武器を複数持っているとき
 	if (InputManager::GetInstance().IsPressed(Input::Action::Weapon) &&

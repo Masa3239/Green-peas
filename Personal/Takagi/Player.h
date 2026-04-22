@@ -165,6 +165,11 @@ public: // ゲッター・セッター=======================
 	float GetGaugeRate(GaugeType gauge);
 	Collision::Circle GetCircle() { return m_circle; }
 	
+	/// <summary>
+	/// 自身のレベルを取得する関数
+	/// </summary>
+	/// <returns></returns>
+	int GetLevel() { return m_status.Level; }
 	void SetEnemyManager(EnemyManager* enemyManager);
 	void SetItemManager(ItemManager* itemManager) { m_pItemMgr = itemManager; }
 	void SetWeapon(Weapon* weapon);
@@ -219,6 +224,7 @@ private:
 	Weapon* m_weapons[kWeaponMaxNum];
 
 	Camera* m_camera;
+	Transform m_cameraTransform;
 
 	/// <summary>
 	/// 四角の当たり判定
