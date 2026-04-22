@@ -88,6 +88,9 @@ bool InputManager::Initialize()
 		}
 	);
 
+	Bind(Input::Action::Pause, Input::Device::Keyboard, KeyCode::Button::Escape);
+	Bind(Input::Action::Pause, Input::Device::Gamepad, KeyCode::Button::GpStart);
+
 	return true;
 }
 

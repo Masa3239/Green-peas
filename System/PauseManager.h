@@ -1,5 +1,10 @@
 #pragma once
 
+#include <vector>
+
+class ObjectManager;
+class GameObject;
+
 class PauseManager
 {
 public:
@@ -11,11 +16,17 @@ public:
 
 	~PauseManager() = default;
 
+	void End();
+
 	void Update();
+
+	void TogglePause();
+
+	void SetObjectManager(ObjectManager* objManager) { m_objManager = objManager; }
 
 private:
 
-	PauseManager() = default;
+	PauseManager() : m_screenGraph(-1), m_isPause(false), m_objManager(nullptr) {};
 	// コピーコンストラクタ禁止
 	PauseManager(const PauseManager&) = delete;
 	// コピー代入禁止
@@ -25,15 +36,17 @@ private:
 	// ムーブ代入禁止
 	PauseManager& operator=(PauseManager&&) = delete;
 
-	void OnPause();
-
 	/// <summary>
 	/// ポーズ前の画面のグラフィックハンドル
 	/// </summary>
-	int mScreenGraph;
+	int m_screenGraph;
 
 	/// <summary>
 	/// ポーズしているかどうか
 	/// </summary>
-	bool mIsPaused;
+	bool m_isPause;
+
+	ObjectManager* m_objManager;
+
+	std::vector<GameObject*> m_activeGameObjects;
 };

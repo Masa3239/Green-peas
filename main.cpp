@@ -6,6 +6,7 @@
 #include "../Utility/MyRandom.h"
 #include "../Utility/Time.h"
 #include "System/InputManager.h"
+#include "System/PauseManager.h"
 
 //========================================================
 // WinMain関数　ここからプログラムが始まる
@@ -25,6 +26,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Time::GetInstance();
 
 	InputManager::GetInstance().Initialize();
+
+	PauseManager::GetInstance();
 
 	// シーン制御のポインタを生成
 	SceneManager* pSceneMgr;
