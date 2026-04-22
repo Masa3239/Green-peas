@@ -60,10 +60,15 @@ public:
 	/// <returns>ダメージを与えられたらtrue</returns>
 	bool Damage(const int damage, int weapon, int index);
 
+	/// <summary>
+	/// 死亡処理
+	/// </summary>
+	void Dead();
+
 	bool ResetDamageFlag(int weapon, int index);
 
-	Player* GetPlayer() const { return m_player; }
-	void SetPlayer(Player* player) { m_player = player; }
+	Player* GetPlayer() const { return m_pPlayer; }
+	void SetPlayer(Player* player) { m_pPlayer = player; }
 
 	const Collision::AABB& GetCollider() const { return m_collider; }
 
@@ -107,5 +112,5 @@ private:
 	/// <summary>
 	/// プレイヤーのポインタ
 	/// </summary>
-	Player* m_player;
+	Player* m_pPlayer;
 };

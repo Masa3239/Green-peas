@@ -3,6 +3,7 @@
 #include "../Utility/Transform.h"
 #include "../Utility/Time.h"
 #include "../Personal/Takagi/Player.h"
+#include "../Personal/Osawa/ExpOrb.h"
 
 namespace
 {
@@ -16,7 +17,7 @@ EnemyBase::EnemyBase(ObjectManager* objManager) :
 	m_hp(kMaxHp),
 	m_collider(Collision::AABB{ Vector3(), kColliderSize }),
 	m_variableStatus(0),
-	m_player(nullptr)
+	m_pPlayer(nullptr)
 {
 }
 
@@ -44,7 +45,7 @@ bool EnemyBase::Damage(const int damage)
 bool EnemyBase::Damage(const int damage, int weapon, int index)
 {
 	// 雷攻撃を受けたなら
-	if (weapon == 0/*仮*/)
+	if (weapon == Weapon::Thunder)
 	{
 		// 痺れ状態ならダメージを受けない
 		if (GetMyState() & kStatePalsy) return false;
@@ -64,6 +65,17 @@ bool EnemyBase::Damage(const int damage, int weapon, int index)
 	m_hp -= damage;
 
 	return true;
+}
+
+void EnemyBase::Dead()
+{
+	for (int i = 0; i < 10; i++)
+	{
+		auto exp = new ExpOrb(GetObjectManager());
+		exp->Init();
+		exp->SetPlayer(m_pPlayer);
+		exp->GetTransform().position = GetTransform().position;
+	}
 }
 
 bool EnemyBase::ResetDamageFlag(int weapon, int index)

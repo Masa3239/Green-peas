@@ -68,7 +68,7 @@ public:
 
 	void AddEnemyTest();
 
-	void SetPlayer(Player* player) { m_player = player; }
+	void SetPlayer(Player* player) { m_pPlayer = player; }
 
 	void SetUIManager(UIManager* uiMgr) { m_uiMgr = uiMgr; }
 
@@ -90,7 +90,7 @@ private:
 	/// </summary>
 	std::vector<EnemyBase*> m_enemies;
 
-	Player* m_player;
+	Player* m_pPlayer;
 
 	UIManager* m_uiMgr;
 
