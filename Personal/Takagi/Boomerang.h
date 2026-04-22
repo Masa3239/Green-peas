@@ -30,5 +30,6 @@ private:
 	bool m_attackFlag;
 	Collision::Circle m_circle;
 	float m_drawAngle;
+	float m_attackInterval;
 };
 

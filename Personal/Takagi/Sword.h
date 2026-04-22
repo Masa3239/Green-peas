@@ -29,7 +29,6 @@ private:
 	float m_desireRadian;
 	Collision::Capsule m_cupsule;
 	float m_charge;
-	bool m_chargeFlag;
 	float m_scaleEx;
 };
 

@@ -22,10 +22,11 @@ public:
 	/// </summary>
 	enum {
 		Sword,		// 剣
+		Katana,		// 刀
 		Boomerang,	// ブーメラン
 		Bow,		// 弓
-		Katana,		// 刀
-		Thunder,
+		Thunder,	// 雷
+		Flame,		// 炎
 		Max
 	};
 	enum class Swing {
@@ -80,6 +81,8 @@ public:
 	virtual int GetWeaponType()=0;
 	void SetChatch(bool catchFlag) { m_catch = catchFlag; }
 	bool GetChatch() { return m_catch; }
+	bool GetChargeFlag() { return m_chargeFlag; }
+	bool CheckCameraUpdate() { return m_camUpdate; }
 protected:
 	/// <summary>
 	/// 武器のグラフィックハンドル
@@ -109,5 +112,7 @@ protected:
 	/// </summary>
 	Collision::Circle m_catchCol;
 	bool m_catch;
+	bool m_chargeFlag;
+	bool m_camUpdate;
 };
 

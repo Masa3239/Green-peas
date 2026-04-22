@@ -29,7 +29,6 @@ private:
 	float m_desireRadian;
 	Collision::Circle m_circle;
 	float m_charge;
-	bool m_chargeFlag;
 	float m_chaergeScale;
 };
 

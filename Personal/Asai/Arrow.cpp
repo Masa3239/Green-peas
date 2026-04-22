@@ -40,8 +40,8 @@ void Arrow::Update()
 	float deltaTime = Time::GetInstance().GetDeltaTime();
 
 	//移動
-	GetTransform().position.x += sinf(GetTransform().rotation.z) * kSpeed * deltaTime;
-	GetTransform().position.y += -cosf(GetTransform().rotation.z) * kSpeed * deltaTime;
+	GetTransform().position.x += cosf(GetTransform().rotation.z) * kSpeed * deltaTime;
+	GetTransform().position.y += sinf(GetTransform().rotation.z) * kSpeed * deltaTime;
 
 	//当たり判定の更新
 	m_circle.SetPosition(GetTransform().position);

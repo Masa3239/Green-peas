@@ -1,20 +1,22 @@
 #include "Boomerang.h"
-#include"../../System/InputPad.h"
+//#include"../../System/InputPad.h"
 #include"RadToPos.h"
 #include"../../Utility/Time.h"
 #include"../../Utility/Color.h"
 #include"../Osawa/Enemy/EnemyManager.h"
+#include"../../System/InputManager.h"
 
 namespace {
-    constexpr float kSpeed = 80000;
-    constexpr float kDeccel = kSpeed*2.5f;
+    constexpr float kSpeed = 50000;
+    constexpr float kDeccel = kSpeed*1.5f;
     constexpr float kCatch = 25;
     constexpr float kCatchDistance = kCatch*kCatch;
     constexpr float kColRadius = 20;
     constexpr float kGraphScale = 2;
-    constexpr PlayerStatus kStatus = { 0,0,10,0,0,0,5,3 };
+    constexpr PlayerStatus kStatus = { 0,0,3,0,0,0,3,6 };
     const char* const kFilePath = "Resource\\Boomerang.png";
     constexpr float kRotationSpeed = 720;
+    constexpr float kAttackInterval = 0.3f;
 
 }
 
@@ -31,6 +33,8 @@ Boomerang::Boomerang(ObjectManager* objManager):
     m_graphHandle = LoadGraph(kFilePath);
     m_scale = 1;
     m_active = true;
+    m_chargeFlag = false;
+    m_camUpdate = true;
 }
 
 Boomerang::~Boomerang()
@@ -57,7 +61,7 @@ void Boomerang::Update()
     }
     else {
         Vector3 rad = m_attack.position - GetTransform().position;
-        m_attack.rotation.z = atan2(-rad.x, rad.y) + DX_PI_F;
+        m_attack.rotation.z = atan2(rad.y, rad.x);
 
         float distance = 0;
         distance = (rad.x * rad.x) + (rad.y * rad.y);
@@ -66,7 +70,7 @@ void Boomerang::Update()
         }
     }
     if (m_attackFlag) {
-        moveVec = RadToPos(m_attack.rotation.z, m_speed*time/**MyMath::Sign(m_speed)*/);
+        moveVec = RadToPos(m_attack.rotation.z, m_speed * time/**MyMath::Sign(m_speed)*/);
         m_attack.position += moveVec * time;
         m_drawAngle += kRotationSpeed * time;
     }
@@ -76,6 +80,11 @@ void Boomerang::Update()
     }
     m_circle.SetPosition(m_attack.position);
     m_circle.SetRadius(kColRadius * m_scale);
+    m_attackInterval += time;
+    if (m_attackInterval >= kAttackInterval) {
+        m_attackInterval = 0;
+        m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Boomerang, 0);
+    }
 }
 
 void Boomerang::Draw()
@@ -98,7 +107,8 @@ void Boomerang::Draw()
 bool Boomerang::Attack()
 {
     if (m_attackFlag)return false;
-    if (!Pad::IsPressed(Pad::Button::X))return false;
+    if (!InputManager::GetInstance().IsPressed(Input::Action::Attack))return false;
+    m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Boomerang, 0);
     m_attack.position = GetTransform().position;
     m_attack.rotation.z = GetTransform().rotation.z;
     m_speed = kSpeed;
@@ -122,5 +132,6 @@ void Boomerang::CheckCollision()
     float criticalDamage = m_weaponStatus.CriticalDamage * m_playerStatus.CriticalDamage;
     //m_pEnemyMgr->CheckHitEnemies(m_circle, damage);
     //m_pEnemyMgr->CheckHitEnemies(m_circle, damage, criticalRate, criticalDamage);
+    m_pEnemyMgr->CheckHitEnemies(m_circle, damage, criticalRate, criticalDamage, Weapon::Boomerang, 0);
 
 }

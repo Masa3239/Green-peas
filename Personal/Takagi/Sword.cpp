@@ -5,12 +5,13 @@
 #include"../../Utility/Transform.h"
 #include"../../Utility/Vector3.h"
 #include"../../Utility/Time.h"
-#include"../../System/InputPad.h"
+//#include"../../System/InputPad.h"
 #include"../Osawa/Enemy/EnemyManager.h"
 #include<DxLib.h>
 #include<math.h>
 #include"PlayerStatus.h"
 #include"RadToPos.h"
+#include"../../System/InputManager.h"
 namespace {
 	const char* const kFilePath = "Resource\\Golden Sword.png";
 	const char* const kSlashPath = "Resource\\pipo-btleffect001.png";
@@ -25,7 +26,7 @@ namespace {
 	//	{0,60 * MyMath::ToRadian,0},
 	//	{0,0,0}
 	//};
-	constexpr float kDrawRadian = -45 * MyMath::ToRadian;
+	constexpr float kDrawRadian = 45 * MyMath::ToRadian;
 	constexpr float kSwingRadian = 60 * MyMath::ToRadian;
 	constexpr float kColRadius = 10;
 	constexpr float kInitRadian = 150*MyMath::ToRadian;
@@ -37,7 +38,7 @@ namespace {
 
 	constexpr float kEffectScale = 1.3f;
 	constexpr float kEffectAnimSpeed =30;
-	constexpr float kEffectDrawRadian = 60 * MyMath::ToRadian;
+	constexpr float kEffectDrawRadian = 150 * MyMath::ToRadian;
 
 }
 
@@ -65,6 +66,8 @@ Sword::Sword(ObjectManager* objManager) :
 	LoadDivGraph(kSlashPath, 5, 5, 1, 120, 120, m_effectHandle);
 	m_effectTransform.Reset();
 	m_scale = 1;
+	m_chargeFlag = false;
+	m_camUpdate = true;
 }
 
 Sword::~Sword()
@@ -122,14 +125,14 @@ void Sword::Update()
 	}
 
 	if (m_attack) {
-	/*drawPos.x = sinf(m_swing.rotation.z);
-	drawPos.y = -cosf(m_swing.rotation.z);
-	drawPos = drawPos.GetNormalize();
-	drawPos *= 60;
-	drawPos += GetTransform().position;*/
 		drawPos = RadToPos(m_swing.rotation.z, kAttackDistance*m_scale, GetTransform().position);
 	}
 	else {
+		int dir = 1;
+		if (GetTransform().rotation.z * MyMath::Sign(GetTransform().rotation.z) < 90*MyMath::ToRadian) {
+			dir = 2;
+		}
+		m_swing.rotation.z = 60 * MyMath::ToRadian*dir;
 		if (GetTransform().rotation.z >= 0) {
 		m_desireRadian = -kInitRadian;
 		}
@@ -171,15 +174,17 @@ void Sword::Draw()
 	//default:
 	//	break;
 	//}
-	if (GetTransform().rotation.z >= 0) {
-		reverseX = false;
+	float radZ = GetTransform().rotation.z;
+	if (radZ < 0)radZ *= -1;
+	if ( radZ>= 90) {
+		reverseX = true;
 	}
 	else {
-		reverseX = true;
+		reverseX = false;
 
 	}
 
-	float radian = /*GetTransform().rotation.z+*/m_swing.rotation.z + (kDrawRadian)*MyMath::Sign(GetTransform().rotation.z);
+	float radian = /*GetTransform().rotation.z+*/m_swing.rotation.z + (kDrawRadian)/**MyMath::Sign(GetTransform().rotation.z)*/;
 	//if (reverseX)radian *= -1;
 	//if (attack) {
 	//}
@@ -201,12 +206,13 @@ void Sword::Draw()
 bool Sword::Attack()
 {
 	if (m_swingState != Swing::Normal)return false;
-	if (Pad::IsDown(Pad::Button::X)) {
+	if (InputManager::GetInstance().IsDown(Input::Action::Attack)) {
 		m_weaponStatus = kStatus;
 		//if (!Pad::IsPressed(Pad::Button::X))return;
 		m_charge += Time::GetInstance().GetDeltaTime();
 	}
-	if (!Pad::IsReleased(Pad::Button::X))return false;
+	if (!InputManager::GetInstance().IsReleased(Input::Action::Attack))return false;
+	m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Sword, 0);
 	m_desireRadian = m_attackRadian + kSwingRadian;
 	m_swing.rotation.z = m_desireRadian;
 	m_attack = true;
@@ -236,7 +242,7 @@ void Sword::CheckCollision()
 	damage = m_playerStatus.Attack * m_weaponStatus.Attack;
 	float criticalRate = m_playerStatus.CriticalRate * m_weaponStatus.CriticalRate;
 	float criticalDamage = m_weaponStatus.CriticalDamage * m_playerStatus.CriticalDamage;
-	//m_pEnemyMgr->CheckHitEnemies(m_cupsule, damage, criticalRate, criticalDamage);
+	m_pEnemyMgr->CheckHitEnemies(m_cupsule, damage, criticalRate, criticalDamage,Weapon::Sword,0);
 
 
 }
