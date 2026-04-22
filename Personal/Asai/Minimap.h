@@ -1,8 +1,8 @@
 #pragma once
 
+class Map;
 class Camera;
 class Player;
-class Map;
 class EnemyManager;
 class ItemManager;
 
@@ -41,7 +41,9 @@ public:
 	/// </summary>
 	void End();
 
-	void GenerateMinimap(Map* pMap);
+	void GenerateMinimap();
+
+	void SetMap(Map* pMap) { m_pMap = pMap; }
 
 	void SetCamera(Camera* pCamera) { m_pCamera = pCamera; }
 
@@ -58,6 +60,8 @@ private:
 private:
 
 	int m_playerUIGrahpHandle;
+
+	Map* m_pMap;
 
 	Player* m_pPlayer;
 

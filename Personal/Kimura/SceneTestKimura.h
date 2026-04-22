@@ -3,6 +3,7 @@
 #include "../Scene/SceneBase.h"
 #include"Map/Map.h"
 
+class Map;
 class SceneTestKimura : public SceneBase
 {
 public:

@@ -81,6 +81,12 @@ void Thunder::Draw()
 
 	m_circle.DebugDraw();
 
+	for (auto enemy : m_pEnemies) {
+
+		DrawCircle(enemy->GetTransform().position.x, enemy->GetTransform().position.y, kCollisionInfectionSize * m_scale, 0xffffff, FALSE);
+
+	}
+
 }
 
 void Thunder::DebugDraw()
@@ -208,8 +214,6 @@ void Thunder::UpdateInfection()
 		auto check = (m_pEnemyMgr->GetHitEnemies(circle, EnemyBase::kStatePalsy));
 
 		enemies.insert(enemies.end(), check.begin(), check.end());
-
-		DrawCircle(enemy->GetTransform().position.x, enemy->GetTransform().position.y, kCollisionInfectionSize * m_scale, 0x000000, TRUE);
 
 	}
 

@@ -6,11 +6,18 @@
 
 class Player;
 
+namespace {
+
+	constexpr int kCharactorMotionNum = 32;
+	//constexpr int kCharactorStatusNum = static_cast<int>(EnemyBoss::BossStatus::Max);
+}
+
 class EnemyBoss : public GameObject
 {
 
 public:
 
+	// ボスの状態(アニメーション)
 	enum class BossStatus {
 
 		Idle,
@@ -18,6 +25,15 @@ public:
 		LongRangeAttack,
 		ApproachMove,
 		LeaveMove,
+		Max
+	};
+
+	// ボスの行動
+	enum class BossAction {
+
+		Idle,
+		CloseRangeAttack,
+		LongRangeAttack,
 		Max
 	};
 
@@ -80,17 +96,22 @@ public:
 	/// <summary>
 	/// ボスの行動をランダムに決める
 	/// </summary>
-	void GetRandomStatus();
+	void GetRandomAction();
 
 	/// <summary>
 	/// プレイヤーに近づく処理
 	/// </summary>
-	void ApproachPlayer(const Vector3& playerPos);
+	bool ApproachPlayer(const Vector3& playerPos);
 
 	/// <summary>
 	/// 目的地に近づく処理(プレイヤーから離れる処理)
 	/// </summary>
-	void LeavePlayer(const Vector3& playerPos);
+	bool LeavePlayer(const Vector3& playerPos);
+
+	/// <summary>
+	/// 目的地を決める処理
+	/// </summary>
+	Vector3 TargetPos(const Vector3& playerPos);
 
 	/// <summary>
 	/// 近距離攻撃
@@ -101,12 +122,6 @@ public:
 	/// 遠距離攻撃
 	/// </summary>
 	void LongRangeAttack();
-
-	/// <summary>
-	/// ボスの攻撃
-	/// </summary>
-	/// <param name="other"></param>
-	void ChangeTheAttack(const Collision::Shape& other);
 
 	/// <summary>
 	/// プレイヤーのポインタをセットするセッター関数
@@ -120,22 +135,23 @@ private:
 	/// <summary>
 	/// 画像のハンドル
 	/// </summary>
-	int m_graphHandle;
+	int m_graphHandle[static_cast<int>(BossStatus::Max)][kCharactorMotionNum];
+
+	// モーション制御用のカウンタ
+	int m_motionCounter;
+
+	// 描画するモーションのフレーム
+	int m_motionFrame;
 
 	/// <summary>
 	/// 座標
 	/// </summary>
-	Transform m_transform;
+	// Transform m_transform;
 
 	/// <summary>
 	/// 円の当たり判定
 	/// </summary>
 	Collision::Circle m_collsion;
-
-	/// <summary>
-	/// 行動する時に使う円の判定
-	/// </summary>
-	Collision::Circle m_actionCollsion;
 
 	/// <summary>
 	/// 近距離攻撃の当たり判定
@@ -173,9 +189,19 @@ private:
 	BossStatus m_status;
 
 	/// <summary>
+	/// ボスの行動
+	/// </summary>
+	BossAction m_action;
+
+	/// <summary>
 	/// ランダムに行動を決めるまでの時間
 	/// </summary>
 	float m_getRandomTime;
+
+	/// <summary>
+	/// 目標の座標
+	/// </summary>
+	Vector3 m_targetPos;
 
 	/// <summary>
 	/// プレイヤーのポインタ

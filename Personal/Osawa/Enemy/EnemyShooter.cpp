@@ -13,7 +13,7 @@ namespace
 	// 距離を保っているときの速度
 	constexpr float kArcSpeed = 20.0f;
 	// 追跡するときの速度
-	constexpr float kFollowSpeed = 200.0f;
+	constexpr float kFollowSpeed = 150.0f;
 
 	constexpr float kMeleeAttackCooltime = 1.0f;
 
@@ -26,7 +26,7 @@ namespace
 	// プレイヤーから距離をとり始める距離
 	constexpr float kStartBackDistance = 150;
 
-	constexpr float kBulletAttackCooltime = 1.0f;
+	constexpr float kBulletAttackCooltime = 10.0f;
 }
 
 EnemyShooter::EnemyShooter(ObjectManager* objManager) :
@@ -103,12 +103,16 @@ void EnemyShooter::UpdateEnemy()
 		vec = Vector3(vec.x * c - vec.y * s, vec.x * s + vec.y * c, 0.0f);
 		move = vec * Time::GetInstance().GetDeltaTime() * kArcSpeed;
 
+		if (m_attackCooltimeCounter <= 0) Attack();
+
 		break;
 	}
 
 	case EnemyShooter::Action::Back:
 
 		move = (targetPos - myPos).GetNormalize() * -kDistanceSpeed;
+
+		if (m_attackCooltimeCounter <= 0) Attack();
 
 		break;
 	}
@@ -118,12 +122,6 @@ void EnemyShooter::UpdateEnemy()
 	if (m_attackCooltimeCounter > 0)
 	{
 		m_attackCooltimeCounter -= Time::GetInstance().GetDeltaTime();
-	}
-	else
-	{
-		Attack();
-
-		m_attackCooltimeCounter = kMeleeAttackCooltime;
 	}
 }
 
@@ -151,7 +149,7 @@ void EnemyShooter::Attack()
 
 		bullet->Create(GetTransform().position, rot);
 
-		m_attackCooltimeCounter = kMeleeAttackCooltime;
+		m_attackCooltimeCounter = kBulletAttackCooltime;
 
 		break;
 	}
