@@ -8,7 +8,7 @@
 
 namespace {
 
-	const char* const kGraphHandlePath = "";
+	const char* const kGraphHandlePath = ".\\Personal\\Asai\\Graph\\barYellow_verticalMid.png";
 
 	constexpr Vector3 kOffSet{ 50.0f,-10.0f,0.0f };
 
@@ -31,6 +31,8 @@ PlayerStaminaBar::~PlayerStaminaBar()
 
 void PlayerStaminaBar::Init()
 {
+	//画像の読み込み
+	m_graphHandle = LoadGraph(kGraphHandlePath);
 }
 
 void PlayerStaminaBar::Update()
@@ -66,12 +68,19 @@ void PlayerStaminaBar::Draw()
 
 	float staminaGaugeHeight = (m_pos.y + kSizeY / 2) - (m_pos.y - kSizeY / 2);
 
-	DrawBox(
+	DrawExtendGraph(
 		m_pos.x - kSizeX / 2,
 		m_pos.y + kSizeY / 2 - (staminaGaugeHeight * m_rate),
 		m_pos.x + kSizeX / 2,
 		m_pos.y + kSizeY / 2,
-		0xffff00, TRUE);
+		m_graphHandle, TRUE);
+
+	//DrawBox(
+	//	m_pos.x - kSizeX / 2,
+	//	m_pos.y + kSizeY / 2 - (staminaGaugeHeight * m_rate),
+	//	m_pos.x + kSizeX / 2,
+	//	m_pos.y + kSizeY / 2,
+	//	0xffff00, TRUE);
 
 }
 
@@ -90,7 +99,8 @@ void PlayerStaminaBar::DebugDraw()
 
 void PlayerStaminaBar::End()
 {
-	//DeleteGraph(m_graphHandle);
+	//画像の破棄
+	DeleteGraph(m_graphHandle);
 }
 
 PlayerUI::DrawType PlayerStaminaBar::GetDrawType() const
