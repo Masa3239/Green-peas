@@ -75,6 +75,13 @@ public:
 	void Draw() override;
 
 	/// <summary>
+	/// ボスが封印解除されているかどうか
+	/// </summary>
+	/// <param name="maxKey"></param>
+	/// <returns></returns>
+	bool SealReleaseFlag(int maxKey);
+
+	/// <summary>
 	/// ボスの最大HPを取得するゲッター関数
 	/// </summary>
 	/// <returns></returns>
@@ -87,11 +94,23 @@ public:
 	int GetBossCurrentHp() { return m_currentHp; }
 
 	/// <summary>
-	/// ボスが封印解除されているかどうか
+	/// プレイヤーのポインタをセットするセッター関数
 	/// </summary>
-	/// <param name="maxKey"></param>
+	/// <param name="player"></param>
 	/// <returns></returns>
-	bool SealReleaseFlag(int maxKey);
+	void const SetPlayer(Player* player) { m_pPlayer = player; }
+
+private:
+
+	/// <summary>
+	/// ボスの行動
+	/// </summary>
+	void Action();
+
+	/// <summary>
+	/// ボスのアニメーション
+	/// </summary>
+	void Status();
 
 	/// <summary>
 	/// ボスの行動をランダムに決める
@@ -123,12 +142,6 @@ public:
 	/// </summary>
 	void LongRangeAttack();
 
-	/// <summary>
-	/// プレイヤーのポインタをセットするセッター関数
-	/// </summary>
-	/// <param name="player"></param>
-	/// <returns></returns>
-	void const SetPlayer(Player* player) {m_pPlayer = player; }
 
 private:
 
@@ -137,11 +150,25 @@ private:
 	/// </summary>
 	int m_graphHandle[static_cast<int>(BossStatus::Max)][kCharactorMotionNum];
 
-	// モーション制御用のカウンタ
+	/// <summary>
+	/// モーション制御用のカウンタ
+	/// </summary>
 	int m_motionCounter;
 
-	// 描画するモーションのフレーム
+	/// <summary>
+	/// 描画するモーションのフレーム
+	/// </summary>
 	int m_motionFrame;
+
+	/// <summary>
+	/// 近距離攻撃のフラグ
+	/// </summary>
+	bool m_isCloseTheAttack;
+
+	/// <summary>
+	/// 画像の向き
+	/// </summary>
+	int m_direction;
 
 	/// <summary>
 	/// 座標

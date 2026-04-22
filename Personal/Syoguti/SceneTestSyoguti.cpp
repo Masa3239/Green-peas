@@ -55,6 +55,7 @@ SceneTestSyoguti::~SceneTestSyoguti()
 void SceneTestSyoguti::Init()
 {
 	m_pPlayer->Init();
+	m_pPlayer->SetEnemyManager(m_pEnemyManager.get());
 	m_pPlayer->SetCamera(m_pCamera.get());
 	m_pPlayer->SetItemManager(m_pItemMgr.get());
 

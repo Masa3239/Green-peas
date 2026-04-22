@@ -8,10 +8,6 @@
 
 namespace {
 
-	// 画像のファイルパス
-	const char* const kSealBossGraphHandlePath = ".\\Resource\\EnemyBossTest1.png";
-	const char* const kBossGraphHandlePath = ".\\Resource\\EnemyBossTest2.png";
-
 	// 画像のサイズ
 	constexpr float kGraphScale = 1.0f;
 
@@ -46,6 +42,8 @@ namespace {
 EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 	m_motionCounter(0),
 	m_motionFrame(0),
+	m_direction(-1),
+	m_isCloseTheAttack(false),
 	GameObject(objManager),
 	m_collsion(GetTransform().position, kCircleRadius),
 	m_closeRangeAttackCollision(GetTransform().position, kCloseRangeCollisionSize),
@@ -72,6 +70,8 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_motionCounter(0),
 	m_motionFrame(0),
+	m_direction(-1),
+	m_isCloseTheAttack(false),
 	GameObject(objManager),
 	m_collsion(GetTransform().position , kCircleRadius),
 	m_closeRangeAttackCollision(GetTransform().position, kCloseRangeCollisionSize),
@@ -86,8 +86,6 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_targetPos(0.0f, 0.0f, 0.0f),
 	m_pPlayer(nullptr)
 {
-
-
 
 	GetTransform().Reset();
 	GetTransform().position = position;
@@ -149,56 +147,14 @@ void EnemyBoss::Update()
 
 	if (m_getRandomTime >= kRandomInterval) {
 
+		// ランダムで行動を決める
 		GetRandomAction();
 		m_getRandomTime = 0.0f;
 	}
 
-	
-	switch (m_action)
-	{
-	case EnemyBoss::BossAction::Idle:
-		break;
-	case EnemyBoss::BossAction::CloseRangeAttack:
-		if (ApproachPlayer(m_pPlayer->GetTransform().position)) {
-			CloseRangeAttack();
-		}
-		break;
-	case EnemyBoss::BossAction::LongRangeAttack:
-		if (LeavePlayer(m_targetPos)) {
-			LongRangeAttack();
-		}
-		break;
-	default:
-		break;
-	}
-	
-	m_motionCounter++;
+	Action();
 
-	if (m_motionCounter % 5 == 0) {
-
-		m_motionFrame++;
-
-		if (m_graphHandle[static_cast<int>(m_status)][m_motionFrame] == -1) {
-
-			switch (m_status)
-			{
-			case EnemyBoss::BossStatus::Idle:
-			case EnemyBoss::BossStatus::ApproachMove:
-			case EnemyBoss::BossStatus::LeaveMove:
-				break;
-			case EnemyBoss::BossStatus::LongRangeAttack:
-			case EnemyBoss::BossStatus::CloseRangeAttack:
-				m_status = BossStatus::Idle;
-				m_action = BossAction::Idle;
-				break;
-			default:
-				break;
-			}
-			m_motionFrame = 0;
-		}
-
-		m_motionCounter = 0;
-	}
+	Status();
 
 }
 
@@ -209,7 +165,7 @@ void EnemyBoss::Draw()
 
 	// 画像の描画
 	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y - kGraphOffsetY, kGraphScale, 0.0f,
-		m_graphHandle[static_cast<int>(m_status)][m_motionFrame], TRUE);
+		m_graphHandle[static_cast<int>(m_status)][m_motionFrame], TRUE, m_direction);
 
 	// 円の当たり判定の描画
 	m_collsion.DebugDraw();
@@ -239,6 +195,79 @@ bool EnemyBoss::SealReleaseFlag(int maxKey)
 
 	// 結果を返す
 	return m_sealRelease;
+}
+
+void EnemyBoss::Action()
+{
+
+	switch (m_action)
+	{
+	case EnemyBoss::BossAction::Idle:
+		break;
+	case EnemyBoss::BossAction::CloseRangeAttack:
+
+		// 攻撃モーション中なら処理を抜ける
+		if (m_isCloseTheAttack)break;
+
+		// プレイヤーの一定範囲内にいたら
+		if (ApproachPlayer(m_pPlayer->GetTransform().position)) {
+
+			// 近距離攻撃をする
+			CloseRangeAttack();
+		}
+		break;
+	case EnemyBoss::BossAction::LongRangeAttack:
+
+		// 目標の位置に着いたら
+		if (LeavePlayer(m_targetPos)) {
+			// 目的地に着いたらプレイヤーの方向を向く
+			m_direction = (m_pPlayer->GetTransform().position.x >= GetTransform().position.x) ? -1 : 1;
+			// 遠距離攻撃をする
+			LongRangeAttack();
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+void EnemyBoss::Status()
+{
+
+	// アニメーションを再生するまでのカウントをプラス
+	m_motionCounter++;
+
+	if (m_motionCounter % 5 == 0) {
+
+		// アニメーションのフレームをプラス
+		m_motionFrame++;
+
+		//アニメーションがなければ
+		if (m_graphHandle[static_cast<int>(m_status)][m_motionFrame] == -1) {
+
+			switch (m_status)
+			{
+			case EnemyBoss::BossStatus::Idle:
+			case EnemyBoss::BossStatus::ApproachMove:
+			case EnemyBoss::BossStatus::LeaveMove:
+				break;
+			case EnemyBoss::BossStatus::LongRangeAttack:
+			case EnemyBoss::BossStatus::CloseRangeAttack:
+				m_status = BossStatus::Idle;
+				m_action = BossAction::Idle;
+				m_isCloseTheAttack = false;
+				break;
+			default:
+				break;
+			}
+
+			// アニメーションのフレームをリセット
+			m_motionFrame = 0;
+		}
+
+		// アニメーションを再生するまでのカウントをリセット
+		m_motionCounter = 0;
+	}
 }
 
 void EnemyBoss::GetRandomAction()
@@ -273,6 +302,9 @@ bool EnemyBoss::ApproachPlayer(const Vector3& playerPos)
 	// スピード
 	float speed = kSpeed;
 
+	// プレイヤーの位置に合わせてボスの向きを変える
+	m_direction = (playerPos.x >= GetTransform().position.x) ? -1 : 1;
+
 	// 移動
 	GetTransform().position += direction * speed * Time::GetInstance().GetDeltaTime();
 	return false;
@@ -295,6 +327,8 @@ bool EnemyBoss::LeavePlayer(const Vector3& playerPos)
 	// スピード
 	float speed = kSpeed;
 
+	// プレイヤーの位置に合わせてボスの向きを変える
+	m_direction = (playerPos.x >= GetTransform().position.x) ? -1 : 1;
 	// 移動
 	GetTransform().position += direction * speed * Time::GetInstance().GetDeltaTime();
 	return false;
@@ -324,6 +358,12 @@ Vector3 EnemyBoss::TargetPos(const Vector3& playerPos)
 
 void EnemyBoss::CloseRangeAttack()
 {
+
+	// 攻撃していたらこの先は呼ばない
+	if (m_isCloseTheAttack) return;
+
+	// 攻撃するのでフラグをtrue
+	m_isCloseTheAttack = true;
 
 	// アニメーションをCloseRangeAttackにする
 	m_status = BossStatus::CloseRangeAttack;
