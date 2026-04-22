@@ -8,7 +8,7 @@ class Player;
 
 namespace {
 
-	constexpr int kCharactorMotionNum = 25;
+	constexpr int kCharactorMotionNum = 32;
 	//constexpr int kCharactorStatusNum = static_cast<int>(EnemyBoss::BossStatus::Max);
 }
 
@@ -152,11 +152,6 @@ private:
 	/// 円の当たり判定
 	/// </summary>
 	Collision::Circle m_collsion;
-
-	/// <summary>
-	/// 行動する時に使う円の判定
-	/// </summary>
-	Collision::Circle m_actionCollsion;
 
 	/// <summary>
 	/// 近距離攻撃の当たり判定

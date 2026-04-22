@@ -15,11 +15,14 @@ namespace {
 	// 画像のサイズ
 	constexpr float kGraphScale = 1.0f;
 
+	// 画像のオフセットY
+	constexpr int kGraphOffsetY = 50;
+
 	// 円の当たり判定の半径
-	constexpr float kCircleRadius = 60.0f;
-	constexpr float kCircleActionRadius = 100.0f;
-	constexpr Vector3 kCollisionOffset = { 0.0f , 50.0f, 0.0f };
-	constexpr Vector3 kCloseRangeCollisionSize = { 200.0f, 50.0f, 0.0f };
+	constexpr float kCircleRadius = 50.0f * kGraphScale;
+	
+	// 近距離攻撃の当たり判定の大きさ
+	constexpr Vector3 kCloseRangeCollisionSize = { 200.0f* kGraphScale, 50.0f* kGraphScale, 0.0f };
 
 	// ボスの挙動で使うプレイヤーのオフセットの値
 	constexpr float kPlayerOffsetPos = 200.0f;
@@ -45,7 +48,6 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 	m_motionFrame(0),
 	GameObject(objManager),
 	m_collsion(GetTransform().position, kCircleRadius),
-	m_actionCollsion(GetTransform().position, kCircleActionRadius),
 	m_closeRangeAttackCollision(GetTransform().position, kCloseRangeCollisionSize),
 	m_maxHp(kMaxHp),
 	m_currentHp(kMaxHp),
@@ -72,7 +74,6 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_motionFrame(0),
 	GameObject(objManager),
 	m_collsion(GetTransform().position , kCircleRadius),
-	m_actionCollsion(GetTransform().position, kCircleActionRadius),
 	m_closeRangeAttackCollision(GetTransform().position, kCloseRangeCollisionSize),
 	m_maxHp(kMaxHp),
 	m_currentHp(kMaxHp),
@@ -86,12 +87,7 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_pPlayer(nullptr)
 {
 
-	for (int i = 0; i < static_cast<int>(BossStatus::Max); i++) {
 
-		for (int j = 0;j < kCharactorMotionNum; j++) {
-			m_graphHandle[i][j] = -1;
-		}
-	}
 
 	GetTransform().Reset();
 	GetTransform().position = position;
@@ -99,6 +95,12 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 
 void EnemyBoss::Init()
 {
+	for (int i = 0; i < static_cast<int>(BossStatus::Max); i++) {
+
+		for (int j = 0;j < kCharactorMotionNum; j++) {
+			m_graphHandle[i][j] = -1;
+		}
+	}
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_idle.png",
 		5, 5, 1, 128, 128, m_graphHandle[static_cast<int>(BossStatus::Idle)]);
 
@@ -114,23 +116,6 @@ void EnemyBoss::Init()
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_ability_black.png",
 		25, 25, 1, 384, 128, m_graphHandle[static_cast<int>(BossStatus::LongRangeAttack)]);
 
-
-	/*
-	m_motionMaxFrame[static_cast<int>(BossStatus::Idle)] = 5;
-	m_isLoop[static_cast<int>(BossStatus::Idle)] = true;
-
-	m_motionMaxFrame[static_cast<int>(BossStatus::LeaveMove)] = 8;
-	m_isLoop[static_cast<int>(BossStatus::LeaveMove)] = true;
-
-	m_motionMaxFrame[static_cast<int>(BossStatus::ApproachMove)] = 5;
-	m_isLoop[static_cast<int>(BossStatus::ApproachMove)] = true;
-
-	m_motionMaxFrame[static_cast<int>(BossStatus::CloseRangeAttack)] = 21;
-	m_isLoop[static_cast<int>(BossStatus::CloseRangeAttack)] = false;
-
-	m_motionMaxFrame[static_cast<int>(BossStatus::LongRangeAttack)] = 25;
-	m_isLoop[static_cast<int>(BossStatus::LongRangeAttack)] = false;
-	*/
 }
 
 void EnemyBoss::End()
@@ -152,7 +137,7 @@ void EnemyBoss::Update()
 
 	// 当たり判定の更新
 	m_collsion.SetPosition(GetTransform().position);
-	m_actionCollsion.SetPosition(GetTransform().position);
+	
 	m_closeRangeAttackCollision.SetPosition(GetTransform().position);
 
 	// Idle状態なら
@@ -187,12 +172,8 @@ void EnemyBoss::Update()
 		break;
 	}
 	
-}
-
-void EnemyBoss::Draw()
-{
-
 	m_motionCounter++;
+
 	if (m_motionCounter % 5 == 0) {
 
 		m_motionFrame++;
@@ -205,29 +186,38 @@ void EnemyBoss::Draw()
 			case EnemyBoss::BossStatus::ApproachMove:
 			case EnemyBoss::BossStatus::LeaveMove:
 				break;
-			case EnemyBoss::BossStatus::CloseRangeAttack:
 			case EnemyBoss::BossStatus::LongRangeAttack:
+			case EnemyBoss::BossStatus::CloseRangeAttack:
 				m_status = BossStatus::Idle;
 				m_action = BossAction::Idle;
 				break;
 			default:
 				break;
 			}
-				m_motionFrame = 0;
+			m_motionFrame = 0;
 		}
 
 		m_motionCounter = 0;
 	}
 
-	// printfDx("ボスaaaaa%d\n",static_cast<int>(m_status));
+}
+
+void EnemyBoss::Draw()
+{
+
+	printfDx("ボスaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa%d\n",static_cast<int>(m_status));
 
 	// 画像の描画
-	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kGraphScale, 0.0f, 
+	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y - kGraphOffsetY, kGraphScale, 0.0f,
 		m_graphHandle[static_cast<int>(m_status)][m_motionFrame], TRUE);
 
 	// 円の当たり判定の描画
 	m_collsion.DebugDraw();
-	m_actionCollsion.DebugDraw();
+	
+	// 近距離攻撃の当たり判定の描画
+	m_closeRangeAttackCollision.DebugDraw();
+
+	DrawCircle(m_targetPos.x, m_targetPos.y, 10, 0xff0000);
 
 }
 
@@ -254,24 +244,15 @@ bool EnemyBoss::SealReleaseFlag(int maxKey)
 void EnemyBoss::GetRandomAction()
 {
 
-	/*
-	// 次に選ぶ行動をランダムで取得
-	BossStatus nextStatus = static_cast<BossStatus>(MyRandom::Int(0, static_cast<int>(BossStatus::Max) - 1));
-
-	// 現在のステータスに入れる
-	m_status = nextStatus;
-
-	if (m_status == BossStatus::LeaveMove) {
-
-		m_targetPos = TargetPos(m_pPlayer->GetTransform().position);
-	}
-	*/
 
 	// 次に選ぶ行動をランダムで取得
 	BossAction nextAction = static_cast<BossAction>(MyRandom::Int(0, static_cast<int>(BossAction::Max) - 1));
 
 	// 現在のステータスに入れる
 	m_action = nextAction;
+
+
+	m_targetPos = TargetPos(m_pPlayer->GetTransform().position);
 }
 
 bool EnemyBoss::ApproachPlayer(const Vector3& playerPos)
@@ -303,7 +284,7 @@ bool EnemyBoss::LeavePlayer(const Vector3& playerPos)
 	Vector3 direction = playerPos - GetTransform().position;
 
 	// 距離チェック
-	if (direction.GetSqLength() <= 10000.0f) return true;
+	if (direction.GetSqLength() <= 100.0f) return true;
 
 	// アニメーションをLeaveMoveにする
 	m_status = BossStatus::LeaveMove;
@@ -312,7 +293,7 @@ bool EnemyBoss::LeavePlayer(const Vector3& playerPos)
 	direction = direction.GetNormalize();
 
 	// スピード
-	float speed = -kSpeed;
+	float speed = kSpeed;
 
 	// 移動
 	GetTransform().position += direction * speed * Time::GetInstance().GetDeltaTime();
@@ -346,8 +327,6 @@ void EnemyBoss::CloseRangeAttack()
 
 	// アニメーションをCloseRangeAttackにする
 	m_status = BossStatus::CloseRangeAttack;
-	// 近距離攻撃の当たり判定の描画
-	m_closeRangeAttackCollision.DebugDraw();
 	printfDx("近距離攻撃\n");
 }
 
