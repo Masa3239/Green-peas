@@ -1,5 +1,6 @@
 #include "../Map/Map.h"
 #include"../Map/MapManager.h"
+#include"../Chara/Collision.h"
 #include<DxLib.h>
 
 #include<fstream>
@@ -163,7 +164,6 @@ bool Map::IsWall(int mapX, int mapY) {
    default:
 	 return false; 
  }
-
 }
 
 bool Map::IsWallByWorld(float worldX, float worldY) { 

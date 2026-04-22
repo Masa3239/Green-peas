@@ -1,7 +1,9 @@
 #pragma once
 
 #include "../Map/MapManager.h"
-#include"Struct.h"
+#include"../Chara/Collision.h"
+
+#include"../Utility/Vector3.h"
 
 #include<vector>//Split関数で使用する
 #include<string>//Split関数で使用する
@@ -57,8 +59,6 @@ public:
 	bool IsWallRect(float left, float top, float right, float bottom);
 	void DebugDrawRect(float left, float top, float right, float bottom);
 
-	bool CheckMapChipToRect(Rect rect, MapChip mapChip);
-
 	std::vector<std::string>Split(const std::string& str, char separate);
 
 private:
@@ -78,6 +78,6 @@ private:
 	int m_worldid;          //読み込むマップのワールドID
 	int m_stageid;          //読み込むマップのステージID
 
-	
+	Vector3 m_prevPlayerPos;
 
 };

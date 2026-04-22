@@ -1,5 +1,5 @@
 #include "SceneTestKimura.h"
-#include"Map/Map.h"
+#include"../Kimura/Map/Map.h"
 #include <DxLib.h>
 
 
@@ -16,7 +16,6 @@ SceneTestKimura::~SceneTestKimura()
 void SceneTestKimura::Init()
 {
 	m_pMap->Init();
-	
 }
 
 void SceneTestKimura::End()
@@ -28,6 +27,7 @@ void SceneTestKimura::End()
 
 SceneBase* SceneTestKimura::Update()
 {
+	
 	m_pMap->Update();
 	return this;
 }

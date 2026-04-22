@@ -16,6 +16,8 @@
         Space = 0, 
         //氷のタイル 
         IceTile=10, 
+        //白タイル
+        WhiteTail=14,
         //レンガの壁
         Wall = 2, 
         //薄い土タイル 
@@ -38,4 +40,6 @@
         RockTail=9,
         //溶岩タイル
         LavaBrack=7,
+        //水タイル
+        WaterTail=26,
     };
