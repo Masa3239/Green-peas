@@ -54,7 +54,6 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 	m_sealRelease(false),
 	m_status(BossStatus::Idle),
 	m_action(BossAction::Idle),
-	//m_action(BossAction::Idle),
 	m_getRandomTime(0.0f),
 	m_targetPos(0.0f, 0.0f, 0.0f),
 	m_pPlayer(nullptr)
@@ -82,7 +81,6 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_sealRelease(false),
 	m_status(BossStatus::Idle),
 	m_action(BossAction::Idle),
-	//m_action(BossAction::Idle),
 	m_getRandomTime(0.0f),
 	m_targetPos(0.0f, 0.0f, 0.0f),
 	m_pPlayer(nullptr)
@@ -157,6 +155,7 @@ void EnemyBoss::Update()
 	m_actionCollsion.SetPosition(GetTransform().position);
 	m_closeRangeAttackCollision.SetPosition(GetTransform().position);
 
+	// Idle状態なら
 	if (m_status == BossStatus::Idle) {
 
 		// 時間を計測
@@ -165,7 +164,7 @@ void EnemyBoss::Update()
 
 	if (m_getRandomTime >= kRandomInterval) {
 
-		GetRandomStatus();
+		GetRandomAction();
 		m_getRandomTime = 0.0f;
 	}
 
@@ -187,31 +186,6 @@ void EnemyBoss::Update()
 	default:
 		break;
 	}
-	
-	
-	switch (m_status)
-	{
-	case EnemyBoss::BossStatus::Idle:
-		// GetRandomStatus();
-		printfDx("アイドル\n");
-		break;
-	case EnemyBoss::BossStatus::CloseRangeAttack:
-		
-		break;
-	case EnemyBoss::BossStatus::LongRangeAttack:
-		
-		break;
-	case EnemyBoss::BossStatus::ApproachMove:
-		printfDx("近づく\n");
-		break;
-	case EnemyBoss::BossStatus::LeaveMove:
-		printfDx("離れる\n");
-		break;
-	default:
-		printfDx("エラー\n");
-		break;
-	}
-	
 	
 }
 
@@ -240,17 +214,12 @@ void EnemyBoss::Draw()
 				break;
 			}
 				m_motionFrame = 0;
-			// 現在のステータスがループアニメーションなら
-			if (m_isLoop[static_cast<int>(m_status)]) {
-			}
-			else {
-			}
 		}
 
 		m_motionCounter = 0;
 	}
 
-	printfDx("ボスaaaaa%d\n",static_cast<int>(m_status));
+	// printfDx("ボスaaaaa%d\n",static_cast<int>(m_status));
 
 	// 画像の描画
 	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kGraphScale, 0.0f, 
@@ -282,7 +251,7 @@ bool EnemyBoss::SealReleaseFlag(int maxKey)
 	return m_sealRelease;
 }
 
-void EnemyBoss::GetRandomStatus()
+void EnemyBoss::GetRandomAction()
 {
 
 	/*
@@ -297,7 +266,6 @@ void EnemyBoss::GetRandomStatus()
 		m_targetPos = TargetPos(m_pPlayer->GetTransform().position);
 	}
 	*/
-	
 
 	// 次に選ぶ行動をランダムで取得
 	BossAction nextAction = static_cast<BossAction>(MyRandom::Int(0, static_cast<int>(BossAction::Max) - 1));
@@ -315,6 +283,7 @@ bool EnemyBoss::ApproachPlayer(const Vector3& playerPos)
 	// 距離チェック
 	if (direction.GetSqLength() <= 3000.0f) return true;
 
+	// アニメーションをApproachMoveにする
 	m_status = BossStatus::ApproachMove;
 
 	// 正規化
@@ -336,6 +305,7 @@ bool EnemyBoss::LeavePlayer(const Vector3& playerPos)
 	// 距離チェック
 	if (direction.GetSqLength() <= 10000.0f) return true;
 
+	// アニメーションをLeaveMoveにする
 	m_status = BossStatus::LeaveMove;
 
 	// 正規化
@@ -373,6 +343,8 @@ Vector3 EnemyBoss::TargetPos(const Vector3& playerPos)
 
 void EnemyBoss::CloseRangeAttack()
 {
+
+	// アニメーションをCloseRangeAttackにする
 	m_status = BossStatus::CloseRangeAttack;
 	// 近距離攻撃の当たり判定の描画
 	m_closeRangeAttackCollision.DebugDraw();
@@ -382,6 +354,7 @@ void EnemyBoss::CloseRangeAttack()
 void EnemyBoss::LongRangeAttack()
 {
 	
+	// アニメーションをLongRangeAttackにする
 	m_status = BossStatus::LongRangeAttack;
 	printfDx("遠距離攻撃攻撃\n");
 }

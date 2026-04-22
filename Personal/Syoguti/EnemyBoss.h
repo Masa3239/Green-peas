@@ -17,6 +17,7 @@ class EnemyBoss : public GameObject
 
 public:
 
+	// ボスの状態(アニメーション)
 	enum class BossStatus {
 
 		Idle,
@@ -27,6 +28,7 @@ public:
 		Max
 	};
 
+	// ボスの行動
 	enum class BossAction {
 
 		Idle,
@@ -94,7 +96,7 @@ public:
 	/// <summary>
 	/// ボスの行動をランダムに決める
 	/// </summary>
-	void GetRandomStatus();
+	void GetRandomAction();
 
 	/// <summary>
 	/// プレイヤーに近づく処理
@@ -140,16 +142,6 @@ private:
 
 	// 描画するモーションのフレーム
 	int m_motionFrame;
-
-	/// <summary>
-	/// 各アニメーションのフレーム数
-	/// </summary>
-	int m_motionMaxFrame[static_cast<int>(BossStatus::Max)];
-
-	/// <summary>
-	/// 各アニメーションのループフラグ
-	/// </summary>
-	bool m_isLoop[static_cast<int>(BossStatus::Max)];
 
 	/// <summary>
 	/// 座標
@@ -201,6 +193,9 @@ private:
 	/// </summary>
 	BossStatus m_status;
 
+	/// <summary>
+	/// ボスの行動
+	/// </summary>
 	BossAction m_action;
 
 	/// <summary>
