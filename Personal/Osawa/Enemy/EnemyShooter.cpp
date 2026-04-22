@@ -15,8 +15,6 @@ namespace
 	// 追跡するときの速度
 	constexpr float kFollowSpeed = 150.0f;
 
-	constexpr float kMeleeAttackCooltime = 1.0f;
-
 	// プレイヤーを追跡開始する範囲
 	constexpr float kStartFollowDistance = 300;
 
@@ -27,6 +25,8 @@ namespace
 	constexpr float kStartBackDistance = 150;
 
 	constexpr float kBulletAttackCooltime = 10.0f;
+
+	constexpr EnemyBase::StatusParam kStatus = { 50, 50, 10, 10, 1.0f, 25 };
 }
 
 EnemyShooter::EnemyShooter(ObjectManager* objManager) :
@@ -34,6 +34,7 @@ EnemyShooter::EnemyShooter(ObjectManager* objManager) :
 	m_action(Action::Idle),
 	m_attackCooltimeCounter(0.0f)
 {
+	SetStatusParam(kStatus);
 }
 
 EnemyShooter::~EnemyShooter()

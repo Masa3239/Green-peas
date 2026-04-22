@@ -9,7 +9,7 @@ class ExpOrb : public GameObject
 {
 public:
 
-	ExpOrb(ObjectManager* objManager);
+	ExpOrb(ObjectManager* objManager, int exp);
 	~ExpOrb();
 
 	void Init() override;

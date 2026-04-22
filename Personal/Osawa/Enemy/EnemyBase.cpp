@@ -14,8 +14,8 @@ namespace
 
 EnemyBase::EnemyBase(ObjectManager* objManager) :
 	GameObject(objManager),
-	m_hp(kMaxHp),
 	m_collider(Collision::AABB{ Vector3(), kColliderSize }),
+	m_statusParam(StatusParam{ 0, 0, 0, 0, 0.0f, 0 }),
 	m_variableStatus(0),
 	m_pPlayer(nullptr)
 {
@@ -37,7 +37,7 @@ void EnemyBase::Update()
 
 bool EnemyBase::Damage(const int damage)
 {
-	m_hp -= damage;
+	m_statusParam.hp -= damage;
 
 	return true;
 }
@@ -62,7 +62,7 @@ bool EnemyBase::Damage(const int damage, int weapon, int index)
 
 	m_damageFlag[weapon][index] = true;
 
-	m_hp -= damage;
+	m_statusParam.hp -= damage;
 
 	return true;
 }
@@ -71,7 +71,7 @@ void EnemyBase::Dead()
 {
 	for (int i = 0; i < 10; i++)
 	{
-		auto exp = new ExpOrb(GetObjectManager());
+		auto exp = new ExpOrb(GetObjectManager(), m_statusParam.exp);
 		exp->Init();
 		exp->SetPlayer(m_pPlayer);
 		exp->GetTransform().position = GetTransform().position;

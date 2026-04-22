@@ -7,18 +7,19 @@
 namespace
 {
 	// èâë¨ÇÃç≈ëÂíl
-	constexpr float kMaxInitSpeed = 100.0f;
+	constexpr float kMaxInitSpeed = 50.0f;
 
 	// â¡ë¨ìx
 	constexpr float kAccel = 3.0f;
 
-	constexpr float kColliderSize = 6;
+	constexpr float kColliderSize = 3;
 }
 
-ExpOrb::ExpOrb(ObjectManager* objManager) :
+ExpOrb::ExpOrb(ObjectManager* objManager, int exp) :
 	GameObject(objManager),
 	m_speed(),
-	m_collider(Collision::Circle{ Vector3::zero, kColliderSize} ),
+	m_expAmount(exp),
+	m_collider(Collision::Circle{ Vector3::zero, m_expAmount * kColliderSize} ),
 	m_pPlayer(nullptr)
 {
 }
@@ -66,5 +67,5 @@ void ExpOrb::Draw()
 {
 	Vector3 pos = GetTransform().position;
 
-	DrawCircle(pos.x, pos.y, 3, 0x00ff00);
+	DrawCircle(pos.x, pos.y, m_expAmount, 0x00ff00);
 }

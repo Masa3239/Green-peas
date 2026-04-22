@@ -8,6 +8,8 @@ namespace
 	constexpr float kDistanceSpeed = 50.0f;
 
 	constexpr float kMeleeAttackCooltime = 1.0f;
+
+	constexpr EnemyBase::StatusParam kStatus = { 50, 50, 10, 10, 1.0f, 25 };
 }
 
 EnemyMelee::EnemyMelee(ObjectManager* objManager) :
@@ -22,6 +24,7 @@ EnemyMelee::~EnemyMelee()
 
 void EnemyMelee::Init()
 {
+	SetStatusParam(kStatus);
 }
 
 void EnemyMelee::End()
@@ -69,5 +72,5 @@ void EnemyMelee::Draw()
 
 void EnemyMelee::Attack()
 {
-	GetPlayer()->Damage(1);
+	GetPlayer()->Damage(GetStatusParam().attack);
 }

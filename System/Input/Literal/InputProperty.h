@@ -11,6 +11,7 @@ namespace Input
 	// デバイスの種類
 	enum class Device
 	{
+		None,
 		Keyboard,
 		Mouse,
 		Gamepad,

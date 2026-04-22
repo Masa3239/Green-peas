@@ -8,6 +8,7 @@ namespace KeyCode
 	/// </summary>
 	enum class Button
 	{
+		None,
 		BackSpace,
 		Tab,
 		Enter,

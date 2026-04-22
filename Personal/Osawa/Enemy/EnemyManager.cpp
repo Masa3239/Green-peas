@@ -38,7 +38,7 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::Init()
 {
-	//GenerateEnemy(new EnemyMiniBoss(GetObjectManager()));
+	GenerateEnemy(new EnemyMiniBoss(GetObjectManager()));
 }
 
 void EnemyManager::End()
@@ -55,9 +55,9 @@ void EnemyManager::Update()
 	{
 		// “G‚ğ¶¬
 		//GenerateEnemy(new EnemyMelee(GetObjectManager()));
-		GenerateEnemy(new EnemyShooter(GetObjectManager()));
+		//GenerateEnemy(new EnemyShooter(GetObjectManager()));
 
-		m_generateCounter = kGenerateDuration + 999999999999;
+		m_generateCounter = kGenerateDuration;
 	}
 	else
 	{
