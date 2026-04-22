@@ -36,6 +36,7 @@ void ObjectManager::Draw()
 	// ゲームオブジェクトを描画する
 	for (const auto& obj : m_gameObjects)
 	{
+		if (obj->GetState() != GameObject::State::Active) continue;
 		obj->Draw();
 	}
 }
@@ -95,10 +96,12 @@ void ObjectManager::UpdateGameObjects()
 	m_isUpdatingGameObject = true;
 	for (const auto& obj : m_gameObjects)
 	{
+		if (obj->GetState() != GameObject::State::Active) continue;
 		obj->Update();
 	}
 	for (const auto& obj : m_gameObjects)
 	{
+		if (obj->GetState() != GameObject::State::Active) continue;
 		obj->PostUpdate();
 	}
 	m_isUpdatingGameObject = false;

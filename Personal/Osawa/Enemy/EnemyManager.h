@@ -38,6 +38,13 @@ public:
 	void Draw();
 
 	/// <summary>
+	/// コライダーに触れている敵を取得する
+	/// </summary>
+	/// <param name="shape">コライダー</param>
+	/// <param name="elimState">判定に省きたい状態異常 EnemyBase::kState〇〇</param>
+	std::vector<EnemyBase*> GetHitEnemies(const Collision::Shape& shape, const unsigned int elimState);
+
+	/// <summary>
 	/// コライダーが敵に触れているかチェック
 	/// </summary>
 	/// <param name="shape">コライダー</param>
@@ -52,8 +59,12 @@ public:
 	/// <param name="damage">基礎ダメージ量</param>
 	/// <param name="criticalChance">クリティカル率</param>
 	/// <param name="criticalDamage">クリティカルダメージ</param>
+	/// <param name="weapon">武器のID</param>
+	/// <param name="index">武器のインデックス</param>
 	/// <returns>敵に触れていたらtrue</returns>
-	bool CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage);
+	bool CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage, int weapon, int index);
+
+	bool ResetEnemyDamageFlag(int weapon, int index);
 
 	void AddEnemyTest();
 

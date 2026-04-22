@@ -4,7 +4,7 @@
 #include"../Utility/Transform.h"
 #include"../Utility/Vector3.h"
 #include"../Utility/Time.h"
-#include"../System/InputPad.h"
+//#include"../System/InputPad.h"
 #include<math.h>
 #include<memory>
 #include<vector>
@@ -14,7 +14,7 @@
 #include"../../System/ObjectManager.h"
 #include"Weapon.h"
 #include"Sword.h"
-#include"JpSword.h"
+#include"Katana.h"
 #include"Bow.h"
 #include"Boomerang.h"
 #include"ExpGauge.h"
@@ -23,6 +23,9 @@
 #include"../Osawa/Enemy/EnemyManager.h"
 #include"PlayerStatus.h"
 #include"PlayerBuff.h"
+#include"../../System/InputManager.h"
+#include"../../System/Input/Keyboard.h"
+#include"../../System/Input/Gamepad.h"
 
 namespace {
 	// ゲージの種類をキャスト(いちいちキャストするのが面倒なので用意)
@@ -42,6 +45,8 @@ namespace {
 	constexpr float kStaminaHealValue = 10;
 	// 怒りゲージの上昇倍率
 	constexpr float kAngerValue = 2.0f;
+	// 怒りゲージの減少量
+	constexpr float kAngerDecValue = 3.3f;
 	// 四角の当たり判定の大きさ
 	constexpr Vector3 kBoxSize = { 30,70,0 };
 	// 円の当たり判定の大きさ
@@ -51,13 +56,14 @@ namespace {
 	// 画像の表示倍率
 	constexpr float kPlayerScale = 1.5f;
 	// 初期ステータス
-	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 100, 1, 0.8f, kDistanceSpeed, 100, 10, 2);
+	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 100, 1, 0.8f, kDistanceSpeed, 100, 5, 1.5f);
 	// 成長倍率
 	constexpr PlayerStatus kGrowStatus = PlayerStatus(1, 1.05f, 1.1f, 1.1f, 1, 1, 1, 1);
 	// 怒り状態時のステータス
 	constexpr PlayerStatus kAngerStatus = PlayerStatus(1, 1, 1.5f, 1, 2, 1, 1.5f, 2);
 	// 初期座標
 	constexpr Vector3 kInitPos = { 300,300,0 };
+	constexpr float kCameraCount = 0.3f;
 }
 
 Player::Player(ObjectManager* objManager) :
@@ -67,7 +73,8 @@ Player::Player(ObjectManager* objManager) :
 	m_accel(1),
 	m_deltaTime(0),
 	m_angerButton(),
-	m_anger(false)
+	m_anger(false),
+	m_cameraShakeCount(0)
 {
 	m_angerButton[0] = false;
 	m_angerButton[1] = false;
@@ -95,11 +102,12 @@ Player::Player(ObjectManager* objManager) :
 	// 初期武器を設定
 	
 	//m_weapons.push_back(std::make_unique<JpSword>(objManager));
-	m_weapons.push_back(std::make_unique<Sword>(objManager));
-	m_weapons.push_back(std::make_unique<Boomerang>(objManager));
+	//m_weapons.push_back(std::make_unique<Sword>(objManager));
+	//m_weapons.push_back(std::make_unique<Boomerang>(objManager));
 	//m_weapons.push_back(std::make_unique<Bow>(objManager));
 
 	for (auto& weapons : m_weapons) {
+		if (!weapons)continue;
 		// 武器に敵マネージャーのポインタを設定
 		weapons->SetEnemyManager(m_pEnemyMgr);
 		// 武器の初期設定
@@ -140,6 +148,7 @@ void Player::End()
 	m_camera = nullptr;
 	delete m_camera;
 	for (auto& weapons : m_weapons) {
+		if (!weapons)continue;
 		weapons->End();
 	}
 	// アニメーションの破棄
@@ -153,20 +162,25 @@ void Player::End()
 
 void Player::Update()
 {
-
+	m_deltaTime = Time::GetInstance().GetDeltaTime();
+	if (m_anger || m_cameraShakeCount > 0) {
+		m_camera->ChangeAnger();
+		if (m_cameraShakeCount > 0) {
+			m_cameraShakeCount -= m_deltaTime;
+		}
+	}
+	else {
+		m_camera->ChangeFollow();
+	}
 	if (m_pItemMgr) {
-		if (Pad::IsPressed(Pad::Button::B)) {
+		if (InputManager::GetInstance().IsPressed(Input::Action::PickUp)) {
 			m_pItemMgr->CheckHitCollision(GetCircle());
 		}
-		if (Pad::IsPressed(Pad::Button::Back)) {
-			m_pItemMgr->Create(ItemBase::ItemType::Heal, GetTransform().position);
-		}
-		if (Pad::IsPressed(Pad::Button::Back)) {
+		if (Gamepad::GetInstance().IsDown(XINPUT_BUTTON_BACK)) {
 			m_pItemMgr->Create(ItemBase::ItemType::Heal, GetTransform().position);
 		}
 	}
 	m_camera->Update(GetTransform());
-	m_deltaTime = Time::GetInstance().GetDeltaTime();
 	// 時間が止まっていなければ移動処理を呼ぶ
 	if (Time::GetInstance().GetDeltaTime()) {
 		Move();
@@ -175,9 +189,7 @@ void Player::Update()
 	m_circle.SetPosition(GetTransform().position);
 	printfDx("deltatime : %f\n", m_deltaTime);
 	printfDx("移動量 : %f\n", m_moveVector.GetLength());
-	/*
-	if (Pad::IsDown(Pad::Button::LB)) {
-	}*/
+
 		//m_gauges[static_cast<int>(GaugeType::Exp)]->Increase(10*m_deltaTime);
 
 	printfDx("m_direction : %d\n", static_cast<int>(m_direction));
@@ -196,7 +208,7 @@ void Player::Update()
 	if (m_gauges[static_cast<int>(GaugeType::Anger)]->CheckMin()) {
 		m_anger = false;
 	}if (m_anger) {
-		m_gauges[static_cast<int>(GaugeType::Anger)]->Decrease(3.3f * m_deltaTime);
+		m_gauges[static_cast<int>(GaugeType::Anger)]->Decrease(kAngerDecValue * m_deltaTime);
 	}
 }
 
@@ -212,8 +224,6 @@ void Player::Move()
 
 void Player::MoveAmount()
 {
-	// 入力量を取得
-	m_moveAmount = Pad::PadAnalogAmount(Pad::Joystick::Left);
 	printfDx("入力量 : %f\n", m_moveAmount);
 	PlayerStatus status = m_status;
 	if (m_anger) {
@@ -223,8 +233,10 @@ void Player::MoveAmount()
 	if (CheckDashNow()) {
 	}
 	else {
+	m_moveAmount = InputManager::GetInstance().GetAnalog2DAmount(Input::Action::Move);
+	// 入力量を取得
 		// スティック入力の角度
-		float angle = Pad::AnalogAngle(Pad::Joystick::Left);
+		float angle = InputManager::GetInstance().GetAnalog2DAngle(Input::Action::Move);
 		// 向いている方向を更新
 		GetTransform().rotation.z = angle * MyMath::ToRadian;
 
@@ -239,6 +251,7 @@ void Player::MoveAmount()
 		}
 	}
 	for (auto& weapons : m_weapons) {
+		if (!weapons)continue;
 		weapons->GetTransform().rotation.z = GetTransform().rotation.z;
 		// 武器の座標を設定
 		weapons->GetTransform().position = GetTransform().position;
@@ -255,21 +268,26 @@ void Player::MoveAmount()
 		}
 	}
 	
-	if (Pad::IsDown(Pad::Button::X)||Pad::IsReleased(Pad::Button::X)) {
+	if (InputManager::GetInstance().IsDown(Input::Action::Attack)||
+		InputManager::GetInstance().IsReleased(Input::Action::Attack)) {
 		if(!CheckDashNow())
-		m_weapons[0]->Attack();
+		if (m_weapons[0]->Attack()&&m_weapons[0]->GetWeaponType() == Weapon::Katana) {
+			Dash(false);
+		}
+
 	}
-	if (Pad::IsPressed(Pad::Button::Y)) {
-		std::unique_ptr<Weapon>change;
-		change = std::move(m_weapons[1]);
-		m_weapons[1] = std::move(m_weapons[0]);
-		m_weapons[0] = std::move(change);
+	// 指定のボタンを押したとき かつ 武器を複数持っているとき
+	if (InputManager::GetInstance().IsPressed(Input::Action::Weapon) &&
+		m_weapons[1]) {
+		Weapon* change;
+		change = m_weapons[1];
+		m_weapons[1] = m_weapons[0];
+		m_weapons[0] = change;
 		change = nullptr;
 	}
-	int s = 0;
-	for (int i = m_weapons.size() - 1; i >= 0; i--) {
+	for (int i = kWeaponMaxNum - 1; i >= 0; i--) {
+		if (!m_weapons[i])continue;
 		m_weapons[i]->SetActive(false);
-		s++;
 	}
 	m_weapons[0]->SetActive(true);
 	for (auto& gauge : m_gauges) {
@@ -280,8 +298,8 @@ void Player::MoveAmount()
 	// 移動量の初期化
 	m_moveVector = { 0,0,0 };
 	// 入力角度からX,Y方向の移動量を計算
-	m_moveVector.x = sinf(GetTransform().rotation.z);
-	m_moveVector.y = -cosf(GetTransform().rotation.z);
+	m_moveVector.x = cosf(GetTransform().rotation.z);
+	m_moveVector.y = sinf(GetTransform().rotation.z);
 	// 正規化
 	m_moveVector = m_moveVector.GetNormalize();
 	// 移動速度を求める(入力量×移動速度×速度割合×時間)
@@ -290,19 +308,29 @@ void Player::MoveAmount()
 	m_moveVector *= moveSpeed;
 
 	if (m_moveAmount) {
-		m_direction = Pad::AnalogDirection(Pad::Joystick::Left);
+		m_direction = MyMath::Direction(GetTransform().rotation.z);
 	}
 	
 	printfDx("moveSpeed : %f\n",moveSpeed);
+	if (Keyboard::GetInstance().IsDown(KEY_INPUT_K)) {
+		Damage(3);
+	}
+}
+
+void Player::Dash(bool stamina)
+{
+	m_accel = kDashSpeed;
+	if (!stamina)return;
+	m_gauges[static_cast<int>(GaugeType::Stamina)]->Decrease(kDashStaimina);
+	m_gauges[static_cast<int>(GaugeType::Stamina)]->Clamp();
 }
 
 void Player::SpeedUpdate()
 {
 	// ダッシュしていないとき
-	if (Pad::IsPressed(Pad::Button::A)&& CheckCanDash()) {
-		m_accel = kDashSpeed;
-		m_gauges[static_cast<int>(GaugeType::Stamina)]->Decrease(kDashStaimina);
-		m_gauges[static_cast<int>(GaugeType::Stamina)]->Clamp();
+	if (InputManager::GetInstance().IsPressed(Input::Action::Dash) && 
+		CheckCanDash()) {
+		Dash();
 	}
 	if (CheckDashNow()) {
 		m_moveAmount = 1;
@@ -324,14 +352,13 @@ void Player::Draw()
 	angle.x = sinf(GetTransform().rotation.z);
 	angle.y = -cosf(GetTransform().rotation.z);
 	angle = angle.GetNormalize();
-	angle *= 10 * Pad::PadAnalogAmount(Pad::Joystick::Left);
+	angle *= 10 * m_moveAmount;
 	angle += GetTransform().position;
 	DrawCircle(angle.x, angle.y, 3, GetColor(0, 255, 0));
 	Debug();
 	printfDx("x : %f\n", GetTransform().position.x);
 	printfDx("y : %f\n", GetTransform().position.y);
 	printfDx("z : %f\n", GetTransform().position.z);
-	printfDx("weaponSize : %d\n", m_weapons.size());
 }
 
 void Player::Debug()
@@ -362,7 +389,10 @@ void Player::Debug()
 	printfDx("stamina        : %f\n", m_status.Stamina);
 	printfDx("CriticalRate   : %f\n", m_status.CriticalRate);
 	printfDx("CriticalDamage : %f\n", m_status.CriticalDamage);
-
+	for (auto& weapons : m_weapons) {
+		if (!weapons)continue;
+		printfDx("　　　武器 　　: %d\n", weapons->GetWeaponType());
+	}
 	m_gauges[static_cast<int>(GaugeType::Exp)]->Debug();
 	//m_box.DebugDraw();
 	m_circle.DebugDraw();
@@ -382,6 +412,7 @@ void Player::Damage(float value)
 	m_gauges[static_cast<int>(GaugeType::Anger)]->Increase(value * kAngerValue);
 	// 最大・最小値よりも大ききくならないようにする
 	m_gauges[static_cast<int>(GaugeType::Anger)]->Clamp();
+	m_cameraShakeCount = kCameraCount;
 }
 
 void Player::Heal(float value)
@@ -424,8 +455,21 @@ void Player::SetEnemyManager(EnemyManager* enemyManager)
 {
 	m_pEnemyMgr = enemyManager;
 	for (auto& weapons : m_weapons) {
+		if (!weapons)continue;
 		weapons->SetEnemyManager(m_pEnemyMgr);
 	}
+}
+
+void Player::SetWeapon(Weapon* weapon)
+{
+	if (!m_weapons[1]) {
+		m_weapons[1] = weapon;
+	}
+	if (m_weapons[0]) {
+		m_weapons[0]->SetChatch(false);
+	}
+	m_weapons[0] = weapon;
+
 }
 
 bool Player::CheckCanDash()
@@ -485,10 +529,10 @@ bool Player::CheckAngerButton()
 void Player::UpdateAngerButton()
 {
 	m_angerButton[1] = m_angerButton[0];
-	if (Pad::IsDown(Pad::Button::RT) &&
-		Pad::IsDown(Pad::Button::LT) &&
-		Pad::IsDown(Pad::Button::RB) &&
-		Pad::IsDown(Pad::Button::LB)) {
+	if (InputManager::GetInstance().IsDown(Input::Action::Anger1) &&
+		InputManager::GetInstance().IsDown(Input::Action::Anger2) &&
+		InputManager::GetInstance().IsDown(Input::Action::Anger3) &&
+		InputManager::GetInstance().IsDown(Input::Action::Anger4)) {
 		m_angerButton[0] = true;
 		//return true;
 	}

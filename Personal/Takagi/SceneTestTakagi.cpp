@@ -9,6 +9,7 @@
 #include"../Syoguti/ItemManager.h"
 #include"../Osawa/Enemy/EnemyManager.h"
 #include"../Asai/UIManager.h"
+#include"WeaponManager.h"
 namespace {
 	Vector3 kBoxPos = { 200,200 ,0 };
 	Vector3 kBoxSize = { 50,70 ,0 };
@@ -21,7 +22,8 @@ SceneTestTakagi::SceneTestTakagi():
 	m_pEnemyManager(nullptr),
 	m_pItemManager(nullptr),
 	m_pMap(nullptr),
-	m_pUIManager(nullptr)
+	m_pUIManager(nullptr),
+	m_pWeaponManager(nullptr)
 {
 	m_pPlayer = std::make_unique<Player>(GetObjectManager());
 	m_pCamera = std::make_unique<Camera>();
@@ -29,6 +31,8 @@ SceneTestTakagi::SceneTestTakagi():
 	m_pItemManager = std::make_unique<ItemManager>();
 	m_pMap = std::make_unique<Map>();
 	m_pUIManager = std::make_unique<UIManager>();
+	m_pWeaponManager = std::make_unique<WeaponManager>();
+
 }
 
 SceneTestTakagi::~SceneTestTakagi()
@@ -51,6 +55,10 @@ void SceneTestTakagi::Init()
 	m_pItemManager->Init();
 	m_pItemManager->SetObjectManager(GetObjectManager());
 	m_pItemManager->SetPlayer(m_pPlayer.get());
+	m_pWeaponManager->SetPlayer(m_pPlayer.get());
+	m_pWeaponManager->SetObjManager(GetObjectManager());
+	m_pWeaponManager->SetEnemyManager(m_pEnemyManager.get());
+	m_pWeaponManager->Init();
 }
 
 void SceneTestTakagi::End()
@@ -60,6 +68,7 @@ void SceneTestTakagi::End()
 	m_pMap->End();
 	m_pItemManager->End();
 	m_pUIManager->End();
+	m_pWeaponManager->End();
 	
 }
 
@@ -72,6 +81,7 @@ SceneBase* SceneTestTakagi::Update()
 	if (m_pPlayer->IsDead()) {
 		return new SceneSelection();
 	}
+	m_pWeaponManager->Update();
 
 	//Segment_Point_MinLength()
 

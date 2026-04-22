@@ -9,6 +9,10 @@ class PlayerStatus;
 namespace {
 	// 斬撃エフェクト画像のフレーム数
 	constexpr int kEffectFrame = 16;
+	// 取得する際の半径
+	constexpr float kCatchRadius = 20;
+	// チャージ判定にする時間
+	constexpr float kChargeTime = 0.5f;
 }
 class Weapon:public GameObject
 {
@@ -20,6 +24,8 @@ public:
 		Sword,		// 剣
 		Boomerang,	// ブーメラン
 		Bow,		// 弓
+		Katana,		// 刀
+		Thunder,
 		Max
 	};
 	enum class Swing {
@@ -41,11 +47,12 @@ public:
 	//virtual void End()= 0;
 	//virtual void Update()= 0;
 	//virtual void Draw()= 0;
-	
+
 	/// <summary>
 	/// 攻撃処理
 	/// </summary>
-	virtual void Attack()=0;
+	/// <returns>攻撃したか</returns>
+	virtual bool Attack()=0;
 	/// <summary>
 	/// 当たり判定の取得
 	/// </summary>
@@ -68,6 +75,11 @@ public:
 	void SetPlayerStatus(const PlayerStatus& status) { m_playerStatus = status; }
 	void SetActive(bool active) { m_active = active; }
 	virtual void SetScale(float scale) { m_scale = scale; }
+	void UpdateCatchCol() { m_catchCol.SetPosition(GetTransform().position);m_catchCol.SetRadius(kCatchRadius); }
+	Collision::Circle GetCatchCol() { return m_catchCol; }
+	virtual int GetWeaponType()=0;
+	void SetChatch(bool catchFlag) { m_catch = catchFlag; }
+	bool GetChatch() { return m_catch; }
 protected:
 	/// <summary>
 	/// 武器のグラフィックハンドル
@@ -92,5 +104,10 @@ protected:
 	PlayerStatus m_weaponStatus;
 	bool m_active;
 	float m_scale;
+	/// <summary>
+	/// 取得する際の当たり判定
+	/// </summary>
+	Collision::Circle m_catchCol;
+	bool m_catch;
 };
 

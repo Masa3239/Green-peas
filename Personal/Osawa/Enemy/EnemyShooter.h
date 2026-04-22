@@ -1,6 +1,10 @@
 #pragma once
 
 #include "EnemyBase.h"
+#include <array>
+#include <memory>
+
+class EnemyBullet;
 
 class EnemyShooter : public EnemyBase
 {
@@ -35,6 +39,8 @@ protected:
 
 private:
 
+	constexpr static unsigned int kMaxBulletNum = 10;
+
 	enum class Action
 	{
 		Idle,
@@ -43,5 +49,15 @@ private:
 		Back,
 	};
 
-	Action mAction;
+	Action m_action;
+
+	/// <summary>
+	/// 攻撃クールタイムのカウンター
+	/// </summary>
+	float m_attackCooltimeCounter;
+
+	/// <summary>
+	/// 弾の配列
+	/// </summary>
+	std::array<std::unique_ptr<EnemyBullet>, kMaxBulletNum> m_bullets;
 };
