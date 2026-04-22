@@ -14,6 +14,7 @@
 #include "../System/Input/Modifier/InputModifierDeadzone.h"
 #include "../System/Input/Modifier/InputModifierNegate.h"
 #include "../System/Input/Modifier/InputModifierSwizzleAxis.h"
+#include "../System/Input/Modifier/InputModifierConcurrent.h"
 #include "../Utility/MyMath.h"
 #include "../Utility/Vector3.h"
 
@@ -74,10 +75,18 @@ bool InputManager::Initialize()
 	Bind(Input::Action::Attack, Input::Device::Gamepad, KeyCode::Button::GpFaceLeft);
 	Bind(Input::Action::PickUp, Input::Device::Gamepad, KeyCode::Button::GpFaceRight);
 	Bind(Input::Action::Weapon, Input::Device::Gamepad, KeyCode::Button::GpFaceUp);
-	Bind(Input::Action::Anger1, Input::Device::Gamepad, KeyCode::Button::GpLeftTrigger);
+	//Bind(Input::Action::Anger1, Input::Device::Gamepad, KeyCode::Button::GpLeftTrigger);
 	Bind(Input::Action::Anger2, Input::Device::Gamepad, KeyCode::Button::GpRightTrigger);
 	Bind(Input::Action::Anger3, Input::Device::Gamepad, KeyCode::Button::GpRightShoulder);
 	Bind(Input::Action::Anger4, Input::Device::Gamepad, KeyCode::Button::GpLeftShoulder);
+
+	Bind(Input::Action::Anger1, Input::Device::Gamepad, KeyCode::Button::GpLeftTrigger,
+		{
+			std::make_shared<InputModifierConcurrent>(std::vector
+				{ KeyCode::Button::GpRightTrigger, KeyCode::Button::GpLeftShoulder, KeyCode::Button::GpRightShoulder }
+			)
+		}
+	);
 
 	return true;
 }
@@ -116,6 +125,33 @@ bool InputManager::IsReleased(Input::Action action) const
 bool InputManager::IsHeld(Input::Action action, int frame) const
 {
 	return GetState(action, InputType::Held, frame);
+}
+
+bool InputManager::GetAsBool(Input::Action action) const
+{
+	const Input::ActionProperty& actionProperty = mActions.at(action);
+
+	bool result = false;
+
+	// アクションに割り当てられたボタンをすべてチェックする
+	for (const auto& bind : actionProperty.binds)
+	{
+		auto device = mDevices.at(bind.device).get();
+		
+		// 値を取得する
+		Vector2 value = device->GetValue(bind.keyCode);
+
+		// バインドに割り当てられた加工をする
+		for (const auto& modifier : bind.modifiers)
+		{
+			modifier->ModifyRaw(&value);
+		}
+		
+		// 一度trueにしたらfalseにならないようにする
+		if (!result) result = value.x > 0;
+	}
+
+	return result;
 }
 
 float InputManager::GetAsFloat(Input::Action action) const

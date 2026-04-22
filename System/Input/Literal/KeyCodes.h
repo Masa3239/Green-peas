@@ -9,6 +9,7 @@ namespace KeyCode
 	enum class Button
 	{
 		None,
+
 		BackSpace,
 		Tab,
 		Enter,
@@ -156,5 +157,7 @@ namespace KeyCode
 		GpRightTrigger,		// float
 		GpLeftThumb,		// Vector2
 		GpRightThumb,		// Vector2
+
+		Length
 	};
 }

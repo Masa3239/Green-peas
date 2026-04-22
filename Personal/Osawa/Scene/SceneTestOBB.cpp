@@ -50,6 +50,8 @@ void SceneTestOBB::Draw()
 
 	printfDx("%d\n", m_obb.CheckCollision(m_circle));
 	printfDx("%d\n", m_obb.CheckCollision(m_obb2));
+
+	printfDx("angry %d\n", InputManager::GetInstance().GetAsBool(Input::Action::Anger1));
 }
 
 void SceneTestOBB::PreDraw()
