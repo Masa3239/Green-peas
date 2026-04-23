@@ -46,7 +46,7 @@ void HpHealItem::Init()
 void HpHealItem::End()
 {
 	// 画像の破棄
-	DeleteGraph(m_graphHandle);
+	// DeleteGraph(m_graphHandle);
 }
 
 void HpHealItem::Update()

@@ -52,7 +52,7 @@ public:
 	/// グラフハンドルをセットするセッター関数
 	/// </summary>
 	/// <param name="graphHandlePath"></param>
-	void SetGraphHandle(int graphHandle) override { m_graphHandle = graphHandle; }
+	// void SetGraphHandle(int graphHandle) override { m_graphHandle = graphHandle; }
 
 };
 

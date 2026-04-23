@@ -65,6 +65,7 @@ void SceneTestSyoguti::Init()
 
 	m_pItemMgr->Init();
 	m_pItemMgr->SetObjectManager(GetObjectManager());
+	m_pItemMgr->SetPlayer(m_pPlayer.get());
 
 	m_pEnemyManager->SetPlayer(m_pPlayer.get());
 	m_pEnemyManager->SetUIManager(m_pUIManager.get());

@@ -36,6 +36,9 @@ void ItemManager::End()
 
 	// 可変長配列を綺麗にする
 	m_items.clear();
+
+	DeleteGraph(m_hpHealItemGraphHandle);
+	DeleteGraph(m_attackUpItemGraphHandle);
 }
 
 void ItemManager::Update()
@@ -105,7 +108,7 @@ void ItemManager::Remove(int index)
 	}
 
 	// 指定したアイテムを削除
-	m_items[index]->End();
+	// m_items[index]->End();
 
 	// eraseを使うと配列のindex番目の要素を削除しても
 	// 自動で後ろにある要素を前詰めされる
