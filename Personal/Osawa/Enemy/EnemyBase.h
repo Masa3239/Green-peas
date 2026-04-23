@@ -16,6 +16,16 @@ public:
 	// 状態異常：痺れ
 	constexpr static unsigned int kStatePalsy = (1 << 0);
 
+	struct StatusParam
+	{
+		int hp;
+		int maxHp;
+		int attack;
+		int defence;
+		float speed;
+		int exp;
+	};
+
 	EnemyBase(ObjectManager* objManager);
 	virtual ~EnemyBase();
 
@@ -43,7 +53,7 @@ public:
 	/// <summary>
 	/// HPを取得
 	/// </summary>
-	int GetHP() const { return m_hp; }
+	int GetHP() const { return m_statusParam.hp; }
 	
 	/// <summary>
 	/// ダメージを与える
@@ -60,10 +70,17 @@ public:
 	/// <returns>ダメージを与えられたらtrue</returns>
 	bool Damage(const int damage, int weapon, int index);
 
+	/// <summary>
+	/// 死亡処理
+	/// </summary>
+	void Dead();
+
 	bool ResetDamageFlag(int weapon, int index);
 
-	Player* GetPlayer() const { return m_player; }
-	void SetPlayer(Player* player) { m_player = player; }
+	const StatusParam& GetStatusParam() const { return m_statusParam; }
+
+	Player* GetPlayer() const { return m_pPlayer; }
+	void SetPlayer(Player* player) { m_pPlayer = player; }
 
 	const Collision::AABB& GetCollider() const { return m_collider; }
 
@@ -73,6 +90,8 @@ protected:
 	/// 攻撃処理
 	/// </summary>
 	virtual void Attack() = 0;
+
+	void SetStatusParam(const StatusParam& status) { m_statusParam = status; }
 
 private:
 
@@ -88,16 +107,16 @@ private:
 	void CheckDamageFlagSize(int weapon, int index);
 
 	/// <summary>
-	/// 自身のHP
-	/// </summary>
-	int m_hp;
-
-	/// <summary>
 	/// コライダー
 	/// </summary>
 	Collision::AABB m_collider;
 
 	std::array<std::vector<bool>, Weapon::Max> m_damageFlag;
+
+	/// <summary>
+	/// パラメータ
+	/// </summary>
+	StatusParam m_statusParam;
 
 	/// <summary>
 	/// 状態異常
@@ -107,5 +126,5 @@ private:
 	/// <summary>
 	/// プレイヤーのポインタ
 	/// </summary>
-	Player* m_player;
+	Player* m_pPlayer;
 };

@@ -78,6 +78,11 @@ public:
 	bool IsHeld(Input::Action action, int frame) const;
 
 	/// <summary>
+	/// boolのデジタル値として取得する
+	/// </summary>
+	bool GetAsBool(Input::Action action) const;
+
+	/// <summary>
 	/// floatのアナログ値として取得する
 	/// </summary>
 	float GetAsFloat(Input::Action action) const;
@@ -100,6 +105,9 @@ public:
 	/// <param name="action">アクションID</param>
 	/// <returns>入力量</returns>
 	float GetAnalog2DAmount(Input::Action action) const;
+
+	template <InputDevice T>
+	T* GetDevice() const;
 
 private:
 
@@ -158,6 +166,23 @@ private:
 	/// </summary>
 	std::unordered_map<Input::Device, std::unique_ptr<InputDeviceBase>> mDevices;
 };
+
+template<InputDevice T>
+inline T* InputManager::GetDevice() const
+{
+	// 型が一致する要素を探す
+	for (const auto& device : mDevices)
+	{
+		// 指定したデバイスにキャスト
+		T* result = dynamic_cast<T*>(device.second.get());
+
+		// キャストに成功したらポインタを返す
+		if (result != nullptr) return result;
+	}
+
+	// 型が見つからなかったためnullptrを返す
+	return nullptr;
+}
 
 template<InputDevice T>
 inline void InputManager::RegisterDevice(Input::Device type)

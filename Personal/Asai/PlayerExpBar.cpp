@@ -23,7 +23,9 @@ namespace {
 
 }
 
-PlayerExpBar::PlayerExpBar()
+PlayerExpBar::PlayerExpBar():
+	m_level(0),
+	m_fontHandle(-1)
 {
 }
 
@@ -77,5 +79,7 @@ void PlayerExpBar::SetPlayer(Player* pPlayer)
 	m_value = pPlayer->GetGaugeCurrentValue(Player::GaugeType::Exp);
 	m_max = pPlayer->GetGaugeMaxValue(Player::GaugeType::Exp);
 	m_rate = pPlayer->GetGaugeRate(Player::GaugeType::Exp);
+
+	m_level = pPlayer->GetLevel();
 
 }

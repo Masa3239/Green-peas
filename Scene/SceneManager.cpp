@@ -5,6 +5,7 @@
 #include "../Utility/Input.h"
 #include "../System/InputPad.h"
 #include "../System/ObjectManager.h"
+#include "../System/PauseManager.h"
 
 SceneManager::SceneManager() {
 
@@ -74,5 +75,7 @@ void SceneManager::Draw() {
 	m_pScene->GetObjectManager()->Draw();
 
 	m_pScene->PostDraw();
+
+	PauseManager::GetInstance().Update();
 }
 

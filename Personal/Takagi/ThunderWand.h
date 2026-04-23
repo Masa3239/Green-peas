@@ -1,12 +1,17 @@
 #pragma once
 #include"Weapon.h"
 
-class Arrow;
-class Bow:public Weapon
+class Thunder;
+
+namespace {
+}
+
+
+class ThunderWand :public Weapon
 {
 public:
-	Bow(ObjectManager* objManager);
-	~Bow();
+	ThunderWand(ObjectManager* objManager);
+	~ThunderWand();
 
 	void Init()override;
 	void End()override;
@@ -15,15 +20,12 @@ public:
 	void SetPos(const Vector3& pos) { GetTransform().position = pos; }
 	bool Attack()override;
 	bool CheckAttack()override;
-	//Collision::Circle GetCollision()override;
 	void CheckCollision()override;
 	void Shot(const Transform& transform);
 	void SetScale(float scale)override { m_scale = scale; }
-	int GetWeaponType()override { return Weapon::Bow; }
+	int GetWeaponType()override { return Weapon::Flame; }
 private:
-	//bool attack;
-	//float m_desireRadian;
-	Arrow* m_pArrows[kBulletNum];
+	Thunder* m_pThunders[kBulletNum];
 	Transform m_drawTransform;
 };
 

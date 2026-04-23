@@ -8,8 +8,8 @@
 #include "../Personal/Takagi/Player.h"
 #include "../Personal/Takagi/WeaponManager.h"
 #include "../System/ObjectManager.h"
-
-#include "../Personal/Osawa/Scene/SceneSelection.h"
+#include "../System/PauseManager.h"
+#include "../System/InputManager.h"
 
 SceneTestOsawa::SceneTestOsawa() :
 	m_pPlayer(nullptr),
@@ -40,13 +40,15 @@ void SceneTestOsawa::Init()
 	m_pPlayer->SetEnemyManager(m_pEnemyMgr.get());
 	m_pPlayer->SetItemManager(m_pItemMgr.get());
 
+	m_pMap->Init();
+
 	m_pCamera->Init();
 	m_pCamera->SetMap(m_pMap.get());
 	m_pCamera->GenerateWorldScreen();
 
-	m_pEnemyMgr->Init();
 	m_pEnemyMgr->SetPlayer(m_pPlayer.get());
 	m_pEnemyMgr->SetUIManager(m_pUIMgr.get());
+	m_pEnemyMgr->Init();
 
 	m_pUIMgr->Init();
 
@@ -54,12 +56,12 @@ void SceneTestOsawa::Init()
 	m_pItemMgr->SetObjectManager(GetObjectManager());
 	m_pItemMgr->SetPlayer(m_pPlayer.get());
 
-	m_pMap->Init();
-
 	m_pWeaponManager->SetPlayer(m_pPlayer.get());
 	m_pWeaponManager->SetObjManager(GetObjectManager());
 	m_pWeaponManager->SetEnemyManager(m_pEnemyMgr.get());
 	m_pWeaponManager->Init();
+
+	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
 }
 
 void SceneTestOsawa::End()
@@ -86,6 +88,11 @@ SceneBase* SceneTestOsawa::Update()
 	m_pMap->Update();
 
 	m_pWeaponManager->Update();
+
+	if (InputManager::GetInstance().IsPressed(Input::Action::Pause))
+	{
+		PauseManager::GetInstance().TogglePause();
+	}
 
 	return this;
 }
@@ -115,5 +122,5 @@ void SceneTestOsawa::PostDraw()
 	m_pUIMgr->ScreenDraw();
 	m_pUIMgr->DebugDraw();
 
-	clsDx();
+	//clsDx();
 }

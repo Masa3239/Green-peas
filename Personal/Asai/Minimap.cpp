@@ -21,8 +21,11 @@ namespace {
 	constexpr int kTopPos = 0 + kOffSet;
 	constexpr int kBottomPos = 0 + kSizeY + kOffSet;
 
+	//プレイヤーのアイコンの画像
 	const char* const kPlayerGraphPath = ".\\Personal\\Asai\\Graph\\pointer_c.png";
-
+	//プレイヤーのアイコンの拡大率
+	constexpr float kPlayerIconScale = 0.3f;
+	//プレイヤーのアイコンと角度のずれを直す
 	constexpr float kOffSetRadian = MyMath::DegToRad(25);
 
 	int worldScrren;
@@ -31,6 +34,7 @@ namespace {
 
 Minimap::Minimap():
 	m_playerUIGrahpHandle(-1),
+	m_pMap(nullptr),
 	m_pPlayer(nullptr),
 	m_pCamera(nullptr),
 	m_pEnemyMgr(nullptr),
@@ -46,6 +50,7 @@ void Minimap::Init()
 {
 	worldScrren = m_pCamera->GetWorldScreen();
 
+	//画像の読み込み
 	m_playerUIGrahpHandle = LoadGraph(kPlayerGraphPath);
 
 }
@@ -59,22 +64,18 @@ void Minimap::Draw()
 	//ミニマップの描画
 	DrawExtendGraph(kLeftPos, kTopPos, kRightPos, kBottomPos, worldScrren, FALSE);
 
+	//プレイヤーの位置を取得
 	Vector3 playerPos = ToMinimapPos(m_pPlayer->GetTransform().position);
-	//DrawCircle(playerPos.x, playerPos.y, 5.0f, 0xffffff, TRUE);
-
-	DrawRotaGraph(playerPos.x, playerPos.y, 0.3f, m_pPlayer->GetTransform().rotation.z+kOffSetRadian, m_playerUIGrahpHandle, TRUE);
+	//プレイヤーの描画
+	DrawRotaGraph(playerPos.x, playerPos.y, kPlayerIconScale, m_pPlayer->GetTransform().rotation.z + kOffSetRadian, m_playerUIGrahpHandle, TRUE);
 
 	for (int i = 0;i < m_pItemMgr->GetArraySize();i++) {
-
+		//アイテムの座標を取得　ミニマップの座標に変換
 		Vector3 itemPos = ToMinimapPos(m_pItemMgr->GetItemPos(i));
+		//アイテムを描画
+		DrawCircle(itemPos.x, itemPos.y, 2, 0xffff00, TRUE);
 
-		DrawCircle(itemPos.x, itemPos.y, 5, 0xffff00, TRUE);
-
-		printfDx("%f\n", m_pItemMgr->GetItemPos(i).x);
-		printfDx("%d\n", i);
 	}
-
-	printfDx("%d\n", m_pItemMgr->GetArraySize());
 
 }
 
@@ -84,6 +85,10 @@ void Minimap::DebugDraw()
 
 void Minimap::End()
 {
+
+	//画像の破棄
+	DeleteGraph(m_playerUIGrahpHandle);
+
 }
 
 Vector3 Minimap::ToMinimapPos(const Vector3 pos)

@@ -1,8 +1,9 @@
 #include "SceneBase.h"
+#include <DxLib.h>
 #include "../Utility/Color.h"
 #include "../Utility/Game.h"
 #include "../System/ObjectManager.h"
-#include <DxLib.h>
+#include "../System/PauseManager.h"
 
 namespace {
 
@@ -25,6 +26,8 @@ SceneBase::SceneBase() :
 SceneBase::~SceneBase()
 {
 	m_objManager->End();
+
+	PauseManager::GetInstance().End();
 }
 
 // フェードの更新

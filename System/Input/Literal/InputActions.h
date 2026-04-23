@@ -20,6 +20,7 @@ namespace Input
 		Anger2,
 		Anger3,
 		Anger4,
+		Pause,
 		Length
 	};
 }

@@ -4,8 +4,10 @@
 #include"Weapon.h"
 #include"Sword.h"
 #include"Katana.h"
-#include"Bow.h"
 #include"Boomerang.h"
+#include"Bow.h"
+#include"FlameWand.h"
+#include"ThunderWand.h"
 #include<vector>
 #include<memory>
 #include"../../Object/GameObject.h"
@@ -36,14 +38,19 @@ void WeaponManager::Init()
 	//	assert(false && "playerのポインタがない");
 	//}
 	
-	m_weapons.push_back(std::make_unique<Katana>(m_objManager));
-	m_weapons.push_back(std::make_unique<Boomerang>(m_objManager));
-	for (auto& weapons : m_weapons) {
-		weapons->SetEnemyManager(m_enemyManager);
-		weapons->SetChatch(true);
-	}
-	m_pPlayer->SetWeapon(m_weapons[0].get());
-	m_pPlayer->SetWeapon(m_weapons[1].get());
+	//m_weapons.push_back(std::make_unique<FlameWand>(m_objManager));
+	//m_weapons.push_back(std::make_unique<Boomerang>(m_objManager));
+	//for (auto& weapons : m_weapons) {
+	//	weapons->SetEnemyManager(m_enemyManager);
+	//	weapons->SetChatch(true);
+	//}
+	//m_pPlayer->SetWeapon(m_weapons[0].get());
+	//m_pPlayer->SetWeapon(m_weapons[1].get());
+	Create(m_pPlayer->GetTransform().position, Weapon::Flame);
+	Create(m_pPlayer->GetTransform().position, Weapon::Boomerang);
+	CheckCanPick();
+	CheckCanPick();
+
 
 
 }
@@ -93,11 +100,17 @@ void WeaponManager::Create(const Vector3& pos, int weaponType)
 	case Weapon::Katana:
 		m_weapons.push_back(std::make_unique<Katana>(m_objManager));
 		break;
+	case Weapon::Flame:
+		m_weapons.push_back(std::make_unique<FlameWand>(m_objManager));
+		break;
+	case Weapon::Volt:
+		m_weapons.push_back(std::make_unique<ThunderWand>(m_objManager));
+		break;
 	default:
 		break;
 	}
 	m_weapons[m_weapons.size()-1]->SetEnemyManager(m_enemyManager);
-	m_weapons[m_weapons.size()-1]->GetTransform().position = pos;
+	m_weapons[m_weapons.size()-1]->SetPos(pos);
 	m_weapons[m_weapons.size()-1]->SetChatch(false);
 
 }

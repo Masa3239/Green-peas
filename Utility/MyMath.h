@@ -94,10 +94,10 @@ namespace MyMath {
 	constexpr FourDirection Direction(float radian) {
 		float angle = radian * MyMath::ToDegree;
 
-		if (angle < 135 && angle >= 45)return FourDirection::Right;
-		else if (angle < 45 && angle >= -45)return FourDirection::Back;
-		else if (angle < -45 && angle >= -135)return FourDirection::Left;
-		return FourDirection::Front;
+		if (angle < 135 && angle >= 45)return FourDirection::Front;
+		else if (angle < 45 && angle >= -45)return FourDirection::Right;
+		else if (angle < -45 && angle >= -135)return FourDirection::Back;
+		return FourDirection::Left;
 	}
 
 	/// <summary>

@@ -45,12 +45,19 @@ void PlayerAngerBar::Draw()
 
     float angerGaugeHeight = (kGaugeBottom - 3) - (kGaugeTop + 3);
 
-    DrawBox(kGaugeLeft,
+    DrawExtendGraph(kGaugeLeft,
         kGaugeBottom - 3 - (angerGaugeHeight * m_rate),
         kGaugeRight,
         kGaugeBottom - 3,
-        0xff0000, TRUE
+        m_graphHandle, TRUE
     );
+
+    //DrawBox(kGaugeLeft,
+    //    kGaugeBottom - 3 - (angerGaugeHeight * m_rate),
+    //    kGaugeRight,
+    //    kGaugeBottom - 3,
+    //    0xff0000, TRUE
+    //);
 
 }
 
@@ -65,6 +72,8 @@ void PlayerAngerBar::DebugDraw()
 
 void PlayerAngerBar::End()
 {
+    //画像の破棄
+    DeleteGraph(m_graphHandle);
 }
 
 PlayerUI::DrawType PlayerAngerBar::GetDrawType() const

@@ -25,7 +25,7 @@ namespace
 
 EnemyManager::EnemyManager(ObjectManager* objManager) :
 	GameObject(objManager),
-	m_player(nullptr),
+	m_pPlayer(nullptr),
 	m_uiMgr(nullptr),
 	m_generateCounter(0.0f),
 	m_numDefeated(0)
@@ -38,7 +38,7 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::Init()
 {
-	//GenerateEnemy(new EnemyMiniBoss(GetObjectManager()));
+	GenerateEnemy(new EnemyMiniBoss(GetObjectManager()));
 }
 
 void EnemyManager::End()
@@ -55,7 +55,7 @@ void EnemyManager::Update()
 	{
 		// “G‚ğ¶¬
 		//GenerateEnemy(new EnemyMelee(GetObjectManager()));
-		GenerateEnemy(new EnemyShooter(GetObjectManager()));
+		//GenerateEnemy(new EnemyShooter(GetObjectManager()));
 
 		m_generateCounter = kGenerateDuration;
 	}
@@ -63,8 +63,6 @@ void EnemyManager::Update()
 	{
 		m_generateCounter -= Time::GetInstance().GetDeltaTime();
 	}
-
-	m_enemies[0]->AddState(EnemyBase::kStatePalsy);
 
 	CheckDead();
 }
@@ -153,7 +151,7 @@ void EnemyManager::AddEnemyTest()
 {
 	auto enemy = new EnemyMelee(GetObjectManager());
 	enemy->Init();
-	enemy->SetPlayer(m_player);
+	enemy->SetPlayer(m_pPlayer);
 
 	m_enemies.emplace_back(enemy);
 }
@@ -161,10 +159,10 @@ void EnemyManager::AddEnemyTest()
 void EnemyManager::GenerateEnemy(EnemyBase* enemy)
 {
 	enemy->Init();
-	enemy->SetPlayer(m_player);
+	enemy->SetPlayer(m_pPlayer);
 
 	// ¶¬À•W‚ª”ÍˆÍ“à‚É‚È‚é‚Ü‚ÅŒJ‚è•Ô‚·
-	Vector3 playerPos = m_player->GetTransform().position;
+	Vector3 playerPos = m_pPlayer->GetTransform().position;
 	Vector3 pos;
 	while (true)
 	{
@@ -190,6 +188,7 @@ void EnemyManager::CheckDead()
 	{
 		if (enemy->GetHP() > 0) continue;
 
+		enemy->Dead();
 		enemy->SetState(GameObject::State::Dead);
 	}
 	// €–S‚µ‚Ä‚¢‚½‚ç”z—ñ‚©‚çíœ

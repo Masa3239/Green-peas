@@ -4,8 +4,8 @@
 namespace {
 	Vector3 RadToPos(float radian, float distance, const Vector3& basePos = { 0.0f,0.0f,0.0f }) {
 		Vector3 res = { 0.0f,0.0f,0.0f };
-		res.x = sinf(radian);
-		res.y = -cosf(radian);
+		res.x = cosf(radian);
+		res.y = sinf(radian);
 		res = res.GetNormalize();
 		res *= distance;
 		res += basePos;

@@ -77,16 +77,39 @@ void Thunder::Update()
 void Thunder::Draw()
 {
 	//非アクティブならリターン
-	//if (!m_isActive)return;
+	if (!m_isActive)return;
 
 	m_circle.DebugDraw();
+
+	//for (auto enemy : m_pEnemies) {
+
+	//	DrawCircle(enemy->GetTransform().position.x, enemy->GetTransform().position.y, kCollisionInfectionSize * m_scale, 0xffffff, FALSE);
+
+	//}
+
+	float collisionSize = 0;
+
+	switch (m_state)
+	{
+	case Thunder::State::Ball:
+		collisionSize = kCollisionBallSize;
+		break;
+	case Thunder::State::Infection:
+		collisionSize = kCollisionInfectionSize;
+		break;
+	default:
+		break;
+	}
+
+	//丸を描画
+	DrawCircle(GetTransform().position.x, GetTransform().position.y, collisionSize * m_scale, TRUE, 0xffff00);
 
 }
 
 void Thunder::DebugDraw()
 {
 	//非アクティブならリターン
-	//if (!m_isActive)return;
+	if (!m_isActive)return;
 
 	printfDx("m_pEnemies.size() %d\n", m_pEnemies.size());
 	printfDx("m_infectionCount %d\n", m_infectionCount);
@@ -129,8 +152,8 @@ void Thunder::UpdateBall()
 	float deltaTime = Time::GetInstance().GetDeltaTime();
 
 	//移動
-	GetTransform().position.x += sinf(GetTransform().rotation.z) * kSpeed * deltaTime;
-	GetTransform().position.y += -cosf(GetTransform().rotation.z) * kSpeed * deltaTime;
+	GetTransform().position.x += cosf(GetTransform().rotation.z) * kSpeed * deltaTime;
+	GetTransform().position.y += sinf(GetTransform().rotation.z) * kSpeed * deltaTime;
 
 	//当たり判定を更新
 	m_circle.SetPosition(GetTransform().position);
@@ -176,7 +199,7 @@ void Thunder::UpdateField()
 
 void Thunder::UpdateInfection()
 {
-
+	//タイマーを加算
 	m_infectionTimer += Time::GetInstance().GetDeltaTime();
 
 	//時間じゃないならスルー
@@ -208,8 +231,6 @@ void Thunder::UpdateInfection()
 		auto check = (m_pEnemyMgr->GetHitEnemies(circle, EnemyBase::kStatePalsy));
 
 		enemies.insert(enemies.end(), check.begin(), check.end());
-
-		DrawCircle(enemy->GetTransform().position.x, enemy->GetTransform().position.y, kCollisionInfectionSize * m_scale, 0x000000, TRUE);
 
 	}
 

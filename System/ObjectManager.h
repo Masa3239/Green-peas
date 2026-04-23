@@ -57,6 +57,8 @@ public:
 
 	void DeactiveAllGameObject();
 
+	std::vector<GameObject*> GetAllGameObjects() const { return m_gameObjects; }
+
 private:
 
 	/// <summary>

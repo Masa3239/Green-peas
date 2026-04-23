@@ -13,6 +13,7 @@ namespace {
 	constexpr float kCatchRadius = 20;
 	// チャージ判定にする時間
 	constexpr float kChargeTime = 0.5f;
+	constexpr int kBulletNum = 100;
 }
 class Weapon:public GameObject
 {
@@ -22,10 +23,11 @@ public:
 	/// </summary>
 	enum {
 		Sword,		// 剣
+		Katana,		// 刀
 		Boomerang,	// ブーメラン
 		Bow,		// 弓
-		Katana,		// 刀
-		Thunder,
+		Volt,	// 雷
+		Flame,		// 炎
 		Max
 	};
 	enum class Swing {
@@ -77,9 +79,12 @@ public:
 	virtual void SetScale(float scale) { m_scale = scale; }
 	void UpdateCatchCol() { m_catchCol.SetPosition(GetTransform().position);m_catchCol.SetRadius(kCatchRadius); }
 	Collision::Circle GetCatchCol() { return m_catchCol; }
+	void SetPos(const Vector3 position);
 	virtual int GetWeaponType()=0;
 	void SetChatch(bool catchFlag) { m_catch = catchFlag; }
 	bool GetChatch() { return m_catch; }
+	bool GetChargeFlag() { return m_chargeFlag; }
+	bool CheckCameraUpdate() { return m_camUpdate; }
 protected:
 	/// <summary>
 	/// 武器のグラフィックハンドル
@@ -109,5 +114,7 @@ protected:
 	/// </summary>
 	Collision::Circle m_catchCol;
 	bool m_catch;
+	bool m_chargeFlag;
+	bool m_camUpdate;
 };
 

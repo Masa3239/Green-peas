@@ -40,6 +40,8 @@ public:
 
 private:
 
+	int m_level;
+
 	int m_fontHandle;
 
 };

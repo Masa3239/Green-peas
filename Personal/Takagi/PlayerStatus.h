@@ -1,6 +1,6 @@
 #pragma once
 
-struct PlayerStatus {
+typedef struct PlayerStatus {
 public:
 
 	//	Level,				// レベル

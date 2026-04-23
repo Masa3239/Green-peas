@@ -3,6 +3,7 @@
 #include "../Utility/Transform.h"
 #include "../Utility/Time.h"
 #include "../Personal/Takagi/Player.h"
+#include "../Personal/Osawa/ExpOrb.h"
 
 namespace
 {
@@ -13,10 +14,10 @@ namespace
 
 EnemyBase::EnemyBase(ObjectManager* objManager) :
 	GameObject(objManager),
-	m_hp(kMaxHp),
 	m_collider(Collision::AABB{ Vector3(), kColliderSize }),
+	m_statusParam(StatusParam{ 0, 0, 0, 0, 0.0f, 0 }),
 	m_variableStatus(0),
-	m_player(nullptr)
+	m_pPlayer(nullptr)
 {
 }
 
@@ -36,7 +37,7 @@ void EnemyBase::Update()
 
 bool EnemyBase::Damage(const int damage)
 {
-	m_hp -= damage;
+	m_statusParam.hp -= damage;
 
 	return true;
 }
@@ -44,7 +45,7 @@ bool EnemyBase::Damage(const int damage)
 bool EnemyBase::Damage(const int damage, int weapon, int index)
 {
 	// 雷攻撃を受けたなら
-	if (weapon == 0/*仮*/)
+	if (weapon == Weapon::Thunder)
 	{
 		// 痺れ状態ならダメージを受けない
 		if (GetMyState() & kStatePalsy) return false;
@@ -61,9 +62,20 @@ bool EnemyBase::Damage(const int damage, int weapon, int index)
 
 	m_damageFlag[weapon][index] = true;
 
-	m_hp -= damage;
+	m_statusParam.hp -= damage;
 
 	return true;
+}
+
+void EnemyBase::Dead()
+{
+	for (int i = 0; i < 10; i++)
+	{
+		auto exp = new ExpOrb(GetObjectManager(), m_statusParam.exp);
+		exp->Init();
+		exp->SetPlayer(m_pPlayer);
+		exp->GetTransform().position = GetTransform().position;
+	}
 }
 
 bool EnemyBase::ResetDamageFlag(int weapon, int index)
