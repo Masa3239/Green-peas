@@ -80,9 +80,8 @@ public:
 	/// <summary>
 	/// ボスが封印解除されているかどうか
 	/// </summary>
-	/// <param name="maxKey"></param>
 	/// <returns></returns>
-	bool SealReleaseFlag(int maxKey);
+	bool SealReleaseFlag();
 
 	/// <summary>
 	/// ボスの近距離攻撃がプレイヤーと当たっているかどうか
