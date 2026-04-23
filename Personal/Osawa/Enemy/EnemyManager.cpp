@@ -100,7 +100,7 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, int damage)
 		// ダメージを与えられなかったらスキップ
 		if (!enemy->Damage(damage)) continue;
 
-		m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, damage);
+		//m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, damage);
 
 		// 誰か一人でも当たっていたらtrueになる
 		result = true;
@@ -129,7 +129,7 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 		// ダメージを与えられなかったらスキップ
 		if (!enemy->Damage(finalDamage, weapon, index)) continue;
 
-		m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, finalDamage);
+		//m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, finalDamage);
 
 		// 誰か一人でも当たっていたらtrueになる
 		result = true;
