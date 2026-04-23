@@ -49,4 +49,17 @@ public:
 	/// <param name="scale"></param>
 	void SetScale(float scale)override;
 
+	/// <summary>
+	/// 画像のセット
+	/// </summary>
+	/// <param name="graphHandle"></param>
+	void SetGraphHandle(int graphHandle) { m_graphHandle = graphHandle; }
+
+private:
+
+	/// <summary>
+	/// 画像
+	/// </summary>
+	int m_graphHandle;
+
 };

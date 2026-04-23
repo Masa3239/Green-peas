@@ -10,6 +10,7 @@ class UIManager;
 class Map;
 class ItemManager;
 class WeaponManager;
+class PauseMenu;
 
 class SceneTestOsawa : public SceneBase
 {
@@ -76,4 +77,6 @@ private:
 	std::unique_ptr<Map> m_pMap;
 
 	std::unique_ptr<WeaponManager> m_pWeaponManager;
+
+	std::unique_ptr<PauseMenu> m_pPauseMenu;
 };

@@ -7,6 +7,7 @@
 
 class ObjectManager;
 class EnemyBase;
+class EnemyMiniBoss;
 class Player;
 class UIManager;
 
@@ -74,6 +75,11 @@ public:
 	bool ResetEnemyDamageFlag(int weapon, int index);
 
 	/// <summary>
+	/// 中ボスの座標を取得
+	/// </summary>
+	std::vector<Vector3> GetMiniBossPositions() const;
+
+	/// <summary>
 	/// 敵をプレイヤーの周りに生成する
 	/// </summary>
 	/// <param name="type">生成したい敵の種類</param>
@@ -101,6 +107,11 @@ private:
 	/// 敵の配列
 	/// </summary>
 	std::vector<std::unique_ptr<EnemyBase>> m_enemies;
+
+	/// <summary>
+	/// 中ボスの配列
+	/// </summary>
+	std::vector<EnemyMiniBoss*> m_miniBosses;
 
 	Player* m_pPlayer;
 

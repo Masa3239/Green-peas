@@ -126,8 +126,9 @@ SceneBase* SceneTestAsai::Update()
 	}
 	if (CheckHitKey(KEY_INPUT_3)) {
 
+		fire->ChangeStateField();
+		arrow->Shot(pPlayer->GetTransform());
 	}
-
 
 	if (CheckHitKey(KEY_INPUT_0)) {
 		Time::GetInstance().SetTimeScale(0);
@@ -167,7 +168,6 @@ void SceneTestAsai::PreDraw()
 	SetDrawScreen(camera->GetWorldScreen());
 	ClearDrawScreen();
 	map->Draw();
-
 
 }
 

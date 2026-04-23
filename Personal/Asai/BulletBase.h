@@ -58,23 +58,12 @@ public:
 	virtual const Collision::Circle& GetCollision()const { return m_circle; }
 
 	/// <summary>
-	/// 画像のセット
-	/// </summary>
-	/// <param name="graphHandle"></param>
-	virtual void SetGraphHandle(int graphHandle) { m_graphHandle = graphHandle; }
-
-	/// <summary>
 	/// 拡大率の変更
 	/// </summary>
 	/// <param name="scale"></param>
 	virtual void SetScale(float scale) = 0;
 
 protected:
-
-	/// <summary>
-	/// 画像のハンドル
-	/// </summary>
-	int m_graphHandle;
 
 	/// <summary>
 	/// 拡大率
