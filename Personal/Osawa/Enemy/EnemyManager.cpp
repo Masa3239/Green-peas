@@ -148,6 +148,18 @@ bool EnemyManager::ResetEnemyDamageFlag(int weapon, int index)
 	return false;
 }
 
+std::vector<Vector3> EnemyManager::GetMiniBossPositions() const
+{
+	std::vector<Vector3> positions;
+
+	for (const auto& enemy : m_miniBosses)
+	{
+		positions.emplace_back(enemy->GetTransform().position);
+	}
+
+	return positions;
+}
+
 void EnemyManager::GenerateEnemy(EnemyType type)
 {
 	std::unique_ptr<EnemyBase> enemy;
@@ -175,6 +187,7 @@ void EnemyManager::GenerateEnemy(EnemyType type)
 	}
 	enemy->GetTransform().position = pos;
 
+	if (type == EnemyType::Miniboss) m_miniBosses.emplace_back(dynamic_cast<EnemyMiniBoss*>(enemy.get()));
 	m_enemies.emplace_back(std::move(enemy));
 }
 
@@ -192,6 +205,7 @@ void EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos)
 
 	enemy->GetTransform().position = pos;
 
+	if (type == EnemyType::Miniboss) m_miniBosses.emplace_back(dynamic_cast<EnemyMiniBoss*>(enemy.get()));
 	m_enemies.emplace_back(std::move(enemy));
 }
 
