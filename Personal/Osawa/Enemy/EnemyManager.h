@@ -125,7 +125,5 @@ private:
 public:
 	int GetDefeatedNum() const { return m_numDefeated; }
 private:
-	// ƒ¿”Å—p
-	// “|‚³‚ê‚½“G‚Ì”
 	int m_numDefeated;
 };

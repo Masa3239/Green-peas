@@ -4,6 +4,7 @@
 #include "../Enemy/EnemyBullet.h"
 #include "../Utility/Time.h"
 #include "../Utility/MyMath.h"
+#include "../BossKey.h"
 
 namespace
 {
@@ -12,9 +13,9 @@ namespace
 	// 距離を保っているときの速度
 	constexpr float kArcSpeed = 20.0f;
 	// 追跡するときの速度
-	constexpr float kFollowSpeed = 150.0f;
+	constexpr float kFollowSpeed = 200.0f;
 
-	constexpr float kMeleeAttackCooltime = 1.0f;
+	constexpr float kMeleeAttackCooltime = 0.5f;
 
 	// プレイヤーを追跡開始する範囲
 	constexpr float kStartFollowDistance = 300;
@@ -25,9 +26,9 @@ namespace
 	// プレイヤーから距離をとり始める距離
 	constexpr float kStartBackDistance = 150;
 
-	constexpr float kBulletAttackCooltime = 10.0f;
+	constexpr float kBulletAttackCooltime = 0.5f;
 
-	constexpr EnemyBase::StatusParam kStatus = { 250, 250, 10, 10, 1.0f, 25 };
+	constexpr EnemyBase::StatusParam kStatus = { 250, 250, 10, 10, 1.0f, 250 };
 }
 
 EnemyMiniBoss::EnemyMiniBoss(ObjectManager* objManager) :
@@ -46,7 +47,8 @@ void EnemyMiniBoss::Init()
 {
 	for (auto& bullet : m_bullets)
 	{
-		bullet = std::make_unique<EnemyBullet>(GetObjectManager());
+		bullet = std::make_unique<EnemyBullet>(GetObjectManager(), GetStatusParam().attack);
+		bullet->SetPlayer(GetPlayer());
 		bullet->Init();
 	}
 }
@@ -94,23 +96,25 @@ void EnemyMiniBoss::UpdateEnemy()
 	case EnemyMiniBoss::Action::Idle: break;
 
 	case EnemyMiniBoss::Action::Melee:
-	{
-		const Vector3& targetPos = player->GetTransform().position;
-		Vector3& myPos = GetTransform().position;
 
-		if (targetPos == myPos) return;
-
-		Vector3 vec = (targetPos - myPos).GetNormalize();
-
-		myPos += vec * kDistanceSpeed * Time::GetInstance().GetDeltaTime();
-
-		if (m_attackCooltimeCounter <= 0 && GetCollider().CheckCollision(GetPlayer()->GetCircle()))
+		if (m_attackCooltimeCounter <= 0)
 		{
-			Attack();
-		}
+			const Vector3& targetPos = player->GetTransform().position;
+			Vector3& myPos = GetTransform().position;
 
+			if (targetPos == myPos) return;
+
+			Vector3 vec = (targetPos - myPos).GetNormalize();
+
+			move = vec * kFollowSpeed;
+
+			if (GetCollider().CheckCollision(GetPlayer()->GetCircle()))
+			{
+				Attack();
+			}
+
+		}
 		break;
-	}
 
 	case EnemyMiniBoss::Action::Follow:
 
@@ -161,9 +165,20 @@ void EnemyMiniBoss::Draw()
 	
 	unsigned int color = (GetMyState() & EnemyBase::kStatePalsy) ? 0xffff00 : 0xff0000;
 
-	DrawBox(transform.position.x - 15, transform.position.y - 20, transform.position.x + 15, transform.position.y + 20, color, 1);
+	DrawBox(transform.position.x - 30, transform.position.y - 60, transform.position.x + 30, transform.position.y + 20, color, 1);
 
 	GetCollider().DebugDraw();
+}
+
+void EnemyMiniBoss::Dead()
+{
+	EnemyBase::Dead();
+
+	// 鍵を生成
+	auto key = new BossKey(GetObjectManager());
+	key->SetPlayer(GetPlayer());
+	key->GetTransform() = GetTransform();
+	key->Init();
 }
 
 void EnemyMiniBoss::Attack()

@@ -32,6 +32,8 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	void Dead() override;
+
 protected:
 
 	void Attack() override;
