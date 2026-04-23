@@ -174,6 +174,7 @@ public: // ゲッター・セッター=======================
 	void SetItemManager(ItemManager* itemManager) { m_pItemMgr = itemManager; }
 	void SetWeapon(Weapon* weapon);
 	void ExpUp(float value);
+	bool CheckAnger() { return m_anger; }
 private:
 	/// <summary>
 	/// ダッシュ可能かどうかを調べる関数
