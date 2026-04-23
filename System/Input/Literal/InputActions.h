@@ -21,6 +21,8 @@ namespace Input
 		Anger3,
 		Anger4,
 		Pause,
+		Confirm,
+		Cancel,
 		Length
 	};
 }

@@ -25,6 +25,40 @@ void PauseManager::End()
 
 void PauseManager::Update()
 {
+	if (m_isToggled)
+	{
+		m_isPause = !m_isPause;
+
+		if (m_isPause)
+		{
+			auto objects = m_objManager->GetAllGameObjects();
+
+			for (const auto& obj : objects)
+			{
+				// アクティブなすべてのゲームオブジェクトを停止する
+				if (obj->GetState() != GameObject::State::Active) continue;
+
+				obj->SetState(GameObject::State::Deactive);
+				// 元々アクティブなオブジェクトのみを配列に加える
+				m_activeGameObjects.emplace_back(obj);
+			}
+		}
+		else
+		{
+			DeleteGraph(m_screenGraph);
+			m_screenGraph = -1;
+
+			// 元々アクティブなゲームオブジェクトをアクティブに戻す
+			for (const auto& obj : m_activeGameObjects)
+			{
+				obj->SetState(GameObject::State::Active);
+			}
+			m_activeGameObjects.clear();
+		}
+
+		m_isToggled = false;
+	}
+
 	// オブジェクトの描画を停止しても画面に写し続けるために、
 	// ポーズ前の画面を取得する
 	if (m_isPause && m_screenGraph == -1)
@@ -34,42 +68,11 @@ void PauseManager::Update()
 		GetDrawScreenGraph(0, 0, Game::kScreenWidth, Game::kScreenHeight, m_screenGraph);
 	}
 
+	// ポーズ直前の画面を描画
 	if (m_screenGraph != -1)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 127);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_alpha);
 		DrawGraph(0, 0, m_screenGraph, 0);
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 0);
-	}
-}
-
-void PauseManager::TogglePause()
-{
-	m_isPause = !m_isPause;
-
-	if (m_isPause)
-	{
-		auto objects = m_objManager->GetAllGameObjects();
-
-		for (const auto& obj : objects)
-		{
-			// アクティブなすべてのゲームオブジェクトを停止する
-			if (obj->GetState() != GameObject::State::Active) continue;
-
-			obj->SetState(GameObject::State::Deactive);
-			// 元々アクティブなオブジェクトのみを配列に加える
-			m_activeGameObjects.emplace_back(obj);
-		}
-	}
-	else
-	{
-		DeleteGraph(m_screenGraph);
-		m_screenGraph = -1;
-
-		// 元々アクティブなゲームオブジェクトをアクティブに戻す
-		for (const auto& obj : m_activeGameObjects)
-		{
-			obj->SetState(GameObject::State::Active);
-		}
-		m_activeGameObjects.clear();
 	}
 }

@@ -20,9 +20,20 @@ public:
 
 	void Update();
 
-	void TogglePause();
+	/// <summary>
+	/// ポーズ状態を切り替える
+	/// </summary>
+	void TogglePause() { m_isToggled = true; };
+
+	/// <summary>
+	/// ポーズ中かどうか取得
+	/// </summary>
+	/// <returns></returns>
+	bool IsPause() const { return m_isPause; }
 
 	void SetObjectManager(ObjectManager* objManager) { m_objManager = objManager; }
+
+	void SetAlpha(const int alpha) { m_alpha = alpha; }
 
 private:
 
@@ -46,7 +57,20 @@ private:
 	/// </summary>
 	bool m_isPause;
 
+	/// <summary>
+	/// ポーズを切り替えたかどうか
+	/// </summary>
+	bool m_isToggled;
+
 	ObjectManager* m_objManager;
 
+	/// <summary>
+	/// ポーズ前にアクティブだったゲームオブジェクトを格納する配列
+	/// </summary>
 	std::vector<GameObject*> m_activeGameObjects;
+
+	/// <summary>
+	/// ポーズ画面の透明度
+	/// </summary>
+	int m_alpha = 255;
 };

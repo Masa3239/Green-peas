@@ -4,12 +4,15 @@
 #include "../Personal/Asai/UIManager.h"
 #include "../Personal/Kimura/Map/Map.h"
 #include "../Personal/Osawa/Enemy/EnemyManager.h"
+#include "../Personal/Osawa/PauseMenu.h"
 #include "../Personal/Syoguti/ItemManager.h"
 #include "../Personal/Takagi/Player.h"
 #include "../Personal/Takagi/WeaponManager.h"
 #include "../System/ObjectManager.h"
 #include "../System/PauseManager.h"
 #include "../System/InputManager.h"
+#include "../System/Input/Keyboard.h"
+#include "../Scene/SceneSelection.h"
 
 SceneTestOsawa::SceneTestOsawa() :
 	m_pPlayer(nullptr),
@@ -18,7 +21,8 @@ SceneTestOsawa::SceneTestOsawa() :
 	m_pUIMgr(nullptr),
 	m_pItemMgr(nullptr),
 	m_pMap(nullptr),
-	m_pWeaponManager(nullptr)
+	m_pWeaponManager(nullptr),
+	m_pPauseMenu(nullptr)
 {
 	m_pPlayer = std::make_unique<Player>(GetObjectManager());
 	m_pCamera = std::make_unique<Camera>();
@@ -27,6 +31,7 @@ SceneTestOsawa::SceneTestOsawa() :
 	m_pItemMgr = std::make_unique<ItemManager>();
 	m_pMap = std::make_unique<Map>();
 	m_pWeaponManager = std::make_unique<WeaponManager>();
+	m_pPauseMenu = std::make_unique<PauseMenu>();
 }
 
 SceneTestOsawa::~SceneTestOsawa()
@@ -61,11 +66,14 @@ void SceneTestOsawa::Init()
 	m_pWeaponManager->SetEnemyManager(m_pEnemyMgr.get());
 	m_pWeaponManager->Init();
 
+	m_pPauseMenu->Init();
+
 	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
 }
 
 void SceneTestOsawa::End()
 {
+	m_pPauseMenu->End();
 	m_pWeaponManager->End();
 	m_pMap->End();
 	m_pItemMgr->End();
@@ -89,9 +97,15 @@ SceneBase* SceneTestOsawa::Update()
 
 	m_pWeaponManager->Update();
 
-	if (InputManager::GetInstance().IsPressed(Input::Action::Pause))
+	if (Keyboard::GetInstance().IsDown(KEY_INPUT_R))
 	{
-		PauseManager::GetInstance().TogglePause();
+		return new SceneSelection();
+	}
+
+	auto nextScene = m_pPauseMenu->Update();
+	if (nextScene != nullptr)
+	{
+		return nextScene;
 	}
 
 	return this;
@@ -100,6 +114,7 @@ SceneBase* SceneTestOsawa::Update()
 void SceneTestOsawa::Draw()
 {
 	m_pItemMgr->Draw();
+	m_pPauseMenu->Draw();
 }
 
 void SceneTestOsawa::PreDraw()

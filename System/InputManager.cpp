@@ -91,6 +91,11 @@ bool InputManager::Initialize()
 	Bind(Input::Action::Pause, Input::Device::Keyboard, KeyCode::Button::Escape);
 	Bind(Input::Action::Pause, Input::Device::Gamepad, KeyCode::Button::GpStart);
 
+	Bind(Input::Action::Confirm, Input::Device::Keyboard, KeyCode::Button::Space);
+	Bind(Input::Action::Confirm, Input::Device::Gamepad, KeyCode::Button::GpFaceRight);
+	Bind(Input::Action::Cancel, Input::Device::Keyboard, KeyCode::Button::Shift);
+	Bind(Input::Action::Cancel, Input::Device::Gamepad, KeyCode::Button::GpFaceDown);
+
 	return true;
 }
 
