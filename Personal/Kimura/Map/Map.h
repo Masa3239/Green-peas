@@ -61,9 +61,9 @@ public:
 	bool IsWallAABB(const Collision::AABB& box);
 
 	bool IsWallShape(const Collision::Shape& shape);
-	//
-	//void DebugDrawRect(float left, float top, float right, float bottom);
 
+	bool CanMove(const Collision::Shape& shape);
+	
 	std::vector<std::string>Split(const std::string& str, char separate);
 
 private:
@@ -83,6 +83,5 @@ private:
 	int m_worldid;          //読み込むマップのワールドID
 	int m_stageid;          //読み込むマップのステージID
 
-	Vector3 m_prevPlayerPos;
 
 };
