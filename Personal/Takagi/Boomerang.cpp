@@ -12,10 +12,11 @@ namespace {
     constexpr float kCatch = 25;
     constexpr float kCatchDistance = kCatch*kCatch;
     constexpr float kColRadius = 20;
-    constexpr float kGraphScale = 2;
+    constexpr float kGraphScale = 1.4f;
     constexpr PlayerStatus kStatus = { 0,0,3,0,0,0,3,6 };
-    const char* const kFilePath = "Resource\\Boomerang.png";
-    constexpr float kRotationSpeed = 720;
+    //const char* const kFilePath = "Resource\\Boomerang.png";
+    const char* const kFilePath = "Resource\\Hammer.png";
+    constexpr float kRotationSpeed = 1080;
     constexpr float kAttackInterval = 0.3f;
 
 }
