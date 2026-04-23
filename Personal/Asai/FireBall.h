@@ -55,6 +55,17 @@ public:
 	/// </summary>
 	void ChangeStateField();
 
+	/// <summary>
+	/// フィールド状態でのダメージを当てれるか取得する
+	/// </summary>
+	/// <returns>ダメージ当てれるならtrue・当てれないならfalse</returns>
+	bool CanFieldDamage();
+
+	/// <summary>
+	/// フィールド状態でのダメージ間隔タイマーをリセット
+	/// </summary>
+	void ResetDamageInterval() { m_fieldDamageIntervalTimer = 0; }
+
 private:
 
 	/// <summary>
@@ -69,6 +80,9 @@ private:
 
 private:
 
+	/// <summary>
+	/// 状態
+	/// </summary>
 	enum class State {
 
 		Ball=0,
@@ -76,8 +90,19 @@ private:
 
 	};
 
+	/// <summary>
+	/// 現在の状態
+	/// </summary>
 	State m_state;
 
+	/// <summary>
+	/// フィールド状態の経過時間
+	/// </summary>
 	float m_fieldElapsedTime;
+
+	/// <summary>
+	/// フィールド状態でのダメージ間隔のタイマー
+	/// </summary>
+	float m_fieldDamageIntervalTimer;
 
 };
