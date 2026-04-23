@@ -53,11 +53,12 @@ public:
 	int GetMapBlockNumY() { return m_mapBlockNumY; }
 	//指定マップ座標が壁かどうか判定
 	bool IsWall(int mapX, int mapY);
-	//ワールド座標から壁判定
+	////ワールド座標から壁判定
 	bool IsWallByWorld(float worldX, float worldY);
-	//矩形による壁判定
-	bool IsWallRect(float left, float top, float right, float bottom);
-	void DebugDrawRect(float left, float top, float right, float bottom);
+
+	bool IsWallCircle(const Collision::Circle& circle);
+	//
+	//void DebugDrawRect(float left, float top, float right, float bottom);
 
 	std::vector<std::string>Split(const std::string& str, char separate);
 

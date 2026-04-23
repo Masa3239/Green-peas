@@ -81,23 +81,23 @@ void Map::Draw()
 		}
 
 	}
-	for (int y = 0; y < m_mapBlockNumY; y++)
-	{
-		for (int x = 0; x < m_mapBlockNumX; x++)
-		{
-			if (IsWall(x, y))
-			{
-				DrawBox(
-					x * kMapBlockSize,
-					y * kMapBlockSize,
-					(x + 1) * kMapBlockSize,
-					(y + 1) * kMapBlockSize,
-					GetColor(255, 0, 0), // 赤
-					FALSE
-				);
-			}
-		}
-	}
+	//for (int y = 0; y < m_mapBlockNumY; y++)
+	//{
+	//	for (int x = 0; x < m_mapBlockNumX; x++)
+	//	{
+	//		if (IsWall(x, y))
+	//		{
+	//			DrawBox(
+	//				x * kMapBlockSize,
+	//				y * kMapBlockSize,
+	//				(x + 1) * kMapBlockSize,
+	//				(y + 1) * kMapBlockSize,
+	//				GetColor(255, 0, 0), // 赤
+	//				FALSE
+	//			);
+	//		}
+	//	}
+	//}
 }
 
 void Map::Finalize()
@@ -175,47 +175,51 @@ bool Map::IsWallByWorld(float worldX, float worldY) {
 
 }
 
-bool Map::IsWallRect(float left, float top, float right, float bottom) { 
-	// ワールド座標 → マップ座標へ変換
-	int mapLeft = static_cast<int>(left) / kMapBlockSize; 
-	int mapRight = static_cast<int>(right - 1) / kMapBlockSize; 
-	int mapTop = static_cast<int>(top) / kMapBlockSize; 
-	int mapBottom = static_cast<int>(bottom - 1) / kMapBlockSize;
-	// 範囲内のマップチップをすべてチェック
-	for (int y = mapTop; y <= mapBottom; y++) { 
-		//壁があれば衝突
-		for (int x = mapLeft; x <= mapRight; x++) { 
-			if (IsWall(x, y)) 
-			{ 
-				return true;
-			} 
-		} 
-	} 
-	// どこにも壁がなければ通れる
-	return false;
+bool Map::IsWallCircle(const Collision::Circle& circle)
+{
+    Vector3 pos = circle.GetPosition();
+    float r = circle.GetRadius();
+
+    int left   = (pos.x - r) / kMapBlockSize;
+    int right  = (pos.x + r) / kMapBlockSize;
+    int top    = (pos.y - r) / kMapBlockSize;
+    int bottom = (pos.y + r) / kMapBlockSize;
+
+    for (int y = top; y <= bottom; y++)
+    {
+        for (int x = left; x <= right; x++)
+        {
+            if (IsWall(x, y))
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
-void Map::DebugDrawRect(float left, float top, float right, float bottom)
-{
-	for (int y = 0; y < m_mapBlockNumY; y++)
-	{
-		for (int x = 0; x < m_mapBlockNumX; x++)
-		{
-			// 壁だけ矩形表示
-			if (IsWall(x, y))
-			{
-				DrawBox(
-					x * kMapBlockSize,
-					y * kMapBlockSize,
-					(x + 1) * kMapBlockSize,
-					(y + 1) * kMapBlockSize,
-					GetColor(255, 0, 0), // 赤（壁）
-					FALSE
-				);
-			}
-		}
-	}
-}
+//void Map::DebugDrawRect(float left, float top, float right, float bottom)
+//{
+//	for (int y = 0; y < m_mapBlockNumY; y++)
+//	{
+//		for (int x = 0; x < m_mapBlockNumX; x++)
+//		{
+//			// 壁だけ矩形表示
+//			if (IsWall(x, y))
+//			{
+//				DrawBox(
+//					x * kMapBlockSize,
+//					y * kMapBlockSize,
+//					(x + 1) * kMapBlockSize,
+//					(y + 1) * kMapBlockSize,
+//					GetColor(255, 0, 0), // 赤（壁）
+//					FALSE
+//				);
+//			}
+//		}
+//	}
+//}
 
 //1行の文字列をカンマで分割する
 std::vector<std::string>Map::Split(const std::string& str, char separate) {
