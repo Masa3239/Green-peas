@@ -85,6 +85,14 @@ void SceneTestOsawa::End()
 
 SceneBase* SceneTestOsawa::Update()
 {
+	auto nextScene = m_pPauseMenu->Update();
+	if (nextScene != nullptr)
+	{
+		return nextScene;
+	}
+
+	if (PauseManager::GetInstance().IsPause()) return this;
+
 	m_pUIMgr->SetPlayer(m_pPlayer.get());
 
 	m_pEnemyMgr->Update();
@@ -100,12 +108,6 @@ SceneBase* SceneTestOsawa::Update()
 	if (Keyboard::GetInstance().IsDown(KEY_INPUT_R))
 	{
 		return new SceneSelection();
-	}
-
-	auto nextScene = m_pPauseMenu->Update();
-	if (nextScene != nullptr)
-	{
-		return nextScene;
 	}
 
 	return this;
