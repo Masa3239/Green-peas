@@ -12,6 +12,7 @@
 #include"../Takagi/Player.h"
 #include"../Kimura/Map/Map.h"
 #include"../Syoguti/ItemManager.h"
+#include"../Takagi/WeaponManager.h"
 
 UIManager* uiMgr;
 Arrow* arrow;
@@ -23,7 +24,7 @@ ItemManager* ItemMgr;
 EnemyManager* enemyMgr;
 Player* pPlayer;
 Map* map;
-
+WeaponManager* weaponMgr;
 Transform transform;
 
 SceneTestAsai::SceneTestAsai()
@@ -72,14 +73,18 @@ void SceneTestAsai::Init()
 	miniMap->Init();
 
 	enemyMgr = new EnemyManager(GetObjectManager());
-	enemyMgr->Init();
+	//enemyMgr->Init();
 	enemyMgr->SetPlayer(pPlayer);
 	enemyMgr->SetUIManager(uiMgr);
+	
+	weaponMgr = new WeaponManager();
+	weaponMgr->SetObjManager(GetObjectManager());
+	weaponMgr->SetPlayer(pPlayer);
+	weaponMgr->Init();
 
 	pPlayer->SetCamera(camera);
 	pPlayer->SetEnemyManager(enemyMgr);
 	pPlayer->SetItemManager(ItemMgr);
-
 	thunder->SetEnemyManager(enemyMgr);
 
 }
@@ -109,6 +114,7 @@ SceneBase* SceneTestAsai::Update()
 		transform.rotation.z += 0.1f;
 		pPlayer->Damage(1);
 		thunder->SetScale(transform.rotation.z);
+		fire->Shot(pPlayer->GetTransform());
 	}
 
 	if (CheckHitKey(KEY_INPUT_2)) {

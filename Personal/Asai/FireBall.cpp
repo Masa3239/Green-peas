@@ -8,7 +8,7 @@
 namespace {
 	//当たり判定のサイズ
 	constexpr float kCollisionBallSize = 20.0f;
-	constexpr float kCollisionFieldSize = 40.0f;
+	constexpr float kCollisionFieldSize = 60.0f;
 
 	//移動速度
 	constexpr float kSpeed = 60.0f;
@@ -54,6 +54,27 @@ void FireBall::Update()
 
 void FireBall::Draw()
 {
+
+	if (!m_isActive)return;
+
+	//当たり判定の大きさ
+	float collisionSize = 0;
+
+	switch (m_state)
+	{
+	case FireBall::State::Ball:
+		collisionSize = kCollisionBallSize;
+		break;
+	case FireBall::State::Field:
+		collisionSize = kCollisionFieldSize;
+		break;
+	default:
+		break;
+	}
+
+	//丸を描画
+	DrawCircle(GetTransform().position.x, GetTransform().position.y, collisionSize * m_scale, TRUE, 0xff0000);
+
 }
 
 void FireBall::DebugDraw()
@@ -99,8 +120,8 @@ void FireBall::UpdateBall()
 	float deltaTime = Time::GetInstance().GetDeltaTime();
 
 	//移動
-	GetTransform().position.x += sinf(GetTransform().rotation.z) * kSpeed * deltaTime;
-	GetTransform().position.y += -cosf(GetTransform().rotation.z) * kSpeed * deltaTime;
+	GetTransform().position.x += cosf(GetTransform().rotation.z) * kSpeed * deltaTime;
+	GetTransform().position.y += sinf(GetTransform().rotation.z) * kSpeed * deltaTime;
 
 	//当たり判定を更新
 	m_circle.SetPosition(GetTransform().position);
