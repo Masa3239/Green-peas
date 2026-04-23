@@ -8,6 +8,7 @@
 #include <vector>
 
 class Player;
+class EnemyManager;
 
 class EnemyBase : public GameObject
 {
@@ -84,6 +85,9 @@ public:
 
 	const Collision::AABB& GetCollider() const { return m_collider; }
 
+	EnemyManager* GetEnemyManager() const { return m_enemyMgr; }
+	void SetEnemyManager(EnemyManager* enemyMgr) { m_enemyMgr = enemyMgr; }
+
 protected:
 
 	/// <summary>
@@ -127,4 +131,6 @@ private:
 	/// プレイヤーのポインタ
 	/// </summary>
 	Player* m_pPlayer;
+
+	EnemyManager* m_enemyMgr;
 };

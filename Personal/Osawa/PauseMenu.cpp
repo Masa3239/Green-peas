@@ -31,7 +31,7 @@ void PauseMenu::End()
 
 SceneBase* PauseMenu::Update()
 {
-	if (InputManager::GetInstance().IsPressed(Input::Action::Pause) || InputManager::GetInstance().IsPressed(Input::Action::Cancel))
+	if (InputManager::GetInstance().IsPressed(Input::Action::Pause))
 	{
 		PauseManager::GetInstance().TogglePause();
 		PauseManager::GetInstance().SetAlpha(kPauseScreenAlpha);

@@ -6,6 +6,7 @@
 #include "../Utility/MyMath.h"
 #include "../Personal/Takagi/Player.h"
 #include "../Personal/Asai/UIManager.h"
+#include "../Personal/Syoguti/EnemyBoss.h"
 #include "../Utility/MyRandom.h"
 
 #include "EnemyMelee.h"
@@ -29,6 +30,7 @@ namespace
 
 EnemyManager::EnemyManager(ObjectManager* objManager) :
 	GameObject(objManager),
+	m_enemyBoss(nullptr),
 	m_pPlayer(nullptr),
 	m_uiMgr(nullptr),
 	m_generateCounter(0.0f),
@@ -43,6 +45,10 @@ EnemyManager::~EnemyManager()
 void EnemyManager::Init()
 {
 	GenerateEnemy(EnemyType::Miniboss);
+
+	m_enemyBoss = std::make_unique<EnemyBoss>(GetObjectManager(), Vector3(1000, 100, 0));
+	m_enemyBoss->SetPlayer(m_pPlayer);
+	m_enemyBoss->Init();
 }
 
 void EnemyManager::End()
@@ -51,6 +57,8 @@ void EnemyManager::End()
 	{
 		enemy->End();
 	}
+
+	m_enemyBoss->End();
 }
 
 void EnemyManager::Update()
@@ -186,6 +194,7 @@ void EnemyManager::GenerateEnemy(EnemyType type)
 	case EnemyManager::EnemyType::Miniboss:	enemy = std::make_unique<EnemyMiniBoss>(GetObjectManager()); break;
 	}
 	enemy->SetPlayer(m_pPlayer);
+	enemy->SetEnemyManager(this);
 	enemy->Init();
 
 	// ¶¬À•W‚ª”ÍˆÍ“à‚É‚È‚é‚Ü‚ÅŒJ‚è•Ô‚·
