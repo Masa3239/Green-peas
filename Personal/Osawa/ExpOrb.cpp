@@ -56,7 +56,7 @@ void ExpOrb::Update()
 	if (m_collider.CheckCollision(m_pPlayer->GetCircle()))
 	{
 		// 経験値をプレイヤーに与える
-		//m_pPlayer-> m_expAmount
+		m_pPlayer->ExpUp(m_expAmount);
 
 		// 自身を削除する
 		SetState(State::Dead);
