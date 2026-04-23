@@ -1,5 +1,5 @@
 #pragma once
-
+#include"CarryOver.h"
 class ObjectManager;
 
 /// <summary>
@@ -97,7 +97,11 @@ public:
 	/// フェードアウト開始
 	/// </summary>
 	void StartFadeOut();
-
+	
+	/// <summary>
+	/// 持ち越しする変数を取得する関数
+	/// </summary>
+	CarryOver& GetCarryOver() { return m_carryOver; }
 
 protected:
 
@@ -114,4 +118,5 @@ protected:
 private:
 
 	ObjectManager* m_objManager;
+	CarryOver m_carryOver;
 };

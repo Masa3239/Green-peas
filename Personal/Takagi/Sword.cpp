@@ -13,7 +13,7 @@
 #include"RadToPos.h"
 #include"../../System/InputManager.h"
 namespace {
-	const char* const kFilePath = "Resource\\Golden Sword.png";
+	const char* const kGraphPath = "Resource\\Golden Sword.png";
 	const char* const kSlashPath = "Resource\\pipo-btleffect001.png";
 	/// <summary>
 	/// 武器の表示座標
@@ -48,7 +48,7 @@ Sword::Sword(ObjectManager* objManager) :
 {
 	// グラフィックハンドルの読み込み
 	m_graphHandle = -1;
-	m_graphHandle = LoadGraph(kFilePath);
+	m_graphHandle = LoadGraph(kGraphPath);
 
 	// トランスフォームの初期設定
 	GetTransform().Reset();

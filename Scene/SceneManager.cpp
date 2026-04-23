@@ -6,6 +6,7 @@
 #include "../System/InputPad.h"
 #include "../System/ObjectManager.h"
 #include "../System/PauseManager.h"
+#include "CarryOver.h"
 
 SceneManager::SceneManager() {
 
@@ -49,7 +50,7 @@ void SceneManager::Update() {
 	// シーンの切り替えもしくは更新
 	SceneBase* pScene = m_pScene->Update();
 	m_pScene->GetObjectManager()->Update();
-
+	CarryOver carryOver = m_pScene->GetCarryOver();
 	if ( pScene != m_pScene ) {
 
 		m_pScene->End();
@@ -57,6 +58,7 @@ void SceneManager::Update() {
 
 		// ポインタを初期化
 		m_pScene = pScene;
+		m_pScene->GetCarryOver() = carryOver;
 		m_pScene->Init();
 	}
 
