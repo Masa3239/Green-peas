@@ -22,6 +22,6 @@ public:
 	int GetWeaponType()override { return Weapon::Flame; }
 private:
 	FireBall* m_pFires[kBulletNum];
-	Transform m_drawTransform;
+	Transform m_desireTransform;
 };
 

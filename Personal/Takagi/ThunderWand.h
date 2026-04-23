@@ -27,5 +27,7 @@ public:
 private:
 	Thunder* m_pThunders[kBulletNum];
 	Transform m_drawTransform;
+	Vector3 m_swingPos;
+	float m_verticalSpeed;
 };
 
