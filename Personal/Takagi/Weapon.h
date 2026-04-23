@@ -4,6 +4,7 @@
 #include"../../Utility/Vector3.h"
 #include"../../Chara/Collision.h"
 #include"PlayerStatus.h"
+#include"Player.h"
 class EnemyManager;
 class PlayerStatus;
 namespace {
@@ -82,6 +83,7 @@ public:
 	void SetPos(const Vector3 position);
 	virtual int GetWeaponType()=0;
 	void SetChatch(bool catchFlag) { m_catch = catchFlag; }
+	void SetPlayerJob(Character::Job job) { m_playerJob = job; }
 	bool GetChatch() { return m_catch; }
 	bool GetChargeFlag() { return m_chargeFlag; }
 	bool CheckCameraUpdate() { return m_camUpdate; }
@@ -116,5 +118,7 @@ protected:
 	bool m_catch;
 	bool m_chargeFlag;
 	bool m_camUpdate;
+	// 持ち主の職業
+	Character::Job m_playerJob;
 };
 

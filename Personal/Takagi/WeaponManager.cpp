@@ -46,8 +46,8 @@ void WeaponManager::Init()
 	//}
 	//m_pPlayer->SetWeapon(m_weapons[0].get());
 	//m_pPlayer->SetWeapon(m_weapons[1].get());
+	Create(m_pPlayer->GetTransform().position, Weapon::Volt);
 	Create(m_pPlayer->GetTransform().position, Weapon::Flame);
-	Create(m_pPlayer->GetTransform().position, Weapon::Boomerang);
 	CheckCanPick();
 	CheckCanPick();
 
@@ -66,12 +66,12 @@ void WeaponManager::Update()
 	}
 	float time = Time::GetInstance().GetDeltaTime();
 	m_createCount += time;
-	if (Input::IsPressed(PAD_INPUT_5)) {
-		m_createCount = 0;
-		//int weaponType = Weapon::Bow;
-		int weaponType = MyRandom::Int(0, Weapon::Max-1);
-		Create(m_pPlayer->GetTransform().position, weaponType);
-	}
+	//if (Input::IsPressed(PAD_INPUT_5)) {
+	//	m_createCount = 0;
+	//	//int weaponType = Weapon::Bow;
+	//	int weaponType = MyRandom::Int(0, Weapon::Max-1);
+	//	Create(m_pPlayer->GetTransform().position, weaponType);
+	//}
 	if (Pad::IsPressed(Pad::Button::B)) {
 		CheckCanPick();
 	}
@@ -110,6 +110,7 @@ void WeaponManager::Create(const Vector3& pos, int weaponType)
 		break;
 	}
 	m_weapons[m_weapons.size()-1]->SetEnemyManager(m_enemyManager);
+	m_weapons[m_weapons.size()-1]->Init();
 	m_weapons[m_weapons.size()-1]->SetPos(pos);
 	m_weapons[m_weapons.size()-1]->SetChatch(false);
 
