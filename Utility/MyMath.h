@@ -1,5 +1,7 @@
 #pragma once
 
+#define NOMINMAX
+
 #include <DxLib.h>
 #include <algorithm>
 #include <cmath>
@@ -83,6 +85,42 @@ namespace MyMath {
 		if (value < 0)res = -1;
 		return res;
 	}
+
+	/// <summary>
+	/// 線形補間
+	/// </summary>
+	/// <param name="src">開始値</param>
+	/// <param name="dst">最終値</param>
+	constexpr float Lerp(float src, float dst, float latency)
+	{
+		return src + (dst - src) * latency;
+	}
+	/// <summary>
+	/// 等速補間
+	/// </summary>
+	/// <param name="src">開始値</param>
+	/// <param name="dst">最終値</param>
+	/// <param name="amount">変化量</param>
+	template <typename T>
+	constexpr T Approach(T src, T dst, T amount)
+	{
+		if (src > dst)
+		{
+			return (std::max)(dst, src - amount);
+		}
+		else
+		{
+			return (std::min)(dst, src + amount);
+		}
+	}
+
+	inline bool IsNearZero(float value, float epsilon = 0.001f)
+	{
+		if (std::abs(value) <= epsilon) return true;
+		
+		return false;
+	}
+
 		// 入力方向
 	enum class FourDirection {
 		Front,		// 手前
