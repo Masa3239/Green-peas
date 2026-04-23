@@ -1,5 +1,6 @@
 #include "EnemyManager.h"
 #include <cmath>
+#include <memory>
 #include "EnemyBase.h"
 #include "../Utility/Time.h"
 #include "../Utility/MyMath.h"
@@ -38,7 +39,7 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::Init()
 {
-	GenerateEnemy(new EnemyMiniBoss(GetObjectManager()));
+	GenerateEnemy(EnemyType::Miniboss);
 }
 
 void EnemyManager::End()
@@ -54,8 +55,8 @@ void EnemyManager::Update()
 	if (m_generateCounter <= 0 && m_enemies.size() <= kMaxEnemyNum)
 	{
 		// “G‚ð¶¬
-		//GenerateEnemy(new EnemyMelee(GetObjectManager()));
-		//GenerateEnemy(new EnemyShooter(GetObjectManager()));
+		//GenerateEnemy(EnemyType::Melee);
+		//GenerateEnemy(EnemyType::Shooter);
 
 		m_generateCounter = kGenerateDuration;
 	}
@@ -82,7 +83,7 @@ std::vector<EnemyBase*> EnemyManager::GetHitEnemies(const Collision::Shape& shap
 
 		if (!enemy->GetCollider().CheckCollision(shape)) continue;
 
-		enemies.emplace_back(enemy);
+		enemies.emplace_back(enemy.get());
 	}
 
 	return enemies;
@@ -147,17 +148,15 @@ bool EnemyManager::ResetEnemyDamageFlag(int weapon, int index)
 	return false;
 }
 
-void EnemyManager::AddEnemyTest()
+void EnemyManager::GenerateEnemy(EnemyType type)
 {
-	auto enemy = new EnemyMelee(GetObjectManager());
-	enemy->Init();
-	enemy->SetPlayer(m_pPlayer);
-
-	m_enemies.emplace_back(enemy);
-}
-
-void EnemyManager::GenerateEnemy(EnemyBase* enemy)
-{
+	std::unique_ptr<EnemyBase> enemy;
+	switch (type)
+	{
+	case EnemyManager::EnemyType::Melee:	enemy = std::make_unique<EnemyMelee>(GetObjectManager()); break;
+	case EnemyManager::EnemyType::Shooter:	enemy = std::make_unique<EnemyShooter>(GetObjectManager()); break;
+	case EnemyManager::EnemyType::Miniboss:	enemy = std::make_unique<EnemyMiniBoss>(GetObjectManager()); break;
+	}
 	enemy->Init();
 	enemy->SetPlayer(m_pPlayer);
 
@@ -176,7 +175,24 @@ void EnemyManager::GenerateEnemy(EnemyBase* enemy)
 	}
 	enemy->GetTransform().position = pos;
 
-	m_enemies.emplace_back(enemy);
+	m_enemies.emplace_back(std::move(enemy));
+}
+
+void EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos)
+{
+	std::unique_ptr<EnemyBase> enemy;
+	switch (type)
+	{
+	case EnemyManager::EnemyType::Melee:	enemy = std::make_unique<EnemyMelee>(GetObjectManager()); break;
+	case EnemyManager::EnemyType::Shooter:	enemy = std::make_unique<EnemyShooter>(GetObjectManager()); break;
+	case EnemyManager::EnemyType::Miniboss:	enemy = std::make_unique<EnemyMiniBoss>(GetObjectManager()); break;
+	}
+	enemy->Init();
+	enemy->SetPlayer(m_pPlayer);
+
+	enemy->GetTransform().position = pos;
+
+	m_enemies.emplace_back(std::move(enemy));
 }
 
 void EnemyManager::CheckDead()
@@ -194,7 +210,7 @@ void EnemyManager::CheckDead()
 	// Ž€–S‚µ‚Ä‚¢‚½‚ç”z—ñ‚©‚çíœ
 	for (auto iter = m_enemies.begin(); iter != m_enemies.end();)
 	{
-		EnemyBase* enemy = *iter;
+		EnemyBase* enemy = iter->get();
 		if (enemy->GetHP() <= 0)
 		{
 			iter = m_enemies.erase(iter);
