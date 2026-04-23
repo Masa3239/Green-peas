@@ -3,11 +3,13 @@
 #include "../Object/GameObject.h"
 #include "../Chara/Collision.h"
 
+class Player;
+
 class EnemyBullet : public GameObject
 {
 public:
 
-	EnemyBullet(ObjectManager* objManager);
+	EnemyBullet(ObjectManager* objManager, int damage);
 	~EnemyBullet() = default;
 
 	/// <summary>
@@ -40,6 +42,8 @@ public:
 	/// </summary>
 	void Remove();
 
+	void SetPlayer(Player* player) { m_pPlayer = player; }
+
 private:
 
 	/// <summary>
@@ -48,4 +52,8 @@ private:
 	float m_liveCounter;
 
 	Collision::Circle m_collider;
+
+	Player* m_pPlayer;
+
+	int m_damage;
 };

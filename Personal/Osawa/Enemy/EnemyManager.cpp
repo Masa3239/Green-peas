@@ -55,8 +55,8 @@ void EnemyManager::Update()
 	if (m_generateCounter <= 0 && m_enemies.size() <= kMaxEnemyNum)
 	{
 		// “G‚ð¶¬
-		//GenerateEnemy(EnemyType::Melee);
-		//GenerateEnemy(EnemyType::Shooter);
+		GenerateEnemy(EnemyType::Melee);
+		GenerateEnemy(EnemyType::Shooter);
 
 		m_generateCounter = kGenerateDuration;
 	}
@@ -169,8 +169,8 @@ void EnemyManager::GenerateEnemy(EnemyType type)
 	case EnemyManager::EnemyType::Shooter:	enemy = std::make_unique<EnemyShooter>(GetObjectManager()); break;
 	case EnemyManager::EnemyType::Miniboss:	enemy = std::make_unique<EnemyMiniBoss>(GetObjectManager()); break;
 	}
-	enemy->Init();
 	enemy->SetPlayer(m_pPlayer);
+	enemy->Init();
 
 	// ¶¬À•W‚ª”ÍˆÍ“à‚É‚È‚é‚Ü‚ÅŒJ‚è•Ô‚·
 	Vector3 playerPos = m_pPlayer->GetTransform().position;

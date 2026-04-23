@@ -1,6 +1,7 @@
 #include "EnemyBullet.h"
 #include <cmath>
 #include "../Utility/Time.h"
+#include "../Personal/Takagi/Player.h"
 
 namespace
 {
@@ -13,10 +14,11 @@ namespace
 	constexpr float kColliderRadius = 5.0f;
 }
 
-EnemyBullet::EnemyBullet(ObjectManager* objManager) :
+EnemyBullet::EnemyBullet(ObjectManager* objManager, int damage) :
 	GameObject(objManager),
 	m_liveCounter(0.0f),
-	m_collider(Collision::Circle{ Vector3::zero, kColliderRadius })
+	m_collider(Collision::Circle{ Vector3::zero, kColliderRadius }),
+	m_damage(damage)
 {
 }
 
@@ -50,6 +52,12 @@ void EnemyBullet::Update()
 	}
 	else
 	{
+		SetState(State::Deactive);
+	}
+
+	if (m_collider.CheckCollision(m_pPlayer->GetCircle()))
+	{
+		m_pPlayer->Damage(m_damage);
 		SetState(State::Deactive);
 	}
 }

@@ -45,7 +45,8 @@ void EnemyShooter::Init()
 {
 	for (auto& bullet : m_bullets)
 	{
-		bullet = std::make_unique<EnemyBullet>(GetObjectManager());
+		bullet = std::make_unique<EnemyBullet>(GetObjectManager(), GetStatusParam().attack);
+		bullet->SetPlayer(GetPlayer());
 		bullet->Init();
 	}
 }
