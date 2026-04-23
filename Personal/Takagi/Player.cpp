@@ -47,9 +47,9 @@ namespace {
 		"Resource\\pipo-xmaschara02.png" 
 	};
 	// カメラを振動させる時間
-	constexpr float kCameraCount = 0.3f;
+	constexpr float kCameraShake = 0.3f;
 	// 初期座標
-	constexpr Vector3 kInitPos = { 300,300,0 };
+	constexpr Vector3 kInitPos = { 5000,9640,0 };
 
 
 	// 画像の表示倍率
@@ -161,15 +161,7 @@ void Player::Update()
 	m_deltaTime = Time::GetInstance().GetDeltaTime();
 	// 時間が止まっていたら処理しない
 	if (!m_deltaTime)return;
-	if (m_anger || m_cameraShakeCount > 0) {
-		m_camera->ChangeAnger();
-		if (m_cameraShakeCount > 0) {
-			m_cameraShakeCount -= m_deltaTime;
-		}
-	}
-	else {
-		m_camera->ChangeFollow();
-	}
+
 	if (m_pItemMgr) {
 		if (InputManager::GetInstance().IsPressed(Input::Action::PickUp)) {
 			m_pItemMgr->CheckHitCollision(GetCircle());
@@ -199,9 +191,12 @@ void Player::Update()
 	if (/*m_gauges[static_cast<int>(GaugeType::Anger)]->CheckMax() &&*/
 		CheckAngerButton()) {
 		m_anger = true;
+		m_camera->ChangeAnger();
 	}
 	if (m_gauges[static_cast<int>(GaugeType::Anger)]->CheckMin()) {
 		m_anger = false;
+		m_camera->ChangeFollow();
+
 	}if (m_anger) {
 		m_gauges[static_cast<int>(GaugeType::Anger)]->Decrease(kAngerDecValue * m_deltaTime);
 	}
@@ -424,7 +419,8 @@ void Player::Damage(float value)
 	m_gauges[static_cast<int>(GaugeType::Anger)]->Increase(damage * kAngerValue);
 	// 最大・最小値よりも大ききくならないようにする
 	m_gauges[static_cast<int>(GaugeType::Anger)]->Clamp();
-	m_cameraShakeCount = kCameraCount;
+	// カメラを揺らす
+	m_camera->StartDamage(kCameraShake);
 }
 
 void Player::Heal(float value)

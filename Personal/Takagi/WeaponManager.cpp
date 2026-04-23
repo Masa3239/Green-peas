@@ -46,9 +46,22 @@ void WeaponManager::Init()
 	//}
 	//m_pPlayer->SetWeapon(m_weapons[0].get());
 	//m_pPlayer->SetWeapon(m_weapons[1].get());
-	Create(m_pPlayer->GetTransform().position, Weapon::Volt);
-	Create(m_pPlayer->GetTransform().position, Weapon::Flame);
-	CheckCanPick();
+	int weaponType = Weapon::Sword;
+	switch (m_pPlayer->GetPlayerJob())
+	{
+	case Character::Job::Warrior:
+		weaponType = Weapon::Sword;
+		break;
+	case Character::Job::Hunter:
+		weaponType = Weapon::Bow;
+		break;
+	case Character::Job::Wizard:
+		weaponType = Weapon::Flame;
+		break;
+	default:
+		break;
+	}
+	Create(m_pPlayer->GetTransform().position, weaponType);
 	CheckCanPick();
 
 
@@ -114,6 +127,13 @@ void WeaponManager::Create(const Vector3& pos, int weaponType)
 	m_weapons[m_weapons.size()-1]->SetPos(pos);
 	m_weapons[m_weapons.size()-1]->SetChatch(false);
 
+}
+
+void WeaponManager::CreateRandom(const Vector3& pos)
+{
+	int weaponType = 0;
+	weaponType = MyRandom::Int(0, Weapon::Max - 1);
+	Create(pos, weaponType);
 }
 
 bool WeaponManager::CheckCanPick()
