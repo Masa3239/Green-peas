@@ -50,7 +50,7 @@ void Bow::End()
 
 void Bow::Update()
 {
-	if (!m_catch)return;
+	//if (!m_catch)return;
 	if (!m_active)return;
 	m_drawTransform = GetTransform();
 	if (InputManager::GetInstance().IsDown(Input::Action::Attack)) {
@@ -100,7 +100,7 @@ void Bow::CheckCollision()
 	float criticalRate = m_playerStatus.CriticalRate * m_weaponStatus.CriticalRate;
 	float criticalDamage = m_weaponStatus.CriticalDamage * m_playerStatus.CriticalDamage;
 	//m_pEnemyMgr->CheckHitEnemies(m_circle, damage);
-	for (int i = 0;i < kArrowNum;i++) {
+	for (int i = 0;i < kBulletNum;i++) {
 		if (!m_pArrows[i]->GetIsActive())continue;
 		//m_pEnemyMgr->CheckHitEnemies(m_pArrows[i]->GetCollision(), damage, criticalRate, criticalDamage);
 		m_pEnemyMgr->CheckHitEnemies(m_pArrows[i]->GetCollision(), damage, criticalRate, criticalDamage, Weapon::Bow, i);
@@ -109,7 +109,7 @@ void Bow::CheckCollision()
 
 void Bow::Shot(const Transform& transform)
 {
-	for (int i = 0;i < kArrowNum;i++) {
+	for (int i = 0;i < kBulletNum;i++) {
 		if (m_pArrows[i]->GetIsActive())continue;
 
 		m_pArrows[i]->Shot(transform);

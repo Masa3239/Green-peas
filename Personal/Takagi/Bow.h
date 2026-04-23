@@ -1,10 +1,6 @@
 #pragma once
 #include"Weapon.h"
 
-namespace {
-	constexpr int kArrowNum = 100;
-}
-
 class Arrow;
 class Bow:public Weapon
 {
@@ -27,7 +23,7 @@ public:
 private:
 	//bool attack;
 	//float m_desireRadian;
-	Arrow* m_pArrows[kArrowNum];
+	Arrow* m_pArrows[kBulletNum];
 	Transform m_drawTransform;
 };
 
