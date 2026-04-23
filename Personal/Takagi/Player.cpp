@@ -260,8 +260,7 @@ void Player::MoveAmount()
 			}
 		}
 	}
-	if (m_moveAmount) {
-
+	if (!CheckDashNow()) {
 		m_gauges[static_cast<int>(GaugeType::Stamina)]->Increase(kStaminaHealValue * m_deltaTime);
 		m_gauges[static_cast<int>(GaugeType::Stamina)]->Clamp();
 	}
