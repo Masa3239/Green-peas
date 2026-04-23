@@ -49,7 +49,7 @@ void Map::Init()
 	
 	//IDの設定
 	m_worldid = 1;
-	m_stageid = 2;
+	m_stageid = 1;
 
 	////CSVデータを読み込む
 	LoadCSVToMapData(m_worldid, m_stageid);
