@@ -48,7 +48,7 @@ bool EnemyBase::Damage(const int damage)
 bool EnemyBase::Damage(const int damage, int weapon, int index)
 {
 	// 雷攻撃を受けたなら
-	if (weapon == Weapon::Thunder)
+	if (weapon == Weapon::Volt)
 	{
 		// 痺れ状態ならダメージを受けない
 		if (GetMyState() & kStatePalsy) return false;
