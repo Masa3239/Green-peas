@@ -24,7 +24,7 @@ public:
 
 private:
 
-	Vector3 m_speed;
+	float m_speed;
 
 	/// <summary>
 	/// ŒoŒ±’l‚Ì—Ê

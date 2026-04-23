@@ -78,9 +78,18 @@ void EnemyBase::Dead()
 		m_pPlayer->Heal(kHealNum);
 	}
 
-	for (int i = 0; i < 10; i++)
+	int num10 = m_statusParam.exp / 10;
+	int num1 = m_statusParam.exp % 10;
+	for (int i = 0; i < num10; i++)
 	{
-		auto exp = new ExpOrb(GetObjectManager(), m_statusParam.exp);
+		auto exp = new ExpOrb(GetObjectManager(), 10);
+		exp->Init();
+		exp->SetPlayer(m_pPlayer);
+		exp->GetTransform().position = GetTransform().position;
+	}
+	for (int i = 0; i < num1; i++)
+	{
+		auto exp = new ExpOrb(GetObjectManager(), 1);
 		exp->Init();
 		exp->SetPlayer(m_pPlayer);
 		exp->GetTransform().position = GetTransform().position;

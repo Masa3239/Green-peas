@@ -7,7 +7,7 @@
 namespace
 {
 	// 初速の最大値
-	constexpr float kMaxInitSpeed = 50.0f;
+	constexpr float kMaxInitSpeed = 10.0f;
 
 	// 加速度
 	constexpr float kAccel = 3.0f;
@@ -17,7 +17,7 @@ namespace
 
 ExpOrb::ExpOrb(ObjectManager* objManager, int exp) :
 	GameObject(objManager),
-	m_speed(),
+	m_speed(0.0f),
 	m_expAmount(exp),
 	m_collider(Collision::Circle{ Vector3::zero, m_expAmount * kColliderSize} ),
 	m_pPlayer(nullptr)
@@ -30,7 +30,7 @@ ExpOrb::~ExpOrb()
 
 void ExpOrb::Init()
 {
-	m_speed = Vector3(MyRandom::Float(-kMaxInitSpeed, kMaxInitSpeed), MyRandom::Float(-kMaxInitSpeed, kMaxInitSpeed), 0.0f);
+	m_speed = MyRandom::Float(-kMaxInitSpeed, kMaxInitSpeed);
 }
 
 void ExpOrb::End()
@@ -46,9 +46,10 @@ void ExpOrb::Update()
 	Vector3 vec = playerPos - myPos;
 
 	// プレイヤーに向かって加速する
-	m_speed += vec.GetNormalize() * kAccel;
+	//m_speed = vec.GetNormalize() * kMaxInitSpeed;
+	m_speed += kAccel;
 	// 移動
-	myPos += m_speed * Time::GetInstance().GetDeltaTime();
+	myPos += vec.GetNormalize() * m_speed * Time::GetInstance().GetDeltaTime();
 
 	m_collider.SetPosition(myPos);
 
@@ -67,5 +68,5 @@ void ExpOrb::Draw()
 {
 	Vector3 pos = GetTransform().position;
 
-	DrawCircle(pos.x, pos.y, m_expAmount, 0x00ff00);
+	DrawCircle(pos.x, pos.y, 3 + m_expAmount * 0.2f, 0x00ff00);
 }
