@@ -261,9 +261,5 @@ protected:
 	/// 怒り状態かどうか
 	/// </summary>
 	bool m_anger;
-	/// <summary>
-	/// カメラを揺らし続ける時間
-	/// </summary>
-	float m_cameraShakeCount;
 	Character::Job m_playerType;
 };

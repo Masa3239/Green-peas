@@ -54,18 +54,19 @@ SceneTestSyoguti::~SceneTestSyoguti()
 
 void SceneTestSyoguti::Init()
 {
-	m_pPlayer->Init();
 	m_pPlayer->SetEnemyManager(m_pEnemyManager.get());
 	m_pPlayer->SetCamera(m_pCamera.get());
+	m_pPlayer->Init();
 	m_pPlayer->SetItemManager(m_pItemMgr.get());
 
-	m_pCamera->Init();
+	 m_pMap->Init();
 	m_pCamera->SetMap(m_pMap.get());
 	m_pCamera->GenerateWorldScreen();
+	m_pCamera->Init();
 
-	m_pItemMgr->Init();
 	m_pItemMgr->SetObjectManager(GetObjectManager());
 	m_pItemMgr->SetPlayer(m_pPlayer.get());
+	m_pItemMgr->Init();
 
 	m_pEnemyManager->SetPlayer(m_pPlayer.get());
 	m_pEnemyManager->SetUIManager(m_pUIManager.get());
@@ -73,7 +74,6 @@ void SceneTestSyoguti::Init()
 	 m_pEnemyBoss->SetPlayer(m_pPlayer.get());
 	 m_pEnemyBoss->Init();
 
-	 m_pMap->Init();
 
 	 m_pUIManager->Init();
 
@@ -124,7 +124,7 @@ SceneBase* SceneTestSyoguti::Update()
 	}
 
 	if (Input::IsPressed(PAD_INPUT_2)) {
-		if (m_pEnemyBoss->SealReleaseFlag(3)) {
+		if (m_pEnemyBoss->SealReleaseFlag()) {
 			printfDx("封印解除\n");
 		}
 	}

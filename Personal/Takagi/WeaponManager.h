@@ -21,6 +21,7 @@ public:
 	void SetObjManager(ObjectManager* objManager) { m_objManager = objManager; }
 	void SetEnemyManager(EnemyManager* enemyManager) { m_enemyManager = enemyManager; }
 	void Create(const Vector3& pos, int weaponType);
+	void CreateRandom(const Vector3& pos);
 	bool CheckCanPick();
 private:
 	std::vector<std::unique_ptr<Weapon>> m_weapons;
