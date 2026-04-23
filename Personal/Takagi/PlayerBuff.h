@@ -1,7 +1,6 @@
 #pragma once
 #include"PlayerStatus.h"
-class PlayerStatus;
-class PlayerBuff {
+typedef struct PlayerBuff {
 public:
 	PlayerBuff();
 	PlayerBuff(PlayerStatus bufValue,float second,bool eternal);
