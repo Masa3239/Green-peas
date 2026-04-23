@@ -3,11 +3,6 @@
 
 class FireBall;
 
-namespace {
-	constexpr int kFlameNum = 100;
-}
-
-
 class FlameWand:public Weapon
 {
 public:
@@ -24,9 +19,9 @@ public:
 	void CheckCollision()override;
 	void Shot(const Transform& transform);
 	void SetScale(float scale)override { m_scale = scale; }
-	int GetWeaponType()override { return Weapon::Bow; }
+	int GetWeaponType()override { return Weapon::Flame; }
 private:
-	FireBall* m_pFires[kFlameNum];
+	FireBall* m_pFires[kBulletNum];
 	Transform m_drawTransform;
 };
 

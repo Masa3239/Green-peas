@@ -49,6 +49,9 @@ void FlameWand::Update()
 
 void FlameWand::Draw()
 {
+	if (!m_active)return;
+	Vector3 pos = GetTransform().position;
+	DrawRotaGraph(pos.x, pos.y, 1, 0, m_graphHandle, TRUE);
 }
 
 bool FlameWand::Attack()
@@ -72,7 +75,7 @@ void FlameWand::CheckCollision()
 	damage = m_playerStatus.Attack * m_weaponStatus.Attack;
 	float criticalRate = m_playerStatus.CriticalRate * m_weaponStatus.CriticalRate;
 	float criticalDamage = m_weaponStatus.CriticalDamage * m_playerStatus.CriticalDamage;
-	for (int i = 0;i < kFlameNum;i++) {
+	for (int i = 0;i < kBulletNum;i++) {
 		if (!m_pFires[i]->GetIsActive())continue;
 		m_pEnemyMgr->CheckHitEnemies(m_pFires[i]->GetCollision(), damage, criticalRate, criticalDamage, Weapon::Bow, i);
 	}
@@ -80,7 +83,7 @@ void FlameWand::CheckCollision()
 
 void FlameWand::Shot(const Transform& transform)
 {
-	for (int i = 0;i < kFlameNum;i++) {
+	for (int i = 0;i < kBulletNum;i++) {
 		if (m_pFires[i]->GetIsActive())continue;
 
 		m_pFires[i]->Shot(transform);
