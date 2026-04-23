@@ -11,19 +11,22 @@ namespace {
 	constexpr float kCollisionFieldSize = 60.0f;
 
 	//移動速度
-	constexpr float kSpeed = 60.0f;
+	constexpr float kSpeed = 120.0f;
 	//移動の最大距離
 	constexpr float kMaxMoveDistance = 500;
 
 	//フィールドに残る時間
 	constexpr float kFieldLifetime = 3.0f;
+	//フィールド状態でのダメージ間隔
+	constexpr float kFieldDamageInterval = 0.5f;
 
 }
 
 FireBall::FireBall(ObjectManager* objManager) :
 	BulletBase(objManager),
 	m_state(State::Ball),
-	m_fieldElapsedTime(0)
+	m_fieldElapsedTime(0),
+	m_fieldDamageIntervalTimer(0)
 {
 }
 
@@ -79,8 +82,6 @@ void FireBall::Draw()
 
 void FireBall::DebugDraw()
 {
-
-
 	//当たり判定を表示
 	m_circle.DebugDraw();
 
@@ -125,7 +126,14 @@ void FireBall::ChangeStateField()
 	m_circle = Collision::Circle(GetTransform().position, kCollisionFieldSize * m_scale);
 	//タイマーをリセット
 	m_fieldElapsedTime = 0;
+	//ダメージ間隔タイマーをリセット
+	m_fieldDamageIntervalTimer = 0;
 
+}
+
+bool FireBall::CanFieldDamage()
+{
+	return m_fieldDamageIntervalTimer > kFieldDamageInterval;
 }
 
 void FireBall::UpdateBall()
@@ -146,18 +154,19 @@ void FireBall::UpdateBall()
 	if (distance <= kMaxMoveDistance * kMaxMoveDistance)return;
 
 	//移動距離の最大になったら状態を変更
-	m_state = State::Field;
-	//当たり判定のサイズを変更
-	m_circle = Collision::Circle(GetTransform().position, kCollisionFieldSize * m_scale);
-	//タイマーをリセット
-	m_fieldElapsedTime = 0;
+	ChangeStateField();
 
 }
 
 void FireBall::UpdateField()
 {
+	//デルタタイムを取得
+	float deltaTime = Time::GetInstance().GetDeltaTime();
+
 	//タイマーを加算
-	m_fieldElapsedTime += Time::GetInstance().GetDeltaTime();
+	m_fieldElapsedTime += deltaTime;
+	//ダメージ間隔タイマーを加算
+	m_fieldDamageIntervalTimer += deltaTime;
 
 	//消える時間じゃないならスルー
 	if (m_fieldElapsedTime < kFieldLifetime)return;
