@@ -112,7 +112,7 @@ public:
 	/// </summary>
 	/// <param name="playerBuf"></param>
 	/// <returns></returns>
-	void AddBuff(const PlayerBuff& playerBuff);
+	void AddBuff(PlayerBuff& playerBuff);
 public: // ゲッター・セッター=======================
 	virtual Character::Job GetPlayerJob() { return Character::Job::Warrior; };
 	void SetCamera(Camera* camera) { m_camera = camera; }

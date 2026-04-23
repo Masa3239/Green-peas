@@ -435,9 +435,9 @@ void Player::Heal(float value)
 	m_gauges[static_cast<int>(GaugeType::Hp)]->Clamp();
 }
 
-void Player::AddBuff(const PlayerBuff& playerBuff)
+void Player::AddBuff( PlayerBuff& playerBuff)
 {
-	std::unique_ptr< PlayerBuff> buf = std::make_unique<PlayerBuff>(playerBuff.m_buffValue, playerBuff.m_second, playerBuff.m_isEternal);
+	std::unique_ptr< PlayerBuff> buf = std::make_unique<PlayerBuff>(playerBuff.GetBuffValue(), playerBuff.Second(), playerBuff.IsEternal());
 	m_buffs.push_back(std::move(buf));
 	//m_grasses.push_back(std::move(grass));
 	return;
@@ -566,7 +566,7 @@ const PlayerStatus Player::CheckBuffValue()
 	PlayerStatus status;
 	status.Reset();
 	for (auto& buff : m_buffs) {
-		status += buff->GetBufValue();
+		status += buff.get()->GetBuffValue();
 	}
 	return status;
 }
