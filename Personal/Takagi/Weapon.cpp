@@ -11,3 +11,9 @@ m_playerStatus(),
 m_weaponStatus() 
 {
 }
+
+void Weapon::SetPos(const Vector3 position)
+{
+	GetTransform().position = position;
+	m_catchCol.SetPosition(position);
+}

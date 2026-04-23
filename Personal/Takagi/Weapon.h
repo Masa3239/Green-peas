@@ -13,6 +13,7 @@ namespace {
 	constexpr float kCatchRadius = 20;
 	// チャージ判定にする時間
 	constexpr float kChargeTime = 0.5f;
+	constexpr int kBulletNum = 100;
 }
 class Weapon:public GameObject
 {
@@ -25,7 +26,7 @@ public:
 		Katana,		// 刀
 		Boomerang,	// ブーメラン
 		Bow,		// 弓
-		Thunder,	// 雷
+		Volt,	// 雷
 		Flame,		// 炎
 		Max
 	};
@@ -78,6 +79,7 @@ public:
 	virtual void SetScale(float scale) { m_scale = scale; }
 	void UpdateCatchCol() { m_catchCol.SetPosition(GetTransform().position);m_catchCol.SetRadius(kCatchRadius); }
 	Collision::Circle GetCatchCol() { return m_catchCol; }
+	void SetPos(const Vector3 position);
 	virtual int GetWeaponType()=0;
 	void SetChatch(bool catchFlag) { m_catch = catchFlag; }
 	bool GetChatch() { return m_catch; }
