@@ -2,9 +2,12 @@
 #include "../../Chara/Collision.h"
 #include "../../Utility/Transform.h"
 #include "../../Object/GameObject.h"
-#include <vector>
+
+#include <memory>
 
 class Player;
+
+class BossBulletManager;
 
 namespace {
 
@@ -80,6 +83,12 @@ public:
 	/// <param name="maxKey"></param>
 	/// <returns></returns>
 	bool SealReleaseFlag(int maxKey);
+
+	/// <summary>
+	/// ボスの近距離攻撃がプレイヤーと当たっているかどうか
+	/// </summary>
+	/// <param name="other"></param>
+	bool CheckHitCloseRangeAttackCollison(const Collision::Shape& other);
 
 	/// <summary>
 	/// ボスの最大HPを取得するゲッター関数
@@ -166,6 +175,11 @@ private:
 	bool m_isCloseTheAttack;
 
 	/// <summary>
+	/// 近距離攻撃中のダメージ判定のフラグ
+	/// </summary>
+	bool m_isCloseTheAttackDamege;
+
+	/// <summary>
 	/// 画像の向き
 	/// </summary>
 	int m_direction;
@@ -234,6 +248,11 @@ private:
 	/// プレイヤーのポインタ
 	/// </summary>
 	Player* m_pPlayer;
+
+	/// <summary>
+	/// ボスの弾のポインタ
+	/// </summary>
+	std::unique_ptr<BossBulletManager> m_pBossBulletMgr;
 
 };
 

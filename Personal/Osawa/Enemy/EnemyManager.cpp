@@ -6,6 +6,7 @@
 #include "../Utility/MyMath.h"
 #include "../Personal/Takagi/Player.h"
 #include "../Personal/Asai/UIManager.h"
+#include "../Utility/MyRandom.h"
 
 #include "EnemyMelee.h"
 #include "EnemyShooter.h"
@@ -16,6 +17,8 @@ namespace
 {
 	// 自動生成される敵の最大数
 	constexpr int kMaxEnemyNum = 100;
+	// 自動生成される敵の最小数
+	constexpr int kMinEnemyNum = 30;
 
 	// 敵生成の間隔
 	constexpr float kGenerateDuration = 1.5f;
@@ -52,11 +55,13 @@ void EnemyManager::End()
 
 void EnemyManager::Update()
 {
-	if (m_generateCounter <= 0 && m_enemies.size() <= kMaxEnemyNum)
+	if ((m_generateCounter <= 0 || m_enemies.size() <= kMinEnemyNum) && m_enemies.size() <= kMaxEnemyNum)
 	{
 		// 敵を生成
-		GenerateEnemy(EnemyType::Melee);
-		GenerateEnemy(EnemyType::Shooter);
+		if (MyRandom::Int(0, 1) == 0)
+			GenerateEnemy(EnemyType::Melee);
+		else
+			GenerateEnemy(EnemyType::Shooter);
 
 		m_generateCounter = kGenerateDuration;
 	}
@@ -100,7 +105,10 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, int damage)
 		// ダメージを与えられなかったらスキップ
 		if (!enemy->Damage(damage)) continue;
 
-		//m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, damage);
+
+		m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, damage);
+		m_uiMgr->CreatePopUpText(enemy->GetTransform().position, damage, PopUpUI::TextType::Damage);
+ 
 
 		// 誰か一人でも当たっていたらtrueになる
 		result = true;
@@ -115,21 +123,29 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 
 	int finalDamage = 0;
 
+	PopUpUI::TextType textType = PopUpUI::TextType::Damage;
+
 	for (const auto& enemy : m_enemies)
 	{
 		if (!enemy->GetCollider().CheckCollision(shape)) continue;
 
 		finalDamage = damage;
+		textType = PopUpUI::TextType::Damage;
 
 		if (GetRand(100) < criticalChance)
 		{
 			finalDamage *= criticalDamage;
+			textType = PopUpUI::TextType::Critical;
 		}
 
 		// ダメージを与えられなかったらスキップ
 		if (!enemy->Damage(finalDamage, weapon, index)) continue;
 
-		//m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, finalDamage);
+
+		m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, finalDamage);
+
+		m_uiMgr->CreatePopUpText(enemy->GetTransform().position, finalDamage, textType);
+
 
 		// 誰か一人でも当たっていたらtrueになる
 		result = true;

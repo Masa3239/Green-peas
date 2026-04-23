@@ -47,7 +47,7 @@ void AttackUpItem::Init()
 void AttackUpItem::End()
 {
 	// 画像の破棄
-	DeleteGraph(m_graphHandle);
+	// DeleteGraph(m_graphHandle);
 }
 
 void AttackUpItem::Update()
@@ -67,6 +67,6 @@ void AttackUpItem::Draw()
 void AttackUpItem::ItemAbility(Player* player)
 {
 	m_pPlayer = player;
-	m_pPlayer->Damage(kPoewrUpValue);
+	//m_pPlayer->Damage(kPoewrUpValue);
 	printfDx("攻撃力が上がりました\n");
 }

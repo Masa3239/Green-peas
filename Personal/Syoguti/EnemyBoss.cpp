@@ -5,6 +5,7 @@
 #include "../../Utility/MyRandom.h"
 #include "../../Utility/Time.h"
 #include "../Takagi/Player.h"
+#include "BossBulletManager.h"
 
 namespace {
 
@@ -20,6 +21,11 @@ namespace {
 	// 近距離攻撃の当たり判定の大きさ
 	constexpr Vector3 kCloseRangeCollisionSize = { 200.0f* kGraphScale, 50.0f* kGraphScale, 0.0f };
 
+	// アニメーションのダメージ判定開始フレーム
+	constexpr int kCloseRangeDamageStartFrame = 7;
+	// アニメーションのダメージ判定終了フレーム
+	constexpr int kCloseRangeDamageEndFrame = 11;
+
 	// ボスの挙動で使うプレイヤーのオフセットの値
 	constexpr float kPlayerOffsetPos = 200.0f;
 
@@ -30,7 +36,7 @@ namespace {
 	constexpr int kAttackPower = 10;
 
 	// ランダムに行動を決める時のインターバル
-	constexpr float kRandomInterval = 3.0f;
+	constexpr float kRandomInterval = 2.0f;
 
 	/// <summary>
 	/// ボスの速さ
@@ -44,6 +50,7 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 	m_motionFrame(0),
 	m_direction(-1),
 	m_isCloseTheAttack(false),
+	m_isCloseTheAttackDamege(false),
 	GameObject(objManager),
 	m_collsion(GetTransform().position, kCircleRadius),
 	m_closeRangeAttackCollision(GetTransform().position, kCloseRangeCollisionSize),
@@ -56,8 +63,10 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 	m_action(BossAction::Idle),
 	m_getRandomTime(0.0f),
 	m_targetPos(0.0f, 0.0f, 0.0f),
-	m_pPlayer(nullptr)
+	m_pPlayer(nullptr),
+	m_pBossBulletMgr(nullptr)
 {
+	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
 	for (int i = 0; i < static_cast<int>(BossStatus::Max); i++) {
 
 		for (int j = 0;j < kCharactorMotionNum; j++) {
@@ -72,6 +81,7 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_motionFrame(0),
 	m_direction(-1),
 	m_isCloseTheAttack(false),
+	m_isCloseTheAttackDamege(false),
 	GameObject(objManager),
 	m_collsion(GetTransform().position , kCircleRadius),
 	m_closeRangeAttackCollision(GetTransform().position, kCloseRangeCollisionSize),
@@ -84,8 +94,11 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_action(BossAction::Idle),
 	m_getRandomTime(0.0f),
 	m_targetPos(0.0f, 0.0f, 0.0f),
-	m_pPlayer(nullptr)
+	m_pPlayer(nullptr),
+	m_pBossBulletMgr(nullptr)
 {
+
+	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
 
 	GetTransform().Reset();
 	GetTransform().position = position;
@@ -93,27 +106,37 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 
 void EnemyBoss::Init()
 {
+
+	m_pBossBulletMgr->SetObjectManager(GetObjectManager());
+	m_pBossBulletMgr->SetPlayer(m_pPlayer);
+	m_pBossBulletMgr->Init();
+
 	for (int i = 0; i < static_cast<int>(BossStatus::Max); i++) {
 
 		for (int j = 0;j < kCharactorMotionNum; j++) {
 			m_graphHandle[i][j] = -1;
 		}
 	}
+
+	// ボスのアイドルアニメーション
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_idle.png",
 		5, 5, 1, 128, 128, m_graphHandle[static_cast<int>(BossStatus::Idle)]);
 
+	// ボスが離れるアニメーション
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_move.png",
 		8, 8, 1, 384, 128, m_graphHandle[static_cast<int>(BossStatus::LeaveMove)]);
 
+	// ボスが近づくアニメーション
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_attack_B_2_loop.png",
 		5, 5, 1, 384, 128, m_graphHandle[static_cast<int>(BossStatus::ApproachMove)]);
 
+	// ボスの近距離攻撃のアニメーション
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_attack_A.png",
 		21, 21, 1, 384, 128, m_graphHandle[static_cast<int>(BossStatus::CloseRangeAttack)]);
 
+	// ボスの遠距離攻撃のアニメーション
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_ability_black.png",
 		25, 25, 1, 384, 128, m_graphHandle[static_cast<int>(BossStatus::LongRangeAttack)]);
-
 }
 
 void EnemyBoss::End()
@@ -126,12 +149,20 @@ void EnemyBoss::End()
 			// 画像の破棄
 			DeleteGraph(m_graphHandle[i][j]);
 		}
-
 	}
+
+	m_pBossBulletMgr->End();
 }
 
 void EnemyBoss::Update()
 {
+
+	// 封印状態ならこの先は呼ばない
+	if (!m_sealRelease) return;
+
+	m_pBossBulletMgr->Update();
+
+	m_pBossBulletMgr->CheckHitCollision(m_pPlayer->GetCircle());
 
 	// 当たり判定の更新
 	m_collsion.SetPosition(GetTransform().position);
@@ -161,19 +192,35 @@ void EnemyBoss::Update()
 void EnemyBoss::Draw()
 {
 
-	printfDx("ボスaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa%d\n",static_cast<int>(m_status));
+	m_pBossBulletMgr->Draw();
 
-	// 画像の描画
-	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y - kGraphOffsetY, kGraphScale, 0.0f,
-		m_graphHandle[static_cast<int>(m_status)][m_motionFrame], TRUE, m_direction);
+	// 封印状態なら
+	if (!m_sealRelease) {
+		// 封印状態の画像を描画(仮)
+		DrawCircle(GetTransform().position.x, GetTransform().position.y, 10, 0xff0000);
+	}
+	// 封印が解除されたなら
+	else
+	{
 
-	// 円の当たり判定の描画
-	m_collsion.DebugDraw();
-	
-	// 近距離攻撃の当たり判定の描画
-	m_closeRangeAttackCollision.DebugDraw();
+		printfDx("ボス%d\n", static_cast<int>(m_status));
+		printfDx("ボスの現在の体力%d\n", m_currentHp);
 
-	DrawCircle(m_targetPos.x, m_targetPos.y, 10, 0xff0000);
+		// 画像の描画
+		DrawRotaGraph(GetTransform().position.x, GetTransform().position.y - kGraphOffsetY, kGraphScale, 0.0f,
+			m_graphHandle[static_cast<int>(m_status)][m_motionFrame], TRUE, m_direction);
+
+		// 円の当たり判定の描画
+		m_collsion.DebugDraw();
+
+		if (m_isCloseTheAttackDamege) {
+
+			// 近距離攻撃の当たり判定の描画
+			m_closeRangeAttackCollision.DebugDraw();
+		}
+
+		DrawCircle(m_targetPos.x, m_targetPos.y, 10, 0xff0000);
+	}
 
 }
 
@@ -195,6 +242,13 @@ bool EnemyBoss::SealReleaseFlag(int maxKey)
 
 	// 結果を返す
 	return m_sealRelease;
+}
+
+bool EnemyBoss::CheckHitCloseRangeAttackCollison(const Collision::Shape& other)
+{
+
+	// 攻撃中かつ、プレイヤーと当たっていればtrueを返す
+	return  m_isCloseTheAttackDamege && m_isCloseTheAttack && m_closeRangeAttackCollision.CheckCollision(other);
 }
 
 void EnemyBoss::Action()
@@ -241,6 +295,10 @@ void EnemyBoss::Status()
 
 		// アニメーションのフレームをプラス
 		m_motionFrame++;
+
+		// 近距離攻撃のダメージ判定のフラグの決める
+		m_isCloseTheAttackDamege = (m_status == BossStatus::CloseRangeAttack &&
+			m_motionFrame >= kCloseRangeDamageStartFrame && m_motionFrame <= kCloseRangeDamageEndFrame) ? true : false;
 
 		//アニメーションがなければ
 		if (m_graphHandle[static_cast<int>(m_status)][m_motionFrame] == -1) {
@@ -375,6 +433,8 @@ void EnemyBoss::LongRangeAttack()
 	
 	// アニメーションをLongRangeAttackにする
 	m_status = BossStatus::LongRangeAttack;
+
+	m_pBossBulletMgr->Create(BossBulletBase::BulletType::Normal, GetTransform().position);
 	printfDx("遠距離攻撃攻撃\n");
 }
 

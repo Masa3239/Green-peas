@@ -14,6 +14,7 @@ public:
 		Back,
 		Setting,
 		Title,
+		Length
 	};
 
 	void Init();
