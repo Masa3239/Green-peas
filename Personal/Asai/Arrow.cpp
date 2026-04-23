@@ -7,8 +7,17 @@
 #include<DxLib.h>
 #include<math.h>
 #include"../../Utility/Time.h"
+#include"../../Utility/MyMath.h"
 
 namespace {
+
+	//画像の読み込み
+	const char* const kGraphHandlePath = ".\\Personal\\Asai\\Graph\\arrow.png";
+	//画像の拡大率
+	constexpr float kGraphScale = 0.3f;
+	//画像のずらす角度
+	constexpr float kOffSetRadian = MyMath::DegToRad(47);
+
 	//当たり判定のサイズ
 	constexpr float kCollisionSize = 20.0f;
 	//スピード
@@ -28,6 +37,9 @@ void Arrow::Init()
 {
 
 	m_isActive = false;
+
+	//画像の読み込み
+	m_graphHandle = LoadGraph(kGraphHandlePath);
 
 }
 
@@ -62,10 +74,23 @@ void Arrow::Draw()
 	//非アクティブならスルー
 	if (!m_isActive)return;
 
-	//画像の描画
-	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, 1.0f, GetTransform().rotation.z, m_graphHandle, TRUE);
+	Transform transform = GetTransform();
 
-	DrawCircle(GetTransform().position.x, GetTransform().position.y, kCollisionSize * m_scale, TRUE, 0xffff00);
+	//画像の描画
+	DrawRotaGraph(transform.position.x, transform.position.y, 
+		kGraphScale * m_scale, 
+		transform.rotation.z + kOffSetRadian, 
+		m_graphHandle, TRUE);
+
+#ifdef _DEBUG
+	//DrawCircle(GetTransform().position.x, GetTransform().position.y, kCollisionSize * m_scale, TRUE, 0xffff00);
+
+	//当たり判定の描画
+	m_circle.DebugDraw();
+
+#else
+
+#endif
 
 }
 
@@ -78,14 +103,11 @@ void Arrow::DebugDraw()
 	printfDx(m_isActive ? "Arrow Active\n" : "Arrow !Active\n");
 	printfDx("Arrow Scale %f\n", m_scale);
 
-	//当たり判定の描画
-	m_circle.DebugDraw();
-
 }
 
 void Arrow::End()
 {
-
+	//画像の破棄
 	DeleteGraph(m_graphHandle);
 
 }

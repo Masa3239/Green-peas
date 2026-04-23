@@ -236,7 +236,7 @@ void Thunder::UpdateInfection()
 		//当たり判定を作る
 		auto circle = Collision::Circle(enemy->GetTransform().position, kCollisionInfectionSize * m_scale);
 		//当たっていなければスルー
-		m_pEnemyMgr->CheckHitEnemies(circle, 3, 1, 1, Weapon::Sword, 1);
+		m_pEnemyMgr->CheckHitEnemies(circle, 3, 1, 1, Weapon::Volt, 1);
 
 	}
 
@@ -250,7 +250,7 @@ void Thunder::UpdateInfection()
 
 	}
 
-	m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Sword, 1);
+	m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Volt, 1);
 
 	if (m_infectionCount > kMaxInfection) {
 		m_isActive = false;
