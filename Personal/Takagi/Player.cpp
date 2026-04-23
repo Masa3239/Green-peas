@@ -433,7 +433,7 @@ void Player::Heal(float value)
 	m_gauges[static_cast<int>(GaugeType::Hp)]->Clamp();
 }
 
-void Player::AddBuff( PlayerBuff& playerBuff) const
+void Player::AddBuff(const PlayerBuff& playerBuff)
 {
 	PlayerBuff buf = playerBuff;
 	//m_buffs.push_back(buf);
@@ -480,6 +480,11 @@ void Player::SetWeapon(Weapon* weapon)
 	}
 	m_weapons[0] = weapon;
 
+}
+
+void Player::ExpUp(float value)
+{
+	m_gauges[static_cast<int>(GaugeType::Exp)]->Increase(value);
 }
 
 bool Player::CheckCanDash()
