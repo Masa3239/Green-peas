@@ -1,8 +1,10 @@
 #include "PauseMenu.h"
+#include <DxLib.h>
 #include "../System/InputManager.h"
 #include "../System/PauseManager.h"
 #include "../Scene/SceneBase.h"
 #include "../Scene/SceneTitle.h"
+#include "../Utility/Color.h"
 
 namespace
 {
@@ -29,7 +31,7 @@ void PauseMenu::End()
 
 SceneBase* PauseMenu::Update()
 {
-	if (InputManager::GetInstance().IsPressed(Input::Action::Pause))
+	if (InputManager::GetInstance().IsPressed(Input::Action::Pause) || InputManager::GetInstance().IsPressed(Input::Action::Cancel))
 	{
 		PauseManager::GetInstance().TogglePause();
 		PauseManager::GetInstance().SetAlpha(kPauseScreenAlpha);
@@ -42,6 +44,13 @@ SceneBase* PauseMenu::Update()
 
 void PauseMenu::Draw()
 {
+	if (PauseManager::GetInstance().IsPause())
+	{
+		DrawString(150, 300, "Resume", Color::kGray);
+		DrawString(150, 300, "Resume", m_choice == Choice::Back ? Color::kRed : Color::kGray);
+		DrawString(150, 330, "Settings", m_choice == Choice::Setting ? Color::kRed : Color::kGray);
+		DrawString(150, 360, "Back to Title", m_choice == Choice::Title ? Color::kRed : Color::kGray);
+	}
 }
 
 SceneBase* PauseMenu::OnPause()
@@ -56,6 +65,8 @@ SceneBase* PauseMenu::OnPause()
 	{
 		m_choice++;
 	}
+
+	m_choice = (Choice::Length + m_choice) % Choice::Length;
 
 	if (InputManager::GetInstance().IsPressed(Input::Action::Confirm))
 	{

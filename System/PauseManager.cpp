@@ -73,8 +73,6 @@ void PauseManager::Update()
 	// ポーズ直前の画面を描画
 	if (m_screenGraph != -1)
 	{
-		ClearDrawScreen();
-
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_alpha);
 		DrawGraph(0, 0, m_screenGraph, 0);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

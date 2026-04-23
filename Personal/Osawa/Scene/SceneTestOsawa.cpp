@@ -116,7 +116,6 @@ SceneBase* SceneTestOsawa::Update()
 void SceneTestOsawa::Draw()
 {
 	m_pItemMgr->Draw();
-	m_pPauseMenu->Draw();
 }
 
 void SceneTestOsawa::PreDraw()
@@ -139,5 +138,6 @@ void SceneTestOsawa::PostDraw()
 	m_pUIMgr->ScreenDraw();
 	m_pUIMgr->DebugDraw();
 
+	m_pPauseMenu->Draw();
 	//clsDx();
 }
