@@ -113,7 +113,7 @@ public:
 	/// </summary>
 	/// <param name="playerBuf"></param>
 	/// <returns></returns>
-	void AddBuff(const PlayerBuff& playerBuff)const;
+	void AddBuff(PlayerBuff& playerBuff)const;
 public: // ゲッター・セッター=======================
 	void SetCamera(Camera* camera) { m_camera = camera; }
 	/// <summary>

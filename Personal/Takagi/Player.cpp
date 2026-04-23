@@ -282,7 +282,7 @@ void Player::MoveAmount()
 
 
 	}
-	if (m_weapons[0]->CheckCameraUpdate()) {
+	if (!m_weapons[0]||m_weapons[0]->CheckCameraUpdate()) {
 		m_cameraTransform = GetTransform();
 	}
 	// 指定のボタンを押したとき かつ 武器を複数持っているとき
@@ -298,6 +298,7 @@ void Player::MoveAmount()
 		if (!m_weapons[i])continue;
 		m_weapons[i]->SetActive(false);
 	}
+	if(m_weapons[0])
 	m_weapons[0]->SetActive(true);
 	for (auto& gauge : m_gauges) {
 		gauge->Update();
@@ -432,11 +433,11 @@ void Player::Heal(float value)
 	m_gauges[static_cast<int>(GaugeType::Hp)]->Clamp();
 }
 
-void Player::AddBuff(const PlayerBuff& playerBuff) const
+void Player::AddBuff( PlayerBuff& playerBuff) const
 {
 	PlayerBuff buf = playerBuff;
 	//m_buffs.push_back(buf);
-		//m_grasses.push_back(std::move(grass));
+	//m_grasses.push_back(std::move(grass));
 	return;
 }
 
