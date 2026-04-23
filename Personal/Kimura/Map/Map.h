@@ -57,6 +57,10 @@ public:
 	bool IsWallByWorld(float worldX, float worldY);
 
 	bool IsWallCircle(const Collision::Circle& circle);
+
+	bool IsWallAABB(const Collision::AABB& box);
+
+	bool IsWallShape(const Collision::Shape& shape);
 	//
 	//void DebugDrawRect(float left, float top, float right, float bottom);
 

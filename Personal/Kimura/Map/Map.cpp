@@ -199,6 +199,62 @@ bool Map::IsWallCircle(const Collision::Circle& circle)
     return false;
 }
 
+bool Map::IsWallAABB(const Collision::AABB& box)
+{
+	Vector3 min = box.GetMinPos();
+	Vector3 max = box.GetMaxPos();
+
+	int left = min.x / kMapBlockSize;
+	int right = max.x / kMapBlockSize;
+	int top = min.y / kMapBlockSize;
+	int bottom = max.y / kMapBlockSize;
+
+	for (int y = top; y <= bottom; y++)
+	{
+		for (int x = left; x <= right; x++)
+		{
+			if (IsWall(x, y))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+/*
+bool Map::IsWallShape(const Collision::Shape& shape)
+{
+	if (shape.GetType() == Collision::Type::Circle)
+	{
+		const Collision::Circle* c = dynamic_cast<const Collision::Circle*>(&shape);
+		return IsWallCircle(*c);
+	}
+	else if (shape.GetType() == Collision::Type::AABB)
+	{
+		const Collision::AABB* b = dynamic_cast<const Collision::AABB*>(&shape);
+		return IsWallAABB(*b);
+	}
+
+	return false;
+}
+*/
+
+bool Map::IsWallShape(const Collision::Shape& shape)
+{
+	if (const Collision::Circle* c = dynamic_cast<const Collision::Circle*>(&shape))
+	{
+		return IsWallCircle(*c);
+	}
+
+	if (const Collision::AABB* b = dynamic_cast<const Collision::AABB*>(&shape))
+	{
+		return IsWallAABB(*b);
+	}
+
+	return false;
+}
+
 //void Map::DebugDrawRect(float left, float top, float right, float bottom)
 //{
 //	for (int y = 0; y < m_mapBlockNumY; y++)
