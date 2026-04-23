@@ -184,6 +184,11 @@ private:
 	int m_direction;
 
 	/// <summary>
+	/// 弾の発射感覚
+	/// </summary>
+	int m_shotTimer;
+
+	/// <summary>
 	/// 座標
 	/// </summary>
 	// Transform m_transform;
