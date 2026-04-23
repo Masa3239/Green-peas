@@ -146,6 +146,22 @@ void Thunder::SetScale(float scale)
 
 }
 
+void Thunder::ChangeStateInfection()
+{
+	//既にState::Infectionならリターン
+	if (m_state == State::Infection)return;
+
+	//状態を変更
+	m_state = State::Infection;
+	m_circle = Collision::Circle(GetTransform().position, kCollisionInfectionSize * m_scale);
+
+	//当たり前を更新
+	m_circle.SetPosition(GetTransform().position);
+	//当たった敵を取得
+	m_pEnemies = (m_pEnemyMgr->GetHitEnemies(m_circle, 1));
+
+}
+
 void Thunder::UpdateBall()
 {
 	//デルタタイムを取得
@@ -169,7 +185,7 @@ void Thunder::UpdateBall()
 	m_state = State::Infection;
 	m_circle = Collision::Circle(GetTransform().position, kCollisionInfectionSize * m_scale);
 
-	//当たり前を更新
+	//当たり判定を更新
 	m_circle.SetPosition(GetTransform().position);
 	//当たった敵を取得
 	m_pEnemies = (m_pEnemyMgr->GetHitEnemies(m_circle, 1));

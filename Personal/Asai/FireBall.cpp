@@ -114,6 +114,20 @@ void FireBall::SetScale(float scale)
 
 }
 
+void FireBall::ChangeStateField()
+{
+	//既にState::Fieldならリターン
+	if (m_state == State::Field)return;
+
+	//状態を変更
+	m_state = State::Field;
+	//当たり判定のサイズを変更
+	m_circle = Collision::Circle(GetTransform().position, kCollisionFieldSize * m_scale);
+	//タイマーをリセット
+	m_fieldElapsedTime = 0;
+
+}
+
 void FireBall::UpdateBall()
 {
 	//デルタタイムを取得

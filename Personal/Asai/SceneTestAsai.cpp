@@ -121,8 +121,13 @@ SceneBase* SceneTestAsai::Update()
 
 		uiMgr->CreateDamagePopUpText(transform.position,5);
 		thunder->Shot(pPlayer->GetTransform());
-		//ItemMgr->Create(ItemBase::ItemType::Heal, pPlayer->GetTransform().position);
+		ItemMgr->Create(ItemBase::ItemType::Heal, pPlayer->GetTransform().position);
+
 	}
+	if (CheckHitKey(KEY_INPUT_3)) {
+
+	}
+
 
 	if (CheckHitKey(KEY_INPUT_0)) {
 		Time::GetInstance().SetTimeScale(0);
