@@ -88,6 +88,11 @@ void Sword::Update()
 {
 	m_scaleEx = 1;
 	if (m_chargeFlag)m_scaleEx = 2;
+	if (!m_catch) {
+		m_swing.position = GetTransform().position;
+		m_swing.rotation.z = GetTransform().rotation.z;
+		return;
+	}
 	float time = Time::GetInstance().GetDeltaTime();
 	float differ = m_desireRadian - m_swing.rotation.z;
 	differ = MyMath::NormalizeAngle(differ * MyMath::ToDegree) * MyMath::ToRadian;
@@ -184,7 +189,6 @@ void Sword::Draw()
 
 	}
 
-	float radian = /*GetTransform().rotation.z+*/m_swing.rotation.z + (kDrawRadian)/**MyMath::Sign(GetTransform().rotation.z)*/;
 	//if (reverseX)radian *= -1;
 	//if (attack) {
 	//}
@@ -198,6 +202,8 @@ void Sword::Draw()
 	DrawRotaGraph(effectPos.x, effectPos.y, kEffectScale*m_scale, effectRadian, handle, TRUE);
 	m_catchCol.DebugDraw();
 	if (!m_active)return;
+	float radian = /*GetTransform().rotation.z+*/m_swing.rotation.z;
+	if (m_catch)radian += kDrawRadian;
 	DrawRotaGraph(m_swing.position.x, m_swing.position.y, m_scale, radian, m_graphHandle, TRUE, reverseX);
 	printfDx("角度 : %f\n", GetTransform().rotation.z);
 	printfDx("attack : %d\n", m_attack);
