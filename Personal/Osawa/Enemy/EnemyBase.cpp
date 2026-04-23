@@ -10,6 +10,9 @@ namespace
 	constexpr Vector3 kColliderSize{ 25, 40, 0 };
 
 	constexpr int kMaxHp = 30;
+
+	// プレイヤーが怒り状態で倒された場合の回復量
+	constexpr int kHealNum = 1;
 }
 
 EnemyBase::EnemyBase(ObjectManager* objManager) :
@@ -45,7 +48,7 @@ bool EnemyBase::Damage(const int damage)
 bool EnemyBase::Damage(const int damage, int weapon, int index)
 {
 	// 雷攻撃を受けたなら
-	if (weapon == Weapon::Thunder)
+	if (weapon == Weapon::Volt)
 	{
 		// 痺れ状態ならダメージを受けない
 		if (GetMyState() & kStatePalsy) return false;
@@ -69,6 +72,12 @@ bool EnemyBase::Damage(const int damage, int weapon, int index)
 
 void EnemyBase::Dead()
 {
+	// もしプレイヤーが怒り状態だったら回復させる
+	if (m_pPlayer->CheckAnger())
+	{
+		m_pPlayer->Heal(kHealNum);
+	}
+
 	for (int i = 0; i < 10; i++)
 	{
 		auto exp = new ExpOrb(GetObjectManager(), m_statusParam.exp);

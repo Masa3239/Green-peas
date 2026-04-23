@@ -49,6 +49,12 @@ public:
 	/// <param name="scale"></param>
 	void SetScale(float scale)override;
 
+	/// <summary>
+	/// 状態を変更する関数
+	/// State::Ballの状態で敵に当たった時に呼び出せば状態が変わる
+	/// </summary>
+	void ChangeStateField();
+
 private:
 
 	/// <summary>

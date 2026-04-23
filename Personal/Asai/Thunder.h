@@ -53,6 +53,12 @@ public:
 	/// <param name="scale"></param>
 	void SetScale(float scale)override;
 
+	/// <summary>
+	/// 状態を変更する関数
+	/// State::Ballの状態で呼び出せば状態が変わる
+	/// </summary>
+	void ChangeStateInfection();
+
 	void SetEnemyManager(EnemyManager* pEnemyMgr) { m_pEnemyMgr = pEnemyMgr; }
 
 private:
