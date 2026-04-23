@@ -10,6 +10,7 @@
 #include"../Osawa/Enemy/EnemyManager.h"
 #include"../Asai/UIManager.h"
 #include"WeaponManager.h"
+#include"Wizard.h"
 namespace {
 	Vector3 kBoxPos = { 200,200 ,0 };
 	Vector3 kBoxSize = { 50,70 ,0 };
@@ -25,7 +26,8 @@ SceneTestTakagi::SceneTestTakagi():
 	m_pUIManager(nullptr),
 	m_pWeaponManager(nullptr)
 {
-	m_pPlayer = std::make_unique<Player>(GetObjectManager());
+	//m_pPlayer = std::make_unique<Player>(GetObjectManager());
+	m_pPlayer = std::make_unique<Wizard>(GetObjectManager());
 	m_pCamera = std::make_unique<Camera>();
 	m_pEnemyManager = std::make_unique<EnemyManager>(GetObjectManager());
 	m_pItemManager = std::make_unique<ItemManager>();
@@ -49,6 +51,7 @@ void SceneTestTakagi::Init()
 	m_pMap->Init();
 	m_pEnemyManager->SetPlayer(m_pPlayer.get());
 	m_pEnemyManager->SetUIManager(m_pUIManager.get());
+	m_pEnemyManager->Init();
 	m_pUIManager->Init();
 	m_pCamera->SetMap(m_pMap.get());
 	m_pCamera->GenerateWorldScreen();

@@ -41,7 +41,7 @@ public:
 	/// <summary>
 	/// テキストを生成
 	/// </summary>
-	void CreateText(Vector3 position, int amount, PopUpText::Type type);
+	void CreateText(Vector3 position, int amount, PopUpUI::TextType type);
 
 private:
 

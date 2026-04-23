@@ -66,16 +66,17 @@ void SceneTestAsai::Init()
 	ItemMgr->SetPlayer(pPlayer);
 	ItemMgr->Init();
 
-	miniMap = new Minimap();
-	miniMap->SetCamera(camera);
-	miniMap->SetPlayer(pPlayer);
-	miniMap->SetItemManager(ItemMgr);
-	miniMap->Init();
-
 	enemyMgr = new EnemyManager(GetObjectManager());
 	//enemyMgr->Init();
 	enemyMgr->SetPlayer(pPlayer);
 	enemyMgr->SetUIManager(uiMgr);
+
+	miniMap = new Minimap();
+	miniMap->SetCamera(camera);
+	miniMap->SetPlayer(pPlayer);
+	miniMap->SetItemManager(ItemMgr);
+	miniMap->SetEnemyManager(enemyMgr);
+	miniMap->Init();
 	
 	weaponMgr = new WeaponManager();
 	weaponMgr->SetObjManager(GetObjectManager());
@@ -86,6 +87,8 @@ void SceneTestAsai::Init()
 	pPlayer->SetEnemyManager(enemyMgr);
 	pPlayer->SetItemManager(ItemMgr);
 	thunder->SetEnemyManager(enemyMgr);
+
+	uiMgr->SetEnemyManager(enemyMgr);
 
 }
 
@@ -119,15 +122,15 @@ SceneBase* SceneTestAsai::Update()
 
 	if (CheckHitKey(KEY_INPUT_2)) {
 
-		uiMgr->CreateDamagePopUpText(transform.position,5);
-		thunder->Shot(pPlayer->GetTransform());
+		uiMgr->CreatePopUpText(transform.position, 5, PopUpUI::TextType::Heal);
+		//thunder->Shot(pPlayer->GetTransform());
 		ItemMgr->Create(ItemBase::ItemType::Heal, pPlayer->GetTransform().position);
 
 	}
 	if (CheckHitKey(KEY_INPUT_3)) {
 
-		fire->ChangeStateField();
-		arrow->Shot(pPlayer->GetTransform());
+		enemyMgr->GenerateEnemy(EnemyManager::EnemyType::Melee);
+
 	}
 
 	if (CheckHitKey(KEY_INPUT_0)) {
@@ -179,7 +182,7 @@ void SceneTestAsai::PostDraw()
 	uiMgr->ScreenDraw();
 	miniMap->Draw();
 
-	//clsDx();
+	clsDx();
 
 	thunder->DebugDraw();
 

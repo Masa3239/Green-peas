@@ -17,6 +17,14 @@ namespace {
 
 	int kDamageColor = Color::kWhite;
 
+	constexpr int kColors[static_cast<int>(PopUpUI::TextType::Max)]{
+
+		Color::kWhite,
+		Color::kYellow,
+		Color::kGreen,
+
+	};
+
 }
 
 PopUpText::PopUpText():
@@ -82,15 +90,15 @@ void PopUpText::DebugDraw()
 void PopUpText::End()
 {
 
-	DeleteGraph(m_fontHandle);
+	DeleteFontToHandle(m_fontHandle);
 
 }
 
-void PopUpText::SetData(int amount, int fontHandle, PopUpText::Type type)
+void PopUpText::SetData(int amount, int fontHandle, PopUpUI::TextType type)
 {
 	//セットする
 	m_amount = amount;
 	m_fontHandle = fontHandle;
-	m_color = kDamageColor;
+	m_color = kColors[static_cast<int>(type)];
 
 }

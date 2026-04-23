@@ -1,9 +1,11 @@
+#pragma once
 #include"../Chara/Collision.h"
 #include"../Utility/Transform.h"
 #include"../Utility/Vector3.h"
 #include"../../Object/GameObject.h"
 //#include"../../System/InputPad.h"
 #include"PlayerStatus.h"
+#include"PlayerBuff.h"
 #include<memory>
 #include<vector>
 
@@ -27,7 +29,15 @@ class Camera;
 class Weapon;
 class EnemyManager;
 class ItemManager;
-class PlayerBuff;
+//class PlayerBuff;
+namespace Character {
+	enum class Job {
+		Warrior,	// 戦士
+		Hunter,		// 狩人
+		Wizard,		// 魔法使い
+		Max
+	};
+}
 
 class Player:public GameObject {
 public:
@@ -39,17 +49,6 @@ public:
 		Max
 	};
 
-	//enum class Status {
-	//	Level,				// レベル
-	//	HP,					// HP
-	//	Attack,				// 攻撃力
-	//	Defence,			// 防御力
-	//	Speed,				// 移動速度
-	//	Stamina,			// スタミナ
-	//	CriticalRate,		// クリティカル率
-	//	CriticalDamage,		// クリティカル割合
-	//	Max,
-	//};
 	/// <summary>
 	/// プレイヤーのコンストラクタ
 	/// メンバ変数の初期設定を行う
@@ -113,8 +112,9 @@ public:
 	/// </summary>
 	/// <param name="playerBuf"></param>
 	/// <returns></returns>
-	void AddBuff(const PlayerBuff& playerBuff);
+	void AddBuff(PlayerBuff& playerBuff);
 public: // ゲッター・セッター=======================
+	virtual Character::Job GetPlayerJob() { return Character::Job::Warrior; };
 	void SetCamera(Camera* camera) { m_camera = camera; }
 	/// <summary>
 	/// プレイヤーの角度を取得する関数
@@ -191,7 +191,8 @@ private:
 	void BufUpdate();
 	bool CheckAngerButton();
 	void UpdateAngerButton();
-private:
+	const PlayerStatus CheckBuffValue();
+protected:
 
 	/// <summary>
 	/// プレイヤーのTransform
@@ -205,9 +206,10 @@ private:
 
 	// プレイヤーが向いている方向(左右)
 	int m_directionX;
+	// プレイヤーの移動量
 	float m_moveAmount;
 	// 移動速度
-	float m_speed;
+	//float m_speed;
 	// 速さの割合
 	float m_accel;
 	// フレーム間の経過時間
@@ -215,9 +217,10 @@ private:
 
 	// プレイヤーの移動量
 	Vector3 m_moveVector;
-
+	// 4方向で向いている向き
 	MyMath::FourDirection m_direction;
-	float frame;
+	// アニメーションのフレーム
+	float m_animFrame;
 
 	/// <summary>
 	/// ゲージの配列(HP・スタミナ・怒り)
@@ -237,12 +240,30 @@ private:
 	/// バフの配列
 	/// </summary>
 	//std::vector< std::unique_ptr<PlayerBuf>> m_buffs;
-	std::vector< PlayerBuff> m_buffs;
+	std::vector<std::unique_ptr<PlayerBuff>> m_buffs;
+	/// <summary>
+	/// プレイヤーのパラメータ
+	/// </summary>
 	PlayerStatus m_status;
+	/// <summary>
+	/// 敵マネージャのポインタ
+	/// </summary>
 	EnemyManager* m_pEnemyMgr;
+	/// <summary>
+	/// アイテムマネージャーのポインタ
+	/// </summary>
 	ItemManager* m_pItemMgr;
+	/// <summary>
+	/// 怒りボタンを押したかどうかを取得するための変数
+	/// </summary>
 	bool m_angerButton[2];
-
+	/// <summary>
+	/// 怒り状態かどうか
+	/// </summary>
 	bool m_anger;
+	/// <summary>
+	/// カメラを揺らし続ける時間
+	/// </summary>
 	float m_cameraShakeCount;
+	Character::Job m_playerType;
 };

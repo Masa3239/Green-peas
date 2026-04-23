@@ -73,7 +73,7 @@ public:
 	/// <summary>
 	/// €–Sˆ—
 	/// </summary>
-	void Dead();
+	virtual void Dead();
 
 	bool ResetDamageFlag(int weapon, int index);
 

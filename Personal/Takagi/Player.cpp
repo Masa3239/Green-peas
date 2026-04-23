@@ -4,7 +4,6 @@
 #include"../Utility/Transform.h"
 #include"../Utility/Vector3.h"
 #include"../Utility/Time.h"
-//#include"../System/InputPad.h"
 #include<math.h>
 #include<memory>
 #include<vector>
@@ -13,10 +12,6 @@
 #include"../../Object/GameObject.h"
 #include"../../System/ObjectManager.h"
 #include"Weapon.h"
-#include"Sword.h"
-#include"Katana.h"
-#include"Bow.h"
-#include"Boomerang.h"
 #include"ExpGauge.h"
 #include"../Syoguti/ItemManager.h"
 #include"../Syoguti/ItemBase.h"
@@ -28,10 +23,6 @@
 #include"../../System/Input/Gamepad.h"
 
 namespace {
-	// ゲージの種類をキャスト(いちいちキャストするのが面倒なので用意)
-	//constexpr int kHpNum = static_cast<int>(Hp);
-	//constexpr int kStaminaNum = static_cast<int>(Stamina);
-	//constexpr int kAngerNum = static_cast<int>(Anger);
 	
 	// 通常の移動速度
 	constexpr float kDistanceSpeed = 20000.0f;
@@ -47,12 +38,20 @@ namespace {
 	constexpr float kAngerValue = 2.0f;
 	// 怒りゲージの減少量
 	constexpr float kAngerDecValue = 3.3f;
-	// 四角の当たり判定の大きさ
-	constexpr Vector3 kBoxSize = { 30,70,0 };
 	// 円の当たり判定の大きさ
 	constexpr float kCircleSize = 15;
 	// プレイヤー画像のグラフィックハンドル
-	const char* const kGraphPath = "Resource\\pipo-charachip_otaku01.png";
+	const char* const kGraphPath[static_cast<int>(Character::Job::Max)] = {
+		"Resource\\pipo-charachip_otaku01.png" ,
+		"Resource\\pipo-halloweenchara2016_01.png" ,
+		"Resource\\pipo-xmaschara02.png" 
+	};
+	// カメラを振動させる時間
+	constexpr float kCameraCount = 0.3f;
+	// 初期座標
+	constexpr Vector3 kInitPos = { 300,300,0 };
+
+
 	// 画像の表示倍率
 	constexpr float kPlayerScale = 1.5f;
 	// 初期ステータス
@@ -61,27 +60,43 @@ namespace {
 	constexpr PlayerStatus kGrowStatus = PlayerStatus(1, 1.05f, 1.1f, 1.1f, 1, 1, 1, 1);
 	// 怒り状態時のステータス
 	constexpr PlayerStatus kAngerStatus = PlayerStatus(1, 1, 1.5f, 1, 2, 1, 1.5f, 2);
-	// 初期座標
-	constexpr Vector3 kInitPos = { 300,300,0 };
-	constexpr float kCameraCount = 0.3f;
+	//constexpr PlayerStatus kBuffStatus = PlayerStatus(0, 0, 1.5f, 1, 3000, 2, 1.5f, 2);
 }
 
 Player::Player(ObjectManager* objManager) :
-	GameObject(objManager),
+	GameObject(objManager)/*,
 	m_directionX(1),
-	m_speed (kDistanceSpeed),
+	m_moveAmount(0),
 	m_accel(1),
 	m_deltaTime(0),
+	m_moveVector({ 0,0,0 }),
+	m_direction(MyMath::FourDirection::Front),
+	m_animFrame(0),
+	m_camera(nullptr),
+	m_cameraTransform(),
+	m_circle(),
+	m_pEnemyMgr(nullptr),
+	m_pItemMgr(nullptr),
 	m_angerButton(),
 	m_anger(false),
-	m_cameraShakeCount(0)
+	m_cameraShakeCount(0),
+	m_playerType(PlayerJob::Warrior)*/
 {
+
+}
+
+Player::~Player()
+{
+}
+
+void Player::Init()
+{
+	m_circle = Collision::Circle(GetTransform().position, kCircleSize);
+
 	m_angerButton[0] = false;
 	m_angerButton[1] = false;
 	// 初期座標の設定
 	GetTransform().position = kInitPos;
-	//m_camera = new Camera();
-	//m_camera->Init();
 
 	// 各ゲージの初期化
 	for (auto& gauge : m_gauges) {
@@ -91,20 +106,8 @@ Player::Player(ObjectManager* objManager) :
 	m_gauges[static_cast<int>(GaugeType::Exp)] = std::make_unique<ExpGauge>();
 	// 怒りゲージを0に
 	m_gauges[static_cast<int>(GaugeType::Anger)]->Reset(Gauge::Value::Min);
-
-	//m_box = Collision::AABB(GetTransform().position, kBoxSize);
 	// 円の当たり判定を初期化
 	m_circle = Collision::Circle(GetTransform().position, kCircleSize);
-
-	//for (auto& weapon : m_weapons) {
-	//	weapon = nullptr;
-	//}
-	// 初期武器を設定
-	
-	//m_weapons.push_back(std::make_unique<JpSword>(objManager));
-	//m_weapons.push_back(std::make_unique<Sword>(objManager));
-	//m_weapons.push_back(std::make_unique<Boomerang>(objManager));
-	//m_weapons.push_back(std::make_unique<Bow>(objManager));
 
 	for (auto& weapons : m_weapons) {
 		if (!weapons)continue;
@@ -119,7 +122,7 @@ Player::Player(ObjectManager* objManager) :
 			handle = -1;
 	}
 	int graph[12];
-	LoadDivGraph(kGraphPath, 12, 3, 4, 32, 32, graph);
+	LoadDivGraph(kGraphPath[static_cast<int>(m_playerType)], 12, 3, 4, 32, 32, graph);
 	int num = 0;
 	for (int i = 0;i < static_cast<int>(MyMath::FourDirection::Max);i++) {
 		for (int j = 0;j < 3;j++) {
@@ -129,18 +132,10 @@ Player::Player(ObjectManager* objManager) :
 	}
 	//for (int i = 0;i < static_cast<int>(Status::Max);i++) {
 	//}
-		m_status = kInitStatus;
+	m_status = kInitStatus;
 	m_gauges[static_cast<int>(GaugeType::Hp)]->SetValue(m_status.HP, Gauge::Value::Max);
 	m_gauges[static_cast<int>(GaugeType::Stamina)]->SetValue(m_status.Stamina, Gauge::Value::Max);
 	m_cameraTransform.Reset();
-}
-
-Player::~Player()
-{
-}
-
-void Player::Init()
-{
 }
 
 void Player::End()
@@ -164,6 +159,8 @@ void Player::End()
 void Player::Update()
 {
 	m_deltaTime = Time::GetInstance().GetDeltaTime();
+	// 時間が止まっていたら処理しない
+	if (!m_deltaTime)return;
 	if (m_anger || m_cameraShakeCount > 0) {
 		m_camera->ChangeAnger();
 		if (m_cameraShakeCount > 0) {
@@ -176,9 +173,6 @@ void Player::Update()
 	if (m_pItemMgr) {
 		if (InputManager::GetInstance().IsPressed(Input::Action::PickUp)) {
 			m_pItemMgr->CheckHitCollision(GetCircle());
-		}
-		if (Gamepad::GetInstance().IsDown(XINPUT_BUTTON_BACK)) {
-			m_pItemMgr->Create(ItemBase::ItemType::Heal, GetTransform().position);
 		}
 	}
 	m_camera->Update(m_cameraTransform);
@@ -194,8 +188,8 @@ void Player::Update()
 		//m_gauges[static_cast<int>(GaugeType::Exp)]->Increase(10*m_deltaTime);
 
 	printfDx("m_direction : %d\n", static_cast<int>(m_direction));
-	frame += m_deltaTime * 2;
-	if (frame > kPlayerFrame)frame = 0;
+	m_animFrame += m_deltaTime * 2;
+	if (m_animFrame > kPlayerFrame)m_animFrame = 0;
 	m_direction = MyMath::Direction(GetTransform().rotation.z);
 	if (m_gauges[static_cast<int>(GaugeType::Exp)]->CheckMax()) {
 		LevelUp();
@@ -211,6 +205,26 @@ void Player::Update()
 	}if (m_anger) {
 		m_gauges[static_cast<int>(GaugeType::Anger)]->Decrease(kAngerDecValue * m_deltaTime);
 	}
+	if (m_buffs.size() <= 0)return;
+	// バフの更新処理
+	for (int i = 0;i < m_buffs.size();i++) {
+		if (!m_buffs[i])continue;
+		m_buffs[i]->Update();
+		// バフの効果が終了していたら
+		if (m_buffs[i]->IsFinish()) {
+			// バフを消去する
+			m_buffs.erase(m_buffs.begin() + i);
+		}
+	}
+	//for (auto& buffs : m_buffs) {
+	//	if (buffs)continue;
+	//	buffs.Update();
+	//	// バフの効果が終了していたら
+	//	if (buffs.IsFinish()) {
+	//		// バフを消去する
+	//		m_buffs.erase(m_buffs.begin() + i);
+	//	}
+	//}
 }
 
 void Player::Move()
@@ -227,6 +241,7 @@ void Player::MoveAmount()
 {
 	printfDx("入力量 : %f\n", m_moveAmount);
 	PlayerStatus status = m_status;
+	status += CheckBuffValue();
 	if (m_anger) {
 		status *= kAngerStatus;
 	}
@@ -264,6 +279,7 @@ void Player::MoveAmount()
 		//weapons->Update();
 	
 		weapons->SetPlayerStatus(status);
+		weapons->SetPlayerJob(GetPlayerJob());
 		if (m_anger) {
 			weapons->SetScale(3);
 		}
@@ -322,9 +338,6 @@ void Player::MoveAmount()
 	}
 	
 	printfDx("moveSpeed : %f\n",moveSpeed);
-	if (Keyboard::GetInstance().IsDown(KEY_INPUT_K)) {
-		Damage(3);
-	}
 }
 
 void Player::Dash(bool stamina)
@@ -351,12 +364,16 @@ void Player::SpeedUpdate()
 
 void Player::Draw()
 {
-	// プレイヤー・カメラが移動していることがわかるよう一定の位置に円を描画
-	DrawCircle(600, 400, 10, GetColor(0, 0, 255));
+	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kPlayerScale, 0, m_graphHandle[static_cast<int>(m_direction)][kFrame[static_cast<int>(m_animFrame)]], TRUE);
+	
+	Debug();
+}
+
+void Player::Debug()
+{
 	// プレイヤー座標に円を描画
 	DrawCircle(GetTransform().position.x, GetTransform().position.y, 10, GetColor(255, 0, 0));
 	// プレイヤー画像の表示
-	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kPlayerScale, 0, m_graphHandle[static_cast<int>(m_direction)][kFrame[static_cast<int>(frame)]], TRUE);
 	// 現在向いている方向のデバッグ表示
 	Vector3 angle = { 0,0,0 };
 	angle.x = sinf(GetTransform().rotation.z);
@@ -365,31 +382,6 @@ void Player::Draw()
 	angle *= 10 * m_moveAmount;
 	angle += GetTransform().position;
 	DrawCircle(angle.x, angle.y, 3, GetColor(0, 255, 0));
-	Debug();
-	printfDx("x : %f\n", GetTransform().position.x);
-	printfDx("y : %f\n", GetTransform().position.y);
-	printfDx("z : %f\n", GetTransform().position.z);
-}
-
-void Player::Debug()
-{
-	//printfDx("現在HP       : %f\n", m_gauges[static_cast<int>(GaugeType::Hp)]->GetValue(Gauge::Value::Current));
-	//printfDx("最大HP       : %f\n", m_gauges[static_cast<int>(GaugeType::Hp)]->GetValue(Gauge::Value::Max));
-	//printfDx("最大HP       : %f\n", m_status.HP);
-	//printfDx("最小HP       : %f\n", m_gauges[static_cast<int>(GaugeType::Hp)]->GetValue(Gauge::Value::Min));
-	//printfDx("割合HP       : %f\n", GetGaugeRate(GaugeType::Hp));
-	//printfDx("現在スタミナ : %f\n", m_gauges[static_cast<int>(GaugeType::Stamina)]->GetValue(Gauge::Value::Current));
-	//printfDx("最大スタミナ : %f\n", m_gauges[static_cast<int>(GaugeType::Stamina)]->GetValue(Gauge::Value::Max));
-	//printfDx("最小スタミナ : %f\n", m_gauges[static_cast<int>(GaugeType::Stamina)]->GetValue(Gauge::Value::Min));
-	//printfDx("割合スタミナ : %f\n", GetGaugeRate(GaugeType::Stamina));
-	//printfDx("現在怒り     : %f\n", m_gauges[static_cast<int>(GaugeType::Anger)]->GetValue(Gauge::Value::Current));
-	//printfDx("最大怒り     : %f\n", m_gauges[static_cast<int>(GaugeType::Anger)]->GetValue(Gauge::Value::Max));
-	//printfDx("最小怒り     : %f\n", m_gauges[static_cast<int>(GaugeType::Anger)]->GetValue(Gauge::Value::Min));
-	//printfDx("割合怒り     : %f\n", GetGaugeRate(GaugeType::Anger));
-	//printfDx("現在経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Current));
-	//printfDx("最大経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Max));
-	//printfDx("最小経験     : %f\n", m_gauges[static_cast<int>(GaugeType::Exp)]->GetValue(Gauge::Value::Min));
-	//printfDx("割合経験     : %f\n", GetGaugeRate(GaugeType::Exp));
 
 	printfDx("m_angerButton : %d\n", CheckAngerButton());
 	printfDx("Level          : %d\n", m_status.Level);
@@ -406,6 +398,13 @@ void Player::Debug()
 	m_gauges[static_cast<int>(GaugeType::Exp)]->Debug();
 	//m_box.DebugDraw();
 	m_circle.DebugDraw();
+	for (auto& buffs : m_buffs) {
+		printfDx("残り時間 : %f\n", buffs->Second());
+	}
+	float attack = m_status.Attack + CheckBuffValue().Attack;
+	float speed = m_status.Speed + CheckBuffValue().Speed;
+	printfDx("攻撃 : %f\n", attack);
+	printfDx("攻撃 : %f\n", speed);
 	//printfDx("timeScale : %f\n", Time::GetInstance().GetTimeScale());
 }
 
@@ -414,12 +413,15 @@ void Player::Damage(float value)
 	// ダッシュ中なら処理しない
 	if (CheckDashNow())return;
 	if (m_anger)return;
+	float defence= m_status.Defence + CheckBuffValue().Defence;
+	float damage = value - defence;
+	damage = MyMath::Clamp(damage, 0.0f, value);
 	// ダメージ処理を行う
-	m_gauges[static_cast<int>(GaugeType::Hp)]->Decrease(value);
+	m_gauges[static_cast<int>(GaugeType::Hp)]->Decrease(damage);
 	// 最大・最小値よりも大ききくならないようにする
 	m_gauges[static_cast<int>(GaugeType::Hp)]->Clamp();
 	// 怒りゲージを上昇させる
-	m_gauges[static_cast<int>(GaugeType::Anger)]->Increase(value * kAngerValue);
+	m_gauges[static_cast<int>(GaugeType::Anger)]->Increase(damage * kAngerValue);
 	// 最大・最小値よりも大ききくならないようにする
 	m_gauges[static_cast<int>(GaugeType::Anger)]->Clamp();
 	m_cameraShakeCount = kCameraCount;
@@ -433,10 +435,10 @@ void Player::Heal(float value)
 	m_gauges[static_cast<int>(GaugeType::Hp)]->Clamp();
 }
 
-void Player::AddBuff(const PlayerBuff& playerBuff)
+void Player::AddBuff( PlayerBuff& playerBuff)
 {
-	PlayerBuff buf = playerBuff;
-	//m_buffs.push_back(buf);
+	std::unique_ptr< PlayerBuff> buf = std::make_unique<PlayerBuff>(playerBuff.GetBuffValue(), playerBuff.Second(), playerBuff.IsEternal());
+	m_buffs.push_back(std::move(buf));
 	//m_grasses.push_back(std::move(grass));
 	return;
 }
@@ -535,6 +537,10 @@ void Player::LevelUp()
 
 }
 
+void Player::BufUpdate()
+{
+}
+
 bool Player::CheckAngerButton()
 {
 
@@ -549,9 +555,18 @@ void Player::UpdateAngerButton()
 		InputManager::GetInstance().IsDown(Input::Action::Anger3) &&
 		InputManager::GetInstance().IsDown(Input::Action::Anger4)) {
 		m_angerButton[0] = true;
-		//return true;
 	}
 	else {
 		m_angerButton[0] = false;
 	}
+}
+
+const PlayerStatus Player::CheckBuffValue()
+{
+	PlayerStatus status;
+	status.Reset();
+	for (auto& buff : m_buffs) {
+		status += buff.get()->GetBuffValue();
+	}
+	return status;
 }

@@ -20,9 +20,11 @@ void PopUpTextManager::Init()
 
 	m_pTexts.resize(200);
 
-	m_textFonts.resize(static_cast<int>(PopUpText::Type::Max));
+	m_textFonts.resize(static_cast<int>(PopUpUI::TextType::Max));
 
-	m_textFonts[static_cast<int>(PopUpText::Type::Damage)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
+	m_textFonts[static_cast<int>(PopUpUI::TextType::Damage)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
+	m_textFonts[static_cast<int>(PopUpUI::TextType::Critical)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
+	m_textFonts[static_cast<int>(PopUpUI::TextType::Heal)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 
 	for (int i = 0;i < m_pTexts.size();i++) {
 
@@ -98,7 +100,7 @@ void PopUpTextManager::End()
 
 }
 
-void PopUpTextManager::CreateText(Vector3 position, int amount, PopUpText::Type type)
+void PopUpTextManager::CreateText(Vector3 position, int amount, PopUpUI::TextType type)
 {
 
 	for (auto& text : m_pTexts) {

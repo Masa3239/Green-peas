@@ -1,10 +1,14 @@
 #pragma once
 #include<memory>
 #include"../../Utility/Vector3.h"
+#include"../Asai/PopUpText.h"
 
 class PlayerUIManager;
 class PopUpTextManager;
+class Combo;
+
 class Player;
+class EnemyManager;
 
 class UIManager
 {
@@ -51,12 +55,18 @@ public:
 
 	void SetPlayer(Player* pPlayer);
 
-	void CreateDamagePopUpText(Vector3 pos,int amount);
+	void SetEnemyManager(EnemyManager* pEnemyManager);
+
+	void CreatePopUpText(Vector3 pos, int amount, PopUpUI::TextType type);
 
 private:
 
 	std::unique_ptr<PlayerUIManager>m_pPlayerUIMgr;
 
 	std::unique_ptr<PopUpTextManager>m_pPopUpTextMgr;
+
+	std::unique_ptr<Combo>m_pCombo;
+
+	EnemyManager* m_pEnemyManager;
 
 };

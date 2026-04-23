@@ -6,15 +6,14 @@ namespace {
 }
 
 PlayerBuff::PlayerBuff():
-m_bufValue(),
+m_buffValue({0,0,0,0,0,0,0,0}),
 m_second(0),
 m_isEternal(false)
 {
-	m_bufValue = { 0,0,0,0,0,0,0,0 };
 }
 
 PlayerBuff::PlayerBuff(PlayerStatus bufValue, float second, bool eternal) :
-	m_bufValue(bufValue),
+	m_buffValue(bufValue),
 	m_second(second),
 	m_isEternal(eternal)
 {

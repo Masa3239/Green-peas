@@ -194,5 +194,12 @@ bool PlayerStatus::operator!=(const PlayerStatus& status) const
 
 void PlayerStatus::Reset()
 {
-    *this = PlayerStatus();
+    Level =0;
+        HP =0;
+        Attack =0;
+        Defence =0;
+        Speed =0;
+        Stamina =0;
+        CriticalRate =0;
+        CriticalDamage = 0;
 }
