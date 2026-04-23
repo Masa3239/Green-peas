@@ -3,10 +3,13 @@
 #include<DxLib.h>
 
 #include"../../Utility/Game.h"
+#include"../../Utility/Color.h"
 #include"../Asai/Camera.h"
 
-#include"../Takagi/Player.h"
+#include"../Kimura/Map/Map.h"
+#include"../Osawa/Enemy/EnemyManager.h"
 #include"../Syoguti/ItemManager.h"
+#include"../Takagi/Player.h"
 
 namespace {
 	//ミニマップのサイズ
@@ -69,13 +72,25 @@ void Minimap::Draw()
 	//プレイヤーの描画
 	DrawRotaGraph(playerPos.x, playerPos.y, kPlayerIconScale, m_pPlayer->GetTransform().rotation.z + kOffSetRadian, m_playerUIGrahpHandle, TRUE);
 
+	//全てのアイテムを描画
 	for (int i = 0;i < m_pItemMgr->GetArraySize();i++) {
 		//アイテムの座標を取得　ミニマップの座標に変換
 		Vector3 itemPos = ToMinimapPos(m_pItemMgr->GetItemPos(i));
 		//アイテムを描画
-		DrawCircle(itemPos.x, itemPos.y, 2, 0xffff00, TRUE);
+		DrawCircle(itemPos.x, itemPos.y, 1.5f, Color::kYellow, TRUE);
 
 	}
+
+	//全ての中ボスを描画
+	for (auto miniBoss : m_pEnemyMgr->GetMiniBossPositions()) {
+		//中ボスの座標をミニマップ座標に変換
+		miniBoss = ToMinimapPos(miniBoss);
+		//中ボスを描画
+		DrawCircle(miniBoss.x, miniBoss.y, 2, Color::kRed, TRUE);
+
+	}
+
+
 
 }
 

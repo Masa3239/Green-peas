@@ -52,12 +52,12 @@ void PlayerAngerBar::Draw()
         m_graphHandle, TRUE
     );
 
-    //DrawBox(kGaugeLeft,
-    //    kGaugeBottom - 3 - (angerGaugeHeight * m_rate),
-    //    kGaugeRight,
-    //    kGaugeBottom - 3,
-    //    0xff0000, TRUE
-    //);
+    DrawBox(kGaugeLeft,
+        kGaugeBottom - 3 - (angerGaugeHeight * m_rate),
+        kGaugeRight,
+        kGaugeBottom - 3,
+        0xff0000, TRUE
+    );
 
 }
 

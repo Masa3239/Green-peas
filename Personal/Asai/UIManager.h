@@ -5,6 +5,7 @@
 class PlayerUIManager;
 class PopUpTextManager;
 class Player;
+class EnemyManager;
 
 class UIManager
 {
@@ -51,6 +52,8 @@ public:
 
 	void SetPlayer(Player* pPlayer);
 
+	void SetEnemyManager(EnemyManager* pEnemyManager) { m_pEnemyManager = pEnemyManager; }
+
 	void CreateDamagePopUpText(Vector3 pos,int amount);
 
 private:
@@ -58,5 +61,7 @@ private:
 	std::unique_ptr<PlayerUIManager>m_pPlayerUIMgr;
 
 	std::unique_ptr<PopUpTextManager>m_pPopUpTextMgr;
+
+	EnemyManager* m_pEnemyManager;
 
 };

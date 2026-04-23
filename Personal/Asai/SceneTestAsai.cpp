@@ -66,16 +66,17 @@ void SceneTestAsai::Init()
 	ItemMgr->SetPlayer(pPlayer);
 	ItemMgr->Init();
 
-	miniMap = new Minimap();
-	miniMap->SetCamera(camera);
-	miniMap->SetPlayer(pPlayer);
-	miniMap->SetItemManager(ItemMgr);
-	miniMap->Init();
-
 	enemyMgr = new EnemyManager(GetObjectManager());
 	//enemyMgr->Init();
 	enemyMgr->SetPlayer(pPlayer);
 	enemyMgr->SetUIManager(uiMgr);
+
+	miniMap = new Minimap();
+	miniMap->SetCamera(camera);
+	miniMap->SetPlayer(pPlayer);
+	miniMap->SetItemManager(ItemMgr);
+	miniMap->SetEnemyManager(enemyMgr);
+	miniMap->Init();
 	
 	weaponMgr = new WeaponManager();
 	weaponMgr->SetObjManager(GetObjectManager());
