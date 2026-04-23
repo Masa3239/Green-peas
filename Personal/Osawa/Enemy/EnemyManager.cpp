@@ -106,7 +106,7 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, int damage)
 		if (!enemy->Damage(damage)) continue;
 
 
-		m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, damage);
+		
 		m_uiMgr->CreatePopUpText(enemy->GetTransform().position, damage, PopUpUI::TextType::Damage);
  
 
@@ -142,7 +142,7 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 		if (!enemy->Damage(finalDamage, weapon, index)) continue;
 
 
-		m_uiMgr->CreateDamagePopUpText(enemy->GetTransform().position, finalDamage);
+		
 
 		m_uiMgr->CreatePopUpText(enemy->GetTransform().position, finalDamage, textType);
 
