@@ -2,6 +2,7 @@
 #include"../Asai/PlayerUIBase.h"
 
 #include<DxLib.h>
+#include<string>
 #include"../../Utility/Game.h"
 
 #include"../Takagi/Player.h"
@@ -31,6 +32,8 @@ PlayerExpBar::PlayerExpBar():
 
 void PlayerExpBar::Init()
 {
+	//フォントを作成
+	m_fontHandle = CreateFontToHandle(NULL, 25, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 }
 
 void PlayerExpBar::Update()
@@ -57,6 +60,10 @@ void PlayerExpBar::Draw()
 		kGraphPosRight,
 		kGraphPosBottom,
 		0x0000ff, FALSE);
+
+	std::string level = "Lv." + std::to_string(m_level);
+
+	DrawStringToHandle(kGraphPosLeft+10, kPosY, level.c_str(), 0x000000, m_fontHandle);
 
 }
 

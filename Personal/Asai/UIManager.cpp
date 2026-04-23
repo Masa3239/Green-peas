@@ -99,9 +99,9 @@ void UIManager::SetEnemyManager(EnemyManager* pEnemyManager)
 
 }
 
-void UIManager::CreateDamagePopUpText(Vector3 pos, int amount)
+void UIManager::CreatePopUpText(Vector3 pos, int amount, PopUpUI::TextType type)
 {
 
-	m_pPopUpTextMgr->CreateText(pos, amount, PopUpText::Type::Damage);
+	m_pPopUpTextMgr->CreateText(pos, amount, type);
 
 }

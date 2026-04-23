@@ -122,8 +122,8 @@ SceneBase* SceneTestAsai::Update()
 
 	if (CheckHitKey(KEY_INPUT_2)) {
 
-		uiMgr->CreateDamagePopUpText(transform.position,5);
-		thunder->Shot(pPlayer->GetTransform());
+		uiMgr->CreatePopUpText(transform.position, 5, PopUpUI::TextType::Heal);
+		//thunder->Shot(pPlayer->GetTransform());
 		ItemMgr->Create(ItemBase::ItemType::Heal, pPlayer->GetTransform().position);
 
 	}

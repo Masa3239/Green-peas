@@ -1,18 +1,21 @@
 #pragma once
 #include"../../Utility/Transform.h"
 
-class PopUpText
-{
+namespace PopUpUI {
 
-public:
-
-	enum class Type {
+	enum class TextType {
 
 		Damage = 0,
+		Critical,
 		Heal,
 		Max,
 
 	};
+
+}
+
+class PopUpText
+{
 
 public:
 
@@ -62,7 +65,7 @@ public:
 	/// <param name="amount">設定する値</param>
 	/// <param name="fontHandle">設定する画像</param>
 	/// <param name="type">設定するタイプ</param>
-	void SetData(int amount, int fontHandle, PopUpText::Type type);
+	void SetData(int amount, int fontHandle, PopUpUI::TextType type);
 
 private:
 

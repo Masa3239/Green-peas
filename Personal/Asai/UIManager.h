@@ -1,6 +1,7 @@
 #pragma once
 #include<memory>
 #include"../../Utility/Vector3.h"
+#include"../Asai/PopUpText.h"
 
 class PlayerUIManager;
 class PopUpTextManager;
@@ -56,7 +57,7 @@ public:
 
 	void SetEnemyManager(EnemyManager* pEnemyManager);
 
-	void CreateDamagePopUpText(Vector3 pos,int amount);
+	void CreatePopUpText(Vector3 pos, int amount, PopUpUI::TextType type);
 
 private:
 

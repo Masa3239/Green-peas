@@ -7,7 +7,7 @@
 
 namespace {
 
-    const char* const kGraphHandlePath = "";
+    const char* const kGraphHandlePath = ".\\Personal\\Asai\\Graph\\barRed_verticalMid.png";
 
     constexpr float kGaugeLeft = Game::kScreenWidth - 60;
 
@@ -26,7 +26,7 @@ PlayerAngerBar::PlayerAngerBar()
 void PlayerAngerBar::Init()
 {
     //画像の読み込み予定
-    //m_graphHandle = LoadGraph(kGraphHandlePath);
+    m_graphHandle = LoadGraph(kGraphHandlePath);
 
 }
 
@@ -52,12 +52,12 @@ void PlayerAngerBar::Draw()
         m_graphHandle, TRUE
     );
 
-    DrawBox(kGaugeLeft,
-        kGaugeBottom - 3 - (angerGaugeHeight * m_rate),
-        kGaugeRight,
-        kGaugeBottom - 3,
-        0xff0000, TRUE
-    );
+    //DrawBox(kGaugeLeft,
+    //    kGaugeBottom - 3 - (angerGaugeHeight * m_rate),
+    //    kGaugeRight,
+    //    kGaugeBottom - 3,
+    //    0xff0000, TRUE
+    //);
 
 }
 
