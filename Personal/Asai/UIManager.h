@@ -4,6 +4,8 @@
 
 class PlayerUIManager;
 class PopUpTextManager;
+class Combo;
+
 class Player;
 class EnemyManager;
 
@@ -52,7 +54,7 @@ public:
 
 	void SetPlayer(Player* pPlayer);
 
-	void SetEnemyManager(EnemyManager* pEnemyManager) { m_pEnemyManager = pEnemyManager; }
+	void SetEnemyManager(EnemyManager* pEnemyManager);
 
 	void CreateDamagePopUpText(Vector3 pos,int amount);
 
@@ -61,6 +63,8 @@ private:
 	std::unique_ptr<PlayerUIManager>m_pPlayerUIMgr;
 
 	std::unique_ptr<PopUpTextManager>m_pPopUpTextMgr;
+
+	std::unique_ptr<Combo>m_pCombo;
 
 	EnemyManager* m_pEnemyManager;
 

@@ -82,7 +82,7 @@ void PopUpText::DebugDraw()
 void PopUpText::End()
 {
 
-	DeleteGraph(m_fontHandle);
+	DeleteFontToHandle(m_fontHandle);
 
 }
 

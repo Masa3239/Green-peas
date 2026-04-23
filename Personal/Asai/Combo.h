@@ -39,14 +39,29 @@ public:
 
 private:
 
+	/// <summary>
+	/// コンボのフォント
+	/// </summary>
 	int m_fontHandle;
 
+	/// <summary>
+	/// コンボ数
+	/// </summary>
 	int m_combo;
 
+	/// <summary>
+	/// 1F前の倒した敵の数
+	/// </summary>
 	int m_prevDefeatedNum;
 
+	/// <summary>
+	/// コンボ受付タイマー
+	/// </summary>
 	float m_receptionTimer;
 
+	/// <summary>
+	/// 表示状態
+	/// </summary>
 	bool m_isVisible;
 
 	EnemyManager* m_pEnemyMgr;

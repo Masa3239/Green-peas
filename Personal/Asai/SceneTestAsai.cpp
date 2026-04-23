@@ -88,6 +88,8 @@ void SceneTestAsai::Init()
 	pPlayer->SetItemManager(ItemMgr);
 	thunder->SetEnemyManager(enemyMgr);
 
+	uiMgr->SetEnemyManager(enemyMgr);
+
 }
 
 void SceneTestAsai::End()
@@ -127,8 +129,8 @@ SceneBase* SceneTestAsai::Update()
 	}
 	if (CheckHitKey(KEY_INPUT_3)) {
 
-		fire->ChangeStateField();
-		arrow->Shot(pPlayer->GetTransform());
+		enemyMgr->GenerateEnemy(EnemyManager::EnemyType::Melee);
+
 	}
 
 	if (CheckHitKey(KEY_INPUT_0)) {
@@ -180,7 +182,7 @@ void SceneTestAsai::PostDraw()
 	uiMgr->ScreenDraw();
 	miniMap->Draw();
 
-	//clsDx();
+	clsDx();
 
 	thunder->DebugDraw();
 
