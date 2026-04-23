@@ -17,6 +17,13 @@ public:
 	EnemyManager(ObjectManager* objManager);
 	~EnemyManager();
 
+	enum class EnemyType
+	{
+		Melee,		// 近距離
+		Shooter,	// 遠距離
+		Miniboss,	// 中ボス
+	};
+
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
@@ -66,19 +73,24 @@ public:
 
 	bool ResetEnemyDamageFlag(int weapon, int index);
 
-	void AddEnemyTest();
+	/// <summary>
+	/// 敵をプレイヤーの周りに生成する
+	/// </summary>
+	/// <param name="type">生成したい敵の種類</param>
+	void GenerateEnemy(EnemyType type);
+
+	/// <summary>
+	/// 敵を生成する
+	/// </summary>
+	/// <param name="type">生成したい敵の種類</param>
+	/// <param name="pos">生成する場所</param>
+	void GenerateEnemy(EnemyType type, Vector3 pos);
 
 	void SetPlayer(Player* player) { m_pPlayer = player; }
 
 	void SetUIManager(UIManager* uiMgr) { m_uiMgr = uiMgr; }
 
 private:
-
-	/// <summary>
-	/// 敵をプレイヤーの周りに生成する
-	/// </summary>
-	/// <param name="enemy">敵のインスタンス</param>
-	void GenerateEnemy(EnemyBase* enemy);
 
 	/// <summary>
 	/// 死亡判定
@@ -88,7 +100,7 @@ private:
 	/// <summary>
 	/// 敵の配列
 	/// </summary>
-	std::vector<EnemyBase*> m_enemies;
+	std::vector<std::unique_ptr<EnemyBase>> m_enemies;
 
 	Player* m_pPlayer;
 

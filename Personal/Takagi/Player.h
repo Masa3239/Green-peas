@@ -113,7 +113,7 @@ public:
 	/// </summary>
 	/// <param name="playerBuf"></param>
 	/// <returns></returns>
-	void AddBuff(PlayerBuff& playerBuff)const;
+	void AddBuff(const PlayerBuff& playerBuff);
 public: // ゲッター・セッター=======================
 	void SetCamera(Camera* camera) { m_camera = camera; }
 	/// <summary>
@@ -173,6 +173,8 @@ public: // ゲッター・セッター=======================
 	void SetEnemyManager(EnemyManager* enemyManager);
 	void SetItemManager(ItemManager* itemManager) { m_pItemMgr = itemManager; }
 	void SetWeapon(Weapon* weapon);
+	void ExpUp(float value);
+	bool CheckAnger() { return m_anger; }
 private:
 	/// <summary>
 	/// ダッシュ可能かどうかを調べる関数
