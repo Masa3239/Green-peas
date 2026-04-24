@@ -7,10 +7,18 @@
 
 namespace {
 
-	//const char* const 
+	const char* const kGraphHandlePath = ".\\Personal\\Asai\\Graph\\FIREBALL EFFECT 1.png";
+
+	constexpr int kOffSetDraw = 25;
+
+	constexpr float kBallGraphScale = 0.7;
+
+	constexpr float kFiFieldGraphScale = 1.4f;
+
+	constexpr float kGraphFrameChangeTime = 0.1f;
 
 	//当たり判定のサイズ
-	constexpr float kCollisionBallSize = 20.0f;
+	constexpr float kCollisionBallSize = 30.0f;
 	constexpr float kCollisionFieldSize = 60.0f;
 
 	//移動速度
@@ -29,12 +37,28 @@ FireBall::FireBall(ObjectManager* objManager) :
 	BulletBase(objManager),
 	m_state(State::Ball),
 	m_fieldElapsedTime(0),
-	m_fieldDamageIntervalTimer(0)
+	m_fieldDamageIntervalTimer(0),
+	m_graphHandle(),
+	m_graphFrame(0),
+	m_graphCounter(0)
 {
 }
 
 void FireBall::Init()
 {
+
+	int buf[81];
+
+	LoadDivGraph(kGraphHandlePath, 81, 9, 9, 190, 190, buf);
+
+	for (int i = 0;i < 63;i++) {
+
+		if (i <= 8)continue;
+
+		m_graphHandle.push_back(buf[i]);
+
+	}
+
 }
 
 void FireBall::Update()
@@ -65,21 +89,45 @@ void FireBall::Draw()
 
 	//当たり判定の大きさ
 	float collisionSize = 0;
+	float graphScale = 0;
 
 	switch (m_state)
 	{
 	case FireBall::State::Ball:
 		collisionSize = kCollisionBallSize;
+		graphScale = kBallGraphScale;
 		break;
 	case FireBall::State::Field:
 		collisionSize = kCollisionFieldSize;
+		graphScale = kFiFieldGraphScale;
 		break;
 	default:
 		break;
 	}
 
+	//画像変更のタイマーを加算
+	m_graphCounter += Time::GetInstance().GetDeltaTime();
+
+	//フレーム変更のタイミングになったら
+	if (m_graphCounter >= kGraphFrameChangeTime) {
+		//フレームを加算
+		m_graphFrame++;
+		//カウンターをリセット
+		m_graphCounter = 0;
+
+		//次の画像がなかったら
+		if (m_graphHandle.size() <= m_graphFrame) {
+			//画像を最初からにする
+			m_graphFrame = 0;
+		}
+
+	}
+
+	//画像の描画
+	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y - kOffSetDraw, graphScale, 0, m_graphHandle[m_graphFrame], TRUE);
+
 	//丸を描画
-	DrawCircle(GetTransform().position.x, GetTransform().position.y, collisionSize * m_scale, TRUE, 0xff0000);
+	//DrawCircle(GetTransform().position.x, GetTransform().position.y, collisionSize * m_scale, TRUE, 0xff0000);
 
 }
 

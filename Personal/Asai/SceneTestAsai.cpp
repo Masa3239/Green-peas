@@ -116,9 +116,9 @@ SceneBase* SceneTestAsai::Update()
 		transform.position.y++;
 		transform.rotation.z += 0.1f;
 		//pPlayer->Damage(1);
-		camera->StartDamage(1.0f);
+		//camera->StartDamage(1.0f);
 		//thunder->SetScale(transform.rotation.z);
-		//fire->Shot(pPlayer->GetTransform());
+		fire->Shot(pPlayer->GetTransform());
 	}
 
 	if (CheckHitKey(KEY_INPUT_2)) {
@@ -130,7 +130,7 @@ SceneBase* SceneTestAsai::Update()
 	}
 	if (CheckHitKey(KEY_INPUT_3)) {
 
-		enemyMgr->GenerateEnemy(EnemyManager::EnemyType::Melee);
+		//enemyMgr->GenerateEnemy(EnemyManager::EnemyType::Melee);
 
 	}
 
