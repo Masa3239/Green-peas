@@ -69,11 +69,6 @@ private:
 	void UpdateBall();
 
 	/// <summary>
-	/// StateがFieldの時の更新処理
-	/// </summary>
-	void UpdateField();
-
-	/// <summary>
 	/// 伝染状態のアップデート
 	/// </summary>
 	void UpdateInfection();
@@ -83,7 +78,6 @@ private:
 	enum class State {
 
 		Ball = 0,
-		Field,
 		Infection,
 	};
 
@@ -113,5 +107,14 @@ private:
 	/// 雷が当たった敵を調べる
 	/// </summary>
 	std::vector<EnemyBase*>m_pEnemies;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	std::vector<int>m_graphHandle;
+
+	float m_graphFrame;
+
+	float m_graphCounter;
 
 };

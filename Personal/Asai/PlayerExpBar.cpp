@@ -9,7 +9,8 @@
 
 namespace {
 
-	const char* const kGraphHandlePath = "";
+	const char* const kGraphHandlePath = ".\\Personal\\Asai\\Graph\\exp.png";
+	//const char* const kGraphHandlePath = ".\\Personal\\Asai\\Graph\\iconCircle_brown.png";
 
 	constexpr int kCirclePosX = Game::kScreenWidth - 50;
 
@@ -32,6 +33,9 @@ PlayerExpBar::PlayerExpBar():
 
 void PlayerExpBar::Init()
 {
+
+	m_graphHandle = LoadGraph(kGraphHandlePath);
+
 	//フォントを作成
 	m_fontHandle = CreateFontToHandle(NULL, 25, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 }
@@ -46,20 +50,23 @@ void PlayerExpBar::Draw()
 	//描画しない設定なら描画しない
 	if (m_isVisible)return;
 
-	//作成予定
-	//DrawRectGraph()
 
-	//仮
 	DrawCircle(kCirclePosX, kPosY, kRadius, 0xffffff, TRUE);
 
 	float expGaugeHeight = (kGraphPosBottom) - (kGraphPosTop);
 
-	DrawBox(
-		kGraphPosLeft,
-		kGraphPosBottom - (expGaugeHeight * m_rate),
-		kGraphPosRight,
-		kGraphPosBottom,
-		0x0000ff, FALSE);
+
+	DrawRectGraph(kCirclePosX - kRadius, kPosY - kRadius + (kRadius * 2) * (1 - m_rate),
+		0, (1 - m_rate) * (kRadius * 2),
+		(kRadius * 2), (kRadius * 2),
+		m_graphHandle, TRUE);
+
+	//DrawBox(
+	//	kGraphPosLeft,
+	//	kGraphPosBottom - (expGaugeHeight * m_rate),
+	//	kGraphPosRight,
+	//	kGraphPosBottom,
+	//	0x0000ff, FALSE);
 
 	std::string level = "Lv." + std::to_string(m_level);
 
