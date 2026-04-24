@@ -5,6 +5,9 @@
 #include "../Utility/Time.h"
 #include "../Osawa/Enemy/EnemyManager.h"
 #include "../Syoguti/EnemyBoss.h"
+#include "../Osawa/Easing/Tween.h"
+
+#include "../System/Input/Keyboard.h"
 
 namespace
 {
@@ -19,8 +22,13 @@ BossKey::BossKey(ObjectManager* objManager) :
 	GameObject(objManager),
 	m_action(Action::Appear),
 	m_pPlayer(nullptr),
+	m_pEnemyMgr(nullptr),
+	m_pTween(nullptr),
 	m_color(),
-	m_moveRadian(0.0f)
+	m_moveRadian(0.0f),
+	m_moveDistance(0.0f),
+	m_moveSpeed(0.0f),
+	m_animationTimer(0.0f)
 {
 }
 
@@ -30,6 +38,8 @@ BossKey::~BossKey()
 
 void BossKey::Init()
 {
+	m_pTween = std::make_unique<Tween>();
+
 	m_animationTimer = 2.0f;
 }
 
@@ -77,19 +87,36 @@ void BossKey::Update()
 
 		m_animationTimer += Time::GetInstance().GetDeltaTime();
 
+		if (Keyboard::GetInstance().IsDown(KEY_INPUT_K))
+		{
+			UseKey();
+		}
+
 		break;
 	}
 
 	case BossKey::Action::Use:
 
+		if (m_animationTimer > 0.0f) break;
+
 		m_pEnemyMgr->GetEnemyBoss()->SealReleaseFlag();
+
+		SetState(State::Dead);
 
 		break;
 	}
+
+	m_pTween->Update();
 }
 
 void BossKey::Draw()
 {
-	Vector3 pos = GetTransform().position;
-	DrawCircle(pos.x, pos.y + std::sin(m_animationTimer * 2.0f) * 20.0f, 10, 0xffff00);
+	Vector3& pos = GetTransform().position;
+	DrawCircle(pos.x, pos.y/* + std::sin(m_animationTimer * 2.0f) * 20.0f*/, 10, 0xffff00);
+}
+
+void BossKey::UseKey()
+{
+
+	m_action = Action::Use;
 }

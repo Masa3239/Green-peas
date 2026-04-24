@@ -1,9 +1,11 @@
 #pragma once
 
 #include "../Object/GameObject.h"
+#include <memory>
 
 class Player;
 class EnemyManager;
+class Tween;
 
 class BossKey : public GameObject
 {
@@ -28,6 +30,11 @@ public:
 
 	void Draw() override;
 
+	/// <summary>
+	/// 鍵を使用する
+	/// </summary>
+	void UseKey();
+
 	void SetPlayer(Player* player) { m_pPlayer = player; }
 	void SetEnemyManager(EnemyManager* enemyMgr) { m_pEnemyMgr = enemyMgr; }
 
@@ -38,6 +45,8 @@ private:
 	Player* m_pPlayer;
 
 	EnemyManager* m_pEnemyMgr;
+
+	std::unique_ptr<Tween> m_pTween;
 
 	Vector3 m_color;
 
