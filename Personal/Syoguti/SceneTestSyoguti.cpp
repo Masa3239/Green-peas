@@ -18,7 +18,7 @@
 #include"../Kimura/Map/Map.h"
 #include"../Osawa/Enemy/EnemyManager.h"
 #include"../Asai/UIManager.h"
-
+#include "../Syoguti/ChestManager.h"
 
 namespace {
 
@@ -36,6 +36,7 @@ SceneTestSyoguti::SceneTestSyoguti() :
 	m_pEnemyManager(nullptr),
 	m_pMap(nullptr),
 	m_pUIManager(nullptr),
+	m_pChest(nullptr),
 	m_transform(),
 	m_buffRandom()
 {

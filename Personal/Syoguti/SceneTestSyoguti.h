@@ -13,6 +13,7 @@ class ItemManager;
 class EnemyManager;
 class UIManager;
 class WeaponManager;
+class ChestManager;
 
 class SceneTestSyoguti : public SceneBase
 {
@@ -61,6 +62,7 @@ private:
 
 	std::unique_ptr<UIManager>m_pUIManager;
 
+	std::unique_ptr <ChestManager>m_pChest;
 
 	std::vector<Buff::BuffType> m_testDraw;
 
