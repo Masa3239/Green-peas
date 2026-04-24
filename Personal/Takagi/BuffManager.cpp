@@ -9,13 +9,14 @@
 namespace {
 	const char* const kIconPath = "Resource\\Iccons\\skill_";
 	const char* const kPing = ".png";
+	const char* const kSelectPath = "Resource\\Iccons\\select.png";
 
 }
 
 BuffManager::BuffManager() :
 	m_pPlayer(nullptr),
 	m_buffType(),
-	m_phase(Phase::Max),
+	m_phase(Phase::Start),
 	m_select(0),
 	m_selected(Buff::Type::Max)
 {
@@ -25,6 +26,8 @@ BuffManager::BuffManager() :
 		path = kIconPath + std::to_string(i) + kPing;
 		m_iconHandle[i] = LoadGraph(path.c_str());
 	}
+	m_selectHandle = -1;
+	m_selectHandle = LoadGraph(kSelectPath);
 }
 
 BuffManager::~BuffManager()
@@ -32,6 +35,7 @@ BuffManager::~BuffManager()
 	for (int& handle:m_iconHandle) {
 		DeleteGraph(handle);
 	}
+	DeleteGraph(m_selectHandle);
 }
 
 void BuffManager::Init()
@@ -45,16 +49,21 @@ void BuffManager::End()
 void BuffManager::Update()
 {
 
-	if (!PauseManager::GetInstance().IsPause()) return;
 
-	if (InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
+
 		switch (m_phase)
 		{
 		case Phase::Start:
+
 			RandomBuff();
+			if (InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
 			m_phase = Phase::Select;
+			}
 			break;
 		case Phase::Select:
+			if (!InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
+				break;
+			}
 			m_selected = BuffSelect();
 			if (PauseManager::GetInstance().IsPause()) {
 				PauseManager::GetInstance().TogglePause();
@@ -65,7 +74,6 @@ void BuffManager::Update()
 			break;
 		}
 
-	}
 	if (InputManager::GetInstance().IsPressed(Input::Action::Left)) {
 		m_select--;
 	}
@@ -74,24 +82,27 @@ void BuffManager::Update()
 		m_select++;
 	}
 	m_select = MyMath::Clamp(m_select, 0, kBuffSelectNum - 1);
+	if (!PauseManager::GetInstance().IsPause()) return;
 }
 
 
 void BuffManager::Draw()
 {
 	for (int i = 0;i < kBuffSelectNum;i++) {
-		printfDx("BuffType : %d\n", static_cast<int>(m_buffType[i]));
+		printfDx("BuffType[%d] : %d\n",i, static_cast<int>(m_buffType[i]));
 	}
-	printfDx("選択　　 : %d\n", static_cast<int>(m_selected));
-	printfDx("選択b    : %d\n", static_cast<int>(m_select));
-	printfDx("選択c    : %d\n", static_cast<int>(m_phase));
-	if (!IsSelect())return;
+	printfDx("選択された: %d\n", static_cast<int>(m_selected));
+	printfDx("選択中    : %d\n", static_cast<int>(m_select));
+	printfDx("選択段階  : %d\n", static_cast<int>(m_phase));
 	if (m_selected != Buff::Type::Max) {
 		DrawRotaGraph(400, 450, 0.2f, 0, m_iconHandle[static_cast<int>(m_selected)], TRUE);
 	}
 	for (int i = 0;i < kBuffSelectNum;i++) {
+		if(i==m_select&&m_phase==Phase::Select)
+		DrawRotaGraph(150+150*i, 200, 0.05f, 0, m_selectHandle, TRUE);
 		DrawRotaGraph(150+150*i, 200, 0.2f, 0, m_iconHandle[static_cast<int>(m_buffType[i])], TRUE);
 	}
+	if (!IsSelect())return;
 }
 
 void BuffManager::BuffSelectStart()
