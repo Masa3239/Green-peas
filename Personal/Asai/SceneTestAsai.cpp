@@ -115,14 +115,15 @@ SceneBase* SceneTestAsai::Update()
 		transform.position.x++;
 		transform.position.y++;
 		transform.rotation.z += 0.1f;
-		pPlayer->Damage(1);
-		thunder->SetScale(transform.rotation.z);
-		fire->Shot(pPlayer->GetTransform());
+		//pPlayer->Damage(1);
+		camera->StartDamage(1.0f);
+		//thunder->SetScale(transform.rotation.z);
+		//fire->Shot(pPlayer->GetTransform());
 	}
 
 	if (CheckHitKey(KEY_INPUT_2)) {
 
-		uiMgr->CreatePopUpText(transform.position, 5, PopUpUI::TextType::Heal);
+		uiMgr->CreatePopUpText(transform.position, 5, PopUpUI::TextType::Critical);
 		//thunder->Shot(pPlayer->GetTransform());
 		ItemMgr->Create(ItemBase::ItemType::Heal, pPlayer->GetTransform().position);
 
@@ -185,5 +186,6 @@ void SceneTestAsai::PostDraw()
 	clsDx();
 
 	thunder->DebugDraw();
+	camera->DebugDraw();
 
 }

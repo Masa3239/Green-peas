@@ -2,7 +2,9 @@
 #include "../../Chara/Collision.h"
 #include "../../Utility/Transform.h"
 #include "../../Object/GameObject.h"
+#include "../Takagi/Weapon.h"
 
+#include <array>
 #include <memory>
 
 class Player;
@@ -108,6 +110,36 @@ public:
 	/// <returns></returns>
 	void const SetPlayer(Player* player) { m_pPlayer = player; }
 
+	/// <summary>
+	/// ボスの当たり判定を取得するゲッター関数
+	/// </summary>
+	/// <returns></returns>
+	const Collision::Circle& GetCollider() const { return m_collsion; }
+
+	/// <summary>
+	/// ダメージを与える
+	/// </summary>
+	/// <param name="damage"></param>
+	/// <returns></returns>
+	bool Damage(const int damage);
+
+	/// <summary>
+	/// ダメージを与える
+	/// </summary>
+	/// <param name="damage"></param>
+	/// <param name="wepon"></param>
+	/// <param name="index"></param>
+	/// <returns></returns>
+	bool Damage(const int damage, int wepon, int index);
+
+	/// <summary>
+	/// ダメージフラグのリセット
+	/// </summary>
+	/// <param name="weapon"></param>
+	/// <param name="index"></param>
+	/// <returns></returns>
+	bool ResetDamageFlag(int weapon, int index);
+
 private:
 
 	/// <summary>
@@ -150,6 +182,12 @@ private:
 	/// </summary>
 	void LongRangeAttack();
 
+	/// <summary>
+	/// ダメージフラグの範囲外を使おうとしたら範囲を追加する
+	/// </summary>
+	/// <param name="weapon"></param>
+	/// <param name="index"></param>
+	void CheckDamageFlagSize(int weapon, int index);
 
 private:
 
@@ -197,6 +235,8 @@ private:
 	/// 円の当たり判定
 	/// </summary>
 	Collision::Circle m_collsion;
+
+	std::array<std::vector<bool>, Weapon::Max> m_damageFlag;
 
 	/// <summary>
 	/// 近距離攻撃の当たり判定
