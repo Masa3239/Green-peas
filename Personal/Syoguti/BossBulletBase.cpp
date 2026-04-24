@@ -6,7 +6,7 @@ BossBulletBase::BossBulletBase(ObjectManager* objManager) :
 	m_collision(),
 	m_pPlayer(nullptr) 
 {
-	for (int i = 0; i < 32; i++)
+	for (int i = 0; i < kAnimationNum; i++)
 	{
 		m_graphHandle[i] = -1;
 	}
