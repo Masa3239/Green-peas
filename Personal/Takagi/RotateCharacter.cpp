@@ -49,8 +49,9 @@ RotateCharacter::RotateCharacter():
 	m_axisTransform.Reset();
 	// 軸の座標を設定
 	m_axisTransform.position = kAxisPos;
+	m_axisTransform.rotation.y = kInitRadian;
 
-	// キャラそれぞれの角度の設定
+	// キャ5ラそれぞれの角度の設定
 	float charaRadian = 0;
 	for (int i = 0; i < kCharaMaxNum; i++) {
 		m_transform[i].rotation.y = charaRadian * MyMath::ToRadian;
@@ -131,13 +132,8 @@ void RotateCharacter::Draw()
 		pos = m_transform[m_sort[i]].position + kAxisPos;
 		float pers = (kPers + m_transform[m_sort[i]].position.z)/ kPers;
 		DrawRotaGraph(pos.x, pos.y, 4*pers, 0, m_graphHandle[m_sort[i]][0], TRUE);
-		printfDx("%d番目 : %d\n", i, m_sort[i]);
-		printfDx("%d番目Z: %f\n", i, m_transform[i].position.z);
-	}
-	for (int i = 0; i < kCharaMaxNum; i++) {
-		pos = m_transform[i].position + kAxisPos;
-
-		DrawCircle(pos.x, pos.y, 10, 0xff0000);
+		//printfDx("%d番目 : %d\n", i, m_sort[i]);
+		//printfDx("%d番目Z: %f\n", i, m_transform[i].position.z);
 	}
 }
 
