@@ -41,9 +41,7 @@ public:
 	/// </summary>
 	void End();
 
-	void GenerateMinimap();
-
-	void SetMap(Map* pMap) { m_pMap = pMap; }
+	void GenerateMinimap(Camera* pCamera, Map* pMap);
 
 	void SetCamera(Camera* pCamera) { m_pCamera = pCamera; }
 
@@ -55,11 +53,26 @@ public:
 
 private:
 
+	void DrawMiniMap();
+
+	void DrawPlayer();
+
+	void DrawItem();
+
+	void DrawEnemy();
+
 	Vector3 ToMinimapPos(const Vector3 pos);
 
 private:
 
+	//プレイヤーのアイコン
 	int m_playerUIGrahpHandle;
+
+	int m_worldScrren;
+
+	//マップのサイズ
+	float m_mapSizeX;
+	float m_mapSizeY;
 
 	Map* m_pMap;
 

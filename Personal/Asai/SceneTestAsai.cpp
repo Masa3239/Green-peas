@@ -18,7 +18,6 @@ UIManager* uiMgr;
 Arrow* arrow;
 FireBall* fire;
 Camera* camera;
-Minimap* miniMap;
 Thunder* thunder;
 ItemManager* ItemMgr;
 EnemyManager* enemyMgr;
@@ -70,13 +69,6 @@ void SceneTestAsai::Init()
 	//enemyMgr->Init();
 	enemyMgr->SetPlayer(pPlayer);
 	enemyMgr->SetUIManager(uiMgr);
-
-	miniMap = new Minimap();
-	miniMap->SetCamera(camera);
-	miniMap->SetPlayer(pPlayer);
-	miniMap->SetItemManager(ItemMgr);
-	miniMap->SetEnemyManager(enemyMgr);
-	miniMap->Init();
 	
 	weaponMgr = new WeaponManager();
 	weaponMgr->SetObjManager(GetObjectManager());
@@ -89,7 +81,9 @@ void SceneTestAsai::Init()
 	thunder->SetEnemyManager(enemyMgr);
 
 	uiMgr->SetEnemyManager(enemyMgr);
-
+	uiMgr->GenerateMinimap(camera, map);
+	uiMgr->SetPlayer(pPlayer);
+	uiMgr->SetItemManager(ItemMgr);
 }
 
 void SceneTestAsai::End()
@@ -130,7 +124,7 @@ SceneBase* SceneTestAsai::Update()
 	}
 	if (CheckHitKey(KEY_INPUT_3)) {
 
-		//enemyMgr->GenerateEnemy(EnemyManager::EnemyType::Melee);
+		enemyMgr->GenerateEnemy(EnemyManager::EnemyType::Miniboss, 1);
 
 	}
 
@@ -181,7 +175,6 @@ void SceneTestAsai::PostDraw()
 	SetDrawScreen(DX_SCREEN_BACK);
 	camera->Draw();
 	uiMgr->ScreenDraw();
-	miniMap->Draw();
 
 	//clsDx();
 
