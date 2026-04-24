@@ -16,7 +16,7 @@ namespace {
 	//振動の大きさ
 	constexpr float kShakeMoveMax = 6;
 	//怒り状態でのカメラの振動
-	constexpr float kAngerShakeAmount = 1.0f;
+	constexpr float kAngerShakeAmount = 0.5f;
 
 }
 
@@ -95,6 +95,8 @@ void Camera::DebugDraw()
 
 	printfDx("Camera m_shakeDuration %f\n", m_shakeDuration);
 
+	printfDx("m_shakeTimer %f\n", m_shakeTimer);
+
 }
 
 void Camera::End()
@@ -115,8 +117,8 @@ void Camera::StartDamage(float shakeDuration)
 	m_state = CameraState::Type::Damage;
 	//振動の幅を最大に設定
 	m_shakeMargin = kShakeMoveMax;
-	//
-	m_shakeTimer = shakeDuration;
+	//タイマーをセット
+	m_shakeTimer = m_shakeDuration;
 
 }
 
@@ -162,54 +164,40 @@ void Camera::UpdateFollow(Transform cameraPos)
 
 void Camera::UpdateDamage(Transform cameraPos)
 {
-
-	//カメラの移動
-	Lerp(cameraPos);
-
+	//デルタタイムを取得
+	float deltaTime = Time::GetInstance().GetDeltaTime();
+	//割合を計算
 	float rate = MyMath::Rate(m_shakeTimer, m_shakeDuration);
 
-	int direction = MyRandom::Int(0, 3);
+	static float radian = 0.0f;
 
-	switch (direction)
-	{
+	//ランダムで方向を決める
+	int direction = 1;
+	if (MyRandom::Judge(50))direction = -1;
 
-	case 0:
+	Vector3 offSetPos{
 
-		//m_transform.position.x -= kShakeMoveMax;
-		m_transform.position.x -= kShakeMoveMax * rate;
+		sinf(radian * direction) * kShakeMoveMax * rate,
+		cosf(radian * direction) * kShakeMoveMax * rate,
+		0
+	};
 
-		break;
+	radian += deltaTime;
 
-	case 1:
-
-		//m_transform.position.x += kShakeMoveMax;
-		m_transform.position.x += kShakeMoveMax * rate;
-
-		break;
-
-	case 2:
-
-		//m_transform.position.y -= kShakeMoveMax;
-		m_transform.position.y -= kShakeMoveMax * rate;
-
-		break;
-
-	case 3:
-
-		//m_transform.position.y += kShakeMoveMax;
-		m_transform.position.y += kShakeMoveMax * rate;
-
-		break;
-
+	if (radian >= 3.14) {
+		radian = 0;
 	}
 
+	//座標の更新
+	m_transform.position = cameraPos.position + offSetPos;
+
 	//タイマーを減らす
-	//m_shakeDuration -= Time::GetInstance().GetDeltaTime();
-	m_shakeTimer -= Time::GetInstance().GetDeltaTime();
+	m_shakeTimer -= deltaTime;
 	//時間になったら
 	if(m_shakeTimer<0){
-		//タイマーをリセット
+		//リセット
 		m_shakeDuration = 0;
+		m_shakeTimer = 0;
 		//ステータスを変更
 		m_state = CameraState::Type::Follow;
 

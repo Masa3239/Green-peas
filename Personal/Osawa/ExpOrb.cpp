@@ -10,7 +10,7 @@ namespace
 	constexpr float kMaxInitSpeed = 10.0f;
 
 	// ‰Á‘¬“x
-	constexpr float kAccel = 3.0f;
+	constexpr float kAccel = 10.0f;
 
 	constexpr float kColliderSize = 3;
 }
