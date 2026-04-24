@@ -82,7 +82,7 @@ void BossKey::Update()
 
 	case BossKey::Action::Use:
 
-		m_pEnemyMgr->GetEnemyBoss()->SealReleaseFlag(4);
+		m_pEnemyMgr->GetEnemyBoss()->SealReleaseFlag();
 
 		break;
 	}

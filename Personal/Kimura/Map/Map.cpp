@@ -83,6 +83,7 @@ void Map::Draw()
 		}
 
 	}
+	/*
 	for (int y = 0; y < m_mapBlockNumY; y++)
 	{
 		for (int x = 0; x < m_mapBlockNumX; x++)
@@ -100,6 +101,7 @@ void Map::Draw()
 			}
 		}
 	}
+	 */
 }
 
 void Map::Finalize()
