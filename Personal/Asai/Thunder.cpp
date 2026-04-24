@@ -9,6 +9,25 @@
 #include"../Takagi/Weapon.h"
 
 namespace {
+
+	const char* const kGraphPaths[11] = {
+
+		".\\Personal\\Asai\\Graph\\lightning\\0.png",
+		".\\Personal\\Asai\\Graph\\lightning\\1.png",
+		".\\Personal\\Asai\\Graph\\lightning\\2.png",
+		".\\Personal\\Asai\\Graph\\lightning\\3.png",
+		".\\Personal\\Asai\\Graph\\lightning\\4.png",
+		".\\Personal\\Asai\\Graph\\lightning\\5.png",
+		".\\Personal\\Asai\\Graph\\lightning\\6.png",
+		".\\Personal\\Asai\\Graph\\lightning\\7.png",
+		".\\Personal\\Asai\\Graph\\lightning\\8.png",
+		".\\Personal\\Asai\\Graph\\lightning\\9.png",
+		".\\Personal\\Asai\\Graph\\lightning\\10.png",
+
+	};
+
+	//constexpr float k
+
 	//当たり判定のサイズ
 	constexpr float kCollisionBallSize = 20.0f;
 	constexpr float kCollisionFieldSize = 70.0f;
@@ -37,13 +56,23 @@ Thunder::Thunder(ObjectManager* objManager):
 	m_infectionCount(0),
 	m_infectionTimer(0),
 	m_pEnemyMgr(nullptr),
-	m_pEnemies()
+	m_pEnemies(),
+	m_graphHandle()
 {
 	m_pEnemies.clear();
 }
 
 void Thunder::Init()
 {
+
+	for (int i = 0;i < 10;i++) {
+
+		int graphHandle = LoadGraph(kGraphPaths[i]);
+
+		m_graphHandle.push_back(graphHandle);
+
+	}
+
 }
 
 void Thunder::Update()
@@ -57,11 +86,6 @@ void Thunder::Update()
 	case Thunder::State::Ball:
 		//State::Ballの更新処理
 		UpdateBall();
-		break;
-
-	case Thunder::State::Field:
-		//State::Fieldの更新処理
-		UpdateField();
 		break;
 
 	case Thunder::State::Infection:
@@ -81,12 +105,6 @@ void Thunder::Draw()
 
 	m_circle.DebugDraw();
 
-	//for (auto enemy : m_pEnemies) {
-
-	//	DrawCircle(enemy->GetTransform().position.x, enemy->GetTransform().position.y, kCollisionInfectionSize * m_scale, 0xffffff, FALSE);
-
-	//}
-
 	float collisionSize = 0;
 
 	switch (m_state)
@@ -102,7 +120,9 @@ void Thunder::Draw()
 	}
 
 	//丸を描画
-	DrawCircle(GetTransform().position.x, GetTransform().position.y, collisionSize * m_scale, TRUE, 0xffff00);
+	//DrawCircle(GetTransform().position.x, GetTransform().position.y, collisionSize * m_scale, TRUE, 0xffff00);
+
+	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, m_scale, 0, m_graphHandle[m_graphFrame], TRUE);
 
 }
 
@@ -186,27 +206,6 @@ void Thunder::UpdateBall()
 	m_circle = Collision::Circle(GetTransform().position, kCollisionInfectionSize * m_scale);
 
 	//当たり判定を更新
-	m_circle.SetPosition(GetTransform().position);
-	//当たった敵を取得
-	m_pEnemies = (m_pEnemyMgr->GetHitEnemies(m_circle, 1));
-
-}
-
-void Thunder::UpdateField()
-{
-	//タイマーを加算
-	m_fieldElapsedTime += Time::GetInstance().GetDeltaTime();
-	
-
-	//消える時間じゃないならスルー
-	if (m_fieldElapsedTime < kFieldLifetime)return;
-
-	//非アクティブにする
-	//m_isActive = false;
-
-	//伝染
-	m_state = State::Infection;
-	//当たり前を更新
 	m_circle.SetPosition(GetTransform().position);
 	//当たった敵を取得
 	m_pEnemies = (m_pEnemyMgr->GetHitEnemies(m_circle, 1));

@@ -12,6 +12,8 @@ UIManager::UIManager():
 	m_pPlayerUIMgr(nullptr),
 	m_pPopUpTextMgr(nullptr),
 	m_pCombo(nullptr),
+	m_pMinimap(nullptr),
+	m_pPlayer(nullptr),
 	m_pEnemyManager(nullptr)
 {
 }

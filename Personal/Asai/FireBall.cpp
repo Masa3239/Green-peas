@@ -124,7 +124,7 @@ void FireBall::Draw()
 	}
 
 	//画像の描画
-	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y - kOffSetDraw, graphScale, 0, m_graphHandle[m_graphFrame], TRUE);
+	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y - kOffSetDraw, graphScale * m_scale, 0, m_graphHandle[m_graphFrame], TRUE);
 
 	//丸を描画
 	//DrawCircle(GetTransform().position.x, GetTransform().position.y, collisionSize * m_scale, TRUE, 0xff0000);
