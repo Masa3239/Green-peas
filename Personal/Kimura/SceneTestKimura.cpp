@@ -1,5 +1,6 @@
 #include "SceneTestKimura.h"
 #include"../Kimura/Map/Map.h"
+#include"../Kimura/EnemyMap/EnemyMap.h"
 #include <DxLib.h>
 
 
