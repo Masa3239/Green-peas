@@ -68,7 +68,7 @@ void SceneTestAsai::Init()
 	ItemMgr->Init();
 
 	enemyMgr = new EnemyManager(GetObjectManager());
-	enemyMgr->Init();
+	//enemyMgr->Init();
 	enemyMgr->SetPlayer(pPlayer);
 	enemyMgr->SetUIManager(uiMgr);
 	
@@ -110,7 +110,7 @@ SceneBase* SceneTestAsai::Update()
 	pPlayer->Update();
 	//thunder->Update();
 
-	enemyMgr->Update();
+	//enemyMgr->Update();
 
 	if (CheckHitKey(KEY_INPUT_1)) {
 		transform.position.x++;
