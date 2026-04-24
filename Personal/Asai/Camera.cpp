@@ -175,6 +175,7 @@ void Camera::UpdateDamage(Transform cameraPos)
 	int direction = 1;
 	if (MyRandom::Judge(50))direction = -1;
 
+	//振動の移動量
 	Vector3 offSetPos{
 
 		sinf(radian * direction) * kShakeMoveMax * rate,
@@ -188,8 +189,20 @@ void Camera::UpdateDamage(Transform cameraPos)
 		radian = 0;
 	}
 
-	//座標の更新
-	m_transform.position = cameraPos.position + offSetPos;
+	//カメラとの距離の差を求める
+	float distance = (cameraPos.position - m_transform.position).GetSqLength();
+
+	//距離の差が100以下なら
+	if (distance > 100) {
+		//カメラの補間
+		Lerp(cameraPos);
+		//カメラの振動
+		m_transform.position = m_transform.position + offSetPos;
+	}
+	else {
+		//座標の更新
+		m_transform.position = cameraPos.position + offSetPos;
+	}
 
 	//タイマーを減らす
 	m_shakeTimer -= deltaTime;

@@ -3,6 +3,7 @@
 #include"../Personal/Takagi/Player.h"
 #include<memory>
 class RotateCharacter;
+class BuffManager;
 
 class CharacterSelectScene : public SceneBase
 {
@@ -36,4 +37,5 @@ public:
 private:
 	RotateCharacter* m_characters;
 	int m_graphHanedle[static_cast<int>(Character::Job::Max)];
+
 };

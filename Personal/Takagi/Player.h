@@ -29,7 +29,7 @@ class Camera;
 class Weapon;
 class EnemyManager;
 class ItemManager;
-//class PlayerBuff;
+class BuffManager;
 namespace Character {
 	enum class Job {
 		Warrior,	// 戦士
@@ -173,6 +173,7 @@ public: // ゲッター・セッター=======================
 	void SetEnemyManager(EnemyManager* enemyManager);
 	void SetItemManager(ItemManager* itemManager) { m_pItemMgr = itemManager; }
 	void SetWeapon(Weapon* weapon);
+	void SetBuffManager(BuffManager* buffManager) { m_pBuffMgr = buffManager; }
 	void ExpUp(float value);
 	bool CheckAnger() { return m_anger; }
 private:
@@ -253,6 +254,10 @@ protected:
 	/// アイテムマネージャーのポインタ
 	/// </summary>
 	ItemManager* m_pItemMgr;
+	/// <summary>
+	/// バフマネージャーのポインタ
+	/// </summary>
+	BuffManager* m_pBuffMgr;
 	/// <summary>
 	/// 怒りボタンを押したかどうかを取得するための変数
 	/// </summary>

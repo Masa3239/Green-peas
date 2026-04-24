@@ -9,6 +9,7 @@
 #include"../Syoguti/ItemManager.h"
 #include"../Osawa/Enemy/EnemyManager.h"
 #include"../Asai/UIManager.h"
+#include"BuffManager.h"
 #include"WeaponManager.h"
 #include"Warrior.h"
 #include"Hunter.h"
@@ -16,11 +17,8 @@
 #include"../../Scene/CharacterSelectScene.h"
 #include"../../System/InputManager.h"
 #include"../../System/Input/Gamepad.h"
-namespace {
-	Vector3 kBoxPos = { 200,200 ,0 };
-	Vector3 kBoxSize = { 50,70 ,0 };
-	Collision::AABB box = Collision::AABB(kBoxPos, kBoxSize);
-}
+#include"../../System/PauseManager.h"
+#include"../Osawa/PauseMenu.h"
 
 SceneTestTakagi::SceneTestTakagi():
 	m_pPlayer(nullptr),
@@ -40,6 +38,8 @@ SceneTestTakagi::SceneTestTakagi():
 	m_pMap = std::make_unique<Map>();
 	m_pUIManager = std::make_unique<UIManager>();
 	m_pWeaponManager = std::make_unique<WeaponManager>();
+	m_pPauseMenu = std::make_unique<PauseMenu>();
+	m_pBuffManager = std::make_unique<BuffManager>();
 
 }
 
@@ -68,6 +68,7 @@ void SceneTestTakagi::Init()
 	m_pPlayer->Init();
 	m_pPlayer->SetCamera(m_pCamera.get());
 	m_pPlayer->SetItemManager(m_pItemManager.get());
+	m_pPlayer->SetBuffManager(m_pBuffManager.get());
 	m_pCamera->Init();
 	m_pMap->Init();
 	m_pEnemyManager->SetPlayer(m_pPlayer.get());
@@ -83,6 +84,11 @@ void SceneTestTakagi::Init()
 	m_pWeaponManager->SetObjManager(GetObjectManager());
 	m_pWeaponManager->SetEnemyManager(m_pEnemyManager.get());
 	m_pWeaponManager->Init();
+
+	m_pPauseMenu->Init();
+	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
+	m_pBuffManager->SetPlayer(m_pPlayer.get());
+
 }
 
 void SceneTestTakagi::End()
@@ -98,6 +104,20 @@ void SceneTestTakagi::End()
 
 SceneBase* SceneTestTakagi::Update()
 {
+	if (m_pBuffManager->IsSelect()) {
+		m_pBuffManager->Update();
+	}
+	else {
+		auto nextScene = m_pPauseMenu->Update();
+		m_pBuffManager->Update();
+		if (nextScene != nullptr)
+		{
+			return nextScene;
+		}
+	}
+
+	if (PauseManager::GetInstance().IsPause()) return this;
+
 	m_pUIManager->SetPlayer(m_pPlayer.get());
 	Time::GetInstance().SetTimeScale(1);
 	//m_pPlayer->Update();
@@ -110,19 +130,10 @@ SceneBase* SceneTestTakagi::Update()
 	//Segment_Point_MinLength()
 
 
-	if (box.CheckCollision(m_pPlayer->GetCircle())) {
-		printfDx("当たってる\n");
-	}
-	else {
-		printfDx("当たってない\n");
-	}
-
-	box.SetPosition(kBoxPos);
-
 	//if (Pad::IsPressed(Pad::Button::Start)) {
 	//	return new SceneSelection();
 	//}
-	if (InputManager::GetInstance().IsDown(Input::Action::Start)) {
+	if (Gamepad::GetInstance().IsDown(XINPUT_BUTTON_BACK)) {
 		return new CharacterSelectScene;
 	}
 	//m_pMap->Update();
@@ -139,8 +150,6 @@ SceneBase* SceneTestTakagi::Update()
 void SceneTestTakagi::Draw()
 {
 	printfDx("SceneTestTakagi\n");
-	box.DebugDraw();
-	
 }
 
 void SceneTestTakagi::PreDraw()
@@ -161,5 +170,11 @@ void SceneTestTakagi::PostDraw()
 	
 	m_pUIManager->ScreenDraw();
 	m_pUIManager->DebugDraw();
-
+	if (!PauseManager::GetInstance().IsPause())return;
+	if (m_pBuffManager->IsSelect()) {
+	m_pBuffManager->Draw();
+	}
+	else {
+	m_pPauseMenu->Draw();
+	}
 }

@@ -9,6 +9,8 @@ class ItemManager;
 class EnemyManager;
 class UIManager;
 class WeaponManager;
+class PauseMenu;
+class BuffManager;
 
 class SceneTestTakagi : public SceneBase
 {
@@ -52,5 +54,6 @@ private:
 
 	std::unique_ptr<UIManager>m_pUIManager;
 	std::unique_ptr<WeaponManager>m_pWeaponManager;
-
+	std::unique_ptr<PauseMenu>m_pPauseMenu;
+	std::unique_ptr<BuffManager>m_pBuffManager;
 };

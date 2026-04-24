@@ -21,7 +21,7 @@
 #include"../../System/InputManager.h"
 #include"../../System/Input/Keyboard.h"
 #include"../../System/Input/Gamepad.h"
-
+#include"BuffManager.h"
 namespace {
 	
 	// 通常の移動速度
@@ -249,13 +249,6 @@ void Player::MoveAmount()
 			float angle = InputManager::GetInstance().GetAnalog2DAngle(Input::Action::Move);
 			// 向いている方向を更新
 			GetTransform().rotation.z = angle * MyMath::ToRadian;
-			if (angle > 0) {
-				m_directionX = 1;
-			}
-			else
-			{
-				m_directionX = -1;
-			}
 		}
 	}
 	if (!CheckDashNow()) {
@@ -312,7 +305,6 @@ void Player::MoveAmount()
 		gauge->Update();
 	}
 
-	printfDx("m_direction : %d\n",m_directionX);
 	// 移動量の初期化
 	m_moveVector = { 0,0,0 };
 	// 入力角度からX,Y方向の移動量を計算
@@ -527,7 +519,7 @@ void Player::LevelUp()
 	currentHp += maxHp - beforeMaxHp;
 	// 現在のHPの更新
 	m_gauges[static_cast<int>(GaugeType::Hp)]->SetValue(currentHp, Gauge::Value::Current);
-
+	m_pBuffMgr->BuffSelectStart();
 }
 
 void Player::BufUpdate()
