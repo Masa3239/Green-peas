@@ -23,9 +23,13 @@ void BossBulletManager::Init()
 
 		for (int j = 0; j < kMotionNum; j++) {
 
-			m_bulletGraphHandle[i][j];
+			m_bulletGraphHandle[i][j] = -1;
 		}
 	}
+
+
+	LoadDivGraph(".\\Resource\\Pixel Art VFX - Blood Mage - FREE Version\\VFX3\\sprite-sheet.png",
+		4, 4, 1, 128, 128, m_bulletGraphHandle[static_cast<int>(BossBulletBase::BulletType::Normal)]);
 
 	// 画像の読み込み
 	// m_bulletGraphHandle = LoadGraph(kBulletGraphHandlePath);
@@ -40,7 +44,14 @@ void BossBulletManager::End()
 	// 可変長配列を綺麗にする
 	m_bullets.clear();
 
-	DeleteGraph(m_bulletGraphHandle);
+	for (int i = 0;i < static_cast<int>(BossBulletBase::BulletType::Max); i++) {
+
+		for (int j = 0; j < kMotionNum; j++) {
+
+			DeleteGraph(m_bulletGraphHandle[i][j]);
+		}
+	}
+	// DeleteGraph(m_bulletGraphHandle);
 }
 
 void BossBulletManager::Update()
@@ -60,26 +71,26 @@ void BossBulletManager::Draw()
 void BossBulletManager::Create(BossBulletBase::BulletType type, Vector3 position)
 {
 	std::unique_ptr<BossBulletBase> bullets;
-	int graphHandle = -1;
-
 	switch (type)
 	{
 	case BossBulletBase::BulletType::Normal:
 		bullets = std::make_unique<BossBullet>(m_pObjectMgr);
-		graphHandle = m_bulletGraphHandle;
+		//graphHandle = m_bulletGraphHandle;
 		break;
 	default:
 		break;
 	}
 
-	if (!bullets || graphHandle == -1) return;
+	if (!bullets) return;
 
 	// プレイヤーのポインタをセット
 	bullets->SetPlayer(m_pPlayer);
 	// 座標を引数の値にする
 	bullets->GetTransform().position = position;
 	bullets->Init();
-	bullets->SetGraphHandle(m_bulletGraphHandle);
+	for (int i = 0;i < kMotionNum;i++) {
+		bullets->SetGraphHandle(m_bulletGraphHandle[static_cast<int>(type)][i], i);
+	}
 
 	m_bullets.push_back(std::move(bullets));
 

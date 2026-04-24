@@ -70,7 +70,7 @@ void BossBullet::Update()
 void BossBullet::Draw()
 {
 
-	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kGraphScale, 0.0f, m_graphHandle, TRUE);
+	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kGraphScale, 0.0f, m_graphHandle[0], TRUE);
 
     // 弾の当たり判定を描画
 	m_collision.DebugDraw();

@@ -51,7 +51,7 @@ public:
 	/// グラフハンドルをセットするセッター関数
 	/// </summary>
 	/// <param name="graphHandlePath"></param>
-	virtual void SetGraphHandle(int graphHandle) { m_graphHandle = graphHandle; }
+	virtual void SetGraphHandle(int graphHandle,int index) { m_graphHandle[index] = graphHandle; }
 
 	/// <summary>
 	/// プレイヤーのポインタをセットするセッター関数
@@ -70,8 +70,7 @@ protected:
 	/// <summary>
 	/// 画像ハンドル
 	/// </summary>
-	int m_graphHandle;
-
+	int m_graphHandle[32];
 
 	/// <summary>
 	/// 角度
