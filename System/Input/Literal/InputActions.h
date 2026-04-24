@@ -23,6 +23,7 @@ namespace Input
 		Pause,
 		Confirm,
 		Cancel,
+		Start,
 		Length
 	};
 }

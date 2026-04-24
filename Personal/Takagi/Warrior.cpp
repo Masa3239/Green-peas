@@ -15,7 +15,6 @@ Warrior::Warrior(ObjectManager* objManager):
 	m_pEnemyMgr=nullptr;
 	m_pItemMgr=nullptr;
 	m_anger=false;
-	m_cameraShakeCount = 0;
 	m_playerType = Character::Job::Warrior;
 }
 

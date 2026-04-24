@@ -25,7 +25,7 @@
 namespace {
 	
 	// 通常の移動速度
-	constexpr float kDistanceSpeed = 20000.0f;
+	constexpr float kSpeed = 20000.0f;
 	// ダッシュの移動速度
 	constexpr float kDashSpeed = 7.0f;
 	// ダッシュの減速量
@@ -47,20 +47,19 @@ namespace {
 		"Resource\\pipo-xmaschara02.png" 
 	};
 	// カメラを振動させる時間
-	constexpr float kCameraCount = 0.3f;
+	constexpr float kCameraShake = 0.3f;
 	// 初期座標
-	constexpr Vector3 kInitPos = { 300,300,0 };
+	constexpr Vector3 kInitPos = { 5000,9640,0 };
 
 
 	// 画像の表示倍率
 	constexpr float kPlayerScale = 1.5f;
 	// 初期ステータス
-	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 100, 1, 0.8f, kDistanceSpeed, 100, 5, 1.5f);
+	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 100, 1, 0.8f, kSpeed, 100, 5, 1.5f);
 	// 成長倍率
-	constexpr PlayerStatus kGrowStatus = PlayerStatus(1, 1.05f, 1.1f, 1.1f, 1, 1, 1, 1);
+	constexpr PlayerStatus kGrowStatus = PlayerStatus(1, 1.05f, 1.02f, 1.02f, 1, 1, 1, 1);
 	// 怒り状態時のステータス
 	constexpr PlayerStatus kAngerStatus = PlayerStatus(1, 1, 1.5f, 1, 2, 1, 1.5f, 2);
-	//constexpr PlayerStatus kBuffStatus = PlayerStatus(0, 0, 1.5f, 1, 3000, 2, 1.5f, 2);
 }
 
 Player::Player(ObjectManager* objManager) :
@@ -161,15 +160,7 @@ void Player::Update()
 	m_deltaTime = Time::GetInstance().GetDeltaTime();
 	// 時間が止まっていたら処理しない
 	if (!m_deltaTime)return;
-	if (m_anger || m_cameraShakeCount > 0) {
-		m_camera->ChangeAnger();
-		if (m_cameraShakeCount > 0) {
-			m_cameraShakeCount -= m_deltaTime;
-		}
-	}
-	else {
-		m_camera->ChangeFollow();
-	}
+
 	if (m_pItemMgr) {
 		if (InputManager::GetInstance().IsPressed(Input::Action::PickUp)) {
 			m_pItemMgr->CheckHitCollision(GetCircle());
@@ -196,12 +187,15 @@ void Player::Update()
 	}
 	CheckHit();
 	UpdateAngerButton();
-	if (/*m_gauges[static_cast<int>(GaugeType::Anger)]->CheckMax() &&*/
+	if (m_gauges[static_cast<int>(GaugeType::Anger)]->CheckMax() &&
 		CheckAngerButton()) {
 		m_anger = true;
+		m_camera->ChangeAnger();
 	}
 	if (m_gauges[static_cast<int>(GaugeType::Anger)]->CheckMin()) {
 		m_anger = false;
+		m_camera->ChangeFollow();
+
 	}if (m_anger) {
 		m_gauges[static_cast<int>(GaugeType::Anger)]->Decrease(kAngerDecValue * m_deltaTime);
 	}
@@ -240,8 +234,7 @@ void Player::Move()
 void Player::MoveAmount()
 {
 	printfDx("入力量 : %f\n", m_moveAmount);
-	PlayerStatus status = m_status;
-	status += CheckBuffValue();
+	PlayerStatus status = CheckBuffValue();
 	if (m_anger) {
 		status *= kAngerStatus;
 	}
@@ -265,8 +258,7 @@ void Player::MoveAmount()
 			}
 		}
 	}
-	if (m_moveAmount) {
-
+	if (!CheckDashNow()) {
 		m_gauges[static_cast<int>(GaugeType::Stamina)]->Increase(kStaminaHealValue * m_deltaTime);
 		m_gauges[static_cast<int>(GaugeType::Stamina)]->Clamp();
 	}
@@ -401,8 +393,8 @@ void Player::Debug()
 	for (auto& buffs : m_buffs) {
 		printfDx("残り時間 : %f\n", buffs->Second());
 	}
-	float attack = m_status.Attack + CheckBuffValue().Attack;
-	float speed = m_status.Speed + CheckBuffValue().Speed;
+	float attack = CheckBuffValue().Attack;
+	float speed = CheckBuffValue().Speed;
 	printfDx("攻撃 : %f\n", attack);
 	printfDx("攻撃 : %f\n", speed);
 	//printfDx("timeScale : %f\n", Time::GetInstance().GetTimeScale());
@@ -413,7 +405,7 @@ void Player::Damage(float value)
 	// ダッシュ中なら処理しない
 	if (CheckDashNow())return;
 	if (m_anger)return;
-	float defence= m_status.Defence + CheckBuffValue().Defence;
+	float defence= CheckBuffValue().Defence;
 	float damage = value - defence;
 	damage = MyMath::Clamp(damage, 0.0f, value);
 	// ダメージ処理を行う
@@ -424,7 +416,8 @@ void Player::Damage(float value)
 	m_gauges[static_cast<int>(GaugeType::Anger)]->Increase(damage * kAngerValue);
 	// 最大・最小値よりも大ききくならないようにする
 	m_gauges[static_cast<int>(GaugeType::Anger)]->Clamp();
-	m_cameraShakeCount = kCameraCount;
+	// カメラを揺らす
+	m_camera->StartDamage(kCameraShake);
 }
 
 void Player::Heal(float value)
@@ -563,10 +556,10 @@ void Player::UpdateAngerButton()
 
 const PlayerStatus Player::CheckBuffValue()
 {
-	PlayerStatus status;
-	status.Reset();
+	PlayerStatus status = { 1,1,1,1,1,1,1,1 };
 	for (auto& buff : m_buffs) {
 		status += buff.get()->GetBuffValue();
 	}
+	status = m_status * status;
 	return status;
 }

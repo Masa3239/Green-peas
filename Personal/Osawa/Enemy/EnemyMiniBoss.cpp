@@ -177,6 +177,7 @@ void EnemyMiniBoss::Dead()
 	// Œ®‚ð¶¬
 	auto key = new BossKey(GetObjectManager());
 	key->SetPlayer(GetPlayer());
+	key->SetEnemyManager(GetEnemyManager());
 	key->GetTransform() = GetTransform();
 	key->Init();
 }

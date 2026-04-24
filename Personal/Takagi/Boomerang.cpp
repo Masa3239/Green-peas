@@ -15,7 +15,7 @@ namespace {
     constexpr float kGraphScale = 1.4f;
     constexpr PlayerStatus kStatus = { 0,0,3,0,0,0,3,6 };
     //const char* const kFilePath = "Resource\\Boomerang.png";
-    const char* const kFilePath = "Resource\\Hammer.png";
+    const char* const kGraphPath = "Resource\\Hammer.png";
     constexpr float kRotationSpeed = 1080;
     constexpr float kAttackInterval = 0.3f;
 
@@ -31,7 +31,7 @@ Boomerang::Boomerang(ObjectManager* objManager):
     m_attack.Reset();
     m_weaponStatus = kStatus;
     m_graphHandle = -1;
-    m_graphHandle = LoadGraph(kFilePath);
+    m_graphHandle = LoadGraph(kGraphPath);
     m_scale = 1;
     m_active = true;
     m_chargeFlag = false;

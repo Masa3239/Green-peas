@@ -8,6 +8,7 @@
 class ObjectManager;
 class EnemyBase;
 class EnemyMiniBoss;
+class EnemyBoss;
 class Player;
 class UIManager;
 
@@ -92,6 +93,8 @@ public:
 	/// <param name="pos">生成する場所</param>
 	void GenerateEnemy(EnemyType type, Vector3 pos);
 
+	EnemyBoss* GetEnemyBoss() const { return m_enemyBoss.get(); }
+
 	void SetPlayer(Player* player) { m_pPlayer = player; }
 
 	void SetUIManager(UIManager* uiMgr) { m_uiMgr = uiMgr; }
@@ -112,6 +115,11 @@ private:
 	/// 中ボスの配列
 	/// </summary>
 	std::vector<EnemyMiniBoss*> m_miniBosses;
+
+	/// <summary>
+	/// ボス
+	/// </summary>
+	std::unique_ptr<EnemyBoss> m_enemyBoss;
 
 	Player* m_pPlayer;
 

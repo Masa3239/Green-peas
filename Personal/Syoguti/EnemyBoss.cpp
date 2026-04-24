@@ -13,7 +13,7 @@ namespace {
 	constexpr float kGraphScale = 1.0f;
 
 	// 画像のオフセットY
-	constexpr int kGraphOffsetY = 50;
+	constexpr int kGraphOffsetY = 40;
 
 	// 円の当たり判定の半径
 	constexpr float kCircleRadius = 50.0f * kGraphScale;
@@ -38,10 +38,14 @@ namespace {
 	// ランダムに行動を決める時のインターバル
 	constexpr float kRandomInterval = 2.0f;
 
-	/// <summary>
-	/// ボスの速さ
-	/// </summary>
-	constexpr float kSpeed = 100.0f;
+	// 弾を発射する時のインターバル
+	constexpr float kShotInterval = 1.5f;
+
+	// ボスのスピード
+	constexpr float kSpeed = 500.0f;
+
+	// 封印解除に必要な鍵の数
+	constexpr int kMaxKey = 4;
 
 }
 
@@ -49,6 +53,7 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 	m_motionCounter(0),
 	m_motionFrame(0),
 	m_direction(-1),
+	m_shotTimer(0.0f),
 	m_isCloseTheAttack(false),
 	m_isCloseTheAttackDamege(false),
 	GameObject(objManager),
@@ -80,6 +85,7 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_motionCounter(0),
 	m_motionFrame(0),
 	m_direction(-1),
+	m_shotTimer(0.0f),
 	m_isCloseTheAttack(false),
 	m_isCloseTheAttackDamege(false),
 	GameObject(objManager),
@@ -224,7 +230,7 @@ void EnemyBoss::Draw()
 
 }
 
-bool EnemyBoss::SealReleaseFlag(int maxKey)
+bool EnemyBoss::SealReleaseFlag()
 {
 
 	// 封印解除されたらtrueを返す
@@ -234,7 +240,7 @@ bool EnemyBoss::SealReleaseFlag(int maxKey)
 	m_getKey++;
 
 	// 指定された値より大きくなったら
-	if (m_getKey >= maxKey) {
+	if (m_getKey >= kMaxKey) {
 
 		// 封印解除されている(true)
 		m_sealRelease = true;
@@ -434,7 +440,16 @@ void EnemyBoss::LongRangeAttack()
 	// アニメーションをLongRangeAttackにする
 	m_status = BossStatus::LongRangeAttack;
 
-	m_pBossBulletMgr->Create(BossBulletBase::BulletType::Normal, GetTransform().position);
+	// 弾の発射感覚のタイマーを加算
+	m_shotTimer += Time::GetInstance().GetDeltaTime();
+
+	if (m_shotTimer >= kShotInterval) {
+
+		// 弾を生成する
+		m_pBossBulletMgr->Create(BossBulletBase::BulletType::Normal, GetTransform().position);
+		m_shotTimer = 0.0f;
+	}
+	
 	printfDx("遠距離攻撃攻撃\n");
 }
 

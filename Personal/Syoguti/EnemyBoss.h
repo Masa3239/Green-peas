@@ -80,9 +80,8 @@ public:
 	/// <summary>
 	/// ボスが封印解除されているかどうか
 	/// </summary>
-	/// <param name="maxKey"></param>
 	/// <returns></returns>
-	bool SealReleaseFlag(int maxKey);
+	bool SealReleaseFlag();
 
 	/// <summary>
 	/// ボスの近距離攻撃がプレイヤーと当たっているかどうか
@@ -183,6 +182,11 @@ private:
 	/// 画像の向き
 	/// </summary>
 	int m_direction;
+
+	/// <summary>
+	/// 弾の発射感覚
+	/// </summary>
+	int m_shotTimer;
 
 	/// <summary>
 	/// 座標

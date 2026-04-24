@@ -10,7 +10,12 @@
 #include"../Osawa/Enemy/EnemyManager.h"
 #include"../Asai/UIManager.h"
 #include"WeaponManager.h"
+#include"Warrior.h"
+#include"Hunter.h"
 #include"Wizard.h"
+#include"../../Scene/CharacterSelectScene.h"
+#include"../../System/InputManager.h"
+#include"../../System/Input/Gamepad.h"
 namespace {
 	Vector3 kBoxPos = { 200,200 ,0 };
 	Vector3 kBoxSize = { 50,70 ,0 };
@@ -27,7 +32,8 @@ SceneTestTakagi::SceneTestTakagi():
 	m_pWeaponManager(nullptr)
 {
 	//m_pPlayer = std::make_unique<Player>(GetObjectManager());
-	m_pPlayer = std::make_unique<Wizard>(GetObjectManager());
+	//m_pPlayer = std::make_unique<Wizard>(GetObjectManager());
+
 	m_pCamera = std::make_unique<Camera>();
 	m_pEnemyManager = std::make_unique<EnemyManager>(GetObjectManager());
 	m_pItemManager = std::make_unique<ItemManager>();
@@ -43,6 +49,21 @@ SceneTestTakagi::~SceneTestTakagi()
 
 void SceneTestTakagi::Init()
 {
+	switch (GetCarryOver().characterJob)
+	{
+	case Character::Job::Warrior:
+		m_pPlayer = std::make_unique<Warrior>(GetObjectManager());
+		break;
+	case Character::Job::Hunter:
+		m_pPlayer = std::make_unique<Hunter>(GetObjectManager());
+		break;
+	case Character::Job::Wizard:
+		m_pPlayer = std::make_unique<Wizard>(GetObjectManager());
+		break;
+	default:
+		m_pPlayer = std::make_unique<Warrior>(GetObjectManager());
+		break;
+	}
 	m_pPlayer->SetEnemyManager(m_pEnemyManager.get());
 	m_pPlayer->Init();
 	m_pPlayer->SetCamera(m_pCamera.get());
@@ -98,8 +119,11 @@ SceneBase* SceneTestTakagi::Update()
 
 	box.SetPosition(kBoxPos);
 
-	if (Pad::IsPressed(Pad::Button::Start)) {
-		return new SceneSelection();
+	//if (Pad::IsPressed(Pad::Button::Start)) {
+	//	return new SceneSelection();
+	//}
+	if (InputManager::GetInstance().IsDown(Input::Action::Start)) {
+		return new CharacterSelectScene;
 	}
 	//m_pMap->Update();
 

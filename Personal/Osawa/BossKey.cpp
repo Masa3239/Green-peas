@@ -3,6 +3,8 @@
 #include "../Personal/Takagi/Player.h"
 #include "../Utility/MyMath.h"
 #include "../Utility/Time.h"
+#include "../Osawa/Enemy/EnemyManager.h"
+#include "../Syoguti/EnemyBoss.h"
 
 namespace
 {
@@ -79,6 +81,8 @@ void BossKey::Update()
 	}
 
 	case BossKey::Action::Use:
+
+		m_pEnemyMgr->GetEnemyBoss()->SealReleaseFlag(4);
 
 		break;
 	}
