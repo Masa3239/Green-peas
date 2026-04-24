@@ -5,6 +5,7 @@ BulletBase::BulletBase(ObjectManager* objManager):
 	m_scale(1.0f),
 	m_spawnPos(),
 	m_isActive(false),
-	m_circle()
+	m_circle(),
+	m_playerStatus()
 {
 }

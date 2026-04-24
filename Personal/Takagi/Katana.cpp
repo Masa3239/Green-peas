@@ -12,7 +12,7 @@ namespace {
 	constexpr float kChargeScale = 0.7f;
 	constexpr float kEffectAnimSpeed = 15;
 	constexpr PlayerStatus kStatus = { 0,0,5,0,0,0,10,1.1f };
-	constexpr PlayerStatus kChargeStatus = { 0,0,1,0,0,0,3,1.1f };
+	constexpr PlayerStatus kChargeStatus = { 0,0,1,0,0,0,5,1.1f };
 
 	constexpr float kAttackRadius = 150;
 	constexpr int kEffectStart = 5;

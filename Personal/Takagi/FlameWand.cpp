@@ -7,7 +7,7 @@
 #include"../../Utility/Time.h"
 namespace {
 	const char* const kHandlePath = "Resource\\Ruby Staff.png";
-	constexpr PlayerStatus kStatus = { 0,0,8,0,0,0,1,2 };
+	constexpr PlayerStatus kStatus = { 0,0,8,0,0,0,3,2 };
 	constexpr float kDrawRadian = -45 * MyMath::ToRadian;
 	constexpr float kSwingDistance = 30;
 	constexpr Vector3 kOffsetPos = { 20,0,0 };
@@ -123,7 +123,7 @@ void FlameWand::CheckCollision()
 	if (!m_pEnemyMgr)return;
 	float damage = 0;
 	damage = m_playerStatus.Attack * m_weaponStatus.Attack;
-	float criticalRate = m_playerStatus.CriticalRate * m_weaponStatus.CriticalRate;
+	float criticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
 	float criticalDamage = m_weaponStatus.CriticalDamage * m_playerStatus.CriticalDamage;
 	for (int i = 0;i < kBulletNum;i++) {
 		if (!m_pFires[i]->GetIsActive())continue;

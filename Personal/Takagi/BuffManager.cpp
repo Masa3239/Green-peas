@@ -6,17 +6,26 @@
 #include"../../Utility/MyMath.h"
 #include<string>
 #include"../../System/PauseManager.h"
+#include"PlayerBuff.h"
+#include"PlayerStatus.h"
 namespace {
 	const char* const kIconPath = "Resource\\Iccons\\skill_";
 	const char* const kPing = ".png";
 	const char* const kSelectPath = "Resource\\Iccons\\select.png";
-
+	constexpr PlayerStatus kBuffs[static_cast<int>(Buff::Type::Max)] = { 
+		{0,0,0.1f,0,0,0,0,0},
+		{0,0,0,0.1f,0,0,0,0},
+		{0,0,0,0,0,0,1,0},
+		{0,0,0,0,0,0,0,0.1f},
+		{0,0,0,0,0,0,0,0},
+	};
+	constexpr int kMaxLevel[kBuffMax] = {5,5,5,5,5};
 }
 
 BuffManager::BuffManager() :
 	m_pPlayer(nullptr),
 	m_buffType(),
-	m_phase(Phase::Start),
+	m_phase(Phase::Max),
 	m_select(0),
 	m_selected(Buff::Type::Max)
 {
@@ -51,28 +60,35 @@ void BuffManager::Update()
 
 
 
-		switch (m_phase)
-		{
-		case Phase::Start:
+	switch (m_phase)
+	{
+	case Phase::Start:
 
-			RandomBuff();
-			if (InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
+		RandomBuff();
+		if (InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
 			m_phase = Phase::Select;
-			}
-			break;
-		case Phase::Select:
-			if (!InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
-				break;
-			}
-			m_selected = BuffSelect();
-			if (PauseManager::GetInstance().IsPause()) {
-				PauseManager::GetInstance().TogglePause();
-			}
-			m_phase = Phase::Max;
-			break;
-		default:
+			m_select = 0;
+		}
+		break;
+	case Phase::Select:
+		if (!InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
 			break;
 		}
+		m_selected = BuffSelect();
+		if (PauseManager::GetInstance().IsPause()) {
+		}
+		m_phase = Phase::End;
+		break;
+	case Phase::End:
+		if (!InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
+			break;
+		}
+		PauseManager::GetInstance().TogglePause();
+		m_phase = Phase::Max;
+		break;
+	default:
+		break;
+	}
 
 	if (InputManager::GetInstance().IsPressed(Input::Action::Left)) {
 		m_select--;
@@ -109,6 +125,7 @@ void BuffManager::BuffSelectStart()
 {
 	if (!PauseManager::GetInstance().IsPause()) {
 		PauseManager::GetInstance().TogglePause();
+		PauseManager::GetInstance().SetAlpha(127);
 	}
 	m_phase = Phase::Start;
 }
@@ -121,6 +138,7 @@ void BuffManager::RandomBuff()
 	m_buffType[0] = Buff::Type::Max;
 	m_buffType[1] = Buff::Type::Max;
 	m_buffType[2] = Buff::Type::Max;
+	m_selected = Buff::Type::Max;
 	for (int i = 0;i < kBuffSelectNum;i++) {
 		// すでに同じバフが選ばれたかどうか
 		bool selected = true;

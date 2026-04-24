@@ -26,10 +26,12 @@ namespace {
 
 	};
 
-	//constexpr float k
+	constexpr float kGraphScale = 0.1f;
+
+	constexpr float kGraphFrameChangeTime = 0.1f;
 
 	//当たり判定のサイズ
-	constexpr float kCollisionBallSize = 20.0f;
+	constexpr float kCollisionBallSize = 30.0f;
 	constexpr float kCollisionFieldSize = 70.0f;
 	constexpr float kCollisionInfectionSize = 80.0f;
 
@@ -39,7 +41,7 @@ namespace {
 	constexpr float kMaxMoveDistance = 500;
 
 	//フィールドに残る時間
-	constexpr float kFieldLifetime = 0.3f;
+	constexpr float kFieldLifetime = 0.7f;
 
 	//伝染回数
 	constexpr int kMaxInfection = 5;
@@ -51,13 +53,16 @@ namespace {
 
 Thunder::Thunder(ObjectManager* objManager):
 	BulletBase(objManager),
+	m_index(0),
 	m_state(State::Ball),
 	m_fieldElapsedTime(0),
 	m_infectionCount(0),
 	m_infectionTimer(0),
 	m_pEnemyMgr(nullptr),
 	m_pEnemies(),
-	m_graphHandle()
+	m_graphHandle(),
+	m_graphFrame(0),
+	m_graphCounter(0)
 {
 	m_pEnemies.clear();
 }
@@ -103,8 +108,6 @@ void Thunder::Draw()
 	//非アクティブならリターン
 	if (!m_isActive)return;
 
-	m_circle.DebugDraw();
-
 	float collisionSize = 0;
 
 	switch (m_state)
@@ -122,7 +125,38 @@ void Thunder::Draw()
 	//丸を描画
 	//DrawCircle(GetTransform().position.x, GetTransform().position.y, collisionSize * m_scale, TRUE, 0xffff00);
 
-	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, m_scale, 0, m_graphHandle[m_graphFrame], TRUE);
+	//画像変更のタイマーを加算
+	m_graphCounter += Time::GetInstance().GetDeltaTime();
+
+	//フレーム変更のタイミングになったら
+	if (m_graphCounter >= kGraphFrameChangeTime) {
+		//フレームを加算
+		m_graphFrame++;
+		//カウンターをリセット
+		m_graphCounter = 0;
+
+		//次の画像がなかったら
+		if (m_graphHandle.size() <= m_graphFrame) {
+			//画像を最初からにする
+			m_graphFrame = 0;
+		}
+
+	}
+
+	if (m_state == State::Infection)return;
+
+	Transform transform = GetTransform();
+
+	DrawRotaGraph(transform.position.x, transform.position.y, kGraphScale * m_scale, transform.rotation.z, m_graphHandle[m_graphFrame], TRUE);
+
+#ifdef _DEBUG
+
+	//当たり判定の描画
+	m_circle.DebugDraw();
+
+#else
+
+#endif
 
 }
 
@@ -234,8 +268,13 @@ void Thunder::UpdateInfection()
 	for (auto& enemy : m_pEnemies) {
 		//当たり判定を作る
 		auto circle = Collision::Circle(enemy->GetTransform().position, kCollisionInfectionSize * m_scale);
+
+		float damage = 0;
+		damage = m_playerStatus.Attack;
+		float criticalRate = m_playerStatus.CriticalRate;
+		float criticalDamage =m_playerStatus.CriticalDamage;
 		//当たっていなければスルー
-		m_pEnemyMgr->CheckHitEnemies(circle, 3, 1, 1, Weapon::Volt, 1);
+		m_pEnemyMgr->CheckHitEnemies(circle, damage, criticalRate, criticalDamage, Weapon::Volt, m_index);
 
 	}
 
@@ -249,7 +288,7 @@ void Thunder::UpdateInfection()
 
 	}
 
-	m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Volt, 1);
+	m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Volt, m_index);
 
 	if (m_infectionCount > kMaxInfection) {
 		m_isActive = false;
