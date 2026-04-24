@@ -103,6 +103,8 @@ void Player::Init()
 	m_gauges[static_cast<int>(GaugeType::Exp)] = std::make_unique<ExpGauge>();
 	// 怒りゲージを0に
 	m_gauges[static_cast<int>(GaugeType::Anger)]->Reset(Gauge::Value::Min);
+	m_gauges[static_cast<int>(GaugeType::Hp)]->SetValue(kInitStatus.HP,Gauge::Value::Max);
+	m_gauges[static_cast<int>(GaugeType::Hp)]->Reset(Gauge::Value::Max);
 	// 円の当たり判定を初期化
 	m_circle = Collision::Circle(GetTransform().position, kCircleSize);
 
@@ -392,7 +394,6 @@ void Player::Debug()
 
 void Player::Damage(float value)
 {
-	return;
 	// ダッシュ中なら処理しない
 	if (CheckDashNow())return;
 	if (m_anger)return;
