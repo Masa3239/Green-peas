@@ -8,6 +8,7 @@ class Camera;
 class EnemyManager;
 class UIManager;
 class Map;
+class EnemyMap;
 class ItemManager;
 class WeaponManager;
 class PauseMenu;
@@ -75,6 +76,10 @@ private:
 	/// マップ
 	/// </summary>
 	std::unique_ptr<Map> m_pMap;
+	/// <summary>
+	/// マップ敵情報
+	/// </summary>
+	std::unique_ptr<EnemyMap> m_pEnemyMap;
 
 	std::unique_ptr<WeaponManager> m_pWeaponManager;
 

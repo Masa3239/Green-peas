@@ -8,6 +8,7 @@
 #include "../Personal/Asai/UIManager.h"
 #include "../Personal/Syoguti/EnemyBoss.h"
 #include "../Utility/MyRandom.h"
+#include "../Personal/Kimura/EnemyMap/EnemyMap.h"
 
 #include "EnemyMelee.h"
 #include "EnemyShooter.h"
@@ -44,9 +45,9 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::Init()
 {
-	GenerateEnemy(EnemyType::Miniboss);
+	//GenerateEnemy(EnemyType::Miniboss);
 
-	m_enemyBoss = std::make_unique<EnemyBoss>(GetObjectManager(), Vector3(1000, 100, 0));
+	m_enemyBoss = std::make_unique<EnemyBoss>(GetObjectManager(), Vector3(5000, 300, 0));
 	m_enemyBoss->SetPlayer(m_pPlayer);
 	m_enemyBoss->Init();
 }
@@ -67,9 +68,9 @@ void EnemyManager::Update()
 	{
 		// 敵を生成
 		if (MyRandom::Int(0, 1) == 0)
-			GenerateEnemy(EnemyType::Melee);
+			GenerateEnemy(EnemyType::Melee, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
 		else
-			GenerateEnemy(EnemyType::Shooter);
+			GenerateEnemy(EnemyType::Shooter, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
 
 		m_generateCounter = kGenerateDuration;
 	}
@@ -102,29 +103,6 @@ std::vector<EnemyBase*> EnemyManager::GetHitEnemies(const Collision::Shape& shap
 	return enemies;
 }
 
-bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, int damage)
-{
-	bool result = false;
-
-	for (const auto& enemy : m_enemies)
-	{
-		if (!enemy->GetCollider().CheckCollision(shape)) continue;
-		
-		// ダメージを与えられなかったらスキップ
-		if (!enemy->Damage(damage)) continue;
-
-
-		
-		m_uiMgr->CreatePopUpText(enemy->GetTransform().position, damage, PopUpUI::TextType::Damage);
- 
-
-		// 誰か一人でも当たっていたらtrueになる
-		result = true;
-	}
-
-	return result;
-}
-
 bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage, int weapon, int index)
 {
 	bool result = false;
@@ -149,13 +127,28 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 		// ダメージを与えられなかったらスキップ
 		if (!enemy->Damage(finalDamage, weapon, index)) continue;
 
-
-		
-
 		m_uiMgr->CreatePopUpText(enemy->GetTransform().position, finalDamage, textType);
 
-
 		// 誰か一人でも当たっていたらtrueになる
+		result = true;
+	}
+
+	if (m_enemyBoss->GetCollider().CheckCollision(shape))
+	{
+		finalDamage = damage;
+		textType = PopUpUI::TextType::Damage;
+
+		if (GetRand(100) < criticalChance)
+		{
+			finalDamage *= criticalDamage;
+			textType = PopUpUI::TextType::Critical;
+		}
+
+		// ダメージを与えられなかったらスキップ
+		if (!m_enemyBoss->Damage(finalDamage, weapon, index)) return result;
+
+		m_uiMgr->CreatePopUpText(m_enemyBoss->GetTransform().position, finalDamage, textType);
+
 		result = true;
 	}
 
@@ -168,6 +161,8 @@ bool EnemyManager::ResetEnemyDamageFlag(int weapon, int index)
 	{
 		enemy->ResetDamageFlag(weapon, index);
 	}
+
+	m_enemyBoss->ResetDamageFlag(weapon, index);
 
 	return false;
 }
@@ -184,7 +179,7 @@ std::vector<Vector3> EnemyManager::GetMiniBossPositions() const
 	return positions;
 }
 
-void EnemyManager::GenerateEnemy(EnemyType type)
+void EnemyManager::GenerateEnemy(EnemyType type, int level)
 {
 	std::unique_ptr<EnemyBase> enemy;
 	switch (type)
@@ -195,6 +190,7 @@ void EnemyManager::GenerateEnemy(EnemyType type)
 	}
 	enemy->SetPlayer(m_pPlayer);
 	enemy->SetEnemyManager(this);
+	enemy->SetLevel(level);
 	enemy->Init();
 
 	// 生成座標が範囲内になるまで繰り返す
@@ -216,7 +212,7 @@ void EnemyManager::GenerateEnemy(EnemyType type)
 	m_enemies.emplace_back(std::move(enemy));
 }
 
-void EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos)
+void EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos, int level)
 {
 	std::unique_ptr<EnemyBase> enemy;
 	switch (type)
@@ -225,13 +221,25 @@ void EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos)
 	case EnemyManager::EnemyType::Shooter:	enemy = std::make_unique<EnemyShooter>(GetObjectManager()); break;
 	case EnemyManager::EnemyType::Miniboss:	enemy = std::make_unique<EnemyMiniBoss>(GetObjectManager()); break;
 	}
-	enemy->Init();
 	enemy->SetPlayer(m_pPlayer);
+	enemy->SetEnemyManager(this);
+	enemy->SetLevel(level);
+	enemy->Init();
 
 	enemy->GetTransform().position = pos;
 
 	if (type == EnemyType::Miniboss) m_miniBosses.emplace_back(dynamic_cast<EnemyMiniBoss*>(enemy.get()));
 	m_enemies.emplace_back(std::move(enemy));
+}
+
+void EnemyManager::InitGenerate(EnemyMap* enemyMap)
+{
+	auto& enemies = enemyMap->GetSpawnList();
+
+	for (const auto& enemy : enemies)
+	{
+		GenerateEnemy(enemy.type, enemy.pos, 1);
+	}
 }
 
 void EnemyManager::CheckDead()

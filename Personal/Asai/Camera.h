@@ -76,6 +76,12 @@ public:
 	int GetWorldScreen()const { return m_worldScreen; }
 
 	/// <summary>
+	/// カメラの座標を設定する
+	/// </summary>
+	/// <param name="vector3"></param>
+	void SetPos(const Vector3 vector3){ m_transform.position = vector3;; }
+
+	/// <summary>
 	/// マップのポインターをセットする
 	/// </summary>
 	/// <param name="pMap"></param>
@@ -138,6 +144,16 @@ private:
 	/// 振動の時間
 	/// </summary>
 	float m_shakeDuration;
+
+	/// <summary>
+	/// 振動のタイマー
+	/// </summary>
+	float m_shakeTimer;
+
+	/// <summary>
+	/// 振動の強さ
+	/// </summary>
+	float m_shakeMargin;
 
 	/// <summary>
 	/// ワールドスクリーンの左端

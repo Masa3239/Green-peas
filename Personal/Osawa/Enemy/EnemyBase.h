@@ -23,7 +23,6 @@ public:
 		int maxHp;
 		int attack;
 		int defence;
-		float speed;
 		int exp;
 	};
 
@@ -49,7 +48,7 @@ public:
 	/// 状態異常の取得
 	/// </summary>
 	/// <param name="state">状態異常のビット</param>
-	const unsigned int GetMyState() { return m_variableStatus; }
+	const unsigned int GetMyState() const { return m_variableStatus; }
 
 	/// <summary>
 	/// HPを取得
@@ -78,6 +77,9 @@ public:
 
 	bool ResetDamageFlag(int weapon, int index);
 
+	int GetLevel() const { return m_level; }
+	void SetLevel(const int level) { m_level = level; }
+
 	const StatusParam& GetStatusParam() const { return m_statusParam; }
 
 	Player* GetPlayer() const { return m_pPlayer; }
@@ -85,8 +87,8 @@ public:
 
 	const Collision::AABB& GetCollider() const { return m_collider; }
 
-	EnemyManager* GetEnemyManager() const { return m_enemyMgr; }
-	void SetEnemyManager(EnemyManager* enemyMgr) { m_enemyMgr = enemyMgr; }
+	EnemyManager* GetEnemyManager() const { return m_pEnemyMgr; }
+	void SetEnemyManager(EnemyManager* enemyMgr) { m_pEnemyMgr = enemyMgr; }
 
 protected:
 
@@ -117,6 +119,8 @@ private:
 
 	std::array<std::vector<bool>, Weapon::Max> m_damageFlag;
 
+	int m_level;
+
 	/// <summary>
 	/// パラメータ
 	/// </summary>
@@ -132,5 +136,5 @@ private:
 	/// </summary>
 	Player* m_pPlayer;
 
-	EnemyManager* m_enemyMgr;
+	EnemyManager* m_pEnemyMgr;
 };

@@ -11,6 +11,9 @@ namespace {
 	// CSVファイルパス（worldid / stageIidで変化）
 	const char* const kEnemyMapCsv = "Resource\\EnemyMap%d_%d.csv";
 
+	// 1マスのサイズ
+	constexpr int kCellSize = 40;
+
 }
 
 EnemyMap::EnemyMap() :
@@ -60,26 +63,41 @@ bool EnemyMap::LoadCSVToMapData(int worldNum, int stageNum)
 	
 	std::ifstream ifs(fileNameCSV);
 	std::string buf;
-
+	// 既存データをクリア
 	m_spawnList.clear();
-
+	// y座標
+	int y = 0;
+	// 1行ずつ読み込み
 	while (std::getline(ifs, buf))
 	{
-		if (buf.empty()) continue;
-
+		// カンマで分割
 		auto list = Split(buf, ',');
 
-		if (list.size() < 3) continue;
+		for (int x = 0; x < list.size(); x++)
+		{
+			int typeNum = std::stoi(list[x]);
 
-		EnemySpawnData data;
-		if (list[0] == "melee")
-			data.type = EnemyManager::EnemyType::Melee;
-		else if (list[0] == "shooter")
-			data.type = EnemyManager::EnemyType::Shooter;
-		else if (list[0] == "miniboss")
-			data.type = EnemyManager::EnemyType::Miniboss;
+			if (typeNum == 0) continue; // 0は空マス
 
-		m_spawnList.push_back(data);
+			EnemySpawnData data;
+			// 数字 → 敵タイプ変換
+			switch (typeNum)
+			{
+			case 1: data.type = EnemyManager::EnemyType::Melee; break;  // 近接敵
+			case 2: data.type = EnemyManager::EnemyType::Shooter; break;// 遠距離敵
+			case 3: data.type = EnemyManager::EnemyType::Miniboss; break; // 中ボス
+			default:
+				continue; // 未定義は無視
+			}
+			// グリッド座標 → 実際のワールド座標に変換
+			data.pos.x = x * kCellSize;
+			data.pos.y = y * kCellSize;
+			data.pos.z = 0.0f;
+
+			m_spawnList.push_back(data);
+		}
+		// 次の行へ
+		y++;
 	}
 
 	return true;

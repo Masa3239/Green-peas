@@ -1,5 +1,6 @@
 #pragma once
 #include"../Asai/BulletBase.h"
+#include<vector>
 
 class FireBall :public BulletBase
 {
@@ -87,7 +88,7 @@ private:
 
 		Ball=0,
 		Field,
-
+		Max
 	};
 
 	/// <summary>
@@ -104,5 +105,7 @@ private:
 	/// フィールド状態でのダメージ間隔のタイマー
 	/// </summary>
 	float m_fieldDamageIntervalTimer;
+
+	std::vector<int>m_graphHandle;
 
 };

@@ -14,9 +14,9 @@ namespace {
 	//カメラの補間
 	constexpr float kFollowLatency = 3.0f;
 	//振動の大きさ
-	constexpr float kShakeMoveMargin = 3;
+	constexpr float kShakeMoveMax = 6;
 	//怒り状態でのカメラの振動
-	constexpr float kAngerShakeAmount = 1.0f;
+	constexpr float kAngerShakeAmount = 0.5f;
 
 }
 
@@ -93,6 +93,10 @@ void Camera::DebugDraw()
 
 	printfDx("Camera m_state %d\n", static_cast<int>(m_state));
 
+	printfDx("Camera m_shakeDuration %f\n", m_shakeDuration);
+
+	printfDx("m_shakeTimer %f\n", m_shakeTimer);
+
 }
 
 void Camera::End()
@@ -111,6 +115,10 @@ void Camera::StartDamage(float shakeDuration)
 	m_shakeDuration = shakeDuration;
 	//ステータスを変更
 	m_state = CameraState::Type::Damage;
+	//振動の幅を最大に設定
+	m_shakeMargin = kShakeMoveMax;
+	//タイマーをセット
+	m_shakeTimer = m_shakeDuration;
 
 }
 
@@ -156,49 +164,53 @@ void Camera::UpdateFollow(Transform cameraPos)
 
 void Camera::UpdateDamage(Transform cameraPos)
 {
+	//デルタタイムを取得
+	float deltaTime = Time::GetInstance().GetDeltaTime();
+	//割合を計算
+	float rate = MyMath::Rate(m_shakeTimer, m_shakeDuration);
 
-	//カメラの移動
-	//m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency + m_transform.position;
-	//m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency * Time::GetInstance().GetDeltaTime() + m_transform.position;
-	Lerp(cameraPos);
+	static float radian = 0.0f;
 
-	int direction = MyRandom::Int(0, 3);
+	//ランダムで方向を決める
+	int direction = 1;
+	if (MyRandom::Judge(50))direction = -1;
 
-	switch (direction)
-	{
+	//振動の移動量
+	Vector3 offSetPos{
 
-	case 0:
+		sinf(radian * direction) * kShakeMoveMax * rate,
+		cosf(radian * direction) * kShakeMoveMax * rate,
+		0
+	};
 
-		m_transform.position.x -= kShakeMoveMargin;
+	radian += deltaTime;
 
-		break;
+	if (radian >= 3.14) {
+		radian = 0;
+	}
 
-	case 1:
+	//カメラとの距離の差を求める
+	float distance = (cameraPos.position - m_transform.position).GetSqLength();
 
-		m_transform.position.x += kShakeMoveMargin;
-
-		break;
-
-	case 2:
-
-		m_transform.position.y -= kShakeMoveMargin;
-
-		break;
-
-	case 3:
-
-		m_transform.position.y += kShakeMoveMargin;
-
-		break;
-
+	//距離の差が100以下なら
+	if (distance > 100) {
+		//カメラの補間
+		Lerp(cameraPos);
+		//カメラの振動
+		m_transform.position = m_transform.position + offSetPos;
+	}
+	else {
+		//座標の更新
+		m_transform.position = cameraPos.position + offSetPos;
 	}
 
 	//タイマーを減らす
-	m_shakeDuration -= Time::GetInstance().GetDeltaTime();
+	m_shakeTimer -= deltaTime;
 	//時間になったら
-	if (m_shakeDuration < 0) {
-		//タイマーをリセット
+	if(m_shakeTimer<0){
+		//リセット
 		m_shakeDuration = 0;
+		m_shakeTimer = 0;
 		//ステータスを変更
 		m_state = CameraState::Type::Follow;
 

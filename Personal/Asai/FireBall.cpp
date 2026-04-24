@@ -6,12 +6,15 @@
 #include"../../Utility/Time.h"
 
 namespace {
+
+	//const char* const 
+
 	//当たり判定のサイズ
 	constexpr float kCollisionBallSize = 20.0f;
 	constexpr float kCollisionFieldSize = 60.0f;
 
 	//移動速度
-	constexpr float kSpeed = 120.0f;
+	constexpr float kSpeed = 180.0f;
 	//移動の最大距離
 	constexpr float kMaxMoveDistance = 500;
 

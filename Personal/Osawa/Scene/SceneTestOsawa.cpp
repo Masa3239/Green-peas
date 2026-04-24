@@ -3,6 +3,7 @@
 #include "../Personal/Asai/Camera.h"
 #include "../Personal/Asai/UIManager.h"
 #include "../Personal/Kimura/Map/Map.h"
+#include "../Personal/Kimura/EnemyMap/EnemyMap.h"
 #include "../Personal/Osawa/Enemy/EnemyManager.h"
 #include "../Personal/Osawa/PauseMenu.h"
 #include "../Personal/Syoguti/ItemManager.h"
@@ -21,6 +22,7 @@ SceneTestOsawa::SceneTestOsawa() :
 	m_pUIMgr(nullptr),
 	m_pItemMgr(nullptr),
 	m_pMap(nullptr),
+	m_pEnemyMap(nullptr),
 	m_pWeaponManager(nullptr),
 	m_pPauseMenu(nullptr)
 {
@@ -30,6 +32,7 @@ SceneTestOsawa::SceneTestOsawa() :
 	m_pUIMgr = std::make_unique<UIManager>();
 	m_pItemMgr = std::make_unique<ItemManager>();
 	m_pMap = std::make_unique<Map>();
+	m_pEnemyMap = std::make_unique<EnemyMap>();
 	m_pWeaponManager = std::make_unique<WeaponManager>();
 	m_pPauseMenu = std::make_unique<PauseMenu>();
 }
@@ -46,6 +49,7 @@ void SceneTestOsawa::Init()
 	m_pPlayer->SetItemManager(m_pItemMgr.get());
 
 	m_pMap->Init();
+	m_pEnemyMap->Init();
 
 	m_pCamera->Init();
 	m_pCamera->SetMap(m_pMap.get());
@@ -54,6 +58,7 @@ void SceneTestOsawa::Init()
 	m_pEnemyMgr->SetPlayer(m_pPlayer.get());
 	m_pEnemyMgr->SetUIManager(m_pUIMgr.get());
 	m_pEnemyMgr->Init();
+	m_pEnemyMgr->InitGenerate(m_pEnemyMap.get());
 
 	m_pUIMgr->Init();
 
@@ -75,6 +80,7 @@ void SceneTestOsawa::End()
 {
 	m_pPauseMenu->End();
 	m_pWeaponManager->End();
+	m_pEnemyMap->End();
 	m_pMap->End();
 	m_pItemMgr->End();
 	m_pUIMgr->End();
