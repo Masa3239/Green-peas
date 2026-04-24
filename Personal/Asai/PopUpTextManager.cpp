@@ -21,9 +21,10 @@ void PopUpTextManager::Init()
 	m_pTexts.resize(200);
 
 	m_textFonts.resize(static_cast<int>(PopUpUI::TextType::Max));
-
+	
 	m_textFonts[static_cast<int>(PopUpUI::TextType::Damage)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
-	m_textFonts[static_cast<int>(PopUpUI::TextType::Critical)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
+	//m_textFonts[static_cast<int>(PopUpUI::TextType::Critical)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
+	m_textFonts[static_cast<int>(PopUpUI::TextType::Critical)] = CreateFontToHandle("VT323 - Regular", 50, 6, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 	m_textFonts[static_cast<int>(PopUpUI::TextType::Heal)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 
 	for (int i = 0;i < m_pTexts.size();i++) {

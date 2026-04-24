@@ -14,7 +14,7 @@ namespace {
 	//カメラの補間
 	constexpr float kFollowLatency = 3.0f;
 	//振動の大きさ
-	constexpr float kShakeMoveMargin = 3;
+	constexpr float kShakeMoveMax = 6;
 	//怒り状態でのカメラの振動
 	constexpr float kAngerShakeAmount = 1.0f;
 
@@ -93,6 +93,8 @@ void Camera::DebugDraw()
 
 	printfDx("Camera m_state %d\n", static_cast<int>(m_state));
 
+	printfDx("Camera m_shakeDuration %f\n", m_shakeDuration);
+
 }
 
 void Camera::End()
@@ -111,6 +113,10 @@ void Camera::StartDamage(float shakeDuration)
 	m_shakeDuration = shakeDuration;
 	//ステータスを変更
 	m_state = CameraState::Type::Damage;
+	//振動の幅を最大に設定
+	m_shakeMargin = kShakeMoveMax;
+	//
+	m_shakeTimer = shakeDuration;
 
 }
 
@@ -158,9 +164,9 @@ void Camera::UpdateDamage(Transform cameraPos)
 {
 
 	//カメラの移動
-	//m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency + m_transform.position;
-	//m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency * Time::GetInstance().GetDeltaTime() + m_transform.position;
 	Lerp(cameraPos);
+
+	float rate = MyMath::Rate(m_shakeTimer, m_shakeDuration);
 
 	int direction = MyRandom::Int(0, 3);
 
@@ -169,34 +175,39 @@ void Camera::UpdateDamage(Transform cameraPos)
 
 	case 0:
 
-		m_transform.position.x -= kShakeMoveMargin;
+		//m_transform.position.x -= kShakeMoveMax;
+		m_transform.position.x -= kShakeMoveMax * rate;
 
 		break;
 
 	case 1:
 
-		m_transform.position.x += kShakeMoveMargin;
+		//m_transform.position.x += kShakeMoveMax;
+		m_transform.position.x += kShakeMoveMax * rate;
 
 		break;
 
 	case 2:
 
-		m_transform.position.y -= kShakeMoveMargin;
+		//m_transform.position.y -= kShakeMoveMax;
+		m_transform.position.y -= kShakeMoveMax * rate;
 
 		break;
 
 	case 3:
 
-		m_transform.position.y += kShakeMoveMargin;
+		//m_transform.position.y += kShakeMoveMax;
+		m_transform.position.y += kShakeMoveMax * rate;
 
 		break;
 
 	}
 
 	//タイマーを減らす
-	m_shakeDuration -= Time::GetInstance().GetDeltaTime();
+	//m_shakeDuration -= Time::GetInstance().GetDeltaTime();
+	m_shakeTimer -= Time::GetInstance().GetDeltaTime();
 	//時間になったら
-	if (m_shakeDuration < 0) {
+	if(m_shakeTimer<0){
 		//タイマーをリセット
 		m_shakeDuration = 0;
 		//ステータスを変更
