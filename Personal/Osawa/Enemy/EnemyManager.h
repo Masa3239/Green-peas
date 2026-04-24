@@ -11,6 +11,7 @@ class EnemyMiniBoss;
 class EnemyBoss;
 class Player;
 class UIManager;
+class EnemyMap;
 
 class EnemyManager : public GameObject
 {
@@ -92,6 +93,12 @@ public:
 	/// <param name="type">¶¬‚µ‚½‚¢“G‚Ìí—Ş</param>
 	/// <param name="pos">¶¬‚·‚éêŠ</param>
 	void GenerateEnemy(EnemyType type, Vector3 pos);
+
+	/// <summary>
+	/// “G‚Ì‰Šú¶¬
+	/// </summary>
+	/// <param name="enemyMap"></param>
+	void InitGenerate(EnemyMap* enemyMap);
 
 	EnemyBoss* GetEnemyBoss() const { return m_enemyBoss.get(); }
 

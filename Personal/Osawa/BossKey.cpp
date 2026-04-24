@@ -119,7 +119,7 @@ void BossKey::Update()
 void BossKey::Draw()
 {
 	Vector3& pos = GetTransform().position;
-	DrawCircle(pos.x, pos.y/* + std::sin(m_animationTimer * 2.0f) * 20.0f*/, 10, 0xffff00);
+	DrawCircle(pos.x, pos.y, 10, 0xffff00);
 }
 
 void BossKey::UseKey()
