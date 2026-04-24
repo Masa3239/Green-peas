@@ -7,6 +7,10 @@
 
 class Player;
 
+namespace {
+
+	constexpr int kMotionNum = 32;
+}
 class BossBulletManager
 {
 
@@ -84,7 +88,7 @@ private:
 	/// <summary>
 	/// 弾の画像のグラフハンドル
 	/// </summary>
-	int m_bulletGraphHandle;
+	int m_bulletGraphHandle[static_cast<int>(BossBulletBase::BulletType::Max)][kMotionNum];
 
 	/// <summary>
 	/// オブジェクトマネージャーのポインタ

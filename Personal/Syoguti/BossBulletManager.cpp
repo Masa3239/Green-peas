@@ -19,8 +19,16 @@ BossBulletManager::BossBulletManager() :
 void BossBulletManager::Init()
 {
 
+	for (int i = 0;i < static_cast<int>(BossBulletBase::BulletType::Max); i++) {
+
+		for (int j = 0; j < kMotionNum; j++) {
+
+			m_bulletGraphHandle[i][j];
+		}
+	}
+
 	// 画像の読み込み
-	m_bulletGraphHandle = LoadGraph(kBulletGraphHandlePath);
+	// m_bulletGraphHandle = LoadGraph(kBulletGraphHandlePath);
 }
 
 void BossBulletManager::End()

@@ -14,6 +14,7 @@ class BossBulletManager;
 namespace {
 
 	constexpr int kCharactorMotionNum = 32;
+	constexpr int kEffectMotionNum = 32;
 	//constexpr int kCharactorStatusNum = static_cast<int>(EnemyBoss::BossStatus::Max);
 }
 
@@ -183,6 +184,24 @@ private:
 	void LongRangeAttack();
 
 	/// <summary>
+	/// ボスが倒されたかどうかチェック
+	/// </summary>
+	/// <returns></returns>
+	bool CheckDeadFlag();
+
+	/// <summary>
+	/// ボスが倒された時の処理
+	/// </summary>
+	void Dead();
+
+	/// <summary>
+	/// ボスが倒された時のエフェクト
+	/// </summary>
+	/// <param name="position"></param>
+	/// <returns></returns>
+	Vector3 DeadEffect(Vector3 position);
+
+	/// <summary>
 	/// ダメージフラグの範囲外を使おうとしたら範囲を追加する
 	/// </summary>
 	/// <param name="weapon"></param>
@@ -224,7 +243,7 @@ private:
 	/// <summary>
 	/// 弾の発射感覚
 	/// </summary>
-	int m_shotTimer;
+	float m_shotTimer;
 
 	/// <summary>
 	/// 座標
@@ -297,6 +316,41 @@ private:
 	/// ボスの弾のポインタ
 	/// </summary>
 	std::unique_ptr<BossBulletManager> m_pBossBulletMgr;
+
+	/// <summary>
+	/// エフェクトを出す感覚で使うタイマー
+	/// </summary>
+	float m_effectTimer;
+
+	/// <summary>
+	/// エフェクトのカウント
+	/// </summary>
+	int m_effectCount;
+
+	/// <summary>
+	/// エフェクトのアニメーションを再生するまでの時間
+	/// </summary>
+	int m_effectMotionCounter;
+
+	/// <summary>
+	/// エフェクトのモーションのフレーム数
+	/// </summary>
+	int m_effectMotionFrame;
+
+	/// <summary>
+	/// エフェクトを描画するかどうか
+	/// </summary>
+	bool m_isEffect;
+
+	/// <summary>
+	/// エフェクトの座標
+	/// </summary>
+	Vector3 m_effectPos;
+
+	/// <summary>
+	/// エフェクトのグラフハンドル
+	/// </summary>
+	int m_efffectGraphHandle[kEffectMotionNum];
 
 };
 

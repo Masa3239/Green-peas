@@ -7,8 +7,11 @@
 #include "../../Utility/Transform.h"
 #include "../../System/ObjectManager.h"
 #include "../Takagi/Player.h"
-#include "../Asai/Camera.h"
 #include "../Takagi/WeaponManager.h"
+#include"../Takagi/Warrior.h"
+#include"../Takagi/Hunter.h"
+#include"../Takagi/Wizard.h"
+#include "../Asai/Camera.h"
 #include"../../Personal/Osawa/Scene/SceneSelection.h"
 #include"../../Chara/Collision.h"
 #include"../../Utility/Time.h"
@@ -21,7 +24,7 @@ namespace {
 
 	constexpr Vector3 kTestHealPos = { 100.0f, 100.0f, 0.0f };
 	constexpr Vector3 kTestAttackPos = { 300.0f, 300.0f, 0.0f };
-	constexpr Vector3 kTestBossPos = { 200.0f, 200.0f, 0.0f };
+	constexpr Vector3 kTestBossPos = { 5000.0f, 9640.0f, 0.0f };
 }
 
 SceneTestSyoguti::SceneTestSyoguti() :
@@ -38,7 +41,7 @@ SceneTestSyoguti::SceneTestSyoguti() :
 {
 	m_pItemMgr = std::make_unique<ItemManager>();
 	m_pEnemyBoss = std::make_unique<EnemyBoss>(GetObjectManager(), kTestBossPos);
-	m_pPlayer = std::make_unique<Player>(GetObjectManager());
+
 	m_pCamera = std::make_unique<Camera>();
 	m_pWeaponMgr = std::make_unique<WeaponManager>();
 	m_pEnemyManager = std::make_unique<EnemyManager>(GetObjectManager());
@@ -54,6 +57,21 @@ SceneTestSyoguti::~SceneTestSyoguti()
 
 void SceneTestSyoguti::Init()
 {
+	switch (GetCarryOver().characterJob)
+	{
+	case Character::Job::Warrior:
+		m_pPlayer = std::make_unique<Warrior>(GetObjectManager());
+		break;
+	case Character::Job::Hunter:
+		m_pPlayer = std::make_unique<Hunter>(GetObjectManager());
+		break;
+	case Character::Job::Wizard:
+		m_pPlayer = std::make_unique<Wizard>(GetObjectManager());
+		break;
+	default:
+		m_pPlayer = std::make_unique<Warrior>(GetObjectManager());
+		break;
+	}
 	m_pPlayer->SetEnemyManager(m_pEnemyManager.get());
 	m_pPlayer->SetCamera(m_pCamera.get());
 	m_pPlayer->Init();
@@ -128,6 +146,11 @@ SceneBase* SceneTestSyoguti::Update()
 			printfDx("封印解除\n");
 		}
 	}
+
+	if (Input::IsPressed(PAD_INPUT_10)) {
+		m_pEnemyBoss->Damage(50);
+	}
+
 	return this;
 }
 
