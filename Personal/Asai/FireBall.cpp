@@ -6,6 +6,9 @@
 #include"../../Utility/Time.h"
 
 namespace {
+
+	//const char* const 
+
 	//当たり判定のサイズ
 	constexpr float kCollisionBallSize = 20.0f;
 	constexpr float kCollisionFieldSize = 60.0f;

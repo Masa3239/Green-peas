@@ -1,5 +1,6 @@
 #pragma once
 #include"../Asai/BulletBase.h"
+#include<vector>
 
 class FireBall :public BulletBase
 {
@@ -105,6 +106,6 @@ private:
 	/// </summary>
 	float m_fieldDamageIntervalTimer;
 
-	std::array<int, static_cast<int>(State::Max)>m_graphHandles;
+	std::vector<int>m_graphHandle;
 
 };
