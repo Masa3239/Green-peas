@@ -257,6 +257,39 @@ bool EnemyBoss::CheckHitCloseRangeAttackCollison(const Collision::Shape& other)
 	return  m_isCloseTheAttackDamege && m_isCloseTheAttack && m_closeRangeAttackCollision.CheckCollision(other);
 }
 
+bool EnemyBoss::Damage(const int damage)
+{
+
+	m_currentHp -= damage;
+	return true;
+}
+
+bool EnemyBoss::Damage(const int damage, int weapon, int index)
+{
+
+	// 足りない分を追加
+	CheckDamageFlagSize(weapon, index);
+
+	// すでにその武器がダメージを与えていたら失敗
+	if (m_damageFlag[weapon][index]) return false;
+
+	m_damageFlag[weapon][index] = true;
+
+	m_currentHp -= damage;
+
+	return true;
+}
+
+bool EnemyBoss::ResetDamageFlag(int weapon, int index)
+{
+
+	if (index >= m_damageFlag[weapon].size()) return false;
+
+	m_damageFlag[weapon][index] = false;
+
+	return true;
+}
+
 void EnemyBoss::Action()
 {
 
@@ -451,6 +484,16 @@ void EnemyBoss::LongRangeAttack()
 	}
 	
 	printfDx("遠距離攻撃攻撃\n");
+}
+
+void EnemyBoss::CheckDamageFlagSize(int weapon, int index)
+{
+	if (index < m_damageFlag[weapon].size()) return;
+
+	for (int i = m_damageFlag[weapon].size() - 1;i < index; i++) {
+
+		m_damageFlag[weapon].emplace_back(false);
+	}
 }
 
 
