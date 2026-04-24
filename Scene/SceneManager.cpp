@@ -70,6 +70,8 @@ void SceneManager::Draw() {
 	assert(m_pScene);
 	if (!m_pScene) return;
 
+	PauseManager::GetInstance().Draw();
+
 	m_pScene->PreDraw();
 
 	m_pScene->Draw();

@@ -68,6 +68,7 @@ private:
 	BuffManager::Phase m_phase;
 	int m_iconHandle[kBuffMax];
 	int m_Handle[kBuffMax];
+	int m_selectHandle;
 	int m_select;
 	Buff::Type m_selected;
 };

@@ -121,28 +121,33 @@ SceneBase* SceneTestOsawa::Update()
 
 void SceneTestOsawa::Draw()
 {
-	m_pItemMgr->Draw();
+	if (!PauseManager::GetInstance().IsPause()) m_pItemMgr->Draw();
 }
 
 void SceneTestOsawa::PreDraw()
 {
 	printfDx("SceneTestOsawa\n");
 
-	SetDrawScreen(m_pCamera->GetWorldScreen());
-	ClearDrawScreen();
+	if (!PauseManager::GetInstance().IsPause())
+	{
+		SetDrawScreen(m_pCamera->GetWorldScreen());
+		ClearDrawScreen();
 
-	m_pMap->Draw();
+		m_pMap->Draw();
+	}
 }
 
 void SceneTestOsawa::PostDraw()
 {
-	m_pUIMgr->WorldDraw();
+	if (!PauseManager::GetInstance().IsPause())
+	{
+		m_pUIMgr->WorldDraw();
 
-	SetDrawScreen(DX_SCREEN_BACK);
-	m_pCamera->Draw();
+		SetDrawScreen(DX_SCREEN_BACK);
+		m_pCamera->Draw();
 
-	m_pUIMgr->ScreenDraw();
-	m_pUIMgr->DebugDraw();
+		m_pUIMgr->ScreenDraw();
+	}
 
 	m_pPauseMenu->Draw();
 	//clsDx();

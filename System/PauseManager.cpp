@@ -3,6 +3,7 @@
 #include "../Utility/Game.h"
 #include "../System/ObjectManager.h"
 #include "../Object/GameObject.h"
+#include "../Utility/Color.h"
 
 PauseManager& PauseManager::GetInstance()
 {
@@ -61,20 +62,16 @@ void PauseManager::Update()
 
 		m_isToggled = false;
 	}
+}
 
-	// オブジェクトの描画を停止しても画面に写し続けるために、
-	// ポーズ前の画面を取得する
-	if (m_isPause && m_screenGraph == -1)
-	{
-		//m_screenGraph = MakeScreen(Game::kScreenWidth, Game::kScreenHeight);
-		//GetDrawScreenGraph(0, 0, Game::kScreenWidth, Game::kScreenHeight, m_screenGraph);
-	}
-
+void PauseManager::Draw()
+{
 	// ポーズ直前の画面を描画
-	if (m_screenGraph != -1)
-	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_alpha);
-		DrawGraph(0, 0, m_screenGraph, 0);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	}
+	if (m_screenGraph == -1) return;
+
+	DrawGraph(0, 0, m_screenGraph, 1);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_alpha);
+	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, Color::kBlack, 1);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
