@@ -6,6 +6,11 @@
 
 class Player;
 
+namespace {
+
+	constexpr int kAnimationNum = 32;
+}
+
 class BossBulletBase : public GameObject
 {
 
@@ -70,7 +75,7 @@ protected:
 	/// <summary>
 	/// 画像ハンドル
 	/// </summary>
-	int m_graphHandle[32];
+	int m_graphHandle[kAnimationNum];
 
 	/// <summary>
 	/// 角度

@@ -41,7 +41,15 @@ public:
 
 private:
 
+	/// <summary>
+	///  アニメーション
+	/// </summary>
+	int m_animIndex;
 
+	/// <summary>
+	/// アニメーションのタイマー
+	/// </summary>
+	int m_animTimer;
 
 };
 
