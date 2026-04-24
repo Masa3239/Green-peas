@@ -4,6 +4,7 @@
 #include "../Utility/Time.h"
 #include "../Personal/Takagi/Player.h"
 #include "../Personal/Osawa/ExpOrb.h"
+#include "../Enemy/EnemyManager.h"
 
 namespace
 {
@@ -16,6 +17,9 @@ namespace
 
 	// プレイヤーを認識する距離
 	constexpr float kStartRecognitionDistance = 600;
+	
+	// デスポーンする範囲
+	constexpr float kDespawnDistance = 800;
 }
 
 EnemyBase::EnemyBase(ObjectManager* objManager) :
@@ -38,18 +42,27 @@ void EnemyBase::Update()
 {
 	m_collider.SetPosition(GetTransform().position);
 	
+	auto player = GetPlayer();
+
+	const Vector3& playerPos = player->GetTransform().position;
+	Vector3& myPos = GetTransform().position;
+
+	float sqDistance = (playerPos - myPos).GetSqLength();
+
 	// 固定生成なら認識範囲を適用する
 	if (m_isFixSpawn)
 	{
-		auto player = GetPlayer();
-
-		const Vector3& playerPos = player->GetTransform().position;
-		Vector3& myPos = GetTransform().position;
-
-		float sqDistance = (playerPos - myPos).GetSqLength();
-
 		// 認識範囲外なら終了
 		if (sqDistance >= kStartRecognitionDistance * kStartRecognitionDistance) return;
+	}
+	// 自然生成ならデスポーン範囲を適用する
+	else
+	{
+		if (sqDistance >= kDespawnDistance * kDespawnDistance)
+		{
+			m_pEnemyMgr->RemoveEnemy(this);
+			return;
+		}
 	}
 
 	UpdateEnemy();

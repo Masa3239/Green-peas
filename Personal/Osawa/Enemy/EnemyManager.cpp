@@ -18,7 +18,7 @@
 namespace
 {
 	// ©“®¶¬‚³‚ê‚é“G‚ÌÅ‘å”
-	constexpr int kMaxEnemyNum = 100;
+	constexpr int kMaxEnemyNum = 1000;
 	// ©“®¶¬‚³‚ê‚é“G‚ÌÅ¬”
 	constexpr int kMinEnemyNum = 30;
 
@@ -240,6 +240,20 @@ void EnemyManager::InitGenerate(EnemyMap* enemyMap)
 	{
 		auto enemy = GenerateEnemy(status.type, status.pos, status.level);
 		enemy->SetFixSpawn(true);
+	}
+}
+
+void EnemyManager::RemoveEnemy(EnemyBase* enemy)
+{
+	enemy->SetState(GameObject::State::Dead);
+
+	for (auto iter = m_enemies.begin(); iter != m_enemies.end(); iter++)
+	{
+		if (iter->get() != enemy) continue;
+
+		m_enemies.erase(iter);
+
+		break;
 	}
 }
 
