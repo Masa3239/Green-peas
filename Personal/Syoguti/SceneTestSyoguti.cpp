@@ -25,6 +25,7 @@ namespace {
 	constexpr Vector3 kTestHealPos = { 100.0f, 100.0f, 0.0f };
 	constexpr Vector3 kTestAttackPos = { 300.0f, 300.0f, 0.0f };
 	constexpr Vector3 kTestBossPos = { 5000.0f, 9640.0f, 0.0f };
+	constexpr Vector3 kTestPos = { 5100.0f, 9640.0f, 0.0f };
 }
 
 SceneTestSyoguti::SceneTestSyoguti() :
@@ -50,6 +51,9 @@ SceneTestSyoguti::SceneTestSyoguti() :
 	m_pUIManager = std::make_unique<UIManager>();
 	m_transform.Reset();
 	m_buffRandom.Init();
+
+	m_pChest = std::make_unique<ChestManager>();
+	
 }
 
 SceneTestSyoguti::~SceneTestSyoguti()
@@ -101,6 +105,8 @@ void SceneTestSyoguti::Init()
 	 m_pWeaponMgr->SetEnemyManager(m_pEnemyManager.get());
 	 m_pWeaponMgr->Init();
 	 
+	 m_pChest->SetObjectManager(GetObjectManager());
+	 m_pChest->Init();
 }
 
 void SceneTestSyoguti::End()
@@ -113,7 +119,7 @@ void SceneTestSyoguti::End()
 	m_pMap->End();
 	m_pUIManager->End();
 	m_pWeaponMgr->End();
-
+	m_pChest->End();
 }
 
 SceneBase* SceneTestSyoguti::Update()
@@ -151,6 +157,12 @@ SceneBase* SceneTestSyoguti::Update()
 	if (Input::IsPressed(PAD_INPUT_10)) {
 		m_pEnemyBoss->Damage(50);
 	}
+
+	if (Input::IsPressed(PAD_INPUT_10)) {
+		m_pChest->Create(kTestPos);
+	}
+
+	m_pChest->CheckHitCollision(m_pPlayer->GetCircle());
 
 	return this;
 }

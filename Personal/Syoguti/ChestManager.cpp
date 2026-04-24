@@ -4,8 +4,6 @@
 #include <DxLib.h>
 
 ChestManager::ChestManager() :
-	m_motionCounter(0),
-	m_motionFrame(0),
 	m_pObjectMgr(nullptr)
 
 {
@@ -21,10 +19,6 @@ ChestManager::~ChestManager()
 
 void ChestManager::Init()
 {
-	for (auto& e : m_chests) {
-
-		e->Init();
-	}
 
 	LoadDivGraph(".\\Resource\\Chest.png",
 		21, 21, 1, 48, 40, m_graphHandle);
@@ -48,22 +42,6 @@ void ChestManager::Update()
 	for (auto& e : m_chests) {
 		e->Update();
 	}
-
-	m_motionCounter++;
-
-	if (m_motionCounter >= 5) {
-		m_motionCounter = 0;
-		m_motionFrame++;
-
-		if (m_motionFrame >= kTreasureChestMotionNum) {
-			m_motionFrame = 0;
-		}
-	}
-
-	for (auto& e : m_chests) {
-		e->SetFrame(m_motionFrame);
-		e->Update();
-	}
 }
 
 void ChestManager::Draw()
@@ -77,7 +55,8 @@ void ChestManager::Draw()
 void ChestManager::Create(Vector3 position)
 {
 
-	auto chest = std::make_unique<TreasureChest>(m_pObjectMgr);
+	std::unique_ptr<TreasureChest> chest;
+	chest = std::make_unique<TreasureChest>(m_pObjectMgr);
 	
 	for (int i = 0;i < kTreasureChestMotionNum;i++) {
 		chest->SetGraphHandle(m_graphHandle[i], i);
@@ -86,4 +65,37 @@ void ChestManager::Create(Vector3 position)
 
 	chest->GetTransform().position = position;
 	m_chests.push_back(std::move(chest));
+}
+
+void ChestManager::Remove(int index)
+{
+
+	// インデックスの値が配列の範囲内かチェック
+	if (index < 0 || index >= m_chests.size()) {
+		return;
+	}
+
+	// 指定した宝箱を削除
+	m_chests[index]->End();
+
+	m_chests.erase(m_chests.begin() + index);
+}
+
+bool ChestManager::CheckHitCollision(const Collision::Shape& other)
+{
+	// 空きがあれば前詰めする前提の処理
+	for (int i = m_chests.size() - 1; i >= 0; i--) {
+
+		// 宝箱のi番目と引数が当たっているかどうか調べる
+		if (!m_chests[i]->GetCollision().CheckCollision(other)) continue;
+
+		m_chests[i]->Open();
+
+		// Remove(i);
+				
+		// 当たっていたらtrueを返す
+		return true;
+	}
+	// 当たっていなければfalseを返す
+	return false;
 }

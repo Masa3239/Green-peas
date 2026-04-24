@@ -7,11 +7,6 @@
 
 class TreasureChest;
 
-namespace {
-
-	// 画像のサイズ
-	constexpr float kGraphScale = 1.0f;
-}
 
 class ChestManager
 {
@@ -42,18 +37,46 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 生成
+	/// </summary>
+	/// <param name="position"></param>
 	void Create(Vector3 position);
+
+	/// <summary>
+	/// 削除
+	/// </summary>
+	/// <param name="index"></param>
+	void Remove(int index);
+
+	/// <summary>
+	/// 当たり判定のチェック
+	/// </summary>
+	/// <param name="other"></param>
+	/// <returns></returns>
+	bool CheckHitCollision(const Collision::Shape& other);
+
+	/// <summary>
+	/// オブジェクトマネージャーのポインタをセットするセッター関数
+	/// </summary>
+	/// <param name="objectManager"></param>
+	void SetObjectManager(ObjectManager* objectManager) { m_pObjectMgr = objectManager; }
 
 private:
 
+	/// <summary>
+	/// 可変長配列
+	/// </summary>
 	std::vector<std::unique_ptr<TreasureChest>> m_chests;
 
+	/// <summary>
+	/// グラフィックハンドル
+	/// </summary>
 	int m_graphHandle[kTreasureChestMotionNum];
 
-	int m_motionCounter;
-
-	int m_motionFrame;
-
+	/// <summary>
+	/// オブジェクトマネージャーのポインタ
+	/// </summary>
 	ObjectManager* m_pObjectMgr;
 
 };
