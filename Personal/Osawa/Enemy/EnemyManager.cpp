@@ -238,7 +238,7 @@ void EnemyManager::InitGenerate(EnemyMap* enemyMap)
 
 	for (const auto& status : enemies)
 	{
-		auto enemy = GenerateEnemy(status.type, status.pos, 1);
+		auto enemy = GenerateEnemy(status.type, status.pos, status.level);
 		enemy->SetFixSpawn(true);
 	}
 }

@@ -16,6 +16,9 @@ namespace
 	constexpr float kMoveAccel = 10.0f;
 
 	constexpr float kRadianAccel = 0.01f;
+
+	// Œ®‚ðŽg—p‚·‚é”ÍˆÍ
+	constexpr float kUseRange = 300.0f;
 }
 
 BossKey::BossKey(ObjectManager* objManager) :
@@ -94,7 +97,8 @@ void BossKey::Update()
 
 		m_animationTimer += Time::GetInstance().GetDeltaTime();
 
-		if (Keyboard::GetInstance().IsDown(KEY_INPUT_K))
+		Collision::Circle range = { pos, kUseRange };
+		if (m_pEnemyMgr->GetEnemyBoss()->GetCollider().CheckCollision(range))
 		{
 			UseKey();
 		}

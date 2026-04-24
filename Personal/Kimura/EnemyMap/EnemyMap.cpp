@@ -75,18 +75,22 @@ bool EnemyMap::LoadCSVToMapData(int worldNum, int stageNum)
 
 		for (int x = 0; x < list.size(); x++)
 		{
-			//int typeNum = std::stoi(list[x]);
 
-			//if (typeNum == 0) continue; // 0は空マス
+			/*
+			int typeNum = std::stoi(list[x]);
+
+			if (typeNum == 0) continue; // 0は空マス
+			*/
 
 			std::string token = list[x];
-
+			// "0" は空マスなのでスキップ
 			if (token == "0") continue;
-
+			// "type_level" の "_" の位置を探す
 			size_t pos = token.find('_');
 			if (pos == std::string::npos) continue;
-
+			// "_" の前が敵の種類ID
 			int typeNum = std::stoi(token.substr(0, pos));
+			// "_" の後ろが敵のレベル
 			int levelNum = std::stoi(token.substr(pos + 1));
 
 			EnemySpawnData data;
@@ -99,7 +103,7 @@ bool EnemyMap::LoadCSVToMapData(int worldNum, int stageNum)
 			default:
 				continue; // 未定義は無視
 			}
-
+			// レベルを設定する
 			data.level = levelNum;
 
 			// グリッド座標 → 実際のワールド座標に変換
