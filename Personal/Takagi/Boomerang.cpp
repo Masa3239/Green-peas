@@ -13,7 +13,7 @@ namespace {
     constexpr float kCatchDistance = kCatch*kCatch;
     constexpr float kColRadius = 20;
     constexpr float kGraphScale = 1.4f;
-    constexpr PlayerStatus kStatus = { 0,0,3,0,0,0,3,6 };
+    constexpr PlayerStatus kStatus = { 0,0,3,0,0,0,30,6 };
     //const char* const kFilePath = "Resource\\Boomerang.png";
     const char* const kGraphPath = "Resource\\Hammer.png";
     constexpr float kRotationSpeed = 1080;
@@ -129,7 +129,7 @@ void Boomerang::CheckCollision()
     
     float damage = 0;
     damage = m_playerStatus.Attack * m_weaponStatus.Attack;
-    float criticalRate = m_playerStatus.CriticalRate * m_weaponStatus.CriticalRate;
+    float criticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
     float criticalDamage = m_weaponStatus.CriticalDamage * m_playerStatus.CriticalDamage;
     //m_pEnemyMgr->CheckHitEnemies(m_circle, damage);
     //m_pEnemyMgr->CheckHitEnemies(m_circle, damage, criticalRate, criticalDamage);

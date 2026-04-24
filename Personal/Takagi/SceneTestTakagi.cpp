@@ -155,6 +155,7 @@ void SceneTestTakagi::Draw()
 void SceneTestTakagi::PreDraw()
 {
 
+	if (PauseManager::GetInstance().IsPause())return;
 	SetDrawScreen(m_pCamera->GetWorldScreen());
 
 	ClearDrawScreen();
@@ -163,6 +164,7 @@ void SceneTestTakagi::PreDraw()
 
 void SceneTestTakagi::PostDraw()
 {
+	if (!PauseManager::GetInstance().IsPause()) {
 	m_pUIManager->WorldDraw();
 
 	SetDrawScreen(DX_SCREEN_BACK);
@@ -170,11 +172,14 @@ void SceneTestTakagi::PostDraw()
 	
 	m_pUIManager->ScreenDraw();
 	m_pUIManager->DebugDraw();
-	if (!PauseManager::GetInstance().IsPause())return;
-	if (m_pBuffManager->IsSelect()) {
-	m_pBuffManager->Draw();
+
 	}
 	else {
-	m_pPauseMenu->Draw();
+		if (m_pBuffManager->IsSelect()) {
+			m_pBuffManager->Draw();
+		}
+		else {
+			m_pPauseMenu->Draw();
+		}
 	}
 }

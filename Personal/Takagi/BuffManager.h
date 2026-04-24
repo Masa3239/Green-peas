@@ -11,6 +11,7 @@ public:
 	enum class Phase {
 		Start,
 		Select,
+		End,
 		Max
 	};
 	BuffManager();
