@@ -2,6 +2,7 @@
 #include"../../Chara/Collision.h"
 #include"../../Object/GameObject.h"
 #include"../../Utility/Transform.h"
+#include"../Takagi/PlayerStatus.h"
 
 class BulletBase :public GameObject
 {
@@ -63,6 +64,8 @@ public:
 	/// <param name="scale"></param>
 	virtual void SetScale(float scale) = 0;
 
+	virtual void SetStatus(PlayerStatus status) { m_playerStatus = status; }
+
 protected:
 
 	/// <summary>
@@ -85,4 +88,6 @@ protected:
 	/// </summary>
 	Collision::Circle m_circle;
 	
+	PlayerStatus m_playerStatus;
+
 };

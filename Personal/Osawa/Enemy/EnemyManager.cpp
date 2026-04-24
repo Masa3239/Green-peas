@@ -18,7 +18,7 @@
 namespace
 {
 	// ©“®¶¬‚³‚ê‚é“G‚ÌÅ‘å”
-	constexpr int kMaxEnemyNum = 100;
+	constexpr int kMaxEnemyNum = 1000;
 	// ©“®¶¬‚³‚ê‚é“G‚ÌÅ¬”
 	constexpr int kMinEnemyNum = 30;
 
@@ -45,7 +45,7 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::Init()
 {
-	//GenerateEnemy(EnemyType::Miniboss);
+	GenerateEnemy(EnemyType::Miniboss, 1);
 
 	m_enemyBoss = std::make_unique<EnemyBoss>(GetObjectManager(), Vector3(5000, 300, 0));
 	m_enemyBoss->SetPlayer(m_pPlayer);

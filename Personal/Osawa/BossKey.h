@@ -57,4 +57,12 @@ private:
 	float m_moveSpeed;
 
 	float m_animationTimer;
+
+	int m_graphsKey[24];
+
+	int m_currentGraph;
+
+	float m_graphAnimTimer;
+
+	float m_graphAnimDuration;
 };

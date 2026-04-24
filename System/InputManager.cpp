@@ -38,15 +38,10 @@ bool InputManager::Initialize()
 		mActions.emplace(static_cast<Input::Action>(i), Input::ActionProperty());
 	}
 
-	Bind(Input::Action::Up, Input::Device::Keyboard, KeyCode::Button::W);
 	Bind(Input::Action::Up, Input::Device::Keyboard, KeyCode::Button::UpArrow);
-	Bind(Input::Action::Down, Input::Device::Keyboard, KeyCode::Button::S);
 	Bind(Input::Action::Down, Input::Device::Keyboard, KeyCode::Button::DownArrow);
-	Bind(Input::Action::Left, Input::Device::Keyboard, KeyCode::Button::A);
 	Bind(Input::Action::Left, Input::Device::Keyboard, KeyCode::Button::LeftArrow);
-	Bind(Input::Action::Right, Input::Device::Keyboard, KeyCode::Button::D);
 	Bind(Input::Action::Right, Input::Device::Keyboard, KeyCode::Button::RightArrow);
-
 	Bind(Input::Action::Up, Input::Device::Gamepad, KeyCode::Button::GpDPadUp);
 	Bind(Input::Action::Down, Input::Device::Gamepad, KeyCode::Button::GpDPadDown);
 	Bind(Input::Action::Left, Input::Device::Gamepad, KeyCode::Button::GpDPadLeft);
@@ -59,7 +54,6 @@ bool InputManager::Initialize()
 	Bind(Input::Action::Move, Input::Device::Gamepad, KeyCode::Button::GpLeftThumb,
 		{
 			std::make_shared<InputModifierNegate>(false, true),
-			std::make_shared<InputModifierDeadzone>()
 		});
 	Bind(Input::Action::Move, Input::Device::Keyboard, KeyCode::Button::W,
 		{
@@ -76,10 +70,18 @@ bool InputManager::Initialize()
 		});
 	Bind(Input::Action::Move, Input::Device::Keyboard, KeyCode::Button::D);
 
+	Bind(Input::Action::Dash, Input::Device::Keyboard, KeyCode::Button::LShift);
 	Bind(Input::Action::Dash, Input::Device::Gamepad, KeyCode::Button::GpFaceDown);
+
+	Bind(Input::Action::Attack, Input::Device::Mouse, KeyCode::Button::MbLeftClick);
 	Bind(Input::Action::Attack, Input::Device::Gamepad, KeyCode::Button::GpFaceLeft);
+	
+	Bind(Input::Action::PickUp, Input::Device::Keyboard, KeyCode::Button::F);
 	Bind(Input::Action::PickUp, Input::Device::Gamepad, KeyCode::Button::GpFaceRight);
+
+	Bind(Input::Action::Weapon, Input::Device::Keyboard, KeyCode::Button::Q);
 	Bind(Input::Action::Weapon, Input::Device::Gamepad, KeyCode::Button::GpFaceUp);
+
 	//Bind(Input::Action::Anger1, Input::Device::Gamepad, KeyCode::Button::GpLeftTrigger);
 	Bind(Input::Action::Anger2, Input::Device::Gamepad, KeyCode::Button::GpRightTrigger);
 	Bind(Input::Action::Anger3, Input::Device::Gamepad, KeyCode::Button::GpRightShoulder);
@@ -92,16 +94,19 @@ bool InputManager::Initialize()
 			)
 		}
 	);
+	Bind(Input::Action::Anger1, Input::Device::Keyboard, KeyCode::Button::LControl,
+		{ std::make_shared<InputModifierConcurrent>(std::vector{ KeyCode::Button::Space })
+		});
 
 	Bind(Input::Action::Pause, Input::Device::Keyboard, KeyCode::Button::Escape);
 	Bind(Input::Action::Pause, Input::Device::Gamepad, KeyCode::Button::GpStart);
 
-	Bind(Input::Action::Confirm, Input::Device::Keyboard, KeyCode::Button::Space);
+	Bind(Input::Action::Confirm, Input::Device::Keyboard, KeyCode::Button::F);
+	Bind(Input::Action::Confirm, Input::Device::Mouse, KeyCode::Button::MbLeftClick);
 	Bind(Input::Action::Confirm, Input::Device::Gamepad, KeyCode::Button::GpFaceRight);
-	Bind(Input::Action::Cancel, Input::Device::Keyboard, KeyCode::Button::Shift);
-	Bind(Input::Action::Cancel, Input::Device::Gamepad, KeyCode::Button::GpFaceDown);
 
-	Bind(Input::Action::Start, Input::Device::Gamepad, KeyCode::Button::GpStart);
+	Bind(Input::Action::Cancel, Input::Device::Keyboard, KeyCode::Button::LShift);
+	Bind(Input::Action::Cancel, Input::Device::Gamepad, KeyCode::Button::GpFaceDown);
 
 	return true;
 }

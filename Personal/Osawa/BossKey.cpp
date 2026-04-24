@@ -19,6 +19,8 @@ namespace
 
 	// 鍵を使用する範囲
 	constexpr float kUseRange = 300.0f;
+
+	const char* const kGraphPath = "Resource\\key_32x32_24f.png";
 }
 
 BossKey::BossKey(ObjectManager* objManager) :
@@ -31,7 +33,9 @@ BossKey::BossKey(ObjectManager* objManager) :
 	m_moveRadian(0.0f),
 	m_moveDistance(0.0f),
 	m_moveSpeed(0.0f),
-	m_animationTimer(0.0f)
+	m_animationTimer(0.0f),
+	m_currentGraph(0),
+	m_graphAnimTimer(0.0f)
 {
 }
 
@@ -51,6 +55,8 @@ void BossKey::Init()
 		Animation::Keyframe{pos.y - 60, 1.0f, Animation::Ease::QuadIn},
 		Animation::Keyframe{pos.y - 40, 2.0f},
 		});
+
+	LoadDivGraph(kGraphPath, 24, 24, 1, 32, 32, m_graphsKey);
 }
 
 void BossKey::End()
@@ -59,6 +65,8 @@ void BossKey::End()
 
 void BossKey::Update()
 {
+	m_graphAnimDuration = 0.08f;
+
 	switch (m_action)
 	{
 	case BossKey::Action::Appear:
@@ -97,6 +105,7 @@ void BossKey::Update()
 
 		m_animationTimer += Time::GetInstance().GetDeltaTime();
 
+		// ボスに近づいたら鍵を使用する
 		Collision::Circle range = { pos, kUseRange };
 		if (m_pEnemyMgr->GetEnemyBoss()->GetCollider().CheckCollision(range))
 		{
@@ -108,6 +117,8 @@ void BossKey::Update()
 
 	case BossKey::Action::Use:
 
+		m_graphAnimDuration = 0.001f;
+
 		if (m_animationTimer > 0.0f) break;
 
 		m_pEnemyMgr->GetEnemyBoss()->SealReleaseFlag();
@@ -118,12 +129,23 @@ void BossKey::Update()
 	}
 
 	m_pTween->Update();
+
+	if (m_graphAnimTimer > 0.0f) m_graphAnimTimer -= Time::GetInstance().GetDeltaTime();
+	else
+	{
+		m_currentGraph++;
+		m_currentGraph = (m_currentGraph + 24) % 24;
+		m_graphAnimTimer = m_graphAnimDuration;
+	}
+
+	SetDrawOrder(GetTransform().position.y);
 }
 
 void BossKey::Draw()
 {
 	Vector3& pos = GetTransform().position;
-	DrawCircle(pos.x, pos.y, 10, 0xffff00);
+	//DrawCircle(pos.x, pos.y, 10, 0xffff00);
+	DrawGraph(pos.x, pos.y, m_graphsKey[m_currentGraph], 1);
 }
 
 void BossKey::UseKey()

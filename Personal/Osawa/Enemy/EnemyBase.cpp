@@ -56,6 +56,8 @@ void EnemyBase::Update()
 
 	// 当たり判定の座標更新
 	m_collider.SetPosition(GetTransform().position);
+
+	SetDrawOrder(GetTransform().position.y);
 }
 
 bool EnemyBase::Damage(const int damage)
