@@ -41,6 +41,13 @@ void BossKey::Init()
 	m_pTween = std::make_unique<Tween>();
 
 	m_animationTimer = 2.0f;
+
+	Vector3& pos = GetTransform().position;
+	m_pTween->StartAnim(&pos.y, {
+		Animation::Keyframe{pos.y, 0.0f, Animation::Ease::QuartOut},
+		Animation::Keyframe{pos.y - 60, 1.0f, Animation::Ease::QuadIn},
+		Animation::Keyframe{pos.y - 40, 2.0f},
+		});
 }
 
 void BossKey::End()
@@ -117,6 +124,21 @@ void BossKey::Draw()
 
 void BossKey::UseKey()
 {
+	Vector3& pos = GetTransform().position;
+	Vector3& bossPos = m_pEnemyMgr->GetEnemyBoss()->GetTransform().position;
+
+	m_pTween->StartAnim(&pos.x, {
+		Animation::Keyframe{pos.x, 0.0f, Animation::Ease::BackInOut},
+		Animation::Keyframe{bossPos.x, 2.0f},
+		});
+	m_pTween->StartAnim(&pos.y, {
+		Animation::Keyframe{pos.y, 0.0f, Animation::Ease::BackInOut},
+		Animation::Keyframe{bossPos.y, 2.0f},
+		});
+	m_pTween->StartAnim(&m_animationTimer, {
+		Animation::Keyframe{2.0f, 0.0f},
+		Animation::Keyframe{0.0f, 2.0f},
+		});
 
 	m_action = Action::Use;
 }
