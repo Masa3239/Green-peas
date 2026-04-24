@@ -243,6 +243,20 @@ void EnemyManager::InitGenerate(EnemyMap* enemyMap)
 	}
 }
 
+void EnemyManager::RemoveEnemy(EnemyBase* enemy)
+{
+	enemy->SetState(GameObject::State::Dead);
+
+	for (auto iter = m_enemies.begin(); iter != m_enemies.end(); iter++)
+	{
+		if (iter->get() != enemy) continue;
+
+		m_enemies.erase(iter);
+
+		break;
+	}
+}
+
 void EnemyManager::CheckDead()
 {
 	// Ž€–S”»’è
