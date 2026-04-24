@@ -75,9 +75,12 @@ bool EnemyMap::LoadCSVToMapData(int worldNum, int stageNum)
 
 		for (int x = 0; x < list.size(); x++)
 		{
-			//int typeNum = std::stoi(list[x]);
 
-			//if (typeNum == 0) continue; // 0は空マス
+			/*
+			int typeNum = std::stoi(list[x]);
+
+			if (typeNum == 0) continue; // 0は空マス
+			*/
 
 			std::string token = list[x];
 			// "0" は空マスなのでスキップ
@@ -101,7 +104,7 @@ bool EnemyMap::LoadCSVToMapData(int worldNum, int stageNum)
 				continue; // 未定義は無視
 			}
 			// レベルを設定する
-			data.m_level = levelNum;
+			data.level = levelNum;
 
 			// グリッド座標 → 実際のワールド座標に変換
 			data.pos.x = x * kCellSize;
