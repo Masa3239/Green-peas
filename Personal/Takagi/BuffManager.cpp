@@ -8,7 +8,9 @@
 #include"../../System/PauseManager.h"
 #include"PlayerBuff.h"
 #include"PlayerStatus.h"
-namespace {
+#include"../../Utility/Vector3.h"
+#include<string>
+namespace{
 	const char* const kIconPath = "Resource\\Iccons\\skill_";
 	const char* const kPing = ".png";
 	const char* const kSelectPath = "Resource\\Iccons\\select.png";
@@ -20,6 +22,7 @@ namespace {
 		{0,0,0,0,0,0,0,0},
 	};
 	constexpr int kMaxLevel[kBuffMax] = {5,5,5,5,5};
+
 }
 
 BuffManager::BuffManager() :
@@ -27,7 +30,8 @@ BuffManager::BuffManager() :
 	m_buffType(),
 	m_phase(Phase::Max),
 	m_select(0),
-	m_selected(Buff::Type::Max)
+	m_selected(Buff::Type::Max),
+	m_fontHandle(-1)
 {
 	// アイコン画像の読み込み
 	std::string path = kIconPath;
@@ -37,6 +41,7 @@ BuffManager::BuffManager() :
 	}
 	m_selectHandle = -1;
 	m_selectHandle = LoadGraph(kSelectPath);
+	m_fontHandle = CreateFontToHandle(NULL, 15, 3, DX_FONTTYPE_EDGE);
 }
 
 BuffManager::~BuffManager()
@@ -45,6 +50,7 @@ BuffManager::~BuffManager()
 		DeleteGraph(handle);
 	}
 	DeleteGraph(m_selectHandle);
+	DeleteFontToHandle(m_fontHandle);
 }
 
 void BuffManager::Init()
@@ -78,7 +84,7 @@ void BuffManager::Update()
 		if (PauseManager::GetInstance().IsPause()) {
 		}
 		m_phase = Phase::End;
-		break;
+		m_buff.level[static_cast<int>(m_selected)]++;
 	case Phase::End:
 		if (!InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
 			break;
@@ -97,7 +103,7 @@ void BuffManager::Update()
 
 		m_select++;
 	}
-	m_select = MyMath::Clamp(m_select, 0, kBuffSelectNum - 1);
+	m_select = (kBuffSelectNum + m_select) % kBuffSelectNum;
 	if (!PauseManager::GetInstance().IsPause()) return;
 }
 
@@ -114,8 +120,12 @@ void BuffManager::Draw()
 		DrawRotaGraph(400, 450, 0.2f, 0, m_iconHandle[static_cast<int>(m_selected)], TRUE);
 	}
 	for (int i = 0;i < kBuffSelectNum;i++) {
-		if(i==m_select&&m_phase==Phase::Select)
-		DrawRotaGraph(150+150*i, 200, 0.05f, 0, m_selectHandle, TRUE);
+		if ( m_phase == Phase::Select) {
+			if(i == m_select)
+			DrawRotaGraph(150 + 150 * i, 200, 0.05f, 0, m_selectHandle, TRUE);
+			std::string level = "Lv." + std::to_string(m_buff.level[static_cast<int>(m_buffType[i])]) + " -> Lv." + std::to_string(m_buff.level[static_cast<int>(m_buffType[i])] + 1);
+			DrawStringToHandle(90 + 150 * i, 450, level.c_str(), 0x000000, m_fontHandle);
+		}
 		DrawRotaGraph(150+150*i, 200, 0.2f, 0, m_iconHandle[static_cast<int>(m_buffType[i])], TRUE);
 	}
 	if (!IsSelect())return;
@@ -144,18 +154,25 @@ void BuffManager::RandomBuff()
 		bool selected = true;
 		// ランダムで抽選されたバフの種類
 		int select = 0;
-		// 選ばれていないバフがでるまで繰り返す
+		// 最大レベルでないバフの中で
+		// 選ばれていないものがでるまで繰り返す
 		while (selected)
 		{
+			// バフをランダムで抽選
 			select = MyRandom::Int(0, static_cast<int>(Buff::Type::Max) - 1);
 			m_buffType[i] = static_cast<Buff::Type>(select);
+			// 抽選されたバフがが最大レベルの時
+			if (m_buff.level[static_cast<int>(m_buffType[i])] >= kMaxLevel[static_cast<int>(m_buffType[i])])continue;
 			for (int j = 0;j < kBuffSelectNum;j++) {
 				if (i == j)continue;
-				selected = false;
+				// すでに選択されているとき
 				if (m_buffType[i] == m_buffType[j]) {
+					// 選択されている
 					selected = true;
 					break;
 				}
+				// 選択されていないことにする
+				selected = false;
 			}
 		}
 	}

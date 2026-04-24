@@ -30,9 +30,10 @@ namespace {
 
 	constexpr float kGraphFrameChangeTime = 0.1f;
 
+	constexpr float kGraphInfectionRadian = MyMath::DegToRad(90);
+
 	//当たり判定のサイズ
 	constexpr float kCollisionBallSize = 30.0f;
-	constexpr float kCollisionFieldSize = 70.0f;
 	constexpr float kCollisionInfectionSize = 80.0f;
 
 	//移動速度
@@ -143,12 +144,25 @@ void Thunder::Draw()
 
 	}
 
-	if (m_state == State::Infection)return;
+	if (m_state == State::Ball) {
 
-	Transform transform = GetTransform();
+		Transform transform = GetTransform();
+		//画像を描画
+		DrawRotaGraph(transform.position.x, transform.position.y, kGraphScale * m_scale, transform.rotation.z, m_graphHandle[m_graphFrame], TRUE);
 
-	DrawRotaGraph(transform.position.x, transform.position.y, kGraphScale * m_scale, transform.rotation.z, m_graphHandle[m_graphFrame], TRUE);
+	}
+	else if (m_state == State::Infection) {
 
+		for (const auto& enemy : m_pEnemies) {
+
+			Vector3 enemyPos = enemy->GetTransform().position;
+			//雷の攻撃をくらっている敵だけ描画
+			DrawRotaGraph(enemyPos.x, enemyPos.y, kGraphScale * m_scale, kGraphInfectionRadian, m_graphHandle[m_graphFrame], TRUE);
+
+		}
+
+	}
+	
 #ifdef _DEBUG
 
 	//当たり判定の描画
