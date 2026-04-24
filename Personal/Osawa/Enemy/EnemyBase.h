@@ -85,6 +85,8 @@ public:
 	Player* GetPlayer() const { return m_pPlayer; }
 	void SetPlayer(Player* player) { m_pPlayer = player; }
 
+	void SetFixSpawn(const bool flag) { m_isFixSpawn = flag; }
+
 	const Collision::AABB& GetCollider() const { return m_collider; }
 
 	EnemyManager* GetEnemyManager() const { return m_pEnemyMgr; }
@@ -137,4 +139,9 @@ private:
 	Player* m_pPlayer;
 
 	EnemyManager* m_pEnemyMgr;
+
+	/// <summary>
+	/// å≈íËê∂ê¨Ç©Ç«Ç§Ç©
+	/// </summary>
+	bool m_isFixSpawn;
 };

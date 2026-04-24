@@ -18,7 +18,8 @@ namespace {
 
 EnemyMap::EnemyMap() :
 	m_worldid(0),
-	m_stageid(0)
+	m_stageid(0),
+	m_level(0)
 {
 	
 }

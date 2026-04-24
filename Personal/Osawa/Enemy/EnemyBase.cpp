@@ -13,6 +13,9 @@ namespace
 
 	// プレイヤーが怒り状態で倒された場合の回復量
 	constexpr int kHealNum = 1;
+
+	// プレイヤーを認識する距離
+	constexpr float kStartRecognitionDistance = 600;
 }
 
 EnemyBase::EnemyBase(ObjectManager* objManager) :
@@ -22,7 +25,8 @@ EnemyBase::EnemyBase(ObjectManager* objManager) :
 	m_statusParam(StatusParam{ 0, 0, 0, 0, 0 }),
 	m_variableStatus(0),
 	m_pPlayer(nullptr),
-	m_pEnemyMgr(nullptr)
+	m_pEnemyMgr(nullptr),
+	m_isFixSpawn(false)
 {
 }
 
@@ -34,6 +38,20 @@ void EnemyBase::Update()
 {
 	m_collider.SetPosition(GetTransform().position);
 	
+	// 固定生成なら認識範囲を適用する
+	if (m_isFixSpawn)
+	{
+		auto player = GetPlayer();
+
+		const Vector3& playerPos = player->GetTransform().position;
+		Vector3& myPos = GetTransform().position;
+
+		float sqDistance = (playerPos - myPos).GetSqLength();
+
+		// 認識範囲外なら終了
+		if (sqDistance >= kStartRecognitionDistance * kStartRecognitionDistance) return;
+	}
+
 	UpdateEnemy();
 
 	// 当たり判定の座標更新

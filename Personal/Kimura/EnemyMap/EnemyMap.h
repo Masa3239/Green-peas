@@ -58,6 +58,8 @@ private:
 	int m_worldid;          //読み込むマップのワールドID
 	int m_stageid;          //読み込むマップのステージID
 
+	int m_level;
+
 	std::vector<EnemySpawnData> m_spawnList;
 
 

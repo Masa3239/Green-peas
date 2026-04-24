@@ -78,7 +78,7 @@ public:
 	/// </summary>
 	/// <param name="type">¶¬‚µ‚½‚¢“G‚Ìí—Ş</param>
 	/// <param name="level">“G‚ÌƒŒƒxƒ‹</param>
-	void GenerateEnemy(EnemyType type, int level);
+	EnemyBase* GenerateEnemy(EnemyType type, int level);
 
 	/// <summary>
 	/// “G‚ğ¶¬‚·‚é
@@ -86,7 +86,7 @@ public:
 	/// <param name="type">¶¬‚µ‚½‚¢“G‚Ìí—Ş</param>
 	/// <param name="pos">¶¬‚·‚éêŠ</param>
 	/// <param name="level">“G‚ÌƒŒƒxƒ‹</param>
-	void GenerateEnemy(EnemyType type, Vector3 pos, int level);
+	EnemyBase* GenerateEnemy(EnemyType type, Vector3 pos, int level);
 
 	/// <summary>
 	/// “G‚Ì‰Šú¶¬

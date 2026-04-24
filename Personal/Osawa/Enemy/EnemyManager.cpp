@@ -179,7 +179,7 @@ std::vector<Vector3> EnemyManager::GetMiniBossPositions() const
 	return positions;
 }
 
-void EnemyManager::GenerateEnemy(EnemyType type, int level)
+EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, int level)
 {
 	std::unique_ptr<EnemyBase> enemy;
 	switch (type)
@@ -209,10 +209,10 @@ void EnemyManager::GenerateEnemy(EnemyType type, int level)
 	enemy->GetTransform().position = pos;
 
 	if (type == EnemyType::Miniboss) m_miniBosses.emplace_back(dynamic_cast<EnemyMiniBoss*>(enemy.get()));
-	m_enemies.emplace_back(std::move(enemy));
+	return m_enemies.emplace_back(std::move(enemy)).get();
 }
 
-void EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos, int level)
+EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos, int level)
 {
 	std::unique_ptr<EnemyBase> enemy;
 	switch (type)
@@ -229,16 +229,17 @@ void EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos, int level)
 	enemy->GetTransform().position = pos;
 
 	if (type == EnemyType::Miniboss) m_miniBosses.emplace_back(dynamic_cast<EnemyMiniBoss*>(enemy.get()));
-	m_enemies.emplace_back(std::move(enemy));
+	return m_enemies.emplace_back(std::move(enemy)).get();
 }
 
 void EnemyManager::InitGenerate(EnemyMap* enemyMap)
 {
 	auto& enemies = enemyMap->GetSpawnList();
 
-	for (const auto& enemy : enemies)
+	for (const auto& status : enemies)
 	{
-		GenerateEnemy(enemy.type, enemy.pos, 1);
+		auto enemy = GenerateEnemy(status.type, status.pos, 1);
+		enemy->SetFixSpawn(true);
 	}
 }
 
