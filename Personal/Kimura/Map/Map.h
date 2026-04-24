@@ -4,11 +4,11 @@
 #include"../Chara/Collision.h"
 
 #include"../Utility/Vector3.h"
-
+#include "../Object/GameObject.h"
 #include<vector>//Split関数で使用する
 #include<string>//Split関数で使用する
 
-class Map {
+class Map  {
 
 public:
 
