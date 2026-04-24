@@ -3,6 +3,7 @@
 #include"../Asai/PlayerUIManager.h"
 #include"../Asai/PopUpTextManager.h"
 #include"../Asai/Combo.h"
+#include"../Asai/Minimap.h"
 
 #include<DxLib.h>
 #include"../Takagi/Player.h"
@@ -30,16 +31,22 @@ void UIManager::Init()
 	m_pCombo = std::make_unique<Combo>();
 	m_pCombo->Init();
 
+	m_pMinimap = std::make_unique<Minimap>();
+	m_pMinimap->Init();
+
 }
 
 void UIManager::Update()
 {
 
+	m_pPlayerUIMgr->SetPlayer(m_pPlayer);
 	m_pPlayerUIMgr->Update();
 
 	m_pPopUpTextMgr->Update();
 
 	m_pCombo->Update();
+
+	m_pMinimap->Update();
 
 }
 
@@ -53,6 +60,8 @@ void UIManager::ScreenDraw()
 	m_pPlayerUIMgr->ScreenDraw();
 
 	m_pCombo->Draw();
+
+	m_pMinimap->Draw();
 
 }
 
@@ -80,13 +89,23 @@ void UIManager::End()
 	m_pPlayerUIMgr->End();
 	m_pPopUpTextMgr->End();
 	m_pCombo->End();
+	m_pMinimap->End();
+
+}
+
+void UIManager::GenerateMinimap(Camera* pCamera, Map* pMap)
+{
+
+	m_pMinimap->GenerateMinimap(pCamera, pMap);
 
 }
 
 void UIManager::SetPlayer(Player* pPlayer)
 {
 
-	m_pPlayerUIMgr->SetPlayer(pPlayer);
+	m_pPlayer = pPlayer;
+
+	m_pMinimap->SetPlayer(pPlayer);
 
 }
 
@@ -96,6 +115,15 @@ void UIManager::SetEnemyManager(EnemyManager* pEnemyManager)
 	m_pEnemyManager = pEnemyManager;
 
 	m_pCombo->SetEnemyManager(m_pEnemyManager);
+
+	m_pMinimap->SetEnemyManager(m_pEnemyManager);
+
+}
+
+void UIManager::SetItemManager(ItemManager* pItemManager)
+{
+
+	m_pMinimap->SetItemManager(pItemManager);
 
 }
 

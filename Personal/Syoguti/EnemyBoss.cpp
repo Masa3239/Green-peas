@@ -39,13 +39,19 @@ namespace {
 	constexpr float kRandomInterval = 2.0f;
 
 	// 弾を発射する時のインターバル
-	constexpr float kShotInterval = 1.5f;
+	constexpr float kShotInterval = 0.5f;
 
 	// ボスのスピード
 	constexpr float kSpeed = 500.0f;
 
 	// 封印解除に必要な鍵の数
 	constexpr int kMaxKey = 4;
+
+	// エフェクトを出す間隔
+	constexpr float kEffectInterVal = 1.0f;
+
+	// エフェクトのサイズ
+	constexpr float kEffectScale = 5.0f * kGraphScale;
 
 }
 
@@ -69,7 +75,13 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 	m_getRandomTime(0.0f),
 	m_targetPos(0.0f, 0.0f, 0.0f),
 	m_pPlayer(nullptr),
-	m_pBossBulletMgr(nullptr)
+	m_pBossBulletMgr(nullptr),
+	m_effectTimer(0.0f),
+	m_effectCount(0),
+	m_effectMotionCounter(0),
+	m_effectMotionFrame(0),
+	m_isEffect(false),
+	m_effectPos(0.0f, 0.0f, 0.0f)
 {
 	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
 	for (int i = 0; i < static_cast<int>(BossStatus::Max); i++) {
@@ -78,6 +90,12 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 			m_graphHandle[i][j] = -1;
 		}
 	}
+
+	for (int i = 0; i < kEffectMotionNum; i++) {
+
+		m_efffectGraphHandle[i] = -1;
+	}
+
 	GetTransform().Reset();
 }
 
@@ -101,7 +119,13 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_getRandomTime(0.0f),
 	m_targetPos(0.0f, 0.0f, 0.0f),
 	m_pPlayer(nullptr),
-	m_pBossBulletMgr(nullptr)
+	m_pBossBulletMgr(nullptr),
+	m_effectTimer(0.0f),
+	m_effectCount(0),
+	m_effectMotionCounter(0),
+	m_effectMotionFrame(0),
+	m_isEffect(false),
+	m_effectPos(0.0f, 0.0f, 0.0f)
 {
 
 	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
@@ -124,6 +148,12 @@ void EnemyBoss::Init()
 		}
 	}
 
+	for (int i = 0; i < kEffectMotionNum; i++) {
+
+		m_efffectGraphHandle[i] = -1;
+	}
+
+
 	// ボスのアイドルアニメーション
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_idle.png",
 		5, 5, 1, 128, 128, m_graphHandle[static_cast<int>(BossStatus::Idle)]);
@@ -143,6 +173,10 @@ void EnemyBoss::Init()
 	// ボスの遠距離攻撃のアニメーション
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_ability_black.png",
 		25, 25, 1, 384, 128, m_graphHandle[static_cast<int>(BossStatus::LongRangeAttack)]);
+
+	LoadDivGraph(".\\Resource\\Explosion\\Fire_III_Flame_C_80x48.png",
+		6, 6, 1, 80, 48, m_efffectGraphHandle);
+
 }
 
 void EnemyBoss::End()
@@ -157,21 +191,30 @@ void EnemyBoss::End()
 		}
 	}
 
+	for (int i = 0; i < kEffectMotionNum; i++) {
+
+		DeleteGraph(m_efffectGraphHandle[i]);
+	}
+
 	m_pBossBulletMgr->End();
 }
 
 void EnemyBoss::Update()
 {
 
+	// 当たり判定の更新
+	m_collsion.SetPosition(GetTransform().position);
+
 	// 封印状態ならこの先は呼ばない
 	if (!m_sealRelease) return;
+
+	// すでに倒されていたら呼ばない
+	if (CheckDeadFlag()) return;
 
 	m_pBossBulletMgr->Update();
 
 	m_pBossBulletMgr->CheckHitCollision(m_pPlayer->GetCircle());
 
-	// 当たり判定の更新
-	m_collsion.SetPosition(GetTransform().position);
 	
 	m_closeRangeAttackCollision.SetPosition(GetTransform().position);
 
@@ -192,12 +235,13 @@ void EnemyBoss::Update()
 	Action();
 
 	Status();
-
 }
 
 void EnemyBoss::Draw()
 {
 
+	printfDx("ボス%d\n", static_cast<int>(m_status));
+	printfDx("ボスの現在の体力%d\n", m_currentHp);
 	m_pBossBulletMgr->Draw();
 
 	// 封印状態なら
@@ -208,9 +252,6 @@ void EnemyBoss::Draw()
 	// 封印が解除されたなら
 	else
 	{
-
-		printfDx("ボス%d\n", static_cast<int>(m_status));
-		printfDx("ボスの現在の体力%d\n", m_currentHp);
 
 		// 画像の描画
 		DrawRotaGraph(GetTransform().position.x, GetTransform().position.y - kGraphOffsetY, kGraphScale, 0.0f,
@@ -226,6 +267,8 @@ void EnemyBoss::Draw()
 		}
 
 		DrawCircle(m_targetPos.x, m_targetPos.y, 10, 0xff0000);
+		if (!CheckDeadFlag()) return;
+		Dead();
 	}
 
 }
@@ -484,6 +527,81 @@ void EnemyBoss::LongRangeAttack()
 	}
 	
 	printfDx("遠距離攻撃攻撃\n");
+}
+
+bool EnemyBoss::CheckDeadFlag()
+{
+	return m_currentHp <= 0;
+}
+
+void EnemyBoss::Dead()
+{
+
+	// エフェクトタイマーを計測
+	m_effectTimer += Time::GetInstance().GetDeltaTime();
+
+	// アニメーションのカウンターをプラス
+	m_effectMotionCounter++;
+
+	// タイマーがインターバルの値以上になったら
+	if (m_effectTimer >= kEffectInterVal) {
+
+		if (m_effectCount >= 1) return;
+
+		// エフェクトを描画する
+		m_isEffect = true;
+
+		// ランダムでエフェクトの座標を決める
+		// m_effectPos = DeadEffect(GetTransform().position);
+
+		// エフェクトを出した回数をプラス
+		m_effectCount++;
+
+		// タイマーをリセット
+		m_effectTimer = 0.0f;
+	};
+
+	if (m_isEffect) {
+
+		if (m_effectMotionCounter % 5 == 0) {
+
+			// アニメーションのフレームをプラス
+			m_effectMotionFrame++;
+
+			// アニメーションのフレームになにもなかったら
+			if (m_efffectGraphHandle[m_effectMotionFrame] == -1) {
+
+				// リセット
+				m_effectMotionFrame = 0;
+				m_isEffect = false;
+			}
+
+			m_effectMotionCounter = 0;
+		}
+		
+		// 画像の描画
+		DrawRotaGraph(GetTransform().position.x,
+			GetTransform().position.y - kGraphOffsetY, kEffectScale, 0.0f,
+			m_efffectGraphHandle[m_effectMotionFrame], TRUE);
+	}
+
+}
+
+Vector3 EnemyBoss::DeadEffect(Vector3 position)
+{
+
+	// ランダムで座標を取得
+	int randomX = MyRandom::Int(-40, 40);
+	int randomY = MyRandom::Int(-40, 10);
+
+	// エフェクトを出す座標
+	Vector3 effectPos;
+
+	effectPos.x = position.x + randomX;
+	effectPos.y = position.y + randomY;
+	effectPos.z = position.z;
+
+	return effectPos;
 }
 
 void EnemyBoss::CheckDamageFlagSize(int weapon, int index)

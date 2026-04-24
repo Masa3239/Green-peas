@@ -9,6 +9,7 @@
 #include "../Personal/Syoguti/ItemManager.h"
 #include "../Personal/Takagi/Player.h"
 #include "../Personal/Takagi/WeaponManager.h"
+#include "../Personal/Takagi/BuffManager.h"
 #include "../System/ObjectManager.h"
 #include "../System/PauseManager.h"
 #include "../System/InputManager.h"
@@ -24,7 +25,8 @@ SceneTestOsawa::SceneTestOsawa() :
 	m_pMap(nullptr),
 	m_pEnemyMap(nullptr),
 	m_pWeaponManager(nullptr),
-	m_pPauseMenu(nullptr)
+	m_pPauseMenu(nullptr),
+	m_pBuffManager(nullptr)
 {
 	m_pPlayer = std::make_unique<Player>(GetObjectManager());
 	m_pCamera = std::make_unique<Camera>();
@@ -35,6 +37,7 @@ SceneTestOsawa::SceneTestOsawa() :
 	m_pEnemyMap = std::make_unique<EnemyMap>();
 	m_pWeaponManager = std::make_unique<WeaponManager>();
 	m_pPauseMenu = std::make_unique<PauseMenu>();
+	m_pBuffManager = std::make_unique<BuffManager>();
 }
 
 SceneTestOsawa::~SceneTestOsawa()
@@ -43,17 +46,18 @@ SceneTestOsawa::~SceneTestOsawa()
 
 void SceneTestOsawa::Init()
 {
-	m_pPlayer->Init();
 	m_pPlayer->SetCamera(m_pCamera.get());
 	m_pPlayer->SetEnemyManager(m_pEnemyMgr.get());
 	m_pPlayer->SetItemManager(m_pItemMgr.get());
+	m_pPlayer->SetBuffManager(m_pBuffManager.get());
+	m_pPlayer->Init();
 
 	m_pMap->Init();
 	m_pEnemyMap->Init();
 
-	m_pCamera->Init();
 	m_pCamera->SetMap(m_pMap.get());
 	m_pCamera->GenerateWorldScreen();
+	m_pCamera->Init();
 
 	m_pEnemyMgr->SetPlayer(m_pPlayer.get());
 	m_pEnemyMgr->SetUIManager(m_pUIMgr.get());
@@ -62,9 +66,9 @@ void SceneTestOsawa::Init()
 
 	m_pUIMgr->Init();
 
-	m_pItemMgr->Init();
 	m_pItemMgr->SetObjectManager(GetObjectManager());
 	m_pItemMgr->SetPlayer(m_pPlayer.get());
+	m_pItemMgr->Init();
 
 	m_pWeaponManager->SetPlayer(m_pPlayer.get());
 	m_pWeaponManager->SetObjManager(GetObjectManager());
@@ -72,6 +76,8 @@ void SceneTestOsawa::Init()
 	m_pWeaponManager->Init();
 
 	m_pPauseMenu->Init();
+
+	m_pBuffManager->SetPlayer(m_pPlayer.get());
 
 	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
 }
@@ -91,29 +97,39 @@ void SceneTestOsawa::End()
 
 SceneBase* SceneTestOsawa::Update()
 {
-	auto nextScene = m_pPauseMenu->Update();
-	if (nextScene != nullptr)
+	if (m_pBuffManager->IsSelect())
 	{
-		return nextScene;
+		m_pBuffManager->Update();
+	}
+	else
+	{
+		m_pBuffManager->Update();
+
+		auto nextScene = m_pPauseMenu->Update();
+		if (nextScene != nullptr)
+		{
+			return nextScene;
+		}
 	}
 
-	if (PauseManager::GetInstance().IsPause()) return this;
-
-	m_pUIMgr->SetPlayer(m_pPlayer.get());
-
-	m_pEnemyMgr->Update();
-
-	m_pUIMgr->Update();
-
-	m_pItemMgr->Update();
-
-	m_pMap->Update();
-
-	m_pWeaponManager->Update();
-
-	if (Keyboard::GetInstance().IsDown(KEY_INPUT_R))
+	if (!PauseManager::GetInstance().IsPause())
 	{
-		return new SceneSelection();
+		m_pUIMgr->SetPlayer(m_pPlayer.get());
+
+		m_pEnemyMgr->Update();
+
+		m_pUIMgr->Update();
+
+		m_pItemMgr->Update();
+
+		m_pMap->Update();
+
+		m_pWeaponManager->Update();
+
+		if (Keyboard::GetInstance().IsDown(KEY_INPUT_R))
+		{
+			return new SceneSelection();
+		}
 	}
 
 	return this;
@@ -121,7 +137,10 @@ SceneBase* SceneTestOsawa::Update()
 
 void SceneTestOsawa::Draw()
 {
-	if (!PauseManager::GetInstance().IsPause()) m_pItemMgr->Draw();
+	if (!PauseManager::GetInstance().IsPause())
+	{
+		m_pItemMgr->Draw();
+	}
 }
 
 void SceneTestOsawa::PreDraw()
@@ -147,6 +166,11 @@ void SceneTestOsawa::PostDraw()
 		m_pCamera->Draw();
 
 		m_pUIMgr->ScreenDraw();
+	}
+
+	if (PauseManager::GetInstance().IsPause() && m_pBuffManager->IsSelect())
+	{
+		m_pBuffManager->Draw();
 	}
 
 	m_pPauseMenu->Draw();
