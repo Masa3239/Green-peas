@@ -2,8 +2,10 @@
 
 #include "../Scene/SceneBase.h"
 #include"Map/Map.h"
+#include"EnemyMap/EnemyMap.h"
 
 class Map;
+class EnemyMap;
 class SceneTestKimura : public SceneBase
 {
 public:
@@ -32,5 +34,8 @@ public:
 	/// </summary>
 	void Draw() override;
 private:
+	//ステージマップのポインタ
 	Map* m_pMap;
+	//エネミーマップのポインタ
+	EnemyMap* m_pEnemymap;
 };
