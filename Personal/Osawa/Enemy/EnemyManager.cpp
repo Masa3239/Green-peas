@@ -69,9 +69,9 @@ void EnemyManager::Update()
 	{
 		// 敵を生成
 		if (MyRandom::Int(0, 1) == 0)
-			GenerateEnemy(EnemyType::Melee);
+			GenerateEnemy(EnemyType::Melee, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
 		else
-			GenerateEnemy(EnemyType::Shooter);
+			GenerateEnemy(EnemyType::Shooter, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
 
 		m_generateCounter = kGenerateDuration;
 	}
@@ -102,26 +102,6 @@ std::vector<EnemyBase*> EnemyManager::GetHitEnemies(const Collision::Shape& shap
 	}
 
 	return enemies;
-}
-
-bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, int damage)
-{
-	bool result = false;
-
-	for (const auto& enemy : m_enemies)
-	{
-		if (!enemy->GetCollider().CheckCollision(shape)) continue;
-		
-		// ダメージを与えられなかったらスキップ
-		if (!enemy->Damage(damage)) continue;
-
-		m_uiMgr->CreatePopUpText(enemy->GetTransform().position, damage, PopUpUI::TextType::Damage);
-
-		// 誰か一人でも当たっていたらtrueになる
-		result = true;
-	}
-
-	return result;
 }
 
 bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage, int weapon, int index)
@@ -200,7 +180,7 @@ std::vector<Vector3> EnemyManager::GetMiniBossPositions() const
 	return positions;
 }
 
-void EnemyManager::GenerateEnemy(EnemyType type)
+void EnemyManager::GenerateEnemy(EnemyType type, int level)
 {
 	std::unique_ptr<EnemyBase> enemy;
 	switch (type)
@@ -211,6 +191,7 @@ void EnemyManager::GenerateEnemy(EnemyType type)
 	}
 	enemy->SetPlayer(m_pPlayer);
 	enemy->SetEnemyManager(this);
+	enemy->SetLevel(level);
 	enemy->Init();
 
 	// 生成座標が範囲内になるまで繰り返す
@@ -232,7 +213,7 @@ void EnemyManager::GenerateEnemy(EnemyType type)
 	m_enemies.emplace_back(std::move(enemy));
 }
 
-void EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos)
+void EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos, int level)
 {
 	std::unique_ptr<EnemyBase> enemy;
 	switch (type)
@@ -243,6 +224,7 @@ void EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos)
 	}
 	enemy->SetPlayer(m_pPlayer);
 	enemy->SetEnemyManager(this);
+	enemy->SetLevel(level);
 	enemy->Init();
 
 	enemy->GetTransform().position = pos;
@@ -257,7 +239,7 @@ void EnemyManager::InitGenerate(EnemyMap* enemyMap)
 
 	for (const auto& enemy : enemies)
 	{
-		GenerateEnemy(enemy.type, enemy.pos);
+		GenerateEnemy(enemy.type, enemy.pos, 1);
 	}
 }
 

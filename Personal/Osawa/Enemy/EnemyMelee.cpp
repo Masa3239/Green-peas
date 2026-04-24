@@ -5,11 +5,16 @@
 
 namespace
 {
-	constexpr float kDistanceSpeed = 50.0f;
+	constexpr float kDistanceSpeed = 100.0f;
 
 	constexpr float kMeleeAttackCooltime = 1.0f;
 
-	constexpr EnemyBase::StatusParam kStatus = { 50, 50, 10, 10, 1.0f, 25 };
+	// 基礎ステータス
+	constexpr EnemyBase::StatusParam kStatus = { 25, 25, 5, 5, 5 };
+	// レベルごとの増加量
+	constexpr int kHpPerLevel = 5;
+	constexpr int kAtkPerLevel = 5;
+	constexpr int kDefPerLevel = 5;
 }
 
 EnemyMelee::EnemyMelee(ObjectManager* objManager) :
@@ -24,7 +29,12 @@ EnemyMelee::~EnemyMelee()
 
 void EnemyMelee::Init()
 {
-	SetStatusParam(kStatus);
+	StatusParam status = kStatus;
+	status.hp += kHpPerLevel * GetLevel();
+	status.maxHp = status.hp;
+	status.attack += kAtkPerLevel * GetLevel();
+	status.defence += kDefPerLevel * GetLevel();
+	SetStatusParam(status);
 }
 
 void EnemyMelee::End()
@@ -33,23 +43,23 @@ void EnemyMelee::End()
 
 void EnemyMelee::UpdateEnemy()
 {
-	auto player = GetPlayer();
-	
-	const Vector3& targetPos = player->GetTransform().position;
-	Vector3& myPos = GetTransform().position;
-
-	if (targetPos == myPos) return;
-
-	Vector3 vec = (targetPos - myPos).GetNormalize();
-
-	myPos += vec * kDistanceSpeed * Time::GetInstance().GetDeltaTime();
-
 	if (m_attackCooltimeCounter > 0)
 	{
 		m_attackCooltimeCounter -= Time::GetInstance().GetDeltaTime();
 	}
 	else
 	{
+		auto player = GetPlayer();
+	
+		const Vector3& targetPos = player->GetTransform().position;
+		Vector3& myPos = GetTransform().position;
+
+		if (targetPos == myPos) return;
+
+		Vector3 vec = (targetPos - myPos).GetNormalize();
+
+		myPos += vec * kDistanceSpeed * Time::GetInstance().GetDeltaTime();
+
 		if (GetCollider().CheckCollision(GetPlayer()->GetCircle()))
 		{
 			Attack();

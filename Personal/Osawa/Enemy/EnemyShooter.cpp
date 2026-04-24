@@ -26,7 +26,12 @@ namespace
 
 	constexpr float kBulletAttackCooltime = 10.0f;
 
-	constexpr EnemyBase::StatusParam kStatus = { 50, 50, 10, 10, 1.0f, 25 };
+	// 基礎ステータス
+	constexpr EnemyBase::StatusParam kStatus = { 25, 25, 5, 5, 5 };
+	// レベルごとの増加量
+	constexpr int kHpPerLevel = 5;
+	constexpr int kAtkPerLevel = 5;
+	constexpr int kDefPerLevel = 5;
 }
 
 EnemyShooter::EnemyShooter(ObjectManager* objManager) :
@@ -34,7 +39,6 @@ EnemyShooter::EnemyShooter(ObjectManager* objManager) :
 	m_action(Action::Idle),
 	m_attackCooltimeCounter(0.0f)
 {
-	SetStatusParam(kStatus);
 }
 
 EnemyShooter::~EnemyShooter()
@@ -43,6 +47,13 @@ EnemyShooter::~EnemyShooter()
 
 void EnemyShooter::Init()
 {
+	StatusParam status = kStatus;
+	status.hp += kHpPerLevel * GetLevel();
+	status.maxHp = status.hp;
+	status.attack += kAtkPerLevel * GetLevel();
+	status.defence += kDefPerLevel * GetLevel();
+	SetStatusParam(status);
+
 	for (auto& bullet : m_bullets)
 	{
 		bullet = std::make_unique<EnemyBullet>(GetObjectManager(), GetStatusParam().attack);

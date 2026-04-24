@@ -58,14 +58,6 @@ public:
 	/// コライダーが敵に触れているかチェック
 	/// </summary>
 	/// <param name="shape">コライダー</param>
-	/// <param name="damage">ダメージ量</param>
-	/// <returns>敵に触れていたらtrue</returns>
-	bool CheckHitEnemies(const Collision::Shape& shape, int damage);
-
-	/// <summary>
-	/// コライダーが敵に触れているかチェック
-	/// </summary>
-	/// <param name="shape">コライダー</param>
 	/// <param name="damage">基礎ダメージ量</param>
 	/// <param name="criticalChance">クリティカル率</param>
 	/// <param name="criticalDamage">クリティカルダメージ</param>
@@ -85,14 +77,16 @@ public:
 	/// 敵をプレイヤーの周りに生成する
 	/// </summary>
 	/// <param name="type">生成したい敵の種類</param>
-	void GenerateEnemy(EnemyType type);
+	/// <param name="level">敵のレベル</param>
+	void GenerateEnemy(EnemyType type, int level);
 
 	/// <summary>
 	/// 敵を生成する
 	/// </summary>
 	/// <param name="type">生成したい敵の種類</param>
 	/// <param name="pos">生成する場所</param>
-	void GenerateEnemy(EnemyType type, Vector3 pos);
+	/// <param name="level">敵のレベル</param>
+	void GenerateEnemy(EnemyType type, Vector3 pos, int level);
 
 	/// <summary>
 	/// 敵の初期生成

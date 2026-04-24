@@ -31,7 +31,7 @@ namespace
 
 	constexpr float kBulletAttackCooltime = 0.5f;
 
-	constexpr EnemyBase::StatusParam kStatus = { 250, 250, 10, 10, 1.0f, 250 };
+	constexpr EnemyBase::StatusParam kStatus = { 250, 250, 10, 10, 250 };
 }
 
 EnemyMiniBoss::EnemyMiniBoss(ObjectManager* objManager) :
