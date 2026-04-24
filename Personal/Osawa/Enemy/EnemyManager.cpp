@@ -8,7 +8,6 @@
 #include "../Personal/Asai/UIManager.h"
 #include "../Personal/Syoguti/EnemyBoss.h"
 #include "../Utility/MyRandom.h"
-#include "../Personal/Osawa/Enemy/EnemyManager.h"
 #include "../Personal/Kimura/EnemyMap/EnemyMap.h"
 
 #include "EnemyMelee.h"

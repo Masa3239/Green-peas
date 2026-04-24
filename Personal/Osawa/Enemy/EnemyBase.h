@@ -48,7 +48,7 @@ public:
 	/// ó‘ÔˆÙí‚Ìæ“¾
 	/// </summary>
 	/// <param name="state">ó‘ÔˆÙí‚Ìƒrƒbƒg</param>
-	const unsigned int GetMyState() { return m_variableStatus; }
+	const unsigned int GetMyState() const { return m_variableStatus; }
 
 	/// <summary>
 	/// HP‚ğæ“¾
