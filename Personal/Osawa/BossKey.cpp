@@ -137,6 +137,8 @@ void BossKey::Update()
 		m_currentGraph = (m_currentGraph + 24) % 24;
 		m_graphAnimTimer = m_graphAnimDuration;
 	}
+
+	SetDrawOrder(GetTransform().position.y);
 }
 
 void BossKey::Draw()
