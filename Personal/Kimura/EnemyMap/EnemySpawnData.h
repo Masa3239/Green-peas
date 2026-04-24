@@ -10,6 +10,7 @@
 struct EnemySpawnData
 {
 	EnemyManager::EnemyType type;
+	int level;
 	Vector3 pos;
 };
 

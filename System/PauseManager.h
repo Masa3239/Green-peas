@@ -20,6 +20,8 @@ public:
 
 	void Update();
 
+	void Draw();
+
 	/// <summary>
 	/// ƒ|[ƒYó‘Ô‚ğØ‚è‘Ö‚¦‚é
 	/// </summary>

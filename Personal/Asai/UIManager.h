@@ -6,7 +6,11 @@
 class PlayerUIManager;
 class PopUpTextManager;
 class Combo;
+class Minimap;
 
+class Camera;
+class Map;
+class ItemManager;
 class Player;
 class EnemyManager;
 
@@ -53,19 +57,39 @@ public:
 	/// </summary>
 	void End();
 
+	void GenerateMinimap(Camera* pCamera, Map* pMap);
+
 	void SetPlayer(Player* pPlayer);
 
 	void SetEnemyManager(EnemyManager* pEnemyManager);
+
+	void SetItemManager(ItemManager* pItemManager);
 
 	void CreatePopUpText(Vector3 pos, int amount, PopUpUI::TextType type);
 
 private:
 
+	/// <summary>
+	/// プレイヤーのUI管理クラス
+	/// </summary>
 	std::unique_ptr<PlayerUIManager>m_pPlayerUIMgr;
 
+	/// <summary>
+	/// ポップアップテキスト管理クラス
+	/// </summary>
 	std::unique_ptr<PopUpTextManager>m_pPopUpTextMgr;
 
+	/// <summary>
+	/// コンボ表示クラス
+	/// </summary>
 	std::unique_ptr<Combo>m_pCombo;
+
+	/// <summary>
+	/// ミニマップクラス
+	/// </summary>
+	std::unique_ptr<Minimap>m_pMinimap;
+
+	Player* m_pPlayer;
 
 	EnemyManager* m_pEnemyManager;
 

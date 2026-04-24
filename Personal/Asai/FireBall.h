@@ -108,4 +108,8 @@ private:
 
 	std::vector<int>m_graphHandle;
 
+	float m_graphFrame;
+
+	float m_graphCounter;
+
 };
