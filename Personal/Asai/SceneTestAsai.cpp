@@ -183,9 +183,9 @@ void SceneTestAsai::PostDraw()
 	uiMgr->ScreenDraw();
 	miniMap->Draw();
 
-	clsDx();
+	//clsDx();
 
 	thunder->DebugDraw();
-	camera->DebugDraw();
+	//camera->DebugDraw();
 
 }
