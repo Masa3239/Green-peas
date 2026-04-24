@@ -13,7 +13,7 @@ struct EnemySpawnData
 	Vector3 pos;
 };
 
-//各種番号
+//各種番号メモ
 enum EnemyNum {
 	//空白
 	None = 0,
