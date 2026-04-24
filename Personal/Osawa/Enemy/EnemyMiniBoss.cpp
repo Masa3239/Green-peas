@@ -26,12 +26,9 @@ namespace
 	// プレイヤーから距離をとり始める距離
 	constexpr float kStartBackDistance = 150;
 
-	// プレイヤーを認識する距離
-	constexpr float kStartRecognitionDistance = 600;
-
 	constexpr float kBulletAttackCooltime = 0.5f;
 
-	constexpr EnemyBase::StatusParam kStatus = { 250, 250, 10, 10, 250 };
+	constexpr EnemyBase::StatusParam kStatus = { 2500, 2500, 10, 10, 250 };
 }
 
 EnemyMiniBoss::EnemyMiniBoss(ObjectManager* objManager) :
@@ -72,8 +69,6 @@ void EnemyMiniBoss::UpdateEnemy()
 	Vector3& myPos = GetTransform().position;
 
 	float sqDistance = (targetPos - myPos).GetSqLength();
-
-	if (sqDistance >= kStartRecognitionDistance * kStartRecognitionDistance) return;
 
 	Vector3 move;
 
