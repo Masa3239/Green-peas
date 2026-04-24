@@ -12,6 +12,7 @@ class EnemyMap;
 class ItemManager;
 class WeaponManager;
 class PauseMenu;
+class BuffManager;
 
 class SceneTestOsawa : public SceneBase
 {
@@ -84,4 +85,6 @@ private:
 	std::unique_ptr<WeaponManager> m_pWeaponManager;
 
 	std::unique_ptr<PauseMenu> m_pPauseMenu;
+
+	std::unique_ptr<BuffManager>m_pBuffManager;
 };
