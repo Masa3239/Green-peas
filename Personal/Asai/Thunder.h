@@ -61,6 +61,8 @@ public:
 
 	void SetEnemyManager(EnemyManager* pEnemyMgr) { m_pEnemyMgr = pEnemyMgr; }
 
+	void SetIndex(int index) { m_index = index; }
+
 private:
 
 	/// <summary>
@@ -74,6 +76,8 @@ private:
 	void UpdateInfection();
 
 private:
+
+	int m_index;
 
 	enum class State {
 
