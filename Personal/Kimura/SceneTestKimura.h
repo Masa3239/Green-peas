@@ -34,8 +34,6 @@ public:
 	/// </summary>
 	void Draw() override;
 private:
-	//ステージマップのポインタ
 	Map* m_pMap;
-	//エネミーマップのポインタ
 	EnemyMap* m_pEnemymap;
 };
