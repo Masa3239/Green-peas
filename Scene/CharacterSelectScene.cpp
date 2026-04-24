@@ -3,7 +3,7 @@
 #include"../System/InputManager.h"
 #include"../System/Input/Gamepad.h"
 #include"../Personal/Takagi/RotateCharacter.h"
-
+#include"../Personal/Takagi/BuffManager.h"
 CharacterSelectScene::CharacterSelectScene()
 {
 	GetCarryOver().Reset();
