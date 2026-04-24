@@ -18,7 +18,7 @@
 namespace
 {
 	// ©“®¶¬‚³‚ê‚é“G‚ÌÅ‘å”
-	constexpr int kMaxEnemyNum = 100;
+	constexpr int kMaxEnemyNum = 1000;
 	// ©“®¶¬‚³‚ê‚é“G‚ÌÅ¬”
 	constexpr int kMinEnemyNum = 30;
 
