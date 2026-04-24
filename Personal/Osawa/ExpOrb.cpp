@@ -62,6 +62,8 @@ void ExpOrb::Update()
 		// ©g‚ğíœ‚·‚é
 		SetState(State::Dead);
 	}
+
+	SetDrawOrder(myPos.y);
 }
 
 void ExpOrb::Draw()

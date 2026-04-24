@@ -15,7 +15,7 @@ namespace {
 
     constexpr float kGaugeTop = Game::kScreenHeight / 2;
 
-    constexpr float kGaugeBottom = Game::kScreenHeight - 93;
+    constexpr float kGaugeBottom = Game::kScreenHeight - 88;
 
 }
 

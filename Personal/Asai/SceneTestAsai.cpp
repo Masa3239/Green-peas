@@ -13,6 +13,7 @@
 #include"../Kimura/Map/Map.h"
 #include"../Syoguti/ItemManager.h"
 #include"../Takagi/WeaponManager.h"
+#include"../Takagi/BuffManager.h"
 
 UIManager* uiMgr;
 Arrow* arrow;
@@ -24,6 +25,7 @@ EnemyManager* enemyMgr;
 Player* pPlayer;
 Map* map;
 WeaponManager* weaponMgr;
+BuffManager* buffMgr;
 Transform transform;
 
 SceneTestAsai::SceneTestAsai()
@@ -75,9 +77,14 @@ void SceneTestAsai::Init()
 	weaponMgr->SetPlayer(pPlayer);
 	weaponMgr->Init();
 
+	buffMgr = new BuffManager();
+	buffMgr->SetPlayer(pPlayer);
+	buffMgr->Init();
+
 	pPlayer->SetCamera(camera);
 	pPlayer->SetEnemyManager(enemyMgr);
 	pPlayer->SetItemManager(ItemMgr);
+	pPlayer->SetBuffManager(buffMgr);
 	thunder->SetEnemyManager(enemyMgr);
 
 	uiMgr->SetEnemyManager(enemyMgr);
@@ -103,7 +110,7 @@ SceneBase* SceneTestAsai::Update()
 	pPlayer->Update();
 	//thunder->Update();
 
-	enemyMgr->Update();
+	//enemyMgr->Update();
 
 	if (CheckHitKey(KEY_INPUT_1)) {
 		transform.position.x++;
@@ -118,7 +125,7 @@ SceneBase* SceneTestAsai::Update()
 	if (CheckHitKey(KEY_INPUT_2)) {
 
 		uiMgr->CreatePopUpText(transform.position, 5, PopUpUI::TextType::Critical);
-		//thunder->Shot(pPlayer->GetTransform());
+		thunder->Shot(pPlayer->GetTransform());
 		ItemMgr->Create(ItemBase::ItemType::Heal, pPlayer->GetTransform().position);
 
 	}

@@ -55,7 +55,7 @@ namespace {
 	// 画像の表示倍率
 	constexpr float kPlayerScale = 1.5f;
 	// 初期ステータス
-	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 100, 1, 0.8f, kSpeed, 100, 5, 1.5f);
+	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 5, 1, 5, kSpeed, 100, 5, 1.5f);
 	// 成長倍率
 	constexpr PlayerStatus kGrowStatus = PlayerStatus(1, 1.05f, 1.02f, 1.02f, 1, 1, 1, 1);
 	// 怒り状態時のステータス
@@ -63,7 +63,7 @@ namespace {
 }
 
 Player::Player(ObjectManager* objManager) :
-	GameObject(objManager)/*,
+	GameObject(objManager),
 	m_directionX(1),
 	m_moveAmount(0),
 	m_accel(1),
@@ -77,9 +77,7 @@ Player::Player(ObjectManager* objManager) :
 	m_pEnemyMgr(nullptr),
 	m_pItemMgr(nullptr),
 	m_angerButton(),
-	m_anger(false),
-	m_cameraShakeCount(0),
-	m_playerType(PlayerJob::Warrior)*/
+	m_anger(false)
 {
 
 }
@@ -105,6 +103,8 @@ void Player::Init()
 	m_gauges[static_cast<int>(GaugeType::Exp)] = std::make_unique<ExpGauge>();
 	// 怒りゲージを0に
 	m_gauges[static_cast<int>(GaugeType::Anger)]->Reset(Gauge::Value::Min);
+	m_gauges[static_cast<int>(GaugeType::Hp)]->SetValue(kInitStatus.HP,Gauge::Value::Max);
+	m_gauges[static_cast<int>(GaugeType::Hp)]->Reset(Gauge::Value::Max);
 	// 円の当たり判定を初期化
 	m_circle = Collision::Circle(GetTransform().position, kCircleSize);
 

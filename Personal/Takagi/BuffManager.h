@@ -11,6 +11,7 @@ public:
 	enum class Phase {
 		Start,
 		Select,
+		End,
 		Max
 	};
 	BuffManager();
@@ -71,5 +72,7 @@ private:
 	int m_selectHandle;
 	int m_select;
 	Buff::Type m_selected;
+	Buff m_buff;
+	int m_fontHandle;
 };
 

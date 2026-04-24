@@ -94,6 +94,8 @@ public:
 	/// <param name="enemyMap"></param>
 	void InitGenerate(EnemyMap* enemyMap);
 
+	void RemoveEnemy(EnemyBase* enemy);
+
 	EnemyBoss* GetEnemyBoss() const { return m_enemyBoss.get(); }
 
 	void SetPlayer(Player* player) { m_pPlayer = player; }

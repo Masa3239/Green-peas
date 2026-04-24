@@ -9,9 +9,31 @@
 #include"../Takagi/Weapon.h"
 
 namespace {
+
+	const char* const kGraphPaths[11] = {
+
+		".\\Personal\\Asai\\Graph\\lightning\\0.png",
+		".\\Personal\\Asai\\Graph\\lightning\\1.png",
+		".\\Personal\\Asai\\Graph\\lightning\\2.png",
+		".\\Personal\\Asai\\Graph\\lightning\\3.png",
+		".\\Personal\\Asai\\Graph\\lightning\\4.png",
+		".\\Personal\\Asai\\Graph\\lightning\\5.png",
+		".\\Personal\\Asai\\Graph\\lightning\\6.png",
+		".\\Personal\\Asai\\Graph\\lightning\\7.png",
+		".\\Personal\\Asai\\Graph\\lightning\\8.png",
+		".\\Personal\\Asai\\Graph\\lightning\\9.png",
+		".\\Personal\\Asai\\Graph\\lightning\\10.png",
+
+	};
+
+	constexpr float kGraphScale = 0.1f;
+
+	constexpr float kGraphFrameChangeTime = 0.1f;
+
+	constexpr float kGraphInfectionRadian = MyMath::DegToRad(90);
+
 	//当たり判定のサイズ
-	constexpr float kCollisionBallSize = 20.0f;
-	constexpr float kCollisionFieldSize = 70.0f;
+	constexpr float kCollisionBallSize = 30.0f;
 	constexpr float kCollisionInfectionSize = 80.0f;
 
 	//移動速度
@@ -20,7 +42,7 @@ namespace {
 	constexpr float kMaxMoveDistance = 500;
 
 	//フィールドに残る時間
-	constexpr float kFieldLifetime = 0.3f;
+	constexpr float kFieldLifetime = 0.7f;
 
 	//伝染回数
 	constexpr int kMaxInfection = 5;
@@ -32,18 +54,31 @@ namespace {
 
 Thunder::Thunder(ObjectManager* objManager):
 	BulletBase(objManager),
+	m_index(0),
 	m_state(State::Ball),
 	m_fieldElapsedTime(0),
 	m_infectionCount(0),
 	m_infectionTimer(0),
 	m_pEnemyMgr(nullptr),
-	m_pEnemies()
+	m_pEnemies(),
+	m_graphHandle(),
+	m_graphFrame(0),
+	m_graphCounter(0)
 {
 	m_pEnemies.clear();
 }
 
 void Thunder::Init()
 {
+
+	for (int i = 0;i < 10;i++) {
+
+		int graphHandle = LoadGraph(kGraphPaths[i]);
+
+		m_graphHandle.push_back(graphHandle);
+
+	}
+
 }
 
 void Thunder::Update()
@@ -57,11 +92,6 @@ void Thunder::Update()
 	case Thunder::State::Ball:
 		//State::Ballの更新処理
 		UpdateBall();
-		break;
-
-	case Thunder::State::Field:
-		//State::Fieldの更新処理
-		UpdateField();
 		break;
 
 	case Thunder::State::Infection:
@@ -79,14 +109,6 @@ void Thunder::Draw()
 	//非アクティブならリターン
 	if (!m_isActive)return;
 
-	m_circle.DebugDraw();
-
-	//for (auto enemy : m_pEnemies) {
-
-	//	DrawCircle(enemy->GetTransform().position.x, enemy->GetTransform().position.y, kCollisionInfectionSize * m_scale, 0xffffff, FALSE);
-
-	//}
-
 	float collisionSize = 0;
 
 	switch (m_state)
@@ -102,7 +124,53 @@ void Thunder::Draw()
 	}
 
 	//丸を描画
-	DrawCircle(GetTransform().position.x, GetTransform().position.y, collisionSize * m_scale, TRUE, 0xffff00);
+	//DrawCircle(GetTransform().position.x, GetTransform().position.y, collisionSize * m_scale, TRUE, 0xffff00);
+
+	//画像変更のタイマーを加算
+	m_graphCounter += Time::GetInstance().GetDeltaTime();
+
+	//フレーム変更のタイミングになったら
+	if (m_graphCounter >= kGraphFrameChangeTime) {
+		//フレームを加算
+		m_graphFrame++;
+		//カウンターをリセット
+		m_graphCounter = 0;
+
+		//次の画像がなかったら
+		if (m_graphHandle.size() <= m_graphFrame) {
+			//画像を最初からにする
+			m_graphFrame = 0;
+		}
+
+	}
+
+	if (m_state == State::Ball) {
+
+		Transform transform = GetTransform();
+		//画像を描画
+		DrawRotaGraph(transform.position.x, transform.position.y, kGraphScale * m_scale, transform.rotation.z, m_graphHandle[m_graphFrame], TRUE);
+
+	}
+	else if (m_state == State::Infection) {
+
+		for (const auto& enemy : m_pEnemies) {
+
+			Vector3 enemyPos = enemy->GetTransform().position;
+			//雷の攻撃をくらっている敵だけ描画
+			DrawRotaGraph(enemyPos.x, enemyPos.y, kGraphScale * m_scale, kGraphInfectionRadian, m_graphHandle[m_graphFrame], TRUE);
+
+		}
+
+	}
+	
+#ifdef _DEBUG
+
+	//当たり判定の描画
+	m_circle.DebugDraw();
+
+#else
+
+#endif
 
 }
 
@@ -192,27 +260,6 @@ void Thunder::UpdateBall()
 
 }
 
-void Thunder::UpdateField()
-{
-	//タイマーを加算
-	m_fieldElapsedTime += Time::GetInstance().GetDeltaTime();
-	
-
-	//消える時間じゃないならスルー
-	if (m_fieldElapsedTime < kFieldLifetime)return;
-
-	//非アクティブにする
-	//m_isActive = false;
-
-	//伝染
-	m_state = State::Infection;
-	//当たり前を更新
-	m_circle.SetPosition(GetTransform().position);
-	//当たった敵を取得
-	m_pEnemies = (m_pEnemyMgr->GetHitEnemies(m_circle, 1));
-
-}
-
 void Thunder::UpdateInfection()
 {
 	//タイマーを加算
@@ -235,8 +282,13 @@ void Thunder::UpdateInfection()
 	for (auto& enemy : m_pEnemies) {
 		//当たり判定を作る
 		auto circle = Collision::Circle(enemy->GetTransform().position, kCollisionInfectionSize * m_scale);
+
+		float damage = 0;
+		damage = m_playerStatus.Attack;
+		float criticalRate = m_playerStatus.CriticalRate;
+		float criticalDamage =m_playerStatus.CriticalDamage;
 		//当たっていなければスルー
-		m_pEnemyMgr->CheckHitEnemies(circle, 3, 1, 1, Weapon::Volt, 1);
+		m_pEnemyMgr->CheckHitEnemies(circle, damage, criticalRate, criticalDamage, Weapon::Volt, m_index);
 
 	}
 
@@ -250,7 +302,7 @@ void Thunder::UpdateInfection()
 
 	}
 
-	m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Volt, 1);
+	m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Volt, m_index);
 
 	if (m_infectionCount > kMaxInfection) {
 		m_isActive = false;

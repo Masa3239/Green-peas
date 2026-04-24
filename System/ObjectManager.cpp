@@ -33,8 +33,15 @@ void ObjectManager::Update()
 
 void ObjectManager::Draw()
 {
+	std::vector<GameObject*> objects = m_gameObjects;
+
+	std::sort(objects.begin(), objects.end(), [](GameObject* a, GameObject* b)
+		{
+			return a->GetDrawOrder() < b->GetDrawOrder();
+		});
+
 	// ゲームオブジェクトを描画する
-	for (const auto& obj : m_gameObjects)
+	for (const auto& obj : objects)
 	{
 		if (obj->GetState() != GameObject::State::Active) continue;
 		obj->Draw();

@@ -4,7 +4,8 @@
 
 GameObject::GameObject(ObjectManager* manager) :
 	m_pObjManager(manager),
-	m_state(State::Active)
+	m_state(State::Active),
+	m_drawOrder(0)
 {
 	m_pObjManager->AddGameObject(this);
 

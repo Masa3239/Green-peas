@@ -60,6 +60,8 @@ void EnemyBullet::Update()
 		m_pPlayer->Damage(m_damage);
 		SetState(State::Deactive);
 	}
+
+	SetDrawOrder(transform.position.y);
 }
 
 void EnemyBullet::Draw()

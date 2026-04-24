@@ -16,6 +16,8 @@
 #include "../System/Input/Keyboard.h"
 #include "../Scene/SceneSelection.h"
 
+#include "../BossKey.h"
+
 SceneTestOsawa::SceneTestOsawa() :
 	m_pPlayer(nullptr),
 	m_pCamera(nullptr),
@@ -80,6 +82,12 @@ void SceneTestOsawa::Init()
 	m_pBuffManager->SetPlayer(m_pPlayer.get());
 
 	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
+
+	auto key = new BossKey(GetObjectManager());
+	key->SetPlayer(m_pPlayer.get());
+	key->SetEnemyManager(m_pEnemyMgr.get());
+	key->GetTransform() = m_pPlayer->GetTransform();
+	key->Init();
 }
 
 void SceneTestOsawa::End()
@@ -97,14 +105,10 @@ void SceneTestOsawa::End()
 
 SceneBase* SceneTestOsawa::Update()
 {
-	if (m_pBuffManager->IsSelect())
-	{
-		m_pBuffManager->Update();
-	}
-	else
-	{
-		m_pBuffManager->Update();
+	m_pBuffManager->Update();
 
+	if (!m_pBuffManager->IsSelect())
+	{
 		auto nextScene = m_pPauseMenu->Update();
 		if (nextScene != nullptr)
 		{
@@ -168,11 +172,17 @@ void SceneTestOsawa::PostDraw()
 		m_pUIMgr->ScreenDraw();
 	}
 
-	if (PauseManager::GetInstance().IsPause() && m_pBuffManager->IsSelect())
+	if (PauseManager::GetInstance().IsPause())
 	{
-		m_pBuffManager->Draw();
+		if (m_pBuffManager->IsSelect())
+		{
+			m_pBuffManager->Draw();
+		}
+		else
+		{
+			m_pPauseMenu->Draw();
+		}
 	}
 
-	m_pPauseMenu->Draw();
 	//clsDx();
 }

@@ -80,6 +80,9 @@ public:
 	/// </summary>
 	Transform& GetTransform() { return m_transform; }
 
+	int GetDrawOrder() const { return m_drawOrder; }
+	void SetDrawOrder(const int order) { m_drawOrder = order; }
+
 private:
 
 	/// <summary>
@@ -96,4 +99,9 @@ private:
 	/// À•W
 	/// </summary>
 	Transform m_transform;
+
+	/// <summary>
+	/// •`‰æ‡
+	/// </summary>
+	int m_drawOrder;
 };
