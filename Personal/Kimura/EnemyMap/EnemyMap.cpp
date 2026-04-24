@@ -18,8 +18,7 @@ namespace {
 
 EnemyMap::EnemyMap() :
 	m_worldid(0),
-	m_stageid(0),
-	m_level(0)
+	m_stageid(0)
 {
 	
 }
@@ -76,9 +75,19 @@ bool EnemyMap::LoadCSVToMapData(int worldNum, int stageNum)
 
 		for (int x = 0; x < list.size(); x++)
 		{
-			int typeNum = std::stoi(list[x]);
+			//int typeNum = std::stoi(list[x]);
 
-			if (typeNum == 0) continue; // 0は空マス
+			//if (typeNum == 0) continue; // 0は空マス
+
+			std::string token = list[x];
+
+			if (token == "0") continue;
+
+			size_t pos = token.find('_');
+			if (pos == std::string::npos) continue;
+
+			int typeNum = std::stoi(token.substr(0, pos));
+			int levelNum = std::stoi(token.substr(pos + 1));
 
 			EnemySpawnData data;
 			// 数字 → 敵タイプ変換
@@ -90,6 +99,9 @@ bool EnemyMap::LoadCSVToMapData(int worldNum, int stageNum)
 			default:
 				continue; // 未定義は無視
 			}
+
+			data.level = levelNum;
+
 			// グリッド座標 → 実際のワールド座標に変換
 			data.pos.x = x * kCellSize;
 			data.pos.y = y * kCellSize;
