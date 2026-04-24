@@ -75,7 +75,7 @@ bool EnemyMap::LoadCSVToMapData(int worldNum, int stageNum)
 
 		for (int x = 0; x < list.size(); x++)
 		{
-			int typeNum = 0;
+			int typeNum = std::stoi(list[x]);
 
 			if (typeNum == 0) continue; // 0は空マス
 
