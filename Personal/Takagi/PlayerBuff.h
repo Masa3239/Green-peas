@@ -12,7 +12,7 @@ public:
 	/// <summary>
 	/// バフの効果が終わったかどうかを取得
 	/// </summary>
-	bool IsFinish() { return (m_second <= 0); }
+	bool IsFinish();
 	/// <returns></returns>
 	/// <summary>
 	/// バフの値を取得する関数

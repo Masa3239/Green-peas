@@ -4,9 +4,12 @@ public:
 	enum class Type {
 		Attack,
 		Defence,
+		Speed,
 		CriticalRate,
 		CriticalDamage,
-		ExpUp,
+		All,
+		Exp,
+		Heal,
 		Max
 	};
 	int level[static_cast<int>(Type::Max)];

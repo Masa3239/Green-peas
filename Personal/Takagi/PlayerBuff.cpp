@@ -27,3 +27,9 @@ void PlayerBuff::Update()
 	if (m_isEternal)return;
 	m_second -= deltaTime;
 }
+
+bool PlayerBuff::IsFinish()
+{
+	if (m_isEternal)return false;
+	return (m_second <= 0);
+}

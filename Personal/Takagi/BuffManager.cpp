@@ -8,40 +8,99 @@
 #include"../../System/PauseManager.h"
 #include"PlayerBuff.h"
 #include"PlayerStatus.h"
+#include"Player.h"
 #include"../../Utility/Vector3.h"
 #include<string>
+#include"../../Utility/Game.h"
 namespace{
 	const char* const kIconPath = "Resource\\Iccons\\skill_";
 	const char* const kPing = ".png";
-	const char* const kSelectPath = "Resource\\Iccons\\select.png";
+	const char* const kTextPath = "Resource\\Text\\";
+	const char* const kBuffName[kBuffMax] = {
+		"ATK",
+		"DEF",
+		"SPD",
+		"CRT",
+		"CRD",
+		"ALL",
+		"EXP",
+		"HEAL",
+	};
+	const char* const kBuffSelectPath = "Resource\\BuffSelect\\";
+	const char* const kProceedName[static_cast<int>(BuffManager::Phase::Max)] = {
+		"STOP",
+		"SELECT",
+		"OK",
+	};
+	const char* const kButtonPath = "Button";
+	const char* const kSelectPath = "Resource\\Iccons\\IconSelect.png";
+	const char* const kBackPath = "Resource\\Iccons\\IconBack.png";
 	constexpr PlayerStatus kBuffs[static_cast<int>(Buff::Type::Max)] = { 
 		{0,0,0.1f,0,0,0,0,0},
 		{0,0,0,0.1f,0,0,0,0},
-		{0,0,0,0,0,0,1,0},
+		{0,0,0,0,0,0.06f,0,0},
+		{0,0,0,0,0,0,10,0},
 		{0,0,0,0,0,0,0,0.1f},
+		{0,0,0.02f,0.02f,0.02f,0.02f,0.02f,0.02f},
+		{0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0},
 	};
-	constexpr int kMaxLevel[kBuffMax] = {5,5,5,5,5};
+	constexpr int kMaxLevel[kBuffMax] = {5,5,5,5,5,1000,0,0};
+	constexpr int kDistance = 200;
+	constexpr int kBackHeight = 250;
+	constexpr int kTextHeight = 250;
+	constexpr int kLevelHeight = 350;
+	constexpr int kIconHeight = 150;
+	constexpr int kProceedHeight = 500;
+	constexpr int kButtonHeight = 550;
 
 }
 
 BuffManager::BuffManager() :
 	m_pPlayer(nullptr),
 	m_buffType(),
-	m_phase(Phase::Max),
-	m_select(0),
 	m_selected(Buff::Type::Max),
+	m_phase(Phase::Max),
+	m_proceedHandle(-1),
+	m_buttonHandle(-1),
+	m_iconHandle(-1),
+	m_textHandle(-1),
+	m_backHandle(-1),
+	m_selectHandle(-1),
+	m_select(0),
+	m_buff(),
 	m_fontHandle(-1)
 {
-	// アイコン画像の読み込み
+	// アイコン・テキスト画像の読み込み
 	std::string path = kIconPath;
 	for (int i = 0;i < kBuffMax;i++) {
-		path = kIconPath + std::to_string(i) + kPing;
+		path = kIconPath;
+		path += kBuffName[i];
+		path += kPing;
 		m_iconHandle[i] = LoadGraph(path.c_str());
+		path = kTextPath;
+		path += kBuffName[i];
+		path += kPing;
+		m_textHandle[i] = LoadGraph(path.c_str());
+
 	}
-	m_selectHandle = -1;
+	for (int i = 0; i < static_cast<int>(Phase::Max); i++) {
+		path = kBuffSelectPath;
+		path += kProceedName[i];
+		path += kPing;
+		m_proceedHandle[i] = LoadGraph(path.c_str());
+	}
+	path = kBuffSelectPath;
+	path += kButtonPath;
+	path += kPing;
+	m_buttonHandle = LoadGraph(path.c_str());
 	m_selectHandle = LoadGraph(kSelectPath);
-	m_fontHandle = CreateFontToHandle(NULL, 15, 3, DX_FONTTYPE_EDGE);
+	m_backHandle = LoadGraph(kBackPath);
+	m_fontHandle = CreateFontToHandle(NULL, 18, 3, DX_FONTTYPE_EDGE);
+	m_buff.Reset();
+
+	m_buff.level[static_cast<int>(Buff::Type::Heal)] = -1;
+	m_buff.level[static_cast<int>(Buff::Type::Exp)] = -1;
 }
 
 BuffManager::~BuffManager()
@@ -77,14 +136,17 @@ void BuffManager::Update()
 		}
 		break;
 	case Phase::Select:
+		{
 		if (!InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
 			break;
 		}
 		m_selected = BuffSelect();
-		if (PauseManager::GetInstance().IsPause()) {
-		}
+		AdaptBuff(m_selected);
 		m_phase = Phase::End;
+		if (kMaxLevel[static_cast<int>(m_selected)] <= 0)break;
 		m_buff.level[static_cast<int>(m_selected)]++;
+		break;
+		}
 	case Phase::End:
 		if (!InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
 			break;
@@ -110,25 +172,32 @@ void BuffManager::Update()
 
 void BuffManager::Draw()
 {
-	for (int i = 0;i < kBuffSelectNum;i++) {
-		printfDx("BuffType[%d] : %d\n",i, static_cast<int>(m_buffType[i]));
-	}
-	printfDx("選択された: %d\n", static_cast<int>(m_selected));
-	printfDx("選択中    : %d\n", static_cast<int>(m_select));
-	printfDx("選択段階  : %d\n", static_cast<int>(m_phase));
-	if (m_selected != Buff::Type::Max) {
-		DrawRotaGraph(400, 450, 0.2f, 0, m_iconHandle[static_cast<int>(m_selected)], TRUE);
-	}
-	for (int i = 0;i < kBuffSelectNum;i++) {
-		if ( m_phase == Phase::Select) {
-			if(i == m_select)
-			DrawRotaGraph(150 + 150 * i, 200, 0.05f, 0, m_selectHandle, TRUE);
-			std::string level = "Lv." + std::to_string(m_buff.level[static_cast<int>(m_buffType[i])]) + " -> Lv." + std::to_string(m_buff.level[static_cast<int>(m_buffType[i])] + 1);
-			DrawStringToHandle(90 + 150 * i, 450, level.c_str(), 0x000000, m_fontHandle);
-		}
-		DrawRotaGraph(150+150*i, 200, 0.2f, 0, m_iconHandle[static_cast<int>(m_buffType[i])], TRUE);
-	}
+	//for (int i = 0;i < kBuffSelectNum;i++) {
+	//	printfDx("BuffType[%d] : %d\n",i, static_cast<int>(m_buffType[i]));
+	//}
+	//printfDx("選択中    : %d\n", static_cast<int>(m_select));
+	//printfDx("選択段階  : %d\n", static_cast<int>(m_phase));
+
 	if (!IsSelect())return;
+	for (int i = 0;i < kBuffSelectNum;i++) {
+		if(i == m_select&& m_phase == Phase::Select)
+		DrawRotaGraph((Game::kScreenWidth * 0.5f) + kDistance * (i-1), kBackHeight, 6, 0, m_selectHandle, TRUE);
+		DrawRotaGraph((Game::kScreenWidth * 0.5f) + kDistance * (i - 1), kBackHeight, 6, 0, m_backHandle, TRUE);
+		if (m_phase >= Phase::Select && IsSelect() && kMaxLevel[static_cast<int>(m_buffType[i])]>0) {
+			std::string level = "Lv." + std::to_string(m_buff.level[static_cast<int>(m_buffType[i])]) + " -> Lv." + std::to_string(m_buff.level[static_cast<int>(m_buffType[i])] + 1);
+			int offset = -65;
+			if (m_buffType[i] == m_selected) {
+				level = "Lv." + std::to_string(m_buff.level[static_cast<int>(m_buffType[i])]);
+				offset = -25;
+			}
+			DrawStringToHandle((Game::kScreenWidth * 0.5f+ offset) + kDistance * (i - 1), kLevelHeight, level.c_str(), 0x000000, m_fontHandle);
+		}
+		DrawRotaGraph((Game::kScreenWidth * 0.5f) + kDistance * (i - 1), kTextHeight, 0.03f, 0, m_textHandle[static_cast<int>(m_buffType[i])], TRUE);
+		DrawRotaGraph((Game::kScreenWidth * 0.5f) + kDistance * (i - 1), kIconHeight, 0.15f, 0, m_iconHandle[static_cast<int>(m_buffType[i])], TRUE);
+	}
+
+		DrawRotaGraph((Game::kScreenWidth * 0.5f) , kProceedHeight, 0.15f, 0, m_proceedHandle[static_cast<int>(m_phase)], TRUE);
+		DrawRotaGraph((Game::kScreenWidth * 0.5f) , kButtonHeight, 0.8f, 0, m_buttonHandle, TRUE);
 }
 
 void BuffManager::BuffSelectStart()
@@ -138,6 +207,10 @@ void BuffManager::BuffSelectStart()
 		PauseManager::GetInstance().SetAlpha(127);
 	}
 	m_phase = Phase::Start;
+	m_buffType[0] = Buff::Type::Max;
+	m_buffType[1] = Buff::Type::Max;
+	m_buffType[2] = Buff::Type::Max;
+	m_selected = Buff::Type::Max;
 }
 Buff::Type BuffManager::BuffSelect()
 {
@@ -145,10 +218,7 @@ Buff::Type BuffManager::BuffSelect()
 }
 void BuffManager::RandomBuff()
 {
-	m_buffType[0] = Buff::Type::Max;
-	m_buffType[1] = Buff::Type::Max;
-	m_buffType[2] = Buff::Type::Max;
-	m_selected = Buff::Type::Max;
+
 	for (int i = 0;i < kBuffSelectNum;i++) {
 		// すでに同じバフが選ばれたかどうか
 		bool selected = true;
@@ -161,8 +231,10 @@ void BuffManager::RandomBuff()
 			// バフをランダムで抽選
 			select = MyRandom::Int(0, static_cast<int>(Buff::Type::Max) - 1);
 			m_buffType[i] = static_cast<Buff::Type>(select);
+			//if (kMaxLevel[static_cast<int>(m_buffType[i])]<=0)break;
 			// 抽選されたバフがが最大レベルの時
-			if (m_buff.level[static_cast<int>(m_buffType[i])] >= kMaxLevel[static_cast<int>(m_buffType[i])])continue;
+			if (m_buff.level[static_cast<int>(m_buffType[i])] >= kMaxLevel[static_cast<int>(m_buffType[i])]&&
+				kMaxLevel[static_cast<int>(m_buffType[i])] > 0)continue;
 			for (int j = 0;j < kBuffSelectNum;j++) {
 				if (i == j)continue;
 				// すでに選択されているとき
@@ -182,4 +254,39 @@ bool BuffManager::IsSelect()
 {
 	if (m_phase >= Phase::Max)return false;
 	return true;
+}
+
+void BuffManager::AdaptBuff(const Buff::Type& buffType)
+{
+	switch (buffType)
+	{
+		case Buff::Type::Attack:
+		case Buff::Type::Defence:
+		case Buff::Type::Speed:
+		case Buff::Type::CriticalRate:
+		case Buff::Type::CriticalDamage:
+		case Buff::Type::All:
+		{
+			// ステータス強化系はプレイヤーのポインタがないときreturn
+			if (!m_pPlayer)return;
+			// 永続のバフを付与
+			PlayerBuff buff = { kBuffs[static_cast<int>(buffType)],1, false };
+			m_pPlayer->AddBuff(buff);
+			break;
+		}
+		case Buff::Type::Exp:
+			// 経験値は敵マネージャーのポインタがないときreturn
+		break;
+		case Buff::Type::Heal:
+		{
+			// 回復はプレイヤーのポインタがないときreturn
+			if (!m_pPlayer)return;
+			float value = m_pPlayer->GetGaugeMaxValue(Player::GaugeType::Hp);
+			value *= 0.4f;
+			m_pPlayer->Heal(value);
+			break;
+		}
+	default:
+		break;
+	}
 }
