@@ -400,12 +400,15 @@ void Player::Damage(float value)
 	float defence= CheckBuffValue().Defence;
 	float damage = value - defence;
 	damage = MyMath::Clamp(damage, 0.0f, value);
+	float hpMax = GetGaugeMaxValue(GaugeType::Hp);
+	float angerValue = damage / hpMax * 100;
+	angerValue *= kAngerDecValue;
 	// ダメージ処理を行う
 	m_gauges[static_cast<int>(GaugeType::Hp)]->Decrease(damage);
 	// 最大・最小値よりも大ききくならないようにする
 	m_gauges[static_cast<int>(GaugeType::Hp)]->Clamp();
 	// 怒りゲージを上昇させる
-	m_gauges[static_cast<int>(GaugeType::Anger)]->Increase(damage * kAngerValue);
+	m_gauges[static_cast<int>(GaugeType::Anger)]->Increase(angerValue);
 	// 最大・最小値よりも大ききくならないようにする
 	m_gauges[static_cast<int>(GaugeType::Anger)]->Clamp();
 	// カメラを揺らす
@@ -552,6 +555,10 @@ const PlayerStatus Player::CheckBuffValue()
 	for (auto& buff : m_buffs) {
 		status += buff.get()->GetBuffValue();
 	}
-	status = m_status * status;
+	status.Attack=m_status.Attack*status.Attack;
+	status.Defence=m_status.Defence*status.Defence;
+	status.Speed=m_status.Speed*status.Speed;
+	status.CriticalRate=m_status.CriticalRate+status.CriticalRate;
+	status.CriticalDamage=m_status.CriticalDamage+status.CriticalDamage;
 	return status;
 }
