@@ -7,10 +7,13 @@
 namespace {
 	
 	//画像のサイズ
-	constexpr float kGraphScale = 0.1f;
+	constexpr float kGraphScale = 1.5f;
 
 	// 円の当たり判定の半径
-	constexpr float kCircleRadius = 50.0f;
+	constexpr float kCircleRadius = 20.0f * kGraphScale;
+
+	// 画像のオフセットYの値
+	constexpr float kGraphOffsetY = 10.0f;
 
 	constexpr int kHealValue = 50;
 }
@@ -59,7 +62,7 @@ void HpHealItem::Draw()
 {
 
 	// 画像の描画
-	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kGraphScale, 0.0f, m_graphHandle, TRUE);
+	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y - kGraphOffsetY, kGraphScale, 0.0f, m_graphHandle, TRUE);
 	// 当たり判定の描画
 	m_collision.DebugDraw();
 }

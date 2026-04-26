@@ -26,6 +26,8 @@ namespace {
 	constexpr Vector3 kTestAttackPos = { 300.0f, 300.0f, 0.0f };
 	constexpr Vector3 kTestBossPos = { 5000.0f, 9640.0f, 0.0f };
 	constexpr Vector3 kTestPos = { 5100.0f, 9640.0f, 0.0f };
+	constexpr Vector3 kTestPos1 = { 5200.0f, 9640.0f, 0.0f };
+	constexpr Vector3 kTestPos2 = { 5300.0f, 9640.0f, 0.0f };
 }
 
 SceneTestSyoguti::SceneTestSyoguti() :
@@ -140,8 +142,8 @@ SceneBase* SceneTestSyoguti::Update()
 	if (Input::IsPressed(PAD_INPUT_10)) {
 
 		
-		 m_pItemMgr->Create(ItemBase::ItemType::Heal, kTestHealPos);
-		 m_pItemMgr->Create(ItemBase::ItemType::Attack, kTestAttackPos);
+		 m_pItemMgr->Create(ItemBase::ItemType::Heal, kTestPos1);
+		 m_pItemMgr->Create(ItemBase::ItemType::Attack, kTestPos2);
 	}
 
 	if (Input::IsPressed(PAD_INPUT_1)) {
