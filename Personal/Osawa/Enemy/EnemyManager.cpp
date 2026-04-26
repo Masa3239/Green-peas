@@ -45,7 +45,7 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::Init()
 {
-	GenerateEnemy(EnemyType::Miniboss, 1);
+	//GenerateEnemy(EnemyType::Miniboss, 1);
 
 	m_enemyBoss = std::make_unique<EnemyBoss>(GetObjectManager(), Vector3(5000, 300, 0));
 	m_enemyBoss->SetPlayer(m_pPlayer);

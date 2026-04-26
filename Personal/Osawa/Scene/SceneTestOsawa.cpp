@@ -82,12 +82,6 @@ void SceneTestOsawa::Init()
 	m_pBuffManager->SetPlayer(m_pPlayer.get());
 
 	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
-
-	auto key = new BossKey(GetObjectManager());
-	key->SetPlayer(m_pPlayer.get());
-	key->SetEnemyManager(m_pEnemyMgr.get());
-	key->GetTransform() = m_pPlayer->GetTransform();
-	key->Init();
 }
 
 void SceneTestOsawa::End()

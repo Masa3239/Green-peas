@@ -8,7 +8,11 @@ class Camera;
 class EnemyManager;
 class UIManager;
 class Map;
+class EnemyMap;
 class ItemManager;
+class WeaponManager;
+class PauseMenu;
+class BuffManager;
 
 /// <summary>
 /// メインのゲームシーン
@@ -82,4 +86,23 @@ private:
 	/// マップ
 	/// </summary>
 	std::unique_ptr<Map> m_pMap;
+	/// <summary>
+	/// マップ敵情報
+	/// </summary>
+	std::unique_ptr<EnemyMap> m_pEnemyMap;
+
+	/// <summary>
+	/// 武器のマネージャー
+	/// </summary>
+	std::unique_ptr<WeaponManager> m_pWeaponManager;
+
+	/// <summary>
+	/// ポーズメニュー
+	/// </summary>
+	std::unique_ptr<PauseMenu> m_pPauseMenu;
+	
+	/// <summary>
+	/// バフのマネージャー
+	/// </summary>
+	std::unique_ptr<BuffManager>m_pBuffManager;
 };

@@ -53,8 +53,6 @@ SceneBase* SceneTitle::Update()
 
 void SceneTitle::Draw()
 {
-	printfDx("TITLE SCENE");
-
 	DrawFormatString(350, 400, m_choice == Choice::Start ? Color::kRed : Color::kGray, "GAME START");
 	DrawFormatString(380, 450, m_choice == Choice::Quit ? Color::kRed : Color::kGray, "QUIT");
 }

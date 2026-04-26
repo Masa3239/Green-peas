@@ -82,9 +82,18 @@ private:
 	/// </summary>
 	std::unique_ptr<EnemyMap> m_pEnemyMap;
 
+	/// <summary>
+	/// 武器のマネージャー
+	/// </summary>
 	std::unique_ptr<WeaponManager> m_pWeaponManager;
 
+	/// <summary>
+	/// ポーズメニュー
+	/// </summary>
 	std::unique_ptr<PauseMenu> m_pPauseMenu;
-
+	
+	/// <summary>
+	/// バフのマネージャー
+	/// </summary>
 	std::unique_ptr<BuffManager>m_pBuffManager;
 };
