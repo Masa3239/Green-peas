@@ -8,8 +8,9 @@
 #include "../System/PauseManager.h"
 #include "CarryOver.h"
 
-SceneManager::SceneManager() {
-
+SceneManager::SceneManager() :
+	m_endProcess(false)
+{
 	m_pScene = nullptr;
 }
 
@@ -51,6 +52,13 @@ void SceneManager::Update() {
 	SceneBase* pScene = m_pScene->Update();
 	m_pScene->GetObjectManager()->Update();
 	CarryOver carryOver = m_pScene->GetCarryOver();
+
+	// nullptr‚¾‚Á‚½‚çƒQ[ƒ€‚ğI—¹‚·‚é
+	if (pScene == nullptr)
+	{
+		m_endProcess = true;
+		return;
+	}
 	if ( pScene != m_pScene ) {
 
 		m_pScene->End();

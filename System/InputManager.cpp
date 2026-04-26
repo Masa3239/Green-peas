@@ -42,6 +42,10 @@ bool InputManager::Initialize()
 	Bind(Input::Action::Down, Input::Device::Keyboard, KeyCode::Button::DownArrow);
 	Bind(Input::Action::Left, Input::Device::Keyboard, KeyCode::Button::LeftArrow);
 	Bind(Input::Action::Right, Input::Device::Keyboard, KeyCode::Button::RightArrow);
+	Bind(Input::Action::Up, Input::Device::Keyboard, KeyCode::Button::W);
+	Bind(Input::Action::Down, Input::Device::Keyboard, KeyCode::Button::S);
+	Bind(Input::Action::Left, Input::Device::Keyboard, KeyCode::Button::A);
+	Bind(Input::Action::Right, Input::Device::Keyboard, KeyCode::Button::D);
 	Bind(Input::Action::Up, Input::Device::Gamepad, KeyCode::Button::GpDPadUp);
 	Bind(Input::Action::Down, Input::Device::Gamepad, KeyCode::Button::GpDPadDown);
 	Bind(Input::Action::Left, Input::Device::Gamepad, KeyCode::Button::GpDPadLeft);
@@ -101,7 +105,7 @@ bool InputManager::Initialize()
 	Bind(Input::Action::Pause, Input::Device::Keyboard, KeyCode::Button::Escape);
 	Bind(Input::Action::Pause, Input::Device::Gamepad, KeyCode::Button::GpStart);
 
-	Bind(Input::Action::Confirm, Input::Device::Keyboard, KeyCode::Button::F);
+	Bind(Input::Action::Confirm, Input::Device::Keyboard, KeyCode::Button::Enter);
 	Bind(Input::Action::Confirm, Input::Device::Mouse, KeyCode::Button::MbLeftClick);
 	Bind(Input::Action::Confirm, Input::Device::Gamepad, KeyCode::Button::GpFaceRight);
 

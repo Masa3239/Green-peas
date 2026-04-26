@@ -113,6 +113,8 @@ void EnemyBase::Dead()
 		m_pPlayer->Heal(kHealNum);
 	}
 
+	//m_statusParam.exp *= m_pPlayer->;
+
 	int num10 = m_statusParam.exp / 10;
 	int num1 = m_statusParam.exp % 10;
 	for (int i = 0; i < num10; i++)

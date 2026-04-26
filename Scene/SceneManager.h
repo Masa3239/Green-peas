@@ -42,8 +42,15 @@ public:
 	/// </summary>
 	void Draw();
 
+	bool GetEndFlag() const { return m_endProcess; }
+
 private:
 
 	// シーンのポインタ
 	SceneBase* m_pScene;
+
+	/// <summary>
+	/// 処理を止めるフラグ
+	/// </summary>
+	bool m_endProcess;
 };

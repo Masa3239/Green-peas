@@ -52,10 +52,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		pSceneMgr->Update();
 		pSceneMgr->Draw();
 
-#ifdef _DEBUG
-#else
-		clsDx();				// デバッグ文字の初期化
-#endif
+		if (pSceneMgr->GetEndFlag()) break;
 
 		// 描画先を切り替える
 		ScreenFlip();

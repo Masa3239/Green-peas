@@ -9,6 +9,13 @@ public:
 	SceneTitle();
 	~SceneTitle();
 
+	enum Choice
+	{
+		Start,
+		Quit,
+		Length
+	};
+
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
@@ -29,4 +36,8 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw() override;
+
+private:
+
+	int m_choice;
 };

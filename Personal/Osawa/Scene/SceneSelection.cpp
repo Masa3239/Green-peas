@@ -7,6 +7,7 @@
 #include "../Personal/Syoguti/SceneTestSyoguti.h"
 #include "../Personal/Takagi/SceneTestTakagi.h"
 #include "../Scene/SceneInGame.h"
+#include "../Scene/SceneTitle.h"
 
 SceneSelection::SceneSelection()
 {
@@ -50,6 +51,10 @@ SceneBase* SceneSelection::Update()
 	{
 		return new SceneInGame();
 	}
+	if (CheckHitKey(KEY_INPUT_7))
+	{
+		return new SceneTitle();
+	}
 	if (CheckHitKey(KEY_INPUT_G))
 	{
 		return new SceneTestOBB();
@@ -66,5 +71,6 @@ void SceneSelection::Draw()
 	printfDx("4 - Syoguti Scene\n");
 	printfDx("5 - Takagi Scene\n");
 	printfDx("6 - InGame Scene (Main)\n");
+	printfDx("7 - Title Scene\n");
 	printfDx("G - OBB Test\n");
 }
