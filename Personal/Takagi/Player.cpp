@@ -49,7 +49,7 @@ namespace {
 	// カメラを振動させる時間
 	constexpr float kCameraShake = 0.3f;
 	// 初期座標
-	constexpr Vector3 kInitPos = { 5000,9640,0 };
+	constexpr Vector3 kAcrossInitPos = { 5000,9640,0 };
 
 
 	// 画像の表示倍率
@@ -93,7 +93,7 @@ void Player::Init()
 	m_angerButton[0] = false;
 	m_angerButton[1] = false;
 	// 初期座標の設定
-	GetTransform().position = kInitPos;
+	GetTransform().position = kAcrossInitPos;
 
 	// 各ゲージの初期化
 	for (auto& gauge : m_gauges) {

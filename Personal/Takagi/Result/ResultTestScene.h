@@ -1,0 +1,37 @@
+#pragma once
+#include "../../../Scene/SceneBase.h"
+#include<memory>
+class ResultShow;
+class ResultTestScene : public SceneBase
+{
+public:
+	ResultTestScene();
+	~ResultTestScene();
+
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
+	void Init() override;
+
+	/// <summary>
+	/// 後処理
+	/// </summary>
+	void End() override;
+
+	/// <summary>
+	/// 更新処理
+	/// </summary>
+	/// <returns></returns>
+	SceneBase* Update() override;
+
+	/// <summary>
+	/// 描画処理
+	/// </summary>
+	void Draw() override;
+
+	void PreDraw()override;
+	void PostDraw()override;
+private:
+	std::unique_ptr<ResultShow> m_resultShow;
+};
+

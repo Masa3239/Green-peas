@@ -1,5 +1,6 @@
 #include "CharacterSelectScene.h"
 #include"../Personal/Takagi/SceneTestTakagi.h"
+#include"../Personal/Takagi/Result/ResultTestScene.h"
 #include"../System/InputManager.h"
 #include"../System/Input/Gamepad.h"
 #include"../Personal/Takagi/RotateCharacter.h"
@@ -28,6 +29,9 @@ SceneBase* CharacterSelectScene::Update()
 	GetCarryOver().characterJob = m_characters->GetSelectJob();
 	if (InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
 		return new SceneTestTakagi;
+	}
+	if (Gamepad::GetInstance().IsDown(XINPUT_BUTTON_START)) {
+		return new ResultTestScene;
 	}
 	return this;
 }
