@@ -28,7 +28,12 @@ namespace
 
 	constexpr float kBulletAttackCooltime = 0.5f;
 
-	constexpr EnemyBase::StatusParam kStatus = { 2500, 2500, 10, 10, 250 };
+	// 基礎ステータス
+	constexpr EnemyBase::StatusParam kStatus = { 100, 100, 1, 1, 250 };
+	// レベルごとの増加量
+	constexpr int kHpPerLevel = 100;
+	constexpr int kAtkPerLevel = 2;
+	constexpr int kDefPerLevel = 1;
 }
 
 EnemyMiniBoss::EnemyMiniBoss(ObjectManager* objManager) :
@@ -36,7 +41,6 @@ EnemyMiniBoss::EnemyMiniBoss(ObjectManager* objManager) :
 	m_action(Action::Idle),
 	m_attackCooltimeCounter(0.0f)
 {
-	SetStatusParam(kStatus);
 }
 
 EnemyMiniBoss::~EnemyMiniBoss()
@@ -45,6 +49,13 @@ EnemyMiniBoss::~EnemyMiniBoss()
 
 void EnemyMiniBoss::Init()
 {
+	StatusParam status = kStatus;
+	status.hp += kHpPerLevel * GetLevel();
+	status.maxHp = status.hp;
+	status.attack += kAtkPerLevel * GetLevel();
+	status.defence += kDefPerLevel * GetLevel();
+	SetStatusParam(status);
+
 	for (auto& bullet : m_bullets)
 	{
 		bullet = std::make_unique<EnemyBullet>(GetObjectManager(), GetStatusParam().attack);
