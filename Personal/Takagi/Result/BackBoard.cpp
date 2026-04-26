@@ -5,6 +5,7 @@
 #include"../../../Utility/Time.h"
 #include<math.h>
 #include<DxLib.h>
+#include"../../../System/InputManager.h"
 namespace {
 	constexpr Vector3 kScreenHalf = { Game::kScreenWidth * 0.5f,Game::kScreenHeight * 0.5f,0 };
 	// 2点間のX座標の距離
@@ -20,7 +21,7 @@ namespace {
 	constexpr float kFinishValue = -0.2f;
 	// 落下速度
 	constexpr float kFallSpeed = 10.0f;
-	const char* const kGraphPath = "Resource\\BuffSelect\\START.png";
+	const char* const kGraphPath = "Resource\\Result\\BackBoard.png";
 }
 
 BackBoard::BackBoard():
@@ -63,6 +64,14 @@ void BackBoard::End()
 
 void BackBoard::Update()
 {
+	bool skip = InputManager::GetInstance().IsPressed(Input::Action::Confirm);
+	if (skip) {
+		for (int i = 0; i < Max; i++) {
+			m_sidePos[i].y = kScreenHalf.y;
+			m_fallSpeed[i] = 0;
+		}
+	}
+
 	// フレーム間の経過時間をキャッシュ
 	float time = Time::GetInstance().GetUnscaledDeltaTime();
 	// 両方の座標の更新処理
@@ -92,14 +101,14 @@ void BackBoard::Update()
 
 void BackBoard::Draw()
 {
-	DrawRotaGraph(m_between.position.x, m_between.position.y, 1, m_between.rotation.z, m_backBoardHandle, TRUE);
-	for (int i = 0; i < Max; i++) {
-		DrawCircle(m_sidePos[i].x, m_sidePos[i].y, 10, 0x00ff00);
-	}
-	DrawCircle(m_between.position.x, m_between.position.y, 10, 0x0000ff);
+	DrawRotaGraph(m_between.position.x, m_between.position.y, 3, m_between.rotation.z, m_backBoardHandle, TRUE);
+	//for (int i = 0; i < Max; i++) {
+	//	DrawCircle(m_sidePos[i].x, m_sidePos[i].y, 10, 0x00ff00);
+	//}
+	//DrawCircle(m_between.position.x, m_between.position.y, 10, 0x0000ff);
 }
 
-bool BackBoard::IsEnd()
+bool BackBoard::IsFinish()
 {
 	if(m_sidePos[Left].y != kScreenHalf.y)return false;
 	if(m_sidePos[Right].y != kScreenHalf.y)return false;

@@ -14,6 +14,7 @@
 #include"Warrior.h"
 #include"Hunter.h"
 #include"Wizard.h"
+#include"Result/ResultShow.h"
 #include"../../Scene/CharacterSelectScene.h"
 #include"../../System/InputManager.h"
 #include"../../System/Input/Gamepad.h"
@@ -27,7 +28,8 @@ SceneTestTakagi::SceneTestTakagi():
 	m_pItemManager(nullptr),
 	m_pMap(nullptr),
 	m_pUIManager(nullptr),
-	m_pWeaponManager(nullptr)
+	m_pWeaponManager(nullptr),
+	m_pResultShow(nullptr)
 {
 	//m_pPlayer = std::make_unique<Player>(GetObjectManager());
 	//m_pPlayer = std::make_unique<Wizard>(GetObjectManager());
@@ -40,7 +42,7 @@ SceneTestTakagi::SceneTestTakagi():
 	m_pWeaponManager = std::make_unique<WeaponManager>();
 	m_pPauseMenu = std::make_unique<PauseMenu>();
 	m_pBuffManager = std::make_unique<BuffManager>();
-
+	m_pResultShow = std::make_unique <ResultShow>();
 }
 
 SceneTestTakagi::~SceneTestTakagi()
@@ -88,7 +90,6 @@ void SceneTestTakagi::Init()
 	m_pPauseMenu->Init();
 	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
 	m_pBuffManager->SetPlayer(m_pPlayer.get());
-
 }
 
 void SceneTestTakagi::End()
@@ -99,7 +100,7 @@ void SceneTestTakagi::End()
 	m_pItemManager->End();
 	m_pUIManager->End();
 	m_pWeaponManager->End();
-	
+	m_pResultShow->End();
 }
 
 SceneBase* SceneTestTakagi::Update()
@@ -107,9 +108,12 @@ SceneBase* SceneTestTakagi::Update()
 	if (m_pBuffManager->IsSelect()) {
 		m_pBuffManager->Update();
 	}
+	else if (m_pResultShow->IsResult()) {
+		m_pResultShow->Update();
+	}
 	else {
 		auto nextScene = m_pPauseMenu->Update();
-		m_pBuffManager->Update();
+		//m_pBuffManager->Update();
 		if (nextScene != nullptr)
 		{
 			return nextScene;
@@ -120,27 +124,16 @@ SceneBase* SceneTestTakagi::Update()
 
 	m_pUIManager->SetPlayer(m_pPlayer.get());
 	Time::GetInstance().SetTimeScale(1);
-	//m_pPlayer->Update();
-	//m_pPlayer->Update();
 	if (m_pPlayer->IsDead()) {
-		return new SceneSelection();
+		m_carryOver.isClear = Score::Result::Failed;
+		m_pResultShow->Init(m_carryOver);
+
 	}
 	m_pWeaponManager->Update();
 
-	//Segment_Point_MinLength()
-
-
-	//if (Pad::IsPressed(Pad::Button::Start)) {
-	//	return new SceneSelection();
-	//}
 	if (Gamepad::GetInstance().IsDown(XINPUT_BUTTON_BACK)) {
 		return new CharacterSelectScene;
 	}
-	//m_pMap->Update();
-
-
-	//m_pItemManager->Update();
-	//m_pEnemyManager->Update();
 	m_pUIManager->Update();
 
 
@@ -174,9 +167,14 @@ void SceneTestTakagi::PostDraw()
 	m_pUIManager->DebugDraw();
 
 	}
+
+	
 	else {
 		if (m_pBuffManager->IsSelect()) {
 			m_pBuffManager->Draw();
+		}
+		else if (m_pResultShow->IsResult()) {
+			m_pResultShow->Draw();
 		}
 		else {
 			m_pPauseMenu->Draw();

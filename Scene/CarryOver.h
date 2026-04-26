@@ -1,5 +1,12 @@
 #pragma once
 #include"../Personal/Takagi/Player.h"
+namespace Score {
+	enum class Result {
+		Clear,
+		Failed,
+		Max
+};
+}
 /// <summary>
 /// シーンを超えて引き継ぐ変数
 /// </summary>
@@ -12,7 +19,7 @@ public:
 	/// <summary>
 	/// クリアしたか
 	/// </summary>
-	bool isClear;
+	Score::Result isClear;
 	/// <summary>
 	/// 最大コンボ数
 	/// </summary>
@@ -28,7 +35,7 @@ public:
 	/// </summary>
 	constexpr void Reset() {
 		characterJob = Character::Job::Max;
-		isClear = false;
+		isClear = Score::Result::Max;
 		maxCombo = 0;
 		maxDamage = 0;
 	}

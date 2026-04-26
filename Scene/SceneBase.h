@@ -115,7 +115,7 @@ protected:
 	// フェードアウトを行っているかどうか
 	bool m_isFadeOut;
 
-private:
+protected:
 
 	ObjectManager* m_objManager;
 	CarryOver m_carryOver;

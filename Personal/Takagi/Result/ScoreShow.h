@@ -1,16 +1,17 @@
 #pragma once
-#include"../../../Utility/Transform.h"
-#include"../../../Utility/Vector3.h"
-class BackBoard
+#include"../../../Scene/CarryOver.h"
+class ScoreShow
 {
 public:
 	enum {
-		Left,
-		Right,
-		Max
+		Job,
+		Damage,
+		Combo,
+		Max,
 	};
-	BackBoard();
-	~BackBoard();
+	ScoreShow();
+	ScoreShow(const CarryOver& carryOver);
+	~ScoreShow();
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
@@ -32,20 +33,21 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	bool IsFinish();
+
 private:
 	/// <summary>
-	/// リザルト背景のグラフィックハンドル
+	/// プレイスコア
 	/// </summary>
-	int m_backBoardHandle;
-
+	CarryOver m_score;
 	/// <summary>
-	/// 左側の座標
+	/// 描画の際に使うスコア
 	/// </summary>
-	Vector3 m_sidePos[Max];
-	float m_fallSpeed[Max];
+	CarryOver m_showScore;
 	/// <summary>
-	/// 背景を描画するトランスフォーム
+	/// 描画に使うフォントハンドル
 	/// </summary>
-	Transform m_between;
+	int m_fontHandle;
+	int m_phase;
+	float m_interval;
 };
 

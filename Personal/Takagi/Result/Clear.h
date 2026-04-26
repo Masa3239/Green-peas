@@ -5,7 +5,7 @@ class Clear:public ResultHead
 public:
 	enum {
 		Across,
-		Fall
+		Narrow
 	};
 	Clear();
 	~Clear();

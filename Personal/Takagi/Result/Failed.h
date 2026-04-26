@@ -4,6 +4,12 @@
 class Failed:public ResultHead
 {
 public:
+	enum {
+		Up,
+		Narrow,
+		Stop,
+		Max
+	};
 	Failed();
 	~Failed();
 	/// <summary>
@@ -23,6 +29,10 @@ public:
 	/// </summary>
 	void Draw() override;
 private:
-
+	/// <summary>
+	/// 演出の状態
+	/// </summary>
+	int m_phase;
+	float m_interval;
 };
 

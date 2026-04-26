@@ -19,7 +19,7 @@ ResultTestScene::~ResultTestScene()
 void ResultTestScene::Init()
 {
 	// リザルトの初期化
-	m_resultShow->Init();
+	m_resultShow->Init(m_carryOver);
 }
 
 void ResultTestScene::End()
@@ -31,10 +31,8 @@ void ResultTestScene::End()
 SceneBase* ResultTestScene::Update()
 {
 	// リザルトの更新処理
-	m_resultShow->Update();
-	if (InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
-		return new CharacterSelectScene;
-	}
+	SceneBase* nextScene =m_resultShow->Update();
+	if (nextScene)return nextScene;
 	return this;
 }
 
