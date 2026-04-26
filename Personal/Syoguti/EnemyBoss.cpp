@@ -33,7 +33,7 @@ namespace {
 	constexpr int kMaxHp = 100;
 
 	// ボスの攻撃力
-	constexpr int kAttackPower = 10;
+	constexpr int kAttackPower = 1000;
 
 	// ランダムに行動を決める時のインターバル
 	constexpr float kRandomInterval = 2.0f;
@@ -235,13 +235,15 @@ void EnemyBoss::Update()
 	Action();
 
 	Status();
+
+	AttackUp();
 }
 
 void EnemyBoss::Draw()
 {
 
-	printfDx("ボス%d\n", static_cast<int>(m_status));
-	printfDx("ボスの現在の体力%d\n", m_currentHp);
+	//printfDx("ボス%d\n", static_cast<int>(m_status));
+	//printfDx("ボスの現在の体力%d\n", m_currentHp);
 	m_pBossBulletMgr->Draw();
 
 	// 封印状態なら
@@ -612,6 +614,13 @@ void EnemyBoss::CheckDamageFlagSize(int weapon, int index)
 
 		m_damageFlag[weapon].emplace_back(false);
 	}
+}
+
+void EnemyBoss::AttackUp()
+{
+
+	if (m_currentHp > kMaxHp / 2) return;
+	m_attackPower * 2;
 }
 
 

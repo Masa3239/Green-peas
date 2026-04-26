@@ -208,6 +208,11 @@ private:
 	/// <param name="index"></param>
 	void CheckDamageFlagSize(int weapon, int index);
 
+	/// <summary>
+	/// ステータスを上げる関数
+	/// </summary>
+	void AttackUp();
+
 private:
 
 	/// <summary>
