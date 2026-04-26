@@ -87,7 +87,7 @@ public:
 
 	void SetFixSpawn(const bool flag) { m_isFixSpawn = flag; }
 
-	const Collision::AABB& GetCollider() const { return m_collider; }
+	Collision::AABB& GetCollider() { return m_collider; }
 
 	EnemyManager* GetEnemyManager() const { return m_pEnemyMgr; }
 	void SetEnemyManager(EnemyManager* enemyMgr) { m_pEnemyMgr = enemyMgr; }

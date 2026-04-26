@@ -32,12 +32,16 @@ namespace
 	constexpr int kHpPerLevel = 8;
 	constexpr int kAtkPerLevel = 2;
 	constexpr int kDefPerLevel = 5;
+
+	const char* const kGraphPath = "";
 }
 
 EnemyShooter::EnemyShooter(ObjectManager* objManager) :
 	EnemyBase(objManager),
 	m_action(Action::Idle),
-	m_attackCooltimeCounter(0.0f)
+	m_attackCooltimeCounter(0.0f),
+	m_animFrame(0),
+	m_animFrameCounter(0)
 {
 }
 
@@ -60,10 +64,17 @@ void EnemyShooter::Init()
 		bullet->SetPlayer(GetPlayer());
 		bullet->Init();
 	}
+
+	//LoadDivGraph(kGraphPath, kAnimFrameNum, kAnimFrameNum, 1, 384, 128, m_graphs);
 }
 
 void EnemyShooter::End()
 {
+	for (auto& graph : m_graphs)
+	{
+		DeleteGraph(graph);
+	}
+
 	for (auto& bullet : m_bullets)
 	{
 		bullet->End();
@@ -136,15 +147,31 @@ void EnemyShooter::UpdateEnemy()
 	{
 		m_attackCooltimeCounter -= Time::GetInstance().GetDeltaTime();
 	}
+
+	if (m_animFrameCounter > 0)
+	{
+		m_animFrameCounter -= Time::GetInstance().GetDeltaTime();
+	}
+	else
+	{
+		m_animFrame++;
+		m_animFrameCounter = 0.1f;
+
+		if (m_animFrame >= kAnimFrameNum) m_animFrame = 0;
+	}
 }
 
 void EnemyShooter::Draw()
 {
-	auto& transform = GetTransform();
+	Vector3 pos = GetTransform().position;
 
-	DrawBox(transform.position.x - 9, transform.position.y - 10, transform.position.x + 9, transform.position.y + 20, 0x0000ff, 1);
+	DrawBox(pos.x - 9, pos.y - 30, pos.x + 9, pos.y, 0x0000ff, 1);
 
+	//DrawRotaGraph(pos.x, pos.y - 32, 1, 0, m_graphs[m_animFrame], 1, GetPlayer()->GetTransform().position.x < pos.x);
+
+#ifdef _DEBUG
 	GetCollider().DebugDraw();
+#endif
 }
 
 void EnemyShooter::Attack()

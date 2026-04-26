@@ -40,6 +40,8 @@ protected:
 
 	constexpr static unsigned int kMaxBulletNum = 10;
 
+	constexpr static int kAnimFrameNum = 8;
+
 	enum class Action
 	{
 		Idle,
@@ -47,6 +49,7 @@ protected:
 		Follow,
 		Distance,
 		Back,
+		Length
 	};
 
 	Action m_action;
@@ -60,4 +63,10 @@ protected:
 	/// 弾の配列
 	/// </summary>
 	std::array<std::unique_ptr<EnemyBullet>, kMaxBulletNum> m_bullets;
+
+	int m_animFrame;
+
+	float m_animFrameCounter;
+
+	int m_graphs[kAnimFrameNum];
 };

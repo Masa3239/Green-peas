@@ -35,8 +35,16 @@ protected:
 
 private:
 
+	constexpr static int kAnimFrameNum = 1;
+
 	/// <summary>
 	/// 攻撃クールタイムのカウンター
 	/// </summary>
 	float m_attackCooltimeCounter;
+
+	int m_animFrame;
+
+	float m_animFrameCounter;
+
+	int m_graphs[8];
 };

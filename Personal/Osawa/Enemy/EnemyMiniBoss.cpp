@@ -28,18 +28,24 @@ namespace
 
 	constexpr float kBulletAttackCooltime = 0.5f;
 
+	constexpr Vector3 kColliderSize = {100, 30, 0};
+
 	// 基礎ステータス
 	constexpr EnemyBase::StatusParam kStatus = { 100, 100, 1, 1, 250 };
 	// レベルごとの増加量
 	constexpr int kHpPerLevel = 100;
 	constexpr int kAtkPerLevel = 2;
 	constexpr int kDefPerLevel = 1;
+
+	const char* const kGraphPath = "Resource\\Bosses_Dino_Tri\\Dino Tri\\dino_tri_move.png";
 }
 
 EnemyMiniBoss::EnemyMiniBoss(ObjectManager* objManager) :
 	EnemyBase(objManager),
 	m_action(Action::Idle),
-	m_attackCooltimeCounter(0.0f)
+	m_attackCooltimeCounter(0.0f),
+	m_animFrame(0),
+	m_animFrameCounter(0)
 {
 }
 
@@ -62,10 +68,19 @@ void EnemyMiniBoss::Init()
 		bullet->SetPlayer(GetPlayer());
 		bullet->Init();
 	}
+
+	GetCollider() = Collision::AABB{Vector3::zero, kColliderSize};
+
+	LoadDivGraph(kGraphPath, kAnimFrameNum, kAnimFrameNum, 1, 384, 128, m_graphs);
 }
 
 void EnemyMiniBoss::End()
 {
+	for (auto& graph : m_graphs)
+	{
+		DeleteGraph(graph);
+	}
+
 	for (auto& bullet : m_bullets)
 	{
 		bullet->End();
@@ -168,17 +183,31 @@ void EnemyMiniBoss::UpdateEnemy()
 	{
 		m_attackCooltimeCounter -= Time::GetInstance().GetDeltaTime();
 	}
+
+	if (m_animFrameCounter > 0)
+	{
+		m_animFrameCounter -= Time::GetInstance().GetDeltaTime();
+	}
+	else
+	{
+		m_animFrame++;
+		m_animFrameCounter = 0.1f;
+
+		if (m_animFrame >= kAnimFrameNum) m_animFrame = 0;
+	}
 }
 
 void EnemyMiniBoss::Draw()
 {
-	auto& transform = GetTransform();
+	Vector3& pos = GetTransform().position;
 	
 	unsigned int color = (GetMyState() & EnemyBase::kStatePalsy) ? 0xffff00 : 0xff0000;
 
-	DrawBox(transform.position.x - 30, transform.position.y - 60, transform.position.x + 30, transform.position.y + 20, color, 1);
+	DrawRotaGraph(pos.x, pos.y - 32, 1, 0, m_graphs[m_animFrame], 1, GetPlayer()->GetTransform().position.x < pos.x);
 
+#ifdef _DEBUG
 	GetCollider().DebugDraw();
+#endif
 }
 
 void EnemyMiniBoss::Dead()
