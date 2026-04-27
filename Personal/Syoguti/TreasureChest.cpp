@@ -26,7 +26,8 @@ TreasureChest::TreasureChest(ObjectManager* objectMgr) :
     m_isOpen(false),
     m_isOpened(false),
     m_openedTimer(0.0f),
-    m_isRemove(false)
+    m_isRemove(false),
+    m_isSpawned(false)
 {
     for (int i = 0; i < kTreasureChestMotionNum; i++) {
 
@@ -69,6 +70,7 @@ void TreasureChest::Draw()
 
     // 当たり判定の描画
     m_collision.DebugDraw();
+
 }
 
 void TreasureChest::Open()

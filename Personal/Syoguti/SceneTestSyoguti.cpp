@@ -95,6 +95,7 @@ void SceneTestSyoguti::Init()
 
 	m_pEnemyManager->SetPlayer(m_pPlayer.get());
 	m_pEnemyManager->SetUIManager(m_pUIManager.get());
+	m_pEnemyManager->GetEnemyBoss();
 
 	 m_pEnemyBoss->SetPlayer(m_pPlayer.get());
 	 m_pEnemyBoss->Init();
@@ -108,6 +109,7 @@ void SceneTestSyoguti::Init()
 	 m_pWeaponMgr->Init();
 	 
 	 m_pChest->SetObjectManager(GetObjectManager());
+	 m_pChest->SetWeaponManager(m_pWeaponMgr.get());
 	 m_pChest->Init();
 }
 
@@ -138,6 +140,8 @@ SceneBase* SceneTestSyoguti::Update()
 	m_pWeaponMgr->Update();
 
 	m_pUIManager->Update();
+
+	m_pChest->Update();
 
 	if (Input::IsPressed(PAD_INPUT_10)) {
 

@@ -218,6 +218,11 @@ void EnemyBoss::Update()
 	
 	m_closeRangeAttackCollision.SetPosition(GetTransform().position);
 
+	if (CheckHitCloseRangeAttackCollison(m_pPlayer->GetCircle())) {
+
+		m_pPlayer->Damage(m_attackPower);
+	}
+
 	// Idle状態なら
 	if (m_status == BossStatus::Idle) {
 

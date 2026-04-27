@@ -6,7 +6,7 @@
 #include "../../System/ObjectManager.h"
 
 class TreasureChest;
-
+class WeaponManager;
 
 class ChestManager
 {
@@ -62,6 +62,8 @@ public:
 	/// <param name="objectManager"></param>
 	void SetObjectManager(ObjectManager* objectManager) { m_pObjectMgr = objectManager; }
 
+	void SetWeaponManager(WeaponManager* weaponManager) { m_pWeaponMgr = weaponManager; }
+
 	/// <summary>
 	/// 宝箱の場所を取得するゲッター関数
 	/// </summary>
@@ -91,6 +93,8 @@ private:
 	/// オブジェクトマネージャーのポインタ
 	/// </summary>
 	ObjectManager* m_pObjectMgr;
+
+	WeaponManager* m_pWeaponMgr;
 
 };
 
