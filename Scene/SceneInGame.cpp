@@ -83,6 +83,7 @@ void SceneInGame::Init()
 	m_pEnemyMgr->SetUIManager(m_pUIMgr.get());
 	m_pEnemyMgr->SetWeaponManager(m_pWeaponManager.get());
 	m_pEnemyMgr->SetChestManager(m_pChestManager.get());
+	m_pEnemyMgr->SetMap(m_pMap.get());
 	m_pEnemyMgr->Init();
 	m_pEnemyMgr->InitGenerate(m_pEnemyMap.get());
 

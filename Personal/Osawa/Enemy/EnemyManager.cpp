@@ -10,6 +10,7 @@
 #include "../Personal/Syoguti/EnemyBoss.h"
 #include "../Utility/MyRandom.h"
 #include "../Personal/Kimura/EnemyMap/EnemyMap.h"
+#include "../Personal/Kimura/Map/Map.h"
 
 #include "EnemyMelee.h"
 #include "EnemyShooter.h"
@@ -29,7 +30,7 @@ namespace
 	// ¶¬Žž‚ÉƒvƒŒƒCƒ„[‚©‚ç—£‚·‹——£
 	constexpr float kGenerateOffsetPos = 500.0f;
 
-	constexpr float kWeaponDropChange = 20.0f;
+	constexpr float kWeaponDropChange = 5.0f;
 }
 
 EnemyManager::EnemyManager(ObjectManager* objManager) :
@@ -216,7 +217,7 @@ EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, int level)
 		pos.y += std::cos(dir) * kGenerateOffsetPos;
 
 		// ”ÍˆÍ“à‚È‚çŒˆ’è
-		if (pos.x >= 0 && pos.y >= 0) break;
+		if (pos.x >= 40 && pos.y >= 40 && pos.x < m_map->GetMapBlockNumX() * 40 - 40 && pos.y < m_map->GetMapBlockNumY() * 40 - 40) break;
 	}
 	enemy->GetTransform().position = pos;
 
