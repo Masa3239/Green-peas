@@ -100,6 +100,8 @@ public:
 
 	EnemyBoss* GetEnemyBoss() const { return m_enemyBoss.get(); }
 
+	bool GetHighestDamage() const { return m_highestDamage; }
+
 	ChestManager* GetChestManager() const { return m_chestMgr; }
 	void SetChestManager(ChestManager* chestMgr) { m_chestMgr = chestMgr; }
 
@@ -143,6 +145,11 @@ private:
 	/// 敵の生成待機のカウンター
 	/// </summary>
 	float m_generateCounter;
+
+	/// <summary>
+	/// 最高ダメージ
+	/// </summary>
+	int m_highestDamage;
 
 public:
 	int GetDefeatedNum() const { return m_numDefeated; }
