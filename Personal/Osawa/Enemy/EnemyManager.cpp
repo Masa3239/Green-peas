@@ -38,6 +38,7 @@ EnemyManager::EnemyManager(ObjectManager* objManager) :
 	m_pPlayer(nullptr),
 	m_uiMgr(nullptr),
 	m_weaponMgr(nullptr),
+	m_chestMgr(nullptr),
 	m_generateCounter(0.0f),
 	m_numDefeated(0)
 {

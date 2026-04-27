@@ -1,7 +1,9 @@
 #include "EnemyMiniBoss.h"
 #include <DxLib.h>
 #include "../Personal/Takagi/Player.h"
+#include "../Personal/Syoguti/ChestManager.h"
 #include "../Enemy/EnemyBullet.h"
+#include "../Enemy/EnemyManager.h"
 #include "../Utility/Time.h"
 #include "../Utility/MyMath.h"
 #include "../BossKey.h"
@@ -213,6 +215,9 @@ void EnemyMiniBoss::Draw()
 void EnemyMiniBoss::Dead()
 {
 	EnemyBase::Dead();
+
+	// •ó” ‚ğ¶¬
+	GetEnemyManager()->GetChestManager()->Create(GetTransform().position);
 
 	// Œ®‚ğ¶¬
 	auto key = new BossKey(GetObjectManager());

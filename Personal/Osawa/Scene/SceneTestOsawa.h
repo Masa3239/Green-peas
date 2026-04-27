@@ -13,6 +13,7 @@ class ItemManager;
 class WeaponManager;
 class PauseMenu;
 class BuffManager;
+class ChestManager;
 
 class SceneTestOsawa : public SceneBase
 {
@@ -95,5 +96,10 @@ private:
 	/// <summary>
 	/// バフのマネージャー
 	/// </summary>
-	std::unique_ptr<BuffManager>m_pBuffManager;
+	std::unique_ptr<BuffManager> m_pBuffManager;
+
+	/// <summary>
+	/// 宝箱のマネージャー
+	/// </summary>
+	std::unique_ptr<ChestManager> m_pChestManager;
 };

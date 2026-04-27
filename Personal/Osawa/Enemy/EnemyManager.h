@@ -13,6 +13,7 @@ class Player;
 class UIManager;
 class EnemyMap;
 class WeaponManager;
+class ChestManager;
 
 class EnemyManager : public GameObject
 {
@@ -99,6 +100,9 @@ public:
 
 	EnemyBoss* GetEnemyBoss() const { return m_enemyBoss.get(); }
 
+	ChestManager* GetChestManager() const { return m_chestMgr; }
+	void SetChestManager(ChestManager* chestMgr) { m_chestMgr = chestMgr; }
+
 	void SetPlayer(Player* player) { m_pPlayer = player; }
 
 	void SetUIManager(UIManager* uiMgr) { m_uiMgr = uiMgr; }
@@ -132,6 +136,8 @@ private:
 	UIManager* m_uiMgr;
 
 	WeaponManager* m_weaponMgr;
+
+	ChestManager* m_chestMgr;
 
 	/// <summary>
 	/// 敵の生成待機のカウンター

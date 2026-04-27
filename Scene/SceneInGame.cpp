@@ -7,6 +7,7 @@
 #include "../Personal/Osawa/Enemy/EnemyManager.h"
 #include "../Personal/Osawa/PauseMenu.h"
 #include "../Personal/Syoguti/ItemManager.h"
+#include "../Personal/Syoguti/ChestManager.h"
 #include "../Personal/Takagi/Player.h"
 #include "../Personal/Takagi/WeaponManager.h"
 #include "../Personal/Takagi/BuffManager.h"
@@ -19,10 +20,8 @@
 #include "../Personal/Osawa/Scene/SceneSelection.h"
 #include "../Personal/Osawa/Scene/SceneTempResult.h"
 
-namespace {
-
-	constexpr Vector3 kTestHealPos = { 100.0f, 300.0f, 0.0f };
-	constexpr Vector3 kTestAttackPos = { 500.0f, 300.0f, 0.0f };
+namespace
+{
 }
 
 SceneInGame::SceneInGame() :
@@ -46,6 +45,7 @@ SceneInGame::SceneInGame() :
 	m_pWeaponManager = std::make_unique<WeaponManager>();
 	m_pPauseMenu = std::make_unique<PauseMenu>();
 	m_pBuffManager = std::make_unique<BuffManager>();
+	m_pChestManager = std::make_unique<ChestManager>();
 }
 
 SceneInGame::~SceneInGame()
@@ -77,6 +77,8 @@ void SceneInGame::Init()
 
 	m_pEnemyMgr->SetPlayer(m_pPlayer.get());
 	m_pEnemyMgr->SetUIManager(m_pUIMgr.get());
+	m_pEnemyMgr->SetWeaponManager(m_pWeaponManager.get());
+	m_pEnemyMgr->SetChestManager(m_pChestManager.get());
 	m_pEnemyMgr->Init();
 	m_pEnemyMgr->InitGenerate(m_pEnemyMap.get());
 
@@ -94,12 +96,16 @@ void SceneInGame::Init()
 	m_pBuffManager->SetPlayer(m_pPlayer.get());
 	m_pBuffManager->Init();
 
+	m_pChestManager->SetObjectManager(GetObjectManager());
+	m_pChestManager->Init();
+
 	m_pPauseMenu->Init();
 	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
 }
 
 void SceneInGame::End()
 {
+	m_pChestManager->End();
 	m_pBuffManager->End();
 	m_pPauseMenu->End();
 	m_pWeaponManager->End();
@@ -114,8 +120,6 @@ void SceneInGame::End()
 
 SceneBase* SceneInGame::Update()
 {
-	m_pBuffManager->Update();
-
 	if (!m_pBuffManager->IsSelect())
 	{
 		auto nextScene = m_pPauseMenu->Update();
@@ -124,6 +128,8 @@ SceneBase* SceneInGame::Update()
 			return nextScene;
 		}
 	}
+
+	m_pBuffManager->Update();
 
 	if (!PauseManager::GetInstance().IsPause())
 	{
@@ -134,6 +140,8 @@ SceneBase* SceneInGame::Update()
 
 		m_pUIMgr->SetPlayer(m_pPlayer.get());
 		m_pUIMgr->Update();
+
+		m_pChestManager->CheckHitCollision(m_pPlayer->GetCircle());
 	}
 
 	// プレイヤーが死亡していたら
