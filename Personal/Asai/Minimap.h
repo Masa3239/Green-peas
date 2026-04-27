@@ -52,6 +52,8 @@ public:
 
 	void SetItemManager(ItemManager* pItemMgr) { m_pItemMgr = pItemMgr; }
 
+	void SetChestManager(ChestManager* pChestMgr) { m_pChestMgr = pChestMgr; }
+
 private:
 
 	void DrawMiniMap();
@@ -85,6 +87,6 @@ private:
 
 	ItemManager* m_pItemMgr;
 
-	//ChestManager* 
+	ChestManager* m_pChestMgr;
 
 };

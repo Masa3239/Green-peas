@@ -8,8 +8,9 @@
 #include"../Kimura/Map/Map.h"
 #include"../Kimura/Map/MapManager.h"
 #include"../Osawa/Enemy/EnemyManager.h"
-#include"../Syoguti/ItemManager.h"
+#include"../Syoguti/ChestManager.h"
 #include"../Syoguti/EnemyBoss.h"
+#include"../Syoguti/ItemManager.h"
 #include"../Takagi/Player.h"
 
 namespace {
@@ -26,7 +27,7 @@ namespace {
 	constexpr int kBottomPos = 0 + kSizeY + kOffSet;
 
 	//プレイヤーのアイコンの画像
-	const char* const kPlayerGraphPath = ".\\Personal\\Asai\\Graph\\pointer_c.png";
+	const char* const kPlayerGraphPath = ".\\Resource\\pointer_c.png";
 	//プレイヤーのアイコンの拡大率
 	constexpr float kPlayerIconScale = 0.3f;
 	//プレイヤーのアイコンと角度のずれを直す
@@ -43,7 +44,8 @@ Minimap::Minimap():
 	m_pPlayer(nullptr),
 	m_pCamera(nullptr),
 	m_pEnemyMgr(nullptr),
-	m_pItemMgr(nullptr)
+	m_pItemMgr(nullptr),
+	m_pChestMgr(nullptr)
 {
 }
 
@@ -140,8 +142,18 @@ void Minimap::DrawItem()
 
 	}
 
+	if (m_pChestMgr) {
 
+		for (int i = 0;i < m_pChestMgr->GetArraySize();i++) {
 
+			//宝箱の座標を取得　ミニマップの座標に変換
+			Vector3 itemPos = ToMinimapPos(m_pChestMgr->GetChestPos(i));
+			//宝箱を描画
+			DrawCircle(itemPos.x, itemPos.y, 1.5f, Color::kGreen, TRUE);
+
+		}
+
+	}
 
 }
 
