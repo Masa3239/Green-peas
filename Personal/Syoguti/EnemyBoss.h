@@ -141,6 +141,8 @@ public:
 	/// <returns></returns>
 	bool ResetDamageFlag(int weapon, int index);
 
+	bool GetIsDead() { return m_isDead; }
+
 private:
 
 	/// <summary>
@@ -213,7 +215,7 @@ private:
 	/// </summary>
 	void AttackUp();
 
-	bool GetIsDead() { return m_isDead; }
+	
 
 private:
 
