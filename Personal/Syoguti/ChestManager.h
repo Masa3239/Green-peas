@@ -62,6 +62,19 @@ public:
 	/// <param name="objectManager"></param>
 	void SetObjectManager(ObjectManager* objectManager) { m_pObjectMgr = objectManager; }
 
+	/// <summary>
+	/// 宝箱の場所を取得するゲッター関数
+	/// </summary>
+	/// <param name="index"></param>
+	/// <returns></returns>
+	Vector3 GetChestPos(int index) { return m_chests[index]->GetTransform().position; }
+
+	/// <summary>
+	/// 宝箱の量を取得するゲッター関数
+	/// </summary>
+	/// <returns></returns>
+	int GetArraySize() { return m_chests.size(); }
+
 private:
 
 	/// <summary>
