@@ -7,6 +7,7 @@
 #include "../Personal/Osawa/Enemy/EnemyManager.h"
 #include "../Personal/Osawa/PauseMenu.h"
 #include "../Personal/Syoguti/ItemManager.h"
+#include "../Personal/Syoguti/ChestManager.h"
 #include "../Personal/Takagi/Player.h"
 #include "../Personal/Takagi/WeaponManager.h"
 #include "../Personal/Takagi/BuffManager.h"
@@ -26,7 +27,8 @@ SceneTestOsawa::SceneTestOsawa() :
 	m_pEnemyMap(nullptr),
 	m_pWeaponManager(nullptr),
 	m_pPauseMenu(nullptr),
-	m_pBuffManager(nullptr)
+	m_pBuffManager(nullptr),
+	m_pChestManager(nullptr)
 {
 	m_pPlayer = std::make_unique<Player>(GetObjectManager());
 	m_pCamera = std::make_unique<Camera>();
@@ -38,6 +40,7 @@ SceneTestOsawa::SceneTestOsawa() :
 	m_pWeaponManager = std::make_unique<WeaponManager>();
 	m_pPauseMenu = std::make_unique<PauseMenu>();
 	m_pBuffManager = std::make_unique<BuffManager>();
+	m_pChestManager = std::make_unique<ChestManager>();
 }
 
 SceneTestOsawa::~SceneTestOsawa()
@@ -62,6 +65,7 @@ void SceneTestOsawa::Init()
 	m_pEnemyMgr->SetPlayer(m_pPlayer.get());
 	m_pEnemyMgr->SetUIManager(m_pUIMgr.get());
 	m_pEnemyMgr->SetWeaponManager(m_pWeaponManager.get());
+	m_pEnemyMgr->SetChestManager(m_pChestManager.get());
 	m_pEnemyMgr->Init();
 	m_pEnemyMgr->InitGenerate(m_pEnemyMap.get());
 
@@ -80,11 +84,16 @@ void SceneTestOsawa::Init()
 
 	m_pBuffManager->SetPlayer(m_pPlayer.get());
 
+	m_pChestManager->SetObjectManager(GetObjectManager());
+	m_pChestManager->Init();
+
 	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
 }
 
 void SceneTestOsawa::End()
 {
+	m_pChestManager->End();
+	m_pBuffManager->End();
 	m_pPauseMenu->End();
 	m_pWeaponManager->End();
 	m_pEnemyMap->End();
@@ -98,8 +107,6 @@ void SceneTestOsawa::End()
 
 SceneBase* SceneTestOsawa::Update()
 {
-	m_pBuffManager->Update();
-
 	if (!m_pBuffManager->IsSelect())
 	{
 		auto nextScene = m_pPauseMenu->Update();
@@ -108,6 +115,8 @@ SceneBase* SceneTestOsawa::Update()
 			return nextScene;
 		}
 	}
+
+	m_pBuffManager->Update();
 
 	if (!PauseManager::GetInstance().IsPause())
 	{
@@ -123,6 +132,12 @@ SceneBase* SceneTestOsawa::Update()
 
 		m_pWeaponManager->Update();
 
+		m_pChestManager->CheckHitCollision(m_pPlayer->GetCircle());
+
+		if (Keyboard::GetInstance().IsDown(KEY_INPUT_C))
+		{
+			m_pChestManager->Create(Vector3(5000, 9500, 0));
+		}
 		if (Keyboard::GetInstance().IsDown(KEY_INPUT_R))
 		{
 			return new SceneSelection();

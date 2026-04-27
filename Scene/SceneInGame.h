@@ -13,6 +13,7 @@ class ItemManager;
 class WeaponManager;
 class PauseMenu;
 class BuffManager;
+class ChestManager;
 
 /// <summary>
 /// メインのゲームシーン
@@ -105,4 +106,9 @@ private:
 	/// バフのマネージャー
 	/// </summary>
 	std::unique_ptr<BuffManager>m_pBuffManager;
+
+	/// <summary>
+	/// 宝箱のマネージャー
+	/// </summary>
+	std::unique_ptr<ChestManager> m_pChestManager;
 };
