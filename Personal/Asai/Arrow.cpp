@@ -58,6 +58,8 @@ void Arrow::Update()
 	//当たり判定の更新
 	m_circle.SetPosition(GetTransform().position);
 
+	SetDrawOrder(GetTransform().position.y);
+
 	//移動距離を取得
 	float distance = (m_spawnPos - GetTransform().position).GetSqLength();
 	//移動距離の最大値じゃないならスルー

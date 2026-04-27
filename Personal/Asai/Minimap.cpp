@@ -5,11 +5,11 @@
 #include"../../Utility/Game.h"
 #include"../../Utility/Color.h"
 #include"../Asai/Camera.h"
-
 #include"../Kimura/Map/Map.h"
 #include"../Kimura/Map/MapManager.h"
 #include"../Osawa/Enemy/EnemyManager.h"
 #include"../Syoguti/ItemManager.h"
+#include"../Syoguti/EnemyBoss.h"
 #include"../Takagi/Player.h"
 
 namespace {
@@ -153,6 +153,12 @@ void Minimap::DrawEnemy()
 		DrawCircle(miniBoss.x, miniBoss.y, 2, Color::kRed, TRUE);
 
 	}
+
+	//ボスの座標をミニマップ座標に変換
+	const Vector3 bossPos = ToMinimapPos(m_pEnemyMgr->GetEnemyBoss()->GetTransform().position);
+
+	//ボスの描画
+	DrawCircle(bossPos.x, bossPos.y, 5, Color::kMagenta, TRUE);
 
 }
 

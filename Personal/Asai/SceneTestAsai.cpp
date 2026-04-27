@@ -14,6 +14,7 @@
 #include"../Syoguti/ItemManager.h"
 #include"../Takagi/WeaponManager.h"
 #include"../Takagi/BuffManager.h"
+#include"../../System/PauseManager.h"
 
 UIManager* uiMgr;
 Arrow* arrow;
@@ -68,7 +69,7 @@ void SceneTestAsai::Init()
 	ItemMgr->Init();
 
 	enemyMgr = new EnemyManager(GetObjectManager());
-	//enemyMgr->Init();
+	enemyMgr->Init();
 	enemyMgr->SetPlayer(pPlayer);
 	enemyMgr->SetUIManager(uiMgr);
 	
@@ -91,6 +92,9 @@ void SceneTestAsai::Init()
 	uiMgr->GenerateMinimap(camera, map);
 	uiMgr->SetPlayer(pPlayer);
 	uiMgr->SetItemManager(ItemMgr);
+
+	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
+
 }
 
 void SceneTestAsai::End()

@@ -102,6 +102,8 @@ void Thunder::Update()
 		break;
 	}
 
+	SetDrawOrder(GetTransform().position.y);
+
 }
 
 void Thunder::Draw()

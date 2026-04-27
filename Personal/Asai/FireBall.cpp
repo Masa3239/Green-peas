@@ -80,6 +80,8 @@ void FireBall::Update()
 		break;
 	}
 
+	SetDrawOrder(GetTransform().position.y);
+
 }
 
 void FireBall::Draw()
