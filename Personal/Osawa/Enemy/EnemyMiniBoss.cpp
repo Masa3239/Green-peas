@@ -36,7 +36,7 @@ namespace
 	constexpr EnemyBase::StatusParam kStatus = { 100, 100, 1, 1, 250 };
 	// ƒŒƒxƒ‹‚²‚Æ‚Ì‘‰Á—Ê
 	constexpr int kHpPerLevel = 100;
-	constexpr int kAtkPerLevel = 2;
+	constexpr int kAtkPerLevel = 1.03f;
 	constexpr int kDefPerLevel = 1;
 
 	const char* const kGraphPath = "Resource\\Bosses_Dino_Tri\\Dino Tri\\dino_tri_move.png";
@@ -60,7 +60,7 @@ void EnemyMiniBoss::Init()
 	StatusParam status = kStatus;
 	status.hp += kHpPerLevel * GetLevel();
 	status.maxHp = status.hp;
-	status.attack += kAtkPerLevel * GetLevel();
+	status.attack += std::pow(kAtkPerLevel, GetLevel());
 	status.defence += kDefPerLevel * GetLevel();
 	SetStatusParam(status);
 

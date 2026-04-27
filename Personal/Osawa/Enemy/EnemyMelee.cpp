@@ -13,7 +13,7 @@ namespace
 	constexpr EnemyBase::StatusParam kStatus = { 25, 25, 5, 5, 5 };
 	// レベルごとの増加量
 	constexpr int kHpPerLevel = 8;
-	constexpr int kAtkPerLevel = 2;
+	constexpr int kAtkPerLevel = 1.03f;
 	constexpr int kDefPerLevel = 5;
 
 	const char* const kGraphPath = "";
@@ -36,7 +36,7 @@ void EnemyMelee::Init()
 	StatusParam status = kStatus;
 	status.hp += kHpPerLevel * GetLevel();
 	status.maxHp = status.hp;
-	status.attack += kAtkPerLevel * GetLevel();
+	status.attack += std::pow(kAtkPerLevel, GetLevel());
 	status.defence += kDefPerLevel * GetLevel();
 	SetStatusParam(status);
 

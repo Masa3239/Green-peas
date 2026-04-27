@@ -166,6 +166,7 @@ SceneBase* SceneInGame::Update()
 		m_pUIMgr->SetPlayer(m_pPlayer.get());
 		m_pUIMgr->Update();
 
+		m_pChestManager->Update();
 		m_pChestManager->CheckHitCollision(m_pPlayer->GetCircle());
 
 		if (m_pEnemyMgr->GetEnemyBoss()->GetIsDead())

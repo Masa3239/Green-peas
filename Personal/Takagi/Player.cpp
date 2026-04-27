@@ -400,8 +400,9 @@ void Player::Damage(float value)
 	// ダッシュ中なら処理しない
 	if (CheckDashNow())return;
 	if (m_anger)return;
-	float defence= CheckBuffValue().Defence;
-	float damage = value - defence;
+	float defence = CheckBuffValue().Defence;
+	float damage = value * defence * 0.05f;
+	//float damage = value - defence;
 	damage = MyMath::Clamp(damage, 0.0f, value);
 	float hpMax = GetGaugeMaxValue(GaugeType::Hp);
 	float angerValue = damage / hpMax * 100;
