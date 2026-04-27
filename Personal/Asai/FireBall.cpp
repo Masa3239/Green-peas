@@ -33,12 +33,15 @@ namespace {
 
 }
 
+bool FireBall::m_isLoadedGraph = false;
+
+std::vector<int> FireBall::m_graphHandle;
+
 FireBall::FireBall(ObjectManager* objManager) :
 	BulletBase(objManager),
 	m_state(State::Ball),
 	m_fieldElapsedTime(0),
 	m_fieldDamageIntervalTimer(0),
-	m_graphHandle(),
 	m_graphFrame(0),
 	m_graphCounter(0)
 {
@@ -46,6 +49,9 @@ FireBall::FireBall(ObjectManager* objManager) :
 
 void FireBall::Init()
 {
+
+	//読み込んでいたらリターン
+	if (m_isLoadedGraph)return;
 
 	int buf[81];
 
@@ -58,6 +64,8 @@ void FireBall::Init()
 		m_graphHandle.push_back(buf[i]);
 
 	}
+
+	m_isLoadedGraph = true;
 
 }
 
@@ -142,6 +150,15 @@ void FireBall::DebugDraw()
 
 void FireBall::End()
 {
+
+	for (auto& fire : m_graphHandle) {
+
+		DeleteGraph(fire);
+
+	}
+
+	m_isLoadedGraph = false;
+
 }
 
 void FireBall::Shot(Transform transform)

@@ -5,6 +5,7 @@ class Camera;
 class Player;
 class EnemyManager;
 class ItemManager;
+class ChestManager;
 
 struct Vector3;
 
@@ -83,5 +84,7 @@ private:
 	EnemyManager* m_pEnemyMgr;
 
 	ItemManager* m_pItemMgr;
+
+	//ChestManager* 
 
 };

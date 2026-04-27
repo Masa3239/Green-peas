@@ -112,10 +112,12 @@ private:
 	/// </summary>
 	std::vector<EnemyBase*>m_pEnemies;
 
+	static bool m_isLoadedGraph;
+
 	/// <summary>
 	/// 
 	/// </summary>
-	std::vector<int>m_graphHandle;
+	static std::vector<int>m_graphHandle;
 
 	float m_graphFrame;
 

@@ -106,7 +106,9 @@ private:
 	/// </summary>
 	float m_fieldDamageIntervalTimer;
 
-	std::vector<int>m_graphHandle;
+	static bool m_isLoadedGraph;
+
+	static std::vector<int>m_graphHandle;
 
 	float m_graphFrame;
 

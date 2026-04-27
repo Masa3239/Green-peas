@@ -15,6 +15,11 @@
 #include"../Takagi/WeaponManager.h"
 #include"../Takagi/BuffManager.h"
 #include"../../System/PauseManager.h"
+#include"../Takagi/Warrior.h"
+#include"../Takagi/Hunter.h"
+#include"../Takagi/Wizard.h"
+#include"../Osawa/PauseMenu.h"
+#include"../Syoguti/ChestManager.h"
 
 UIManager* uiMgr;
 Arrow* arrow;
@@ -27,6 +32,8 @@ Player* pPlayer;
 Map* map;
 WeaponManager* weaponMgr;
 BuffManager* buffMgr;
+PauseMenu* pause;
+ChestManager* chestMgr;
 Transform transform;
 
 SceneTestAsai::SceneTestAsai()
@@ -40,11 +47,27 @@ SceneTestAsai::~SceneTestAsai()
 void SceneTestAsai::Init()
 {
 
+	pPlayer = new Player(GetObjectManager());
+	switch (GetCarryOver().characterJob)
+	{
+	case Character::Job::Warrior:
+		pPlayer = new Warrior(GetObjectManager());
+		break;
+	case Character::Job::Hunter:
+		pPlayer = new Hunter(GetObjectManager());
+		break;
+	case Character::Job::Wizard:
+		pPlayer = new Wizard(GetObjectManager());
+		break;
+	default:
+		pPlayer = new Warrior(GetObjectManager());
+		break;
+	}
+
+	pPlayer->Init();
+
 	uiMgr = new UIManager();
 	uiMgr->Init();
-
-	pPlayer = new Player(GetObjectManager());
-	pPlayer->Init();
 
 	arrow = new Arrow(GetObjectManager());
 	arrow->Init();
@@ -78,15 +101,23 @@ void SceneTestAsai::Init()
 	weaponMgr->SetPlayer(pPlayer);
 	weaponMgr->Init();
 
+	chestMgr = new ChestManager();
+	chestMgr->SetObjectManager(GetObjectManager());
+	chestMgr->Init();
+
 	buffMgr = new BuffManager();
 	buffMgr->SetPlayer(pPlayer);
 	buffMgr->Init();
+
+	pause = new PauseMenu();
+	pause->Init();
 
 	pPlayer->SetCamera(camera);
 	pPlayer->SetEnemyManager(enemyMgr);
 	pPlayer->SetItemManager(ItemMgr);
 	pPlayer->SetBuffManager(buffMgr);
 	thunder->SetEnemyManager(enemyMgr);
+	//pPlayer->SetWeapon()
 
 	uiMgr->SetEnemyManager(enemyMgr);
 	uiMgr->GenerateMinimap(camera, map);

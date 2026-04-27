@@ -127,16 +127,21 @@ void Minimap::DrawPlayer()
 void Minimap::DrawItem()
 {
 
-	if (!m_pItemMgr)return;
+	if (m_pItemMgr) {
 
-	//全てのアイテムを描画
-	for (int i = 0;i < m_pItemMgr->GetArraySize();i++) {
-		//アイテムの座標を取得　ミニマップの座標に変換
-		Vector3 itemPos = ToMinimapPos(m_pItemMgr->GetItemPos(i));
-		//アイテムを描画
-		DrawCircle(itemPos.x, itemPos.y, 1.5f, Color::kYellow, TRUE);
+		//全てのアイテムを描画
+		for (int i = 0;i < m_pItemMgr->GetArraySize();i++) {
+			//アイテムの座標を取得　ミニマップの座標に変換
+			Vector3 itemPos = ToMinimapPos(m_pItemMgr->GetItemPos(i));
+			//アイテムを描画
+			DrawCircle(itemPos.x, itemPos.y, 1.5f, Color::kYellow, TRUE);
+
+		}
 
 	}
+
+
+
 
 }
 

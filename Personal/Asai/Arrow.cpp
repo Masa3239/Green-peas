@@ -27,6 +27,8 @@ namespace {
 
 }
 
+int Arrow::m_graphHandle = -1;
+
 Arrow::Arrow(ObjectManager* objManager):
 	BulletBase(objManager)
 {
@@ -37,6 +39,8 @@ void Arrow::Init()
 {
 
 	m_isActive = false;
+
+	if (m_graphHandle != -1)return;
 
 	//画像の読み込み
 	m_graphHandle = LoadGraph(kGraphHandlePath);
@@ -111,6 +115,8 @@ void Arrow::End()
 {
 	//画像の破棄
 	DeleteGraph(m_graphHandle);
+
+	m_graphHandle = -1;
 
 }
 

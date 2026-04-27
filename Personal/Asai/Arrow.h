@@ -60,6 +60,6 @@ private:
 	/// <summary>
 	/// 画像
 	/// </summary>
-	int m_graphHandle;
+	static int m_graphHandle;
 
 };
