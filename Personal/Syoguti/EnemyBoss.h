@@ -213,6 +213,12 @@ private:
 	/// </summary>
 	void AttackUp();
 
+	/// <summary>
+	/// ボスの座標を渡すゲッター関数
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetBossPos() { return GetTransform().position; }
+
 private:
 
 	/// <summary>
