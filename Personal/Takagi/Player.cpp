@@ -541,10 +541,7 @@ bool Player::CheckAngerButton()
 void Player::UpdateAngerButton()
 {
 	m_angerButton[1] = m_angerButton[0];
-	if (InputManager::GetInstance().IsDown(Input::Action::Anger1) &&
-		InputManager::GetInstance().IsDown(Input::Action::Anger2) &&
-		InputManager::GetInstance().IsDown(Input::Action::Anger3) &&
-		InputManager::GetInstance().IsDown(Input::Action::Anger4)) {
+	if (InputManager::GetInstance().GetAsBool(Input::Action::Anger1)) {
 		m_angerButton[0] = true;
 	}
 	else {

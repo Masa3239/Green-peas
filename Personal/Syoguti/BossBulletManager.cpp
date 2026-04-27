@@ -1,5 +1,6 @@
 #include "BossBulletManager.h"
 #include "BossBullet.h"
+#include "../Takagi/Player.h"
 
 #include <DxLib.h>
 
@@ -7,6 +8,7 @@ namespace {
 
 	// 画像のファイルパス
 	const char* const kBulletGraphHandlePath = ".\\Resource\\ItemTest1.png";
+	constexpr int kBulletDamage = 100;
 }
 
 BossBulletManager::BossBulletManager() :
@@ -120,6 +122,10 @@ bool BossBulletManager::CheckHitCollision(const Collision::Shape& other)
 		// 弾のi番目と引数が当たっているかどうか調べる
 		if (!m_bullets[i]->GetCollision().CheckCollision(other)) continue;
 
+		if (m_pPlayer) {
+			m_pPlayer->Damage(kBulletDamage);
+		}
+		
 		Remove(i);
 
 		// 当たっていたらtrueを返す

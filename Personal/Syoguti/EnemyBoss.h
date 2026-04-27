@@ -213,11 +213,7 @@ private:
 	/// </summary>
 	void AttackUp();
 
-	/// <summary>
-	/// ボスの座標を渡すゲッター関数
-	/// </summary>
-	/// <returns></returns>
-	Vector3 GetBossPos() { return GetTransform().position; }
+	bool GetIsDead() { return m_isDead; }
 
 private:
 
@@ -362,6 +358,8 @@ private:
 	/// エフェクトのグラフハンドル
 	/// </summary>
 	int m_efffectGraphHandle[kEffectMotionNum];
+
+	bool m_isDead;
 
 };
 
