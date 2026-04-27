@@ -22,6 +22,7 @@ namespace {
 Combo::Combo():
 	m_fontHandle(-1),
 	m_combo(0),
+	m_maxConbo(0),
 	m_prevDefeatedNum(0),
 	m_receptionTimer(0),
 	m_alpha(0),
@@ -52,8 +53,11 @@ void Combo::Update()
 		m_receptionTimer = 0;
 		//表示状態にする
 		m_isVisible = true;
-
+		//アルファ値を最大に設定する
 		m_alpha = kMaxAlpha;
+		//コンボの最大チェック
+		if (m_maxConbo < m_combo)m_maxConbo = m_combo;
+
 	}
 
 	//受付時間を加算
