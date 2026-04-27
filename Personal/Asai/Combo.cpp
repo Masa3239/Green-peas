@@ -12,6 +12,11 @@ namespace {
 	//表示するY座標
 	constexpr int kPosY = 10;
 
+	constexpr float kFadeStartTime = 2.0f;
+
+	//最大のアルファ値
+	constexpr int kMaxAlpha = 255;
+
 }
 
 Combo::Combo():
@@ -19,6 +24,7 @@ Combo::Combo():
 	m_combo(0),
 	m_prevDefeatedNum(0),
 	m_receptionTimer(0),
+	m_alpha(0),
 	m_isVisible(false),
 	m_pEnemyMgr(nullptr)
 {
@@ -36,7 +42,7 @@ void Combo::Update()
 	if (!m_pEnemyMgr)return;
 
 	//倒した敵の数を取得
-	int defeatedNum = m_pEnemyMgr->GetDefeatedNum();
+	const int defeatedNum = m_pEnemyMgr->GetDefeatedNum();
 	
 	//1F前と違ったら倒している
 	if (m_prevDefeatedNum != defeatedNum) {
@@ -46,10 +52,19 @@ void Combo::Update()
 		m_receptionTimer = 0;
 		//表示状態にする
 		m_isVisible = true;
+
+		m_alpha = kMaxAlpha;
 	}
 
 	//受付時間を加算
 	m_receptionTimer += Time::GetInstance().GetDeltaTime();
+
+	if (m_receptionTimer > kFadeStartTime) {
+
+		float rate = MyMath::Rate(m_receptionTimer - kFadeStartTime, kReceptionTime - kFadeStartTime);
+
+		m_alpha = kMaxAlpha * (1.0f - rate);
+	}
 
 	//受付時間を超えたら
 	if (m_receptionTimer > kReceptionTime) {
@@ -72,7 +87,11 @@ void Combo::Draw()
 	//コンボを文字に変換
 	std::string combo = "Combo : " + std::to_string(m_combo);
 
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_alpha);
+
 	DrawStringToHandle(kPosX, kPosY, combo.c_str(), 0xffffff, m_fontHandle);
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 }
 
