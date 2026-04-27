@@ -6,6 +6,7 @@
 #include"../Asai/Minimap.h"
 
 #include<DxLib.h>
+#include"../Syoguti/ChestManager.h"
 #include"../Takagi/Player.h"
 
 UIManager::UIManager():
@@ -126,6 +127,13 @@ void UIManager::SetItemManager(ItemManager* pItemManager)
 {
 
 	m_pMinimap->SetItemManager(pItemManager);
+
+}
+
+void UIManager::SetChestManager(ChestManager* pChestManager)
+{
+
+	m_pMinimap->SetChestManager(pChestManager);
 
 }
 

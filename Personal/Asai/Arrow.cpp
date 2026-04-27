@@ -12,7 +12,7 @@
 namespace {
 
 	//画像の読み込み
-	const char* const kGraphHandlePath = ".\\Personal\\Asai\\Graph\\arrow.png";
+	const char* const kGraphHandlePath = ".\\Resource\\arrow.png";
 	//画像の拡大率
 	constexpr float kGraphScale = 0.3f;
 	//画像のずらす角度
