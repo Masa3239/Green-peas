@@ -141,6 +141,10 @@ public:
 	/// <returns></returns>
 	bool ResetDamageFlag(int weapon, int index);
 
+	/// <summary>
+	/// ボスが倒されたかどうかのフラグ
+	/// </summary>
+	/// <returns></returns>
 	bool GetIsDead() { return m_isDead; }
 
 private:
@@ -361,6 +365,9 @@ private:
 	/// </summary>
 	int m_efffectGraphHandle[kEffectMotionNum];
 
+	/// <summary>
+	/// ボスが倒されたかどうか
+	/// </summary>
 	bool m_isDead;
 
 };

@@ -3,6 +3,8 @@
 #include "../../Utility/Transform.h"
 #include "DxLib.h"
 #include "../Takagi/Player.h"
+#include "../Takagi/PlayerStatus.h"
+#include "../Takagi/PlayerBuff.h"
 
 namespace {
 
@@ -16,6 +18,7 @@ namespace {
 	constexpr float kGraphOffsetY = 10.0f;
 
 	// constexpr float kPoewrUpValue = 0.2f;
+	constexpr PlayerStatus kAtatckUp = { 0,0,0.2f,0,0,0,0,0 };
 }
 
 AttackUpItem::AttackUpItem(ObjectManager* objManager):
@@ -70,8 +73,7 @@ void AttackUpItem::Draw()
 void AttackUpItem::ItemAbility(Player* player)
 {
 	m_pPlayer = player;
-
-	// プレイヤーに関数がないので仮でHealを呼ぶ
-	m_pPlayer->Heal(50);
+	PlayerBuff buff = { kAtatckUp,30,false };
+	m_pPlayer->AddBuff(buff);
 	// printfDx("攻撃力が上がりました\n");
 }
