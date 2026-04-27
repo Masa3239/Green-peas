@@ -30,10 +30,10 @@ namespace {
 	constexpr float kPlayerOffsetPos = 200.0f;
 
 	// ボスの最大体力
-	constexpr int kMaxHp = 100;
+	constexpr int kMaxHp = 50000;
 
 	// ボスの攻撃力
-	constexpr int kAttackPower = 1000;
+	constexpr int kAttackPower = 30;
 
 	// ランダムに行動を決める時のインターバル
 	constexpr float kRandomInterval = 2.0f;
