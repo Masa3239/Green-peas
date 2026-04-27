@@ -9,7 +9,7 @@
 
 namespace {
 
-	const char* const kGraphHandlePath = ".\\Personal\\Asai\\Graph\\barGreen_horizontalMid.png";
+	const char* const kGraphHandlePath = ".\\Resource\\barGreen_horizontalMid.png";
 	
 	constexpr float kGaugeLeft = Game::kScreenWidth / 2;
 

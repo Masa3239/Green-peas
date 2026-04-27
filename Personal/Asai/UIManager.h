@@ -13,6 +13,7 @@ class Map;
 class ItemManager;
 class Player;
 class EnemyManager;
+class ChestManager;
 
 class UIManager
 {
@@ -64,6 +65,8 @@ public:
 	void SetEnemyManager(EnemyManager* pEnemyManager);
 
 	void SetItemManager(ItemManager* pItemManager);
+
+	void SetChestManager(ChestManager* pChestManager);
 
 	void CreatePopUpText(Vector3 pos, int amount, PopUpUI::TextType type);
 

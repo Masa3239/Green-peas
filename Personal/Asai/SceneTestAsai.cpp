@@ -48,21 +48,21 @@ void SceneTestAsai::Init()
 {
 
 	pPlayer = new Player(GetObjectManager());
-	switch (GetCarryOver().characterJob)
-	{
-	case Character::Job::Warrior:
-		pPlayer = new Warrior(GetObjectManager());
-		break;
-	case Character::Job::Hunter:
-		pPlayer = new Hunter(GetObjectManager());
-		break;
-	case Character::Job::Wizard:
-		pPlayer = new Wizard(GetObjectManager());
-		break;
-	default:
-		pPlayer = new Warrior(GetObjectManager());
-		break;
-	}
+	//switch (GetCarryOver().characterJob)
+	//{
+	//case Character::Job::Warrior:
+	//	pPlayer = new Warrior(GetObjectManager());
+	//	break;
+	//case Character::Job::Hunter:
+	//	pPlayer = new Hunter(GetObjectManager());
+	//	break;
+	//case Character::Job::Wizard:
+	//	pPlayer = new Wizard(GetObjectManager());
+	//	break;
+	//default:
+	//	pPlayer = new Warrior(GetObjectManager());
+	//	break;
+	//}
 
 	pPlayer->Init();
 
@@ -155,6 +155,7 @@ SceneBase* SceneTestAsai::Update()
 		//camera->StartDamage(1.0f);
 		//thunder->SetScale(transform.rotation.z);
 		fire->Shot(pPlayer->GetTransform());
+		arrow->Shot(pPlayer->GetTransform());
 	}
 
 	if (CheckHitKey(KEY_INPUT_2)) {

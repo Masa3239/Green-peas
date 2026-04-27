@@ -9,7 +9,7 @@
 
 namespace {
 
-	const char* const kGraphHandlePath = ".\\Personal\\Asai\\Graph\\exp.png";
+	const char* const kGraphHandlePath = ".\\Resource\\exp.png";
 	//const char* const kGraphHandlePath = ".\\Personal\\Asai\\Graph\\iconCircle_brown.png";
 
 	constexpr int kCirclePosX = Game::kScreenWidth - 50;
