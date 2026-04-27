@@ -16,6 +16,7 @@
 #include"../../Utility/MyRandom.h"
 #include"../../Chara/Collision.h"
 #include"../../System/InputPad.h"
+#include"../../System/InputManager.h"
 #include"../../Utility/Input.h"
 namespace {
 	constexpr float kCreatae = 1.5f;
@@ -51,6 +52,7 @@ void WeaponManager::Init()
 	{
 	case Character::Job::Warrior:
 		weaponType = Weapon::Sword;
+		weaponType = Weapon::Katana;
 		break;
 	case Character::Job::Hunter:
 		weaponType = Weapon::Bow;
@@ -74,6 +76,11 @@ void WeaponManager::End()
 
 void WeaponManager::Update()
 {
+
+	if (InputManager::GetInstance().IsPressed(Input::Action::Weapon)) {
+		CreateRandom(m_pPlayer->GetTransform().position);
+	}
+
 	for (auto& weapon : m_weapons) {
 		weapon->UpdateCatchCol();
 	}

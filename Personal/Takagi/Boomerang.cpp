@@ -81,6 +81,7 @@ void Boomerang::Update()
     }
     m_circle.SetPosition(m_attack.position);
     m_circle.SetRadius(kColRadius * m_scale);
+    if (!m_catch)return;
     m_attackInterval += time;
     if (m_attackInterval >= kAttackInterval) {
         m_attackInterval = 0;

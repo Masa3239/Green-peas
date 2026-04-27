@@ -14,7 +14,7 @@ namespace {
 	constexpr float kCatchRadius = 20;
 	// チャージ判定にする時間
 	constexpr float kChargeTime = 0.5f;
-	constexpr int kBulletNum = 100;
+	constexpr int kBulletNum = 50;
 }
 class Weapon:public GameObject
 {

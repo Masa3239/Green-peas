@@ -59,7 +59,7 @@ namespace {
 	// 成長倍率
 	constexpr PlayerStatus kGrowStatus = PlayerStatus(1, 1.05f, 1.02f, 1.02f, 1, 1, 1, 1);
 	// 怒り状態時のステータス
-	constexpr PlayerStatus kAngerStatus = PlayerStatus(1, 1, 1.5f, 1, 2, 1, 1.5f, 2);
+	constexpr PlayerStatus kAngerStatus = PlayerStatus(1, 1, 3, 1, 2, 1, 1.5f, 2);
 }
 
 Player::Player(ObjectManager* objManager) :
@@ -220,6 +220,8 @@ void Player::Update()
 	//		m_buffs.erase(m_buffs.begin() + i);
 	//	}
 	//}
+	
+	SetDrawOrder(GetTransform().position.y);
 }
 
 void Player::Move()
@@ -357,7 +359,7 @@ void Player::Draw()
 void Player::Debug()
 {
 	// プレイヤー座標に円を描画
-	DrawCircle(GetTransform().position.x, GetTransform().position.y, 10, GetColor(255, 0, 0));
+	//DrawCircle(GetTransform().position.x, GetTransform().position.y, 10, GetColor(255, 0, 0));
 	// プレイヤー画像の表示
 	// 現在向いている方向のデバッグ表示
 	Vector3 angle = { 0,0,0 };
@@ -366,7 +368,7 @@ void Player::Debug()
 	angle = angle.GetNormalize();
 	angle *= 10 * m_moveAmount;
 	angle += GetTransform().position;
-	DrawCircle(angle.x, angle.y, 3, GetColor(0, 255, 0));
+	//DrawCircle(angle.x, angle.y, 3, GetColor(0, 255, 0));
 
 	printfDx("m_angerButton : %d\n", CheckAngerButton());
 	printfDx("Level          : %d\n", m_status.Level);
@@ -382,7 +384,7 @@ void Player::Debug()
 	}
 	m_gauges[static_cast<int>(GaugeType::Exp)]->Debug();
 	//m_box.DebugDraw();
-	m_circle.DebugDraw();
+	//m_circle.DebugDraw();
 	for (auto& buffs : m_buffs) {
 		printfDx("残り時間 : %f\n", buffs->Second());
 	}

@@ -181,8 +181,10 @@ void BuffManager::Draw()
 
 	if (!IsSelect())return;
 	for (int i = 0;i < kBuffSelectNum;i++) {
+		// 選択中の場所へ表示
 		if(i == m_select&& m_phase == Phase::Select)
 		DrawRotaGraph((Game::kScreenWidth * 0.5f) + kDistance * (i-1), kBackHeight, 6, 0, m_selectHandle, TRUE);
+		// バフの背景を表示
 		DrawRotaGraph((Game::kScreenWidth * 0.5f) + kDistance * (i - 1), kBackHeight, 6, 0, m_backHandle, TRUE);
 		if (m_phase >= Phase::Select && IsSelect() && kMaxLevel[static_cast<int>(m_buffType[i])]>0) {
 			std::string level = "Lv." + std::to_string(m_buff.level[static_cast<int>(m_buffType[i])]) + " -> Lv." + std::to_string(m_buff.level[static_cast<int>(m_buffType[i])] + 1);
@@ -191,14 +193,19 @@ void BuffManager::Draw()
 				level = "Lv." + std::to_string(m_buff.level[static_cast<int>(m_buffType[i])]);
 				offset = -25;
 			}
+			// レベルを表示
 			DrawStringToHandle((Game::kScreenWidth * 0.5f+ offset) + kDistance * (i - 1), kLevelHeight, level.c_str(), 0x000000, m_fontHandle);
 		}
+		// バフの説明テキストを表示
 		DrawRotaGraph((Game::kScreenWidth * 0.5f) + kDistance * (i - 1), kTextHeight, 0.03f, 0, m_textHandle[static_cast<int>(m_buffType[i])], TRUE);
-		DrawRotaGraph((Game::kScreenWidth * 0.5f) + kDistance * (i - 1), kIconHeight, 0.15f, 0, m_iconHandle[static_cast<int>(m_buffType[i])], TRUE);
+		// バフのアイコンを表示
+		DrawRotaGraph((Game::kScreenWidth * 0.5f) + kDistance * (i - 1), kIconHeight, 0.15f, 0, m_iconHandle[static_cast<int>(m_buffType[i])], FALSE);
 	}
 
-		DrawRotaGraph((Game::kScreenWidth * 0.5f) , kProceedHeight, 0.15f, 0, m_proceedHandle[static_cast<int>(m_phase)], TRUE);
-		DrawRotaGraph((Game::kScreenWidth * 0.5f) , kButtonHeight, 0.8f, 0, m_buttonHandle, TRUE);
+	// 進行テキストの表示
+	DrawRotaGraph((Game::kScreenWidth * 0.5f) , kProceedHeight, 0.15f, 0, m_proceedHandle[static_cast<int>(m_phase)], TRUE);
+	// 進行ボタンの表示
+	DrawRotaGraph((Game::kScreenWidth * 0.5f) , kButtonHeight, 0.8f, 0, m_buttonHandle, TRUE);
 }
 
 void BuffManager::BuffSelectStart()

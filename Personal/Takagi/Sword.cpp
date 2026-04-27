@@ -30,8 +30,8 @@ namespace {
 	constexpr float kSwingRadian = 60 * MyMath::ToRadian;
 	constexpr float kColRadius = 10;
 	constexpr float kInitRadian = 150*MyMath::ToRadian;
-	constexpr PlayerStatus kStatus = { 0,0,15,0,0,0,1,1.2f };
-	constexpr PlayerStatus kChargeStatus = { 0,0,3,0,0,0,3,1.3f };
+	constexpr PlayerStatus kStatus = { 0,0,15,0,0,0,1,1 };
+	constexpr PlayerStatus kChargeStatus = { 0,0,3,0,0,0,3,1.2f };
 	// 剣を振る際の距離
 	constexpr float kAttackDistance = 60;
 	constexpr float kEffectDistance = 80;

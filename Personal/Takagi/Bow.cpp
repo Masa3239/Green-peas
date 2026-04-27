@@ -56,6 +56,7 @@ void Bow::Update()
 	if (InputManager::GetInstance().IsDown(Input::Action::Attack)) {
 	m_drawTransform.position = RadToPos(m_drawTransform.rotation.z, kShotRadius, m_drawTransform.position);
 	}
+	SetDrawOrder(GetTransform().position.y);
 }
 
 void Bow::Draw()

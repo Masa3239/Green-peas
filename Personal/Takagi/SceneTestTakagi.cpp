@@ -105,19 +105,20 @@ void SceneTestTakagi::End()
 
 SceneBase* SceneTestTakagi::Update()
 {
+	SceneBase* nextScene = nullptr;
 	if (m_pBuffManager->IsSelect()) {
 		m_pBuffManager->Update();
 	}
 	else if (m_pResultShow->IsResult()) {
-		m_pResultShow->Update();
+		nextScene = m_pResultShow->Update();
 	}
 	else {
-		auto nextScene = m_pPauseMenu->Update();
-		//m_pBuffManager->Update();
-		if (nextScene != nullptr)
-		{
-			return nextScene;
-		}
+		nextScene = m_pPauseMenu->Update();
+		
+	}
+	if (nextScene != nullptr)
+	{
+		return nextScene;
 	}
 
 	if (PauseManager::GetInstance().IsPause()) return this;

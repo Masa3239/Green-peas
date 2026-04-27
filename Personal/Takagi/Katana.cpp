@@ -4,8 +4,10 @@
 #include"../Osawa/Enemy/EnemyManager.h"
 //#include"../../System/InputPad.h"
 #include"../../System/InputManager.h"
+#include"../../Utility/MyMath.h"
 namespace {
 	const char* const kEffectPath = "Resource\\pipo-btleffect161.png";
+	const char* const kWeaponPath = "Resource\\tile009.png";
 	constexpr float kEffectDistance = 105;
 	constexpr float kChargeDistance = 165;
 	constexpr float kEffectScale = 0.3f;
@@ -17,6 +19,8 @@ namespace {
 	constexpr float kAttackRadius = 150;
 	constexpr int kEffectStart = 5;
 	constexpr int kCameraUpdate = 4;
+	constexpr float kDrawRadian = 60 * MyMath::ToRadian;
+	constexpr Vector3 kInitPos = {0,10,0};
 }
 
 Katana::Katana(ObjectManager* objManager):
@@ -41,10 +45,14 @@ Katana::Katana(ObjectManager* objManager):
 	m_active = true;
 	m_chargeFlag = false;
 	m_camUpdate = true;
+	m_graphHandle = -1;
+	m_graphHandle = LoadGraph(kWeaponPath);
+	m_swing.position = { 0,0,0 };
 }
 
 Katana::~Katana()
 {
+	DeleteGraph(m_graphHandle);
 }
 
 void Katana::Init()
@@ -82,6 +90,10 @@ void Katana::Update()
 	if (m_effectFrame >= kCameraUpdate) {
 		m_camUpdate = true;
 	}
+		SetDrawOrder(GetTransform().position.y + 1);
+	if (MyMath::Direction(GetTransform().rotation.z) == MyMath::FourDirection::Front)
+		SetDrawOrder(GetTransform().position.y - 1);
+
 }
 
 void Katana::Draw()
@@ -93,8 +105,17 @@ void Katana::Draw()
 		scale = kChargeScale;
 	}
 	DrawRotaGraph(effectPos.x, effectPos.y, scale*m_scale, /*GetTransform().rotation.z*/0, effectHandle, TRUE);
-	m_circle.DebugDraw();
-	m_catchCol.DebugDraw();
+	float rad = kDrawRadian;
+	Vector3 drawPos = kInitPos + m_swing.position + GetTransform().position;
+	bool reverseX = false;
+	if (MyMath::Direction(GetTransform().rotation.z) == MyMath::FourDirection::Right) {
+		reverseX = true;
+		rad = -kDrawRadian;
+	}
+	if(m_effectFrame>kCameraUpdate)
+	DrawRotaGraph(drawPos.x, drawPos.y, 0.6f, rad, m_graphHandle, TRUE,reverseX);
+	//m_circle.DebugDraw();
+	//m_catchCol.DebugDraw();
 }
 
 bool Katana::Attack()
