@@ -12,17 +12,17 @@ namespace {
 
 	const char* const kGraphPaths[11] = {
 
-		".\\Personal\\Asai\\Graph\\lightning\\0.png",
-		".\\Personal\\Asai\\Graph\\lightning\\1.png",
-		".\\Personal\\Asai\\Graph\\lightning\\2.png",
-		".\\Personal\\Asai\\Graph\\lightning\\3.png",
-		".\\Personal\\Asai\\Graph\\lightning\\4.png",
-		".\\Personal\\Asai\\Graph\\lightning\\5.png",
-		".\\Personal\\Asai\\Graph\\lightning\\6.png",
-		".\\Personal\\Asai\\Graph\\lightning\\7.png",
-		".\\Personal\\Asai\\Graph\\lightning\\8.png",
-		".\\Personal\\Asai\\Graph\\lightning\\9.png",
-		".\\Personal\\Asai\\Graph\\lightning\\10.png",
+		".\\Resource\\lightning\\0.png",
+		".\\Resource\\lightning\\1.png",
+		".\\Resource\\lightning\\2.png",
+		".\\Resource\\lightning\\3.png",
+		".\\Resource\\lightning\\4.png",
+		".\\Resource\\lightning\\5.png",
+		".\\Resource\\lightning\\6.png",
+		".\\Resource\\lightning\\7.png",
+		".\\Resource\\lightning\\8.png",
+		".\\Resource\\lightning\\9.png",
+		".\\Resource\\lightning\\10.png",
 
 	};
 

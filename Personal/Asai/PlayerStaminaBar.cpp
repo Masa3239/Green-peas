@@ -8,7 +8,7 @@
 
 namespace {
 
-	const char* const kGraphHandlePath = ".\\Personal\\Asai\\Graph\\barYellow_verticalMid.png";
+	const char* const kGraphHandlePath = ".\\Resource\\barYellow_verticalMid.png";
 
 	constexpr Vector3 kOffSet{ 50.0f,-10.0f,0.0f };
 

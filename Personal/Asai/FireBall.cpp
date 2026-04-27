@@ -7,7 +7,7 @@
 
 namespace {
 
-	const char* const kGraphHandlePath = ".\\Personal\\Asai\\Graph\\FIREBALL EFFECT 1.png";
+	const char* const kGraphHandlePath = ".\\Resource\\FIREBALL EFFECT 1.png";
 
 	constexpr int kOffSetDraw = 25;
 
