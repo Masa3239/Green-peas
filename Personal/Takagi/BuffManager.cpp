@@ -53,6 +53,7 @@ namespace{
 	constexpr int kIconHeight = 150;
 	constexpr int kProceedHeight = 500;
 	constexpr int kButtonHeight = 550;
+	constexpr float kExpUp = 0.5f;
 
 }
 
@@ -275,8 +276,12 @@ void BuffManager::AdaptBuff(const Buff::Type& buffType)
 			break;
 		}
 		case Buff::Type::Exp:
-			// 経験値は敵マネージャーのポインタがないときreturn
-		break;
+		{
+			// 経験値はプレイヤーのポインタがないときreturn
+			float exp = m_pPlayer->GetExp() + kExpUp;
+			m_pPlayer->SetExp(exp);
+			break;
+		}
 		case Buff::Type::Heal:
 		{
 			// 回復はプレイヤーのポインタがないときreturn

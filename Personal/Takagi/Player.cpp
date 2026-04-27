@@ -135,6 +135,7 @@ void Player::Init()
 	m_gauges[static_cast<int>(GaugeType::Hp)]->SetValue(m_status.HP, Gauge::Value::Max);
 	m_gauges[static_cast<int>(GaugeType::Stamina)]->SetValue(m_status.Stamina, Gauge::Value::Max);
 	m_cameraTransform.Reset();
+	m_exp = 1;
 }
 
 void Player::End()

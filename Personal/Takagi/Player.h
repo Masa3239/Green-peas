@@ -176,6 +176,8 @@ public: // ゲッター・セッター=======================
 	void SetBuffManager(BuffManager* buffManager) { m_pBuffMgr = buffManager; }
 	void ExpUp(float value);
 	bool CheckAnger() { return m_anger; }
+	float GetExp() { return m_exp; }
+	void SetExp(float exp) { m_exp = exp; }
 private:
 	/// <summary>
 	/// ダッシュ可能かどうかを調べる関数
@@ -267,4 +269,5 @@ protected:
 	/// </summary>
 	bool m_anger;
 	Character::Job m_playerType;
+	float m_exp;
 };
