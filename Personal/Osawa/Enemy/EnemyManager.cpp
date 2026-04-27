@@ -29,7 +29,7 @@ namespace
 	// ¶¬‚ÉƒvƒŒƒCƒ„[‚©‚ç—£‚·‹——£
 	constexpr float kGenerateOffsetPos = 500.0f;
 
-	constexpr float kWeaponDropChange = 20.0f;
+	constexpr float kWeaponDropChange = 5.0f;
 }
 
 EnemyManager::EnemyManager(ObjectManager* objManager) :
