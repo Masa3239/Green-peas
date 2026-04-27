@@ -5,6 +5,7 @@
 #include "../Utility/Time.h"
 #include "../Utility/MyMath.h"
 #include "../Personal/Takagi/Player.h"
+#include "../Personal/Takagi/WeaponManager.h"
 #include "../Personal/Asai/UIManager.h"
 #include "../Personal/Syoguti/EnemyBoss.h"
 #include "../Utility/MyRandom.h"
@@ -24,9 +25,11 @@ namespace
 
 	// “G¶¬‚ÌŠÔŠu
 	constexpr float kGenerateDuration = 1.5f;
-
+	
 	// ¶¬‚ÉƒvƒŒƒCƒ„[‚©‚ç—£‚·‹——£
 	constexpr float kGenerateOffsetPos = 500.0f;
+
+	constexpr float kWeaponDropChange = 20.0f;
 }
 
 EnemyManager::EnemyManager(ObjectManager* objManager) :
@@ -34,6 +37,7 @@ EnemyManager::EnemyManager(ObjectManager* objManager) :
 	m_enemyBoss(nullptr),
 	m_pPlayer(nullptr),
 	m_uiMgr(nullptr),
+	m_weaponMgr(nullptr),
 	m_generateCounter(0.0f),
 	m_numDefeated(0)
 {
@@ -268,6 +272,12 @@ void EnemyManager::CheckDead()
 
 		enemy->Dead();
 		enemy->SetState(GameObject::State::Dead);
+
+		if (MyRandom::Judge(kWeaponDropChange))
+		{
+			int weapon = MyRandom::Int(Weapon::Sword, Weapon::Max - 1);
+			m_weaponMgr->Create(enemy->GetTransform().position, weapon);
+		}
 	}
 	// €–S‚µ‚Ä‚¢‚½‚ç”z—ñ‚©‚çíœ
 	for (auto iter = m_enemies.begin(); iter != m_enemies.end();)

@@ -12,6 +12,7 @@ class EnemyBoss;
 class Player;
 class UIManager;
 class EnemyMap;
+class WeaponManager;
 
 class EnemyManager : public GameObject
 {
@@ -102,6 +103,8 @@ public:
 
 	void SetUIManager(UIManager* uiMgr) { m_uiMgr = uiMgr; }
 
+	void SetWeaponManager(WeaponManager* weaponMgr) { m_weaponMgr = weaponMgr; }
+
 private:
 
 	/// <summary>
@@ -127,6 +130,8 @@ private:
 	Player* m_pPlayer;
 
 	UIManager* m_uiMgr;
+
+	WeaponManager* m_weaponMgr;
 
 	/// <summary>
 	/// 敵の生成待機のカウンター

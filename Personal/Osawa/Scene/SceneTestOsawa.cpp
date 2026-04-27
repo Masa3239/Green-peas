@@ -16,8 +16,6 @@
 #include "../System/Input/Keyboard.h"
 #include "../Scene/SceneSelection.h"
 
-#include "../BossKey.h"
-
 SceneTestOsawa::SceneTestOsawa() :
 	m_pPlayer(nullptr),
 	m_pCamera(nullptr),
@@ -63,6 +61,7 @@ void SceneTestOsawa::Init()
 
 	m_pEnemyMgr->SetPlayer(m_pPlayer.get());
 	m_pEnemyMgr->SetUIManager(m_pUIMgr.get());
+	m_pEnemyMgr->SetWeaponManager(m_pWeaponManager.get());
 	m_pEnemyMgr->Init();
 	m_pEnemyMgr->InitGenerate(m_pEnemyMap.get());
 
