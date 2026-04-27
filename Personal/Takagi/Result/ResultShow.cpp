@@ -7,6 +7,7 @@
 #include"ResultModeSelect.h"
 #include"../../../Utility/Time.h"
 #include"../../../Scene/SceneBase.h"
+#include"../../../Scene/SceneTitle.h"
 #include"../../../System/PauseManager.h"
 namespace {
 	// 演出同士のインターバル

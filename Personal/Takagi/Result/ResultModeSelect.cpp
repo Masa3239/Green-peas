@@ -7,6 +7,7 @@
 #include"../../../Utility/MyMath.h"
 #include"../../../System/InputManager.h"
 #include"../../../Scene/CharacterSelectScene.h"
+#include"../../../Scene/SceneTitle.h"
 #include"../../../Personal/Osawa/Scene/SceneSelection.h"
 namespace {
 	const char* const kResultPath = "Resource\\Result\\";
@@ -128,7 +129,8 @@ SceneBase* ResultModeSelect::CheckSelect()
 	switch (m_select)
 	{
 	case Title:
-		return new SceneSelection();
+		return new SceneTitle();
+		//return new SceneSelection();
 		break;
 	case Retry:
 		return new CharacterSelectScene();
