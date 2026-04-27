@@ -78,6 +78,19 @@ public :
 	/// <returns></returns>
 	const bool& GetRemoveFlag() const { return m_isRemove; }
 
+	const bool& GetOpenedFlag() const { return m_isOpened; }
+
+	/// <summary>
+	/// スポーンできるかどうか
+	/// </summary>
+	/// <returns></returns>
+	bool CanSpawn() const { return m_isOpened && !m_isSpawned; }
+
+	/// <summary>
+	/// すでにスポーンしているかを決めるセッター関数
+	/// </summary>
+	void SetSpawned() { m_isSpawned = true; }
+
 private:
 
 	/// <summary>
@@ -120,5 +133,9 @@ private:
 	/// </summary>
 	bool m_isRemove;
 
+	/// <summary>
+	/// アイテムがスポーンしたかどうか
+	/// </summary>
+	bool m_isSpawned;
 };
 

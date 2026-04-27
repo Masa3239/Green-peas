@@ -40,6 +40,7 @@ EnemyManager::EnemyManager(ObjectManager* objManager) :
 	m_weaponMgr(nullptr),
 	m_chestMgr(nullptr),
 	m_generateCounter(0.0f),
+	m_highestDamage(0),
 	m_numDefeated(0)
 {
 }
@@ -134,6 +135,9 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 
 		m_uiMgr->CreatePopUpText(enemy->GetTransform().position, finalDamage, textType);
 
+		// 最高ダメージを更新する
+		if (m_highestDamage < finalDamage) m_highestDamage = finalDamage;
+
 		// 誰か一人でも当たっていたらtrueになる
 		result = true;
 	}
@@ -153,6 +157,9 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 		if (!m_enemyBoss->Damage(finalDamage, weapon, index)) return result;
 
 		m_uiMgr->CreatePopUpText(m_enemyBoss->GetTransform().position, finalDamage, textType);
+
+		// 最高ダメージを更新する
+		if (m_highestDamage < finalDamage) m_highestDamage = finalDamage;
 
 		result = true;
 	}

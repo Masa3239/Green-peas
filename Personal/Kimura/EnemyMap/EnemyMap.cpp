@@ -75,13 +75,6 @@ bool EnemyMap::LoadCSVToMapData(int worldNum, int stageNum)
 
 		for (int x = 0; x < list.size(); x++)
 		{
-
-			/*
-			int typeNum = std::stoi(list[x]);
-
-			if (typeNum == 0) continue; // 0は空マス
-			*/
-
 			std::string token = list[x];
 			// "0" は空マスなのでスキップ
 			if (token == "0") continue;
@@ -116,7 +109,6 @@ bool EnemyMap::LoadCSVToMapData(int worldNum, int stageNum)
 		// 次の行へ
 		y++;
 	}
-
 	return true;
 }
 

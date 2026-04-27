@@ -141,6 +141,12 @@ public:
 	/// <returns></returns>
 	bool ResetDamageFlag(int weapon, int index);
 
+	/// <summary>
+	/// ボスが倒されたかどうかのフラグ
+	/// </summary>
+	/// <returns></returns>
+	bool GetIsDead() { return m_isDead; }
+
 private:
 
 	/// <summary>
@@ -213,11 +219,7 @@ private:
 	/// </summary>
 	void AttackUp();
 
-	/// <summary>
-	/// ボスの座標を渡すゲッター関数
-	/// </summary>
-	/// <returns></returns>
-	Vector3 GetBossPos() { return GetTransform().position; }
+	
 
 private:
 
@@ -362,6 +364,11 @@ private:
 	/// エフェクトのグラフハンドル
 	/// </summary>
 	int m_efffectGraphHandle[kEffectMotionNum];
+
+	/// <summary>
+	/// ボスが倒されたかどうか
+	/// </summary>
+	bool m_isDead;
 
 };
 

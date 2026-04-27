@@ -71,5 +71,5 @@ void HpHealItem::ItemAbility(Player* player)
 {
 	m_pPlayer = player;
 	m_pPlayer->Heal(kHealValue);
-	printfDx("HPが回復しました\n");
+	// printfDx("HPが回復しました\n");
 }
