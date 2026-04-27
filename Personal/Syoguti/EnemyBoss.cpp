@@ -43,6 +43,7 @@ namespace {
 
 	// ボスのスピード
 	constexpr float kSpeed = 500.0f;
+	constexpr float kAngrySpeed = 3000.0f;
 
 	// 封印解除に必要な鍵の数
 	constexpr int kMaxKey = 4;
@@ -312,12 +313,23 @@ bool EnemyBoss::CheckHitCloseRangeAttackCollison(const Collision::Shape& other)
 bool EnemyBoss::Damage(const int damage)
 {
 
+	if (!SealReleaseFlag()) {
+
+		m_speed += kAngrySpeed;
+		m_sealRelease = true;
+	}
 	m_currentHp -= damage;
 	return true;
 }
 
 bool EnemyBoss::Damage(const int damage, int weapon, int index)
 {
+
+	if (!SealReleaseFlag()) {
+
+		m_speed += kAngrySpeed;
+		m_sealRelease = true;
+	}
 
 	// 足りない分を追加
 	CheckDamageFlagSize(weapon, index);
@@ -449,13 +461,13 @@ bool EnemyBoss::ApproachPlayer(const Vector3& playerPos)
 	direction = direction.GetNormalize();
 
 	// スピード
-	float speed = kSpeed;
+	m_speed = kSpeed;
 
 	// プレイヤーの位置に合わせてボスの向きを変える
 	m_direction = (playerPos.x >= GetTransform().position.x) ? -1 : 1;
 
 	// 移動
-	GetTransform().position += direction * speed * Time::GetInstance().GetDeltaTime();
+	GetTransform().position += direction * m_speed * Time::GetInstance().GetDeltaTime();
 	return false;
 }
 
@@ -474,12 +486,12 @@ bool EnemyBoss::LeavePlayer(const Vector3& playerPos)
 	direction = direction.GetNormalize();
 
 	// スピード
-	float speed = kSpeed;
+	m_speed = kSpeed;
 
 	// プレイヤーの位置に合わせてボスの向きを変える
 	m_direction = (playerPos.x >= GetTransform().position.x) ? -1 : 1;
 	// 移動
-	GetTransform().position += direction * speed * Time::GetInstance().GetDeltaTime();
+	GetTransform().position += direction * m_speed * Time::GetInstance().GetDeltaTime();
 	return false;
 }
 

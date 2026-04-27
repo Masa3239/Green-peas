@@ -370,5 +370,10 @@ private:
 	/// </summary>
 	bool m_isDead;
 
+	/// <summary>
+	/// ボスの速さ
+	/// </summary>
+	float m_speed;
+
 };
 
