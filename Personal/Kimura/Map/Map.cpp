@@ -41,16 +41,13 @@ void Map::Init()
 {
 	//マップチップの拡大率の初期化
 	m_chipScaleRate = (float)kMapBlockSize / (float)kMapChipSize;
-
 	//マップチップの読み込み
 	LoadDivGraph(kMapChip,
 		55, 11, 5,
 		kMapChipSize, kMapChipSize, m_graphHandle);
-	
 	//IDの設定
 	m_worldid = 1;
 	m_stageid = 1;
-
 	////CSVデータを読み込む
 	LoadCSVToMapData(m_worldid, m_stageid);
 }
@@ -79,10 +76,9 @@ void Map::Draw()
 					m_chipScaleRate, 0.0f,
 					m_graphHandle[m_mapData[i][j]], false, false);
 			}
-			
 		}
-
 	}
+	//ブロックの判定
 	/*
 	for (int y = 0; y < m_mapBlockNumY; y++)
 	{
@@ -108,7 +104,6 @@ void Map::Finalize()
 {
 	//グラフィックハンドル解放
 	for (int i = 0; i < kMapTypeNum; i++) {
-
 		DeleteGraph(m_graphHandle[i]);
 	}
 }
@@ -127,13 +122,11 @@ bool Map::LoadCSVToMapData(int worldNum, int stageNum)
 	{
 		m_mapData[i].resize(m_mapBlockNumX);
 	}
-
 	std::ifstream ifs(fileNameCSV);
 	std::string buf;
 	// 1行ずつ読み込み
 	for (int y = 0; y < m_mapBlockNumY; y++) {
 
-		
 		if (!std::getline(ifs, buf)) break;
 
 		auto list = Split(buf, ',');
@@ -142,7 +135,6 @@ bool Map::LoadCSVToMapData(int worldNum, int stageNum)
 			m_mapData[y][x] = static_cast<MapChip>(std::stoi(list[x]));
 		}
 	}
-
 	ifs.close();
 	return true;
 }
@@ -154,10 +146,8 @@ bool Map::IsWall(int mapX, int mapY) {
  { 
 	 return true;
  }
-
  // マップデータからチップ情報を取得
  MapChip chip = m_mapData[mapY][mapX];
-
  // チップの種類によって判定を分ける
  switch (chip) { 
 	// 壁タイル
@@ -176,7 +166,6 @@ bool Map::IsWallByWorld(float worldX, float worldY) {
 	int mapY = static_cast<int>(worldY) / kMapBlockSize;
 	// 変換後のマスが壁かどうかを判定
 	return IsWall(mapX, mapY); 
-
 }
 
 // 円形コライダーが壁に当たっているか判定
@@ -186,7 +175,6 @@ bool Map::IsWallCircle(const Collision::Circle& circle)
     Vector3 pos = circle.GetPosition();
 	// 半径を取得
     float r = circle.GetRadius();
-
 	// 円がカバーする範囲を「マップ座標」に変換
     int left   = (pos.x - r) / kMapBlockSize;
     int right  = (pos.x + r) / kMapBlockSize;
@@ -219,7 +207,6 @@ bool Map::IsWallAABB(const Collision::AABB& box)
 	int right = max.x / kMapBlockSize;
 	int top = min.y / kMapBlockSize;
 	int bottom = max.y / kMapBlockSize;
-
 	// 範囲内のマスを総当たりでチェック
 	for (int y = top; y <= bottom; y++)
 	{
@@ -286,7 +273,6 @@ bool Map::CanMove(const Collision::Shape& shape)
 //1行の文字列をカンマで分割する
 std::vector<std::string>Map::Split(const std::string& str, char separate) {
 
-	
 	std::vector<std::string>separatedList;
 
 	//引数で渡された文字列を分割しやすくする<sstream>
@@ -299,15 +285,11 @@ std::vector<std::string>Map::Split(const std::string& str, char separate) {
 	//分割する記号(separate)が見つかったら分割する
 	//最後の文字まで繰り返す
 	while (std::getline(ss, buf, separate)) {
-
 		//分割する記号(separate)が見つかったら可変長配列に入れていく
 		separatedList.push_back(buf);
-
 	}
-
 	//分割した配列をかえす
 	return separatedList;
-
 }
 
 bool Map::CheckMapSize(const char* fileName)
