@@ -37,7 +37,7 @@ namespace {
 	constexpr float kCollisionInfectionSize = 80.0f;
 
 	//移動速度
-	constexpr float kSpeed = 120.0f;
+	constexpr float kSpeed = 300.0f;
 	//移動の最大距離
 	constexpr float kMaxMoveDistance = 500;
 

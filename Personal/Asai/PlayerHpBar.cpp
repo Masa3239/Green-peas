@@ -74,7 +74,7 @@ void PlayerHpBar::DebugDraw()
 void PlayerHpBar::End()
 {
 	//画像の破棄
-	//DeleteGraph(m_graphHandle);
+	DeleteGraph(m_graphHandle);
 }
 
 PlayerUI::DrawType PlayerHpBar::GetDrawType() const
