@@ -19,7 +19,7 @@ namespace {
 	constexpr float kCircleRadius = 50.0f * kGraphScale;
 	
 	// 近距離攻撃の当たり判定の大きさ
-	constexpr Vector3 kCloseRangeCollisionSize = { 200.0f* kGraphScale, 50.0f* kGraphScale, 0.0f };
+	constexpr Vector3 kCloseRangeCollisionSize = { 250.0f* kGraphScale, 100.0f* kGraphScale, 0.0f };
 
 	// アニメーションのダメージ判定開始フレーム
 	constexpr int kCloseRangeDamageStartFrame = 7;
@@ -83,7 +83,10 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 	m_effectMotionFrame(0),
 	m_isEffect(false),
 	m_effectPos(0.0f, 0.0f, 0.0f),
-	m_isDead(false)
+	m_isDead(false),
+	m_speed(0),
+	m_angrySpeed(1),
+	m_isAngry(false)
 {
 	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
 	for (int i = 0; i < static_cast<int>(BossStatus::Max); i++) {
@@ -128,7 +131,10 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_effectMotionFrame(0),
 	m_isEffect(false),
 	m_effectPos(0.0f, 0.0f, 0.0f),
-	m_isDead(false)
+	m_isDead(false),
+	m_speed(0),
+	m_angrySpeed(1),
+	m_isAngry(false)
 {
 
 	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
@@ -329,6 +335,9 @@ bool EnemyBoss::Damage(const int damage, int weapon, int index)
 
 		m_speed += kAngrySpeed;
 		m_sealRelease = true;
+		m_isAngry = true;
+		m_angrySpeed = 4;
+		m_action = BossAction::LongRangeAttack;
 	}
 
 	// 足りない分を追加
@@ -461,7 +470,7 @@ bool EnemyBoss::ApproachPlayer(const Vector3& playerPos)
 	direction = direction.GetNormalize();
 
 	// スピード
-	m_speed = kSpeed;
+	m_speed = kSpeed * m_angrySpeed;
 
 	// プレイヤーの位置に合わせてボスの向きを変える
 	m_direction = (playerPos.x >= GetTransform().position.x) ? -1 : 1;
@@ -486,7 +495,7 @@ bool EnemyBoss::LeavePlayer(const Vector3& playerPos)
 	direction = direction.GetNormalize();
 
 	// スピード
-	m_speed = kSpeed;
+	m_speed = kSpeed * m_angrySpeed;
 
 	// プレイヤーの位置に合わせてボスの向きを変える
 	m_direction = (playerPos.x >= GetTransform().position.x) ? -1 : 1;
@@ -537,15 +546,22 @@ void EnemyBoss::LongRangeAttack()
 	// アニメーションをLongRangeAttackにする
 	m_status = BossStatus::LongRangeAttack;
 
-	// 弾の発射感覚のタイマーを加算
-	m_shotTimer += Time::GetInstance().GetDeltaTime();
-
-	if (m_shotTimer >= kShotInterval) {
-
+	if (m_isAngry) {
 		// 弾を生成する
 		m_pBossBulletMgr->Create(BossBulletBase::BulletType::Normal, GetTransform().position);
-		m_shotTimer = 0.0f;
 	}
+	else {
+		// 弾の発射感覚のタイマーを加算
+		m_shotTimer += Time::GetInstance().GetDeltaTime();
+
+		if (m_shotTimer >= kShotInterval) {
+
+			// 弾を生成する
+			m_pBossBulletMgr->Create(BossBulletBase::BulletType::Normal, GetTransform().position);
+			m_shotTimer = 0.0f;
+		}
+	}
+
 	
 	printfDx("遠距離攻撃攻撃\n");
 }

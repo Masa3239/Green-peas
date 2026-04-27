@@ -375,5 +375,11 @@ private:
 	/// </summary>
 	float m_speed;
 
+	/// <summary>
+	/// 怒った時の速さ
+	/// </summary>
+	float m_angrySpeed;
+
+	bool m_isAngry;
 };
 
