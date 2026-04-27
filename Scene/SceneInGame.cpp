@@ -87,6 +87,10 @@ void SceneInGame::Init()
 	m_pEnemyMgr->InitGenerate(m_pEnemyMap.get());
 
 	m_pUIMgr->Init();
+	m_pUIMgr->SetEnemyManager(m_pEnemyMgr.get());
+	m_pUIMgr->SetPlayer(m_pPlayer.get());
+	m_pUIMgr->SetItemManager(m_pItemMgr.get());
+	m_pUIMgr->GenerateMinimap(m_pCamera.get(), m_pMap.get());
 
 	m_pItemMgr->SetObjectManager(GetObjectManager());
 	m_pItemMgr->SetPlayer(m_pPlayer.get());
