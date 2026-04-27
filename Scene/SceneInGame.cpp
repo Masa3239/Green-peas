@@ -105,6 +105,8 @@ void SceneInGame::Init()
 	m_pBuffManager->Init();
 
 	m_pChestManager->SetObjectManager(GetObjectManager());
+	m_pChestManager->SetWeaponManager(m_pWeaponManager.get());
+	m_pChestManager->SetItemManager(m_pItemMgr.get());
 	m_pChestManager->Init();
 
 	m_pPauseMenu->Init();
@@ -125,6 +127,8 @@ void SceneInGame::End()
 	m_pEnemyMgr->End();
 	m_pCamera->End();
 	m_pPlayer->End();
+
+	m_carryOver.Reset();
 }
 
 SceneBase* SceneInGame::Update()
@@ -150,7 +154,7 @@ SceneBase* SceneInGame::Update()
 		}
 	}
 
-	m_pBuffManager->Update();
+	//m_pBuffManager->Update();
 
 	if (!PauseManager::GetInstance().IsPause())
 	{
@@ -226,4 +230,6 @@ void SceneInGame::PostDraw()
 			m_pPauseMenu->Draw();
 		}
 	}
+
+	clsDx();
 }

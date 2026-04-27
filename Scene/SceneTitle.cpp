@@ -6,7 +6,13 @@
 #include "../Utility/Color.h"
 #include "../Scene/CharacterSelectScene.h"
 
+namespace
+{
+	const char* const kPath = "Resource\\title.png";
+}
+
 SceneTitle::SceneTitle() :
+	m_graph(-1),
 	m_choice(Choice::Start)
 {
 }
@@ -17,10 +23,12 @@ SceneTitle::~SceneTitle()
 
 void SceneTitle::Init()
 {
+	m_graph = LoadGraph(kPath);
 }
 
 void SceneTitle::End()
 {
+	DeleteGraph(m_graph);
 }
 
 SceneBase* SceneTitle::Update()
@@ -53,6 +61,8 @@ SceneBase* SceneTitle::Update()
 
 void SceneTitle::Draw()
 {
+	DrawRotaGraph(400, 200, 1, 0, m_graph, 1);
+
 	DrawFormatString(350, 400, m_choice == Choice::Start ? Color::kRed : Color::kGray, "GAME START");
 	DrawFormatString(380, 450, m_choice == Choice::Quit ? Color::kRed : Color::kGray, "QUIT");
 }

@@ -81,6 +81,7 @@ SceneBase* PauseMenu::OnPause()
 			break;
 
 		case Choice::Title:
+			PauseManager::GetInstance().TogglePause();
 			return new SceneTitle();
 			break;
 		}

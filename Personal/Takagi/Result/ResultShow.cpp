@@ -101,6 +101,7 @@ SceneBase* ResultShow::Update()
 		m_modeSelect->Update();
 		SceneBase* nextScene = m_modeSelect->CheckSelect();
 		if (!nextScene)break;
+		PauseManager::GetInstance().TogglePause();
 		return nextScene;
 		break;
 	}
