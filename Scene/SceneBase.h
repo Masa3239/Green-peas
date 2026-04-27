@@ -117,6 +117,9 @@ protected:
 
 protected:
 
-	ObjectManager* m_objManager;
 	CarryOver m_carryOver;
+
+private:
+
+	ObjectManager* m_objManager;
 };

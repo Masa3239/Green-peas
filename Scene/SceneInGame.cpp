@@ -14,6 +14,8 @@
 #include "../Personal/Takagi/Warrior.h"
 #include "../Personal/Takagi/Hunter.h"
 #include "../Personal/Takagi/Wizard.h"
+#include "../Personal/Takagi/Result/ResultShow.h"
+#include "../Personal/Syoguti/EnemyBoss.h"
 #include "../System/PauseManager.h"
 #include "../System/InputManager.h"
 
@@ -34,7 +36,8 @@ SceneInGame::SceneInGame() :
 	m_pEnemyMap(nullptr),
 	m_pWeaponManager(nullptr),
 	m_pPauseMenu(nullptr),
-	m_pBuffManager(nullptr)
+	m_pBuffManager(nullptr),
+	m_pResultShow(nullptr)
 {
 	m_pCamera = std::make_unique<Camera>();
 	m_pEnemyMgr = std::make_unique<EnemyManager>(GetObjectManager());
@@ -46,6 +49,7 @@ SceneInGame::SceneInGame() :
 	m_pPauseMenu = std::make_unique<PauseMenu>();
 	m_pBuffManager = std::make_unique<BuffManager>();
 	m_pChestManager = std::make_unique<ChestManager>();
+	m_pResultShow = std::make_unique <ResultShow>();
 }
 
 SceneInGame::~SceneInGame()
@@ -105,6 +109,7 @@ void SceneInGame::Init()
 
 void SceneInGame::End()
 {
+	m_pResultShow->End();
 	m_pChestManager->End();
 	m_pBuffManager->End();
 	m_pPauseMenu->End();
@@ -120,7 +125,19 @@ void SceneInGame::End()
 
 SceneBase* SceneInGame::Update()
 {
-	if (!m_pBuffManager->IsSelect())
+	if (m_pBuffManager->IsSelect())
+	{
+		m_pBuffManager->Update();
+	}
+	else if (m_pResultShow->IsResult())
+	{
+		auto nextScene = m_pResultShow->Update();;
+		if (nextScene != nullptr)
+		{
+			return nextScene;
+		}
+	}
+	else
 	{
 		auto nextScene = m_pPauseMenu->Update();
 		if (nextScene != nullptr)
@@ -142,13 +159,19 @@ SceneBase* SceneInGame::Update()
 		m_pUIMgr->Update();
 
 		m_pChestManager->CheckHitCollision(m_pPlayer->GetCircle());
-	}
 
-	// プレイヤーが死亡していたら
-	if (m_pPlayer->IsDead())
-	{
-		// 仮でシーン選択画面へ戻す
-		return new SceneTempResult("GAME OVER");
+		if (m_pEnemyMgr->GetEnemyBoss()->GetIsDead())
+		{
+			m_carryOver.isClear = Score::Result::Clear;
+			m_pResultShow->Init(m_carryOver);
+		}
+
+		// プレイヤーが死亡していたら
+		if (m_pPlayer->IsDead())
+		{
+			m_carryOver.isClear = Score::Result::Failed;
+			m_pResultShow->Init(m_carryOver);
+		}
 	}
 
 	return this;
@@ -189,6 +212,10 @@ void SceneInGame::PostDraw()
 		if (m_pBuffManager->IsSelect())
 		{
 			m_pBuffManager->Draw();
+		}
+		else if (m_pResultShow->IsResult())
+		{
+			m_pResultShow->Draw();
 		}
 		else
 		{
