@@ -70,6 +70,8 @@ void AttackUpItem::Draw()
 void AttackUpItem::ItemAbility(Player* player)
 {
 	m_pPlayer = player;
-	//m_pPlayer->Damage(kPoewrUpValue);
-	printfDx("攻撃力が上がりました\n");
+
+	// プレイヤーに関数がないので仮でHealを呼ぶ
+	m_pPlayer->Heal(50);
+	// printfDx("攻撃力が上がりました\n");
 }

@@ -1,6 +1,7 @@
 #include "ItemManager.h"
 #include "HpHealItem.h"
 #include "AttackUpItem.h"
+#include "../../Utility/MyRandom.h"
 
 #include "DxLib.h"
 
@@ -55,6 +56,14 @@ void ItemManager::Draw()
 	for (auto& e : m_items) {
 		e->Draw();
 	}
+}
+
+void ItemManager::CreateRandom(Vector3 position)
+{
+
+	int type = MyRandom::Int(0, static_cast<int>(ItemBase::ItemType::Max) - 1);
+
+	Create(static_cast<ItemBase::ItemType>(type), position);
 }
 
 void ItemManager::Create(ItemBase::ItemType type, Vector3 position)

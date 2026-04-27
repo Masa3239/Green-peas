@@ -213,6 +213,8 @@ private:
 	/// </summary>
 	void AttackUp();
 
+	bool GetIsDead() { return m_isDead; }
+
 private:
 
 	/// <summary>
@@ -356,6 +358,8 @@ private:
 	/// エフェクトのグラフハンドル
 	/// </summary>
 	int m_efffectGraphHandle[kEffectMotionNum];
+
+	bool m_isDead;
 
 };
 

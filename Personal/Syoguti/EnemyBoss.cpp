@@ -81,7 +81,8 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 	m_effectMotionCounter(0),
 	m_effectMotionFrame(0),
 	m_isEffect(false),
-	m_effectPos(0.0f, 0.0f, 0.0f)
+	m_effectPos(0.0f, 0.0f, 0.0f),
+	m_isDead(false)
 {
 	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
 	for (int i = 0; i < static_cast<int>(BossStatus::Max); i++) {
@@ -125,7 +126,8 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_effectMotionCounter(0),
 	m_effectMotionFrame(0),
 	m_isEffect(false),
-	m_effectPos(0.0f, 0.0f, 0.0f)
+	m_effectPos(0.0f, 0.0f, 0.0f),
+	m_isDead(false)
 {
 
 	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
@@ -581,6 +583,15 @@ void EnemyBoss::Dead()
 				// リセット
 				m_effectMotionFrame = 0;
 				m_isEffect = false;
+			}
+
+			// 演出が終わったら
+			if (!m_isEffect) {
+
+				// 死んでいるのでtrue
+				m_isDead = true;
+				// 非表示
+				SetState(State::Deactive);
 			}
 
 			m_effectMotionCounter = 0;

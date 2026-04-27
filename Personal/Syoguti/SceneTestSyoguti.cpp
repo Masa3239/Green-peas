@@ -110,6 +110,7 @@ void SceneTestSyoguti::Init()
 	 
 	 m_pChest->SetObjectManager(GetObjectManager());
 	 m_pChest->SetWeaponManager(m_pWeaponMgr.get());
+	 m_pChest->SetItemManager(m_pItemMgr.get());
 	 m_pChest->Init();
 }
 
@@ -119,7 +120,7 @@ void SceneTestSyoguti::End()
 	m_pCamera->End();
 	m_pPlayer->End();
 	m_pItemMgr->End();
-	m_pEnemyBoss->End();
+	//pEnemyBoss->End();
 	m_pMap->End();
 	m_pUIManager->End();
 	m_pWeaponMgr->End();

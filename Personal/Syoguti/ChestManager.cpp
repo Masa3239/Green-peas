@@ -1,6 +1,7 @@
 #include "ChestManager.h"
 #include "TreasureChest.h"
 #include "../Takagi/WeaponManager.h"
+#include "ItemManager.h"
 #include <DxLib.h>
 
 namespace {
@@ -10,7 +11,8 @@ namespace {
 
 ChestManager::ChestManager() :
 	m_pObjectMgr(nullptr),
-	m_pWeaponMgr(nullptr)
+	m_pWeaponMgr(nullptr),
+	m_pItemMgr(nullptr)
 {
 	for (int i = 0; i < kTreasureChestMotionNum; i++) {
 
@@ -52,8 +54,10 @@ void ChestManager::Update()
 		if (m_chests[i]->CanSpawn()) {
 
 			// アイテムを出す位置を決める
-			Vector3 pos = m_chests[i]->GetTransform().position + kOffsetX;
-			m_pWeaponMgr->CreateRandom(pos);
+			Vector3 posWeapon = m_chests[i]->GetTransform().position + kOffsetX;
+			Vector3 posItem = m_chests[i]->GetTransform().position - kOffsetX;
+			m_pWeaponMgr->CreateRandom(posWeapon);
+			m_pItemMgr->CreateRandom(posItem);
 
 			m_chests[i]->SetSpawned();
 			//Remove(i);

@@ -42,6 +42,8 @@ public:
 	/// </summary>
 	void Draw();
 
+	void CreateRandom(Vector3 position);
+
 	/// <summary>
 	/// アイテムの生成
 	/// </summary>
