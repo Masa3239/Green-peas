@@ -59,6 +59,8 @@ private:
 	/// </summary>
 	float m_receptionTimer;
 
+	float m_alpha;
+
 	/// <summary>
 	/// 表示状態
 	/// </summary>
