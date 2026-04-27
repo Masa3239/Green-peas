@@ -14,6 +14,7 @@ class UIManager;
 class EnemyMap;
 class WeaponManager;
 class ChestManager;
+class Map;
 
 class EnemyManager : public GameObject
 {
@@ -111,6 +112,8 @@ public:
 
 	void SetWeaponManager(WeaponManager* weaponMgr) { m_weaponMgr = weaponMgr; }
 
+	void SetMap(Map* map) { m_map = map; }
+
 private:
 
 	/// <summary>
@@ -140,6 +143,8 @@ private:
 	WeaponManager* m_weaponMgr;
 
 	ChestManager* m_chestMgr;
+
+	Map* m_map;
 
 	/// <summary>
 	/// 敵の生成待機のカウンター
