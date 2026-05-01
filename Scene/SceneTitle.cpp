@@ -8,7 +8,7 @@
 
 namespace
 {
-	const char* const kPath = "Resource\\title.png";
+	const char* const kPath = "Resource\\Logo.png";
 }
 
 SceneTitle::SceneTitle() :
@@ -63,6 +63,6 @@ void SceneTitle::Draw()
 {
 	DrawRotaGraph(400, 200, 1, 0, m_graph, 1);
 
-	DrawFormatString(350, 400, m_choice == Choice::Start ? Color::kRed : Color::kGray, "GAME START");
-	DrawFormatString(380, 450, m_choice == Choice::Quit ? Color::kRed : Color::kGray, "QUIT");
+	DrawFormatString(350, 500, m_choice == Choice::Start ? Color::kRed : Color::kGray, "GAME START");
+	DrawFormatString(380, 550, m_choice == Choice::Quit ? Color::kRed : Color::kGray, "QUIT");
 }
