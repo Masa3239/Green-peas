@@ -1,6 +1,9 @@
 #pragma once
 
+#include <memory>
 #include "SceneBase.h"
+
+class TitleBackground;
 
 class SceneTitle : public SceneBase
 {
@@ -37,9 +40,13 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	void PostDraw() override;
+
 private:
 
-	int m_graph;
+	int m_logoGraph;
 
 	int m_choice;
+
+	std::unique_ptr<TitleBackground> m_background;
 };

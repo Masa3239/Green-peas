@@ -2,6 +2,7 @@
 #include <DxLib.h>
 #include "../System/Input/Keyboard.h"
 #include "../Personal/Osawa/Scene/SceneSelection.h"
+#include "../Personal/Osawa/TitleBackground.h"
 #include "../System/InputManager.h"
 #include "../Utility/Color.h"
 #include "../Scene/CharacterSelectScene.h"
@@ -12,8 +13,9 @@ namespace
 }
 
 SceneTitle::SceneTitle() :
-	m_graph(-1),
-	m_choice(Choice::Start)
+	m_logoGraph(-1),
+	m_choice(Choice::Start),
+	m_background(nullptr)
 {
 }
 
@@ -23,12 +25,17 @@ SceneTitle::~SceneTitle()
 
 void SceneTitle::Init()
 {
-	m_graph = LoadGraph(kPath);
+	m_logoGraph = LoadGraph(kPath);
+
+	m_background = std::make_unique<TitleBackground>(GetObjectManager());
+	m_background->Init();
 }
 
 void SceneTitle::End()
 {
-	DeleteGraph(m_graph);
+	m_background->End();
+
+	DeleteGraph(m_logoGraph);
 }
 
 SceneBase* SceneTitle::Update()
@@ -61,7 +68,11 @@ SceneBase* SceneTitle::Update()
 
 void SceneTitle::Draw()
 {
-	DrawRotaGraph(400, 200, 1, 0, m_graph, 1);
+}
+
+void SceneTitle::PostDraw()
+{
+	DrawRotaGraph(400, 200, 1, 0, m_logoGraph, 1);
 
 	DrawFormatString(350, 500, m_choice == Choice::Start ? Color::kRed : Color::kGray, "GAME START");
 	DrawFormatString(380, 550, m_choice == Choice::Quit ? Color::kRed : Color::kGray, "QUIT");
