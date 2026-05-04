@@ -11,7 +11,7 @@ namespace
 	// 弾が残る時間
 	constexpr float kLiveTime = 5.0f;
 
-	constexpr float kColliderRadius = 5.0f;
+	constexpr float kColliderRadius = 3.0f;
 }
 
 EnemyBullet::EnemyBullet(ObjectManager* objManager, int damage) :
@@ -68,9 +68,11 @@ void EnemyBullet::Draw()
 {
 	const auto& transform = GetTransform();
 
-	DrawCircle(transform.position.x, transform.position.y, 5, 0xffffff);
+	DrawCircle(transform.position.x, transform.position.y, 5, 0x62be73);
 
+#ifdef _DEBUG
 	m_collider.DebugDraw();
+#endif
 }
 
 void EnemyBullet::Create(const Vector3& position, const Vector3& rotation)

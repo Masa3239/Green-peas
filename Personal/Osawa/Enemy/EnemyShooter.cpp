@@ -33,15 +33,22 @@ namespace
 	constexpr int kAtkPerLevel = 1.03f;
 	constexpr int kDefPerLevel = 5;
 
-	const char* const kGraphPath = "";
+	Animation::Animation2DData kAnimData[EnemyShooter::AnimType::Length] =
+	{
+		{ EnemyShooter::AnimType::EIdle, 10.0f, true, false},
+		{ EnemyShooter::AnimType::ERun, 10.0f, true, false},
+	};
+
+	const char* const kGraphPathIdle = "Resource\\Spiked Slime\\Slime_Spiked_Idle.png";
+	const char* const kGraphPathRun = "Resource\\Spiked Slime\\Slime_Spiked_Run.png";
 }
 
 EnemyShooter::EnemyShooter(ObjectManager* objManager) :
 	EnemyBase(objManager),
 	m_action(Action::Idle),
 	m_attackCooltimeCounter(0.0f),
-	m_animFrame(0),
-	m_animFrameCounter(0)
+	m_animationController(),
+	m_currentAnimation(AnimType::EIdle)
 {
 }
 
@@ -65,15 +72,14 @@ void EnemyShooter::Init()
 		bullet->Init();
 	}
 
-	//LoadDivGraph(kGraphPath, kAnimFrameNum, kAnimFrameNum, 1, 384, 128, m_graphs);
+	m_animationController.Init();
+	m_animationController.RegisterGraphHandle(AnimType::EIdle, kGraphPathIdle, 4, 4, 1, 64, 64);
+	m_animationController.RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 4, 4, 1, 64, 64);
 }
 
 void EnemyShooter::End()
 {
-	for (auto& graph : m_graphs)
-	{
-		DeleteGraph(graph);
-	}
+	m_animationController.End();
 
 	for (auto& bullet : m_bullets)
 	{
@@ -83,6 +89,8 @@ void EnemyShooter::End()
 
 void EnemyShooter::UpdateEnemy()
 {
+	UpdateAnimation();
+
 	auto player = GetPlayer();
 	
 	const Vector3& targetPos = player->GetTransform().position;
@@ -147,27 +155,13 @@ void EnemyShooter::UpdateEnemy()
 	{
 		m_attackCooltimeCounter -= Time::GetInstance().GetDeltaTime();
 	}
-
-	if (m_animFrameCounter > 0)
-	{
-		m_animFrameCounter -= Time::GetInstance().GetDeltaTime();
-	}
-	else
-	{
-		m_animFrame++;
-		m_animFrameCounter = 0.1f;
-
-		if (m_animFrame >= kAnimFrameNum) m_animFrame = 0;
-	}
 }
 
 void EnemyShooter::Draw()
 {
 	Vector3 pos = GetTransform().position;
 
-	DrawBox(pos.x - 9, pos.y - 30, pos.x + 9, pos.y, 0x0000ff, 1);
-
-	//DrawRotaGraph(pos.x, pos.y - 32, 1, 0, m_graphs[m_animFrame], 1, GetPlayer()->GetTransform().position.x < pos.x);
+	DrawRotaGraph(pos.x, pos.y, 1, 0, m_animationController.GetCurrentGraph(), 1, GetPlayer()->GetTransform().position.x < pos.x);
 
 #ifdef _DEBUG
 	GetCollider().DebugDraw();
@@ -193,4 +187,34 @@ void EnemyShooter::Attack()
 
 		break;
 	}
+}
+
+void EnemyShooter::UpdateAnimation()
+{
+	if (m_animationController.IsForcePlay())
+	{
+		m_animationController.Update();
+		return;
+	}
+
+	AnimType next = AnimType::EIdle;
+
+	if (m_action != Action::Idle)
+	{
+		next = AnimType::ERun;
+	}
+
+	if (m_currentAnimation != next)
+	{
+		ChangeAnimation(next);
+	}
+
+	m_animationController.Update();
+}
+
+void EnemyShooter::ChangeAnimation(AnimType next)
+{
+	m_currentAnimation = next;
+
+	m_animationController.PlayAnimation(kAnimData[next]);
 }

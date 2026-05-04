@@ -3,6 +3,7 @@
 #include "EnemyBase.h"
 #include <array>
 #include <memory>
+#include "../Chara/AnimationController2D.h"
 
 class EnemyBullet;
 
@@ -12,6 +13,13 @@ public:
 
 	EnemyShooter(ObjectManager* objManager);
 	virtual ~EnemyShooter();
+
+	enum AnimType
+	{
+		EIdle,
+		ERun,
+		Length
+	};
 
 	/// <summary>
 	/// 初期化処理
@@ -51,6 +59,10 @@ private:
 		Back,
 	};
 
+	void UpdateAnimation();
+
+	void ChangeAnimation(AnimType next);
+
 	Action m_action;
 
 	/// <summary>
@@ -63,9 +75,7 @@ private:
 	/// </summary>
 	std::array<std::unique_ptr<EnemyBullet>, kMaxBulletNum> m_bullets;
 	
-	int m_animFrame;
+	AnimationController2D m_animationController;
 
-	float m_animFrameCounter;
-
-	int m_graphs[8];
+	AnimType m_currentAnimation;
 };
