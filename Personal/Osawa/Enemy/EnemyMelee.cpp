@@ -16,7 +16,7 @@ namespace
 	constexpr int kAtkPerLevel = 1.03f;
 	constexpr int kDefPerLevel = 5;
 
-	const char* const kGraphPath = "";
+	const char* const kGraphPath = "Resource\\Golem Reinforced\\Golem_Armor_Run.png";
 }
 
 EnemyMelee::EnemyMelee(ObjectManager* objManager) :
@@ -40,7 +40,7 @@ void EnemyMelee::Init()
 	status.defence += kDefPerLevel * GetLevel();
 	SetStatusParam(status);
 
-	//LoadDivGraph(kGraphPath, kAnimFrameNum, kAnimFrameNum, 1, 384, 128, m_graphs);
+	LoadDivGraph(kGraphPath, kAnimFrameNum, kAnimFrameNum, 4, 64, 64, m_graphs);
 }
 
 void EnemyMelee::End()
@@ -97,9 +97,9 @@ void EnemyMelee::Draw()
 	
 	unsigned int color = (GetMyState() & EnemyBase::kStatePalsy) ? 0xffff00 : 0xff0000;
 
-	DrawBox(pos.x - 9, pos.y - 30, pos.x + 9, pos.y, color, 1);
+	//DrawBox(pos.x - 9, pos.y - 30, pos.x + 9, pos.y, color, 1);
 
-	//DrawRotaGraph(pos.x, pos.y - 32, 1, 0, m_graphs[m_animFrame], 1, GetPlayer()->GetTransform().position.x < pos.x);
+	DrawRotaGraph(pos.x, pos.y, 1, 0, m_graphs[m_animFrame], 1, GetPlayer()->GetTransform().position.x < pos.x);
 
 #ifdef _DEBUG
 	GetCollider().DebugDraw();

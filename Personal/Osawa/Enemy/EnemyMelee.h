@@ -35,7 +35,7 @@ protected:
 
 private:
 
-	constexpr static int kAnimFrameNum = 1;
+	constexpr static int kAnimFrameNum = 4;
 
 	/// <summary>
 	/// 攻撃クールタイムのカウンター
