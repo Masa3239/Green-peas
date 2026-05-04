@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EnemyBase.h"
+#include "../Chara/AnimationController2D.h"
 
 class EnemyMelee : public EnemyBase
 {
@@ -8,6 +9,14 @@ public:
 
 	EnemyMelee(ObjectManager* objManager);
 	virtual ~EnemyMelee();
+
+	enum AnimType
+	{
+		EIdle,
+		ERun,
+		EAttack,
+		Length
+	};
 
 	/// <summary>
 	/// 初期化処理
@@ -35,16 +44,16 @@ protected:
 
 private:
 
-	constexpr static int kAnimFrameNum = 4;
+	void UpdateAnimation();
+
+	void ChangeAnimation(AnimType next);
 
 	/// <summary>
 	/// 攻撃クールタイムのカウンター
 	/// </summary>
 	float m_attackCooltimeCounter;
 
-	int m_animFrame;
+	AnimationController2D m_animationController;
 
-	float m_animFrameCounter;
-
-	int m_graphs[8];
+	AnimType m_currentAnimation;
 };

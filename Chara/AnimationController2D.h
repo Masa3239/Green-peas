@@ -16,6 +16,11 @@ public:
 	void Init();
 
 	/// <summary>
+	/// 終了処理
+	/// </summary>
+	void End();
+
+	/// <summary>
 	/// アニメーションを再生する
 	/// </summary>
 	void PlayAnimation(const Animation::Animation2DData& data);

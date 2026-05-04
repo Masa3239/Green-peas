@@ -16,6 +16,17 @@ void AnimationController2D::Init()
 {
 }
 
+void AnimationController2D::End()
+{
+	for (auto& graphs : m_graphs)
+	{
+		for (auto& graph : graphs)
+		{
+			DeleteGraph(graph);
+		}
+	}
+}
+
 void AnimationController2D::PlayAnimation(const Animation::Animation2DData& data)
 {
 	// 割り込み再生できないアニメーションが再生されていたら即時return

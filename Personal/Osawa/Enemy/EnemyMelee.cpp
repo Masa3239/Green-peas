@@ -1,6 +1,7 @@
 #include "EnemyMelee.h"
 #include "../Personal/Takagi/Player.h"
 #include "../Utility/Time.h"
+#include "../Chara/AnimationController2D.h"
 #include "../Chara/Collision.h"
 
 namespace
@@ -16,14 +17,23 @@ namespace
 	constexpr int kAtkPerLevel = 1.03f;
 	constexpr int kDefPerLevel = 5;
 
-	const char* const kGraphPath = "Resource\\Golem Reinforced\\Golem_Armor_Run.png";
+	Animation::Animation2DData kAnimData[EnemyMelee::AnimType::Length] =
+	{
+		{ EnemyMelee::AnimType::EIdle, 6.0f, true, false},
+		{ EnemyMelee::AnimType::ERun, 6.0f, true, false},
+		{ EnemyMelee::AnimType::EAttack, 6.0f, false, true},
+	};
+
+	const char* const kGraphPathIdle = "Resource\\Golem Reinforced\\Golem_Armor_Idle.png";
+	const char* const kGraphPathRun = "Resource\\Golem Reinforced\\Golem_Armor_Run.png";
+	const char* const kGraphPathAttack = "Resource\\Golem Reinforced\\Golem_Armor_AttackB.png";
 }
 
 EnemyMelee::EnemyMelee(ObjectManager* objManager) :
 	EnemyBase(objManager),
 	m_attackCooltimeCounter(0.0f),
-	m_animFrame(0),
-	m_animFrameCounter(0)
+	m_animationController(),
+	m_currentAnimation(AnimType::EIdle)
 {
 }
 
@@ -40,19 +50,21 @@ void EnemyMelee::Init()
 	status.defence += kDefPerLevel * GetLevel();
 	SetStatusParam(status);
 
-	LoadDivGraph(kGraphPath, kAnimFrameNum, kAnimFrameNum, 4, 64, 64, m_graphs);
+	m_animationController.Init();
+	m_animationController.RegisterGraphHandle(AnimType::EIdle, kGraphPathIdle, 4, 4, 1, 64, 64);
+	m_animationController.RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 4, 4, 1, 64, 64);
+	m_animationController.RegisterGraphHandle(AnimType::EAttack, kGraphPathAttack, 8, 4, 2, 64, 64);
 }
 
 void EnemyMelee::End()
 {
-	for (auto& graph : m_graphs)
-	{
-		DeleteGraph(graph);
-	}
+	m_animationController.End();
 }
 
 void EnemyMelee::UpdateEnemy()
 {
+	UpdateAnimation();
+
 	if (m_attackCooltimeCounter > 0)
 	{
 		m_attackCooltimeCounter -= Time::GetInstance().GetDeltaTime();
@@ -77,18 +89,6 @@ void EnemyMelee::UpdateEnemy()
 			m_attackCooltimeCounter = kMeleeAttackCooltime;
 		}
 	}
-
-	if (m_animFrameCounter > 0)
-	{
-		m_animFrameCounter -= Time::GetInstance().GetDeltaTime();
-	}
-	else
-	{
-		m_animFrame++;
-		m_animFrameCounter = 0.1f;
-
-		if (m_animFrame >= kAnimFrameNum) m_animFrame = 0;
-	}
 }
 
 void EnemyMelee::Draw()
@@ -97,9 +97,7 @@ void EnemyMelee::Draw()
 	
 	unsigned int color = (GetMyState() & EnemyBase::kStatePalsy) ? 0xffff00 : 0xff0000;
 
-	//DrawBox(pos.x - 9, pos.y - 30, pos.x + 9, pos.y, color, 1);
-
-	DrawRotaGraph(pos.x, pos.y, 1, 0, m_graphs[m_animFrame], 1, GetPlayer()->GetTransform().position.x < pos.x);
+	DrawRotaGraph(pos.x, pos.y, 1, 0, m_animationController.GetCurrentGraph(), 1, GetPlayer()->GetTransform().position.x < pos.x);
 
 #ifdef _DEBUG
 	GetCollider().DebugDraw();
@@ -109,4 +107,40 @@ void EnemyMelee::Draw()
 void EnemyMelee::Attack()
 {
 	GetPlayer()->Damage(GetStatusParam().attack);
+}
+
+void EnemyMelee::UpdateAnimation()
+{
+	if (m_animationController.IsForcePlay())
+	{
+		m_animationController.Update();
+		return;
+	}
+
+	AnimType next = AnimType::EIdle;
+
+	if (m_attackCooltimeCounter <= 0)
+	{
+		// 攻撃してたら
+		if (GetCollider().CheckCollision(GetPlayer()->GetCircle()))
+		{
+			next = AnimType::EAttack;
+		}
+		// 移動してたら
+		else next = AnimType::ERun;
+	}
+
+	if (m_currentAnimation != next)
+	{
+		ChangeAnimation(next);
+	}
+
+	m_animationController.Update();
+}
+
+void EnemyMelee::ChangeAnimation(AnimType next)
+{
+	m_currentAnimation = next;
+
+	m_animationController.PlayAnimation(kAnimData[next]);
 }
