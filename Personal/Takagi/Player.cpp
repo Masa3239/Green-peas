@@ -22,6 +22,7 @@
 #include"../../System/Input/Keyboard.h"
 #include"../../System/Input/Gamepad.h"
 #include"BuffManager.h"
+#include"../Kimura/Map/Map.h"
 namespace {
 	
 	// 通常の移動速度
@@ -77,7 +78,8 @@ Player::Player(ObjectManager* objManager) :
 	m_pEnemyMgr(nullptr),
 	m_pItemMgr(nullptr),
 	m_angerButton(),
-	m_anger(false)
+	m_anger(false),
+	m_pMap(nullptr)
 {
 
 }
@@ -136,6 +138,7 @@ void Player::Init()
 	m_gauges[static_cast<int>(GaugeType::Stamina)]->SetValue(m_status.Stamina, Gauge::Value::Max);
 	m_cameraTransform.Reset();
 	m_exp = 1;
+	m_oldPos = GetTransform().position;
 }
 
 void Player::End()
@@ -154,6 +157,11 @@ void Player::End()
 	}
 	m_pItemMgr = nullptr;
 	delete m_pItemMgr;
+
+	if (m_pMap) {
+		m_pMap = nullptr;
+		delete m_pMap;
+	}
 }
 
 void Player::Update()
@@ -173,7 +181,6 @@ void Player::Update()
 		Move();
 	}
 	//m_box.SetPosition(GetTransform().position);
-	m_circle.SetPosition(GetTransform().position);
 	printfDx("deltatime : %f\n", m_deltaTime);
 	printfDx("移動量 : %f\n", m_moveVector.GetLength());
 
@@ -200,7 +207,7 @@ void Player::Update()
 	}if (m_anger) {
 		m_gauges[static_cast<int>(GaugeType::Anger)]->Decrease(kAngerDecValue * m_deltaTime);
 	}
-	if (m_buffs.size() <= 0)return;
+	if (m_buffs.size() <= 0) {
 	// バフの更新処理
 	for (int i = 0;i < m_buffs.size();i++) {
 		if (!m_buffs[i])continue;
@@ -210,6 +217,7 @@ void Player::Update()
 			// バフを消去する
 			m_buffs.erase(m_buffs.begin() + i);
 		}
+	}
 	}
 	//for (auto& buffs : m_buffs) {
 	//	if (buffs)continue;
@@ -222,6 +230,9 @@ void Player::Update()
 	//}
 	
 	SetDrawOrder(GetTransform().position.y);
+
+
+
 }
 
 void Player::Move()
@@ -231,7 +242,22 @@ void Player::Move()
 	SpeedUpdate();
 
 	// 座標の移動
-	GetTransform().position += m_moveVector*m_deltaTime;
+	GetTransform().position.x += m_moveVector.x*m_deltaTime;
+	m_circle.SetPosition(GetTransform().position);
+	if (m_pMap && m_pMap->IsWallShape(m_circle)) {
+		GetTransform().position.x = m_oldPos.x;
+	}
+	else {
+		m_oldPos.x = GetTransform().position.x;
+	}
+	GetTransform().position.y += m_moveVector.y*m_deltaTime;
+	m_circle.SetPosition(GetTransform().position);
+	if (m_pMap && m_pMap->IsWallShape(m_circle)) {
+		GetTransform().position.y = m_oldPos.y;
+	}
+	else {
+		m_oldPos.y = GetTransform().position.y;
+	}
 }
 
 void Player::MoveAmount()
@@ -352,7 +378,9 @@ void Player::SpeedUpdate()
 void Player::Draw()
 {
 	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kPlayerScale, 0, m_graphHandle[static_cast<int>(m_direction)][kFrame[static_cast<int>(m_animFrame)]], TRUE);
-	
+	if (m_pMap) {
+		m_pMap->IsWallShape(m_circle);
+	}
 	Debug();
 }
 

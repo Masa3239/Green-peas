@@ -30,6 +30,7 @@ class Weapon;
 class EnemyManager;
 class ItemManager;
 class BuffManager;
+class Map;
 namespace Character {
 	enum class Job {
 		Warrior,	// 戦士
@@ -174,6 +175,7 @@ public: // ゲッター・セッター=======================
 	void SetItemManager(ItemManager* itemManager) { m_pItemMgr = itemManager; }
 	void SetWeapon(Weapon* weapon);
 	void SetBuffManager(BuffManager* buffManager) { m_pBuffMgr = buffManager; }
+	void SetMap(Map* map) { m_pMap = map; }
 	void ExpUp(float value);
 	bool CheckAnger() { return m_anger; }
 	float GetExp() { return m_exp; }
@@ -270,4 +272,9 @@ protected:
 	bool m_anger;
 	Character::Job m_playerType;
 	float m_exp;
+	/// <summary>
+	/// マップのポインタ
+	/// </summary>
+	Map* m_pMap;
+	Vector3 m_oldPos;
 };
