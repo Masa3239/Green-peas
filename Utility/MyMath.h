@@ -49,7 +49,18 @@ namespace MyMath {
 
 		return angle;
 	}
+	/// <summary>
+	/// 角度を-180度～180度までに収める関数
+	/// </summary>
+	/// <param name="radian">-180度～180度に収めたい値</param>
+	/// <returns>-180度～180度に収めた値</returns>
+	constexpr float NormalizeRadian(float radian) {
+		while (radian > DX_PI_F)radian -= DX_PI_F * 2;
+		while (radian < -DX_PI_F)radian += DX_PI_F * 2;
 
+		return radian;
+
+	}
 	/// <summary>
 	/// valueの値を最小値min、最大値maxの値に収める
 	/// </summary>
@@ -83,6 +94,16 @@ namespace MyMath {
 	constexpr int Sign(float value) {
 		int res = 1;
 		if (value < 0)res = -1;
+		return res;
+	}
+	/// <summary>
+	/// 調べた値の絶対値を返す関数
+	/// </summary>
+	/// <param name="value">調べたい値</param>
+	/// <returns>絶対値を返す</returns>
+	constexpr float Abs(float value) {
+		float res = value;
+		if (value < 0)res *= -1;
 		return res;
 	}
 
