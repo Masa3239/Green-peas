@@ -4,6 +4,7 @@
 #include<memory>
 class RotateCharacter;
 class BuffManager;
+class Gear;
 
 class CharacterSelectScene : public SceneBase
 {
@@ -35,7 +36,8 @@ public:
 	void PreDraw()override;
 	void PostDraw()override;
 private:
-	RotateCharacter* m_characters;
+	std::unique_ptr<RotateCharacter> m_characters;
+	std::unique_ptr<Gear> m_gear;
 	int m_graphHanedle[static_cast<int>(Character::Job::Max)];
 
 };
