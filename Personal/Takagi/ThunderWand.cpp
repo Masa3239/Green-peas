@@ -6,7 +6,7 @@
 #include"../../Utility/Mymath.h"
 namespace {
 	const char* const kHandlePath = "Resource\\Topaz Staff.png";
-	constexpr PlayerStatus kStatus = { 0,0,2,0,0,0,11,2 };
+	constexpr PlayerStatus kStatus = { 0,0,20,0,0,0,11,2 };
 	constexpr float kDrawRadian = -45 * MyMath::ToRadian;
 	constexpr Vector3 kOffsetPos = { 20,0,0 };
 	constexpr float kSwingSpeed = 600;
@@ -118,6 +118,9 @@ void ThunderWand::Shot(const Transform& transform)
 
 		m_pThunders[i]->Shot(transform);
 		m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Volt, i);
+		PlayerStatus status = m_playerStatus * m_weaponStatus;
+		status.CriticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
+		m_pThunders[i]->SetStatus(status);
 		break;
 	}
 }
