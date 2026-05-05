@@ -5,6 +5,7 @@
 class Player;
 class Camera;
 class Map;
+class EnemyMap;
 class ItemManager;
 class EnemyManager;
 class UIManager;
@@ -52,6 +53,7 @@ private:
 	std::unique_ptr<EnemyManager> m_pEnemyManager;
 	std::unique_ptr<ItemManager> m_pItemManager;
 	std::unique_ptr<Map>m_pMap;
+	std::unique_ptr<EnemyMap> m_pEnemyMap;
 
 	std::unique_ptr<UIManager>m_pUIManager;
 	std::unique_ptr<WeaponManager>m_pWeaponManager;

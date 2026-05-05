@@ -6,6 +6,7 @@
 #include"../../Chara/Collision.h"
 #include"../../Utility/Time.h"
 #include"../Kimura/Map/Map.h"
+#include"../Kimura/EnemyMap/EnemyMap.h"
 #include"../Syoguti/ItemManager.h"
 #include"../Osawa/Enemy/EnemyManager.h"
 #include"../Asai/UIManager.h"
@@ -27,6 +28,7 @@ SceneTestTakagi::SceneTestTakagi():
 	m_pEnemyManager(nullptr),
 	m_pItemManager(nullptr),
 	m_pMap(nullptr),
+	m_pEnemyMap(nullptr),
 	m_pUIManager(nullptr),
 	m_pWeaponManager(nullptr),
 	m_pResultShow(nullptr)
@@ -38,6 +40,7 @@ SceneTestTakagi::SceneTestTakagi():
 	m_pEnemyManager = std::make_unique<EnemyManager>(GetObjectManager());
 	m_pItemManager = std::make_unique<ItemManager>();
 	m_pMap = std::make_unique<Map>();
+	m_pEnemyMap = std::make_unique<EnemyMap>();
 	m_pUIManager = std::make_unique<UIManager>();
 	m_pWeaponManager = std::make_unique<WeaponManager>();
 	m_pPauseMenu = std::make_unique<PauseMenu>();
@@ -71,14 +74,23 @@ void SceneTestTakagi::Init()
 	m_pPlayer->SetCamera(m_pCamera.get());
 	m_pPlayer->SetItemManager(m_pItemManager.get());
 	m_pPlayer->SetBuffManager(m_pBuffManager.get());
+	m_pPlayer->SetMap(m_pMap.get());
 	m_pCamera->Init();
 	m_pMap->Init();
+	m_pEnemyMap->Init();
 	m_pEnemyManager->SetPlayer(m_pPlayer.get());
 	m_pEnemyManager->SetUIManager(m_pUIManager.get());
 	m_pEnemyManager->Init();
-	m_pUIManager->Init();
+	m_pEnemyManager->SetMap(m_pMap.get());
+	m_pEnemyManager->InitGenerate(m_pEnemyMap.get());
+	m_pEnemyManager->SetWeaponManager(m_pWeaponManager.get());
 	m_pCamera->SetMap(m_pMap.get());
 	m_pCamera->GenerateWorldScreen();
+	m_pUIManager->Init();
+	m_pUIManager->SetEnemyManager(m_pEnemyManager.get());
+	m_pUIManager->SetPlayer(m_pPlayer.get());
+	m_pUIManager->SetItemManager(m_pItemManager.get());
+	m_pUIManager->GenerateMinimap(m_pCamera.get(), m_pMap.get());
 	m_pItemManager->Init();
 	m_pItemManager->SetObjectManager(GetObjectManager());
 	m_pItemManager->SetPlayer(m_pPlayer.get());
@@ -97,6 +109,7 @@ void SceneTestTakagi::End()
 	m_pPlayer->End();
 	m_pCamera->End();
 	m_pMap->End();
+	m_pEnemyMap->End();
 	m_pItemManager->End();
 	m_pUIManager->End();
 	m_pWeaponManager->End();
