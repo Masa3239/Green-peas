@@ -46,7 +46,7 @@ bool InputFormatGamepadThumb::CheckButtonState(const KeyCode::Button keyCode)
 	return false;
 }
 
-const Vector2& InputFormatGamepadThumb::GetValue(const KeyCode::Button keyCode)
+Vector2 InputFormatGamepadThumb::GetValue(const KeyCode::Button keyCode)
 {
 	const XINPUT_STATE& state = Gamepad::GetInstance().GetState();
 

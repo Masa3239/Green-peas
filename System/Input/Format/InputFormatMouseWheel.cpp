@@ -28,7 +28,7 @@ bool InputFormatMouseWheel::CheckButtonState(const KeyCode::Button keyCode)
 	return false;
 }
 
-const Vector2& InputFormatMouseWheel::GetValue(const KeyCode::Button keyCode)
+Vector2 InputFormatMouseWheel::GetValue(const KeyCode::Button keyCode)
 {
 	switch (keyCode)
 	{

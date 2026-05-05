@@ -28,7 +28,7 @@ bool InputFormatGamepadButton::CheckButtonState(const KeyCode::Button keyCode)
 	return result;
 }
 
-const Vector2& InputFormatGamepadButton::GetValue(const KeyCode::Button keyCode)
+Vector2 InputFormatGamepadButton::GetValue(const KeyCode::Button keyCode)
 {
 	return Vector2(static_cast<float>(CheckButtonState(keyCode)), 0.0f);
 }

@@ -201,7 +201,7 @@ float InputManager::GetAsFloat(Input::Action action) const
 	return result;
 }
 
-const Vector2& InputManager::GetAsVector2(Input::Action action) const
+Vector2 InputManager::GetAsVector2(Input::Action action) const
 {
 	const Input::ActionProperty& actionProperty = mActions.at(action);
 

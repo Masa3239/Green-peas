@@ -28,7 +28,7 @@ bool InputFormatMouseDelta::CheckButtonState(const KeyCode::Button keyCode)
 	return false;
 }
 
-const Vector2& InputFormatMouseDelta::GetValue(const KeyCode::Button keyCode)
+Vector2 InputFormatMouseDelta::GetValue(const KeyCode::Button keyCode)
 {
 	switch (keyCode)
 	{
