@@ -90,7 +90,7 @@ public:
 	/// <summary>
 	/// Vector2のアナログ値として取得する
 	/// </summary>
-	const Vector2& GetAsVector2(Input::Action action) const;
+	Vector2 GetAsVector2(Input::Action action) const;
 
 	/// <summary>
 	/// アナログ2Dの入力角度を取得する
