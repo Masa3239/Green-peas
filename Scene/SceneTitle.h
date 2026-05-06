@@ -3,6 +3,7 @@
 #include <memory>
 #include "SceneBase.h"
 
+class SettingsMenu;
 class TitleBackground;
 
 class SceneTitle : public SceneBase
@@ -12,9 +13,17 @@ public:
 	SceneTitle();
 	~SceneTitle();
 
+	enum class Menu
+	{
+		Title,
+		Settings,
+		Length
+	};
+
 	enum Choice
 	{
 		Start,
+		Settings,
 		Quit,
 		Length
 	};
@@ -46,7 +55,11 @@ private:
 
 	int m_logoGraph;
 
+	Menu m_menu;
+
 	int m_choice;
+
+	std::unique_ptr<SettingsMenu> m_settingsMenu;
 
 	std::unique_ptr<TitleBackground> m_background;
 };
