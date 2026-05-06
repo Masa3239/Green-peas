@@ -17,10 +17,7 @@
 #include "../Personal/Takagi/Result/ResultShow.h"
 #include "../Personal/Syoguti/EnemyBoss.h"
 #include "../System/PauseManager.h"
-#include "../System/InputManager.h"
-
-#include "../Personal/Osawa/Scene/SceneSelection.h"
-#include "../Personal/Osawa/Scene/SceneTempResult.h"
+#include "../System/SoundManager.h"
 
 namespace
 {
@@ -112,6 +109,8 @@ void SceneInGame::Init()
 
 	m_pPauseMenu->Init();
 	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
+
+	SoundManager::GetInstance().PlayBGM(Sound::BGM::Pause);
 }
 
 void SceneInGame::End()
