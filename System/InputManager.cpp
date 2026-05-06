@@ -106,6 +106,7 @@ bool InputManager::Initialize()
 	Bind(Input::Action::Confirm, Input::Device::Gamepad, KeyCode::Button::GpFaceRight);
 
 	Bind(Input::Action::Cancel, Input::Device::Keyboard, KeyCode::Button::LShift);
+	Bind(Input::Action::Cancel, Input::Device::Keyboard, KeyCode::Button::Escape);
 	Bind(Input::Action::Cancel, Input::Device::Gamepad, KeyCode::Button::GpFaceDown);
 
 	return true;
