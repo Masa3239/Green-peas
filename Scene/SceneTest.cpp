@@ -47,8 +47,8 @@ void SceneTest::Init() {
 	//m_pBox = std::make_unique<Collision::AABB>(Vector3(0, 0, 200), Vector3(150, 150, 150));
 
 	// ƒVƒ“ƒOƒ‹ƒgƒ“‚ÌSoundManager‚Å‚Ì“Ç‚Ýž‚Ý
-	SoundManager::GetInstance().LoadBGM();
-	SoundManager::GetInstance().LoadSe();
+	//SoundManager::GetInstance().LoadBGM();
+	//SoundManager::GetInstance().LoadSe();
 
 	// m_pSound->PlayBGM(Sound::BGM::Title);
 	//SoundManager::GetInstance().PlayBGM(Sound::BGM::Menu);
@@ -57,7 +57,7 @@ void SceneTest::Init() {
 void SceneTest::End() {
 
 
-	SoundManager::GetInstance().Release();
+	//SoundManager::GetInstance().Release();
 
 	//m_pSound->Release();
 	//delete m_pSound;

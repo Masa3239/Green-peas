@@ -7,6 +7,7 @@
 #include "../Utility/Time.h"
 #include "System/InputManager.h"
 #include "System/PauseManager.h"
+#include "System/SoundManager.h"
 
 //========================================================
 // WinMain関数　ここからプログラムが始まる
@@ -28,6 +29,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	InputManager::GetInstance().Initialize();
 
 	PauseManager::GetInstance();
+
+	SoundManager::GetInstance();
 
 	// シーン制御のポインタを生成
 	SceneManager* pSceneMgr;
@@ -54,6 +57,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		if (pSceneMgr->GetEndFlag()) break;
 
+		SoundManager::GetInstance().Update();
+
 		// 描画先を切り替える
 		ScreenFlip();
 
@@ -65,6 +70,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		Time::GetInstance().CalculateDeltaTime(time);
 	}
+
+	SoundManager::GetInstance().Release();
 
 	pSceneMgr->End();
 	delete pSceneMgr;

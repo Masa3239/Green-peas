@@ -1,0 +1,9 @@
+{
+    "bgmFilePath": [
+        "BGM_Pause.ogg"
+    ],
+    "folderPath": "Resource\\Sound\\",
+    "seFilePath": [
+        "SE_001.mp3"
+    ]
+}

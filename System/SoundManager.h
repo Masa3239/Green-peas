@@ -1,70 +1,46 @@
 #pragma once
 
-/// <summary>
-/// SEとBGMのID管理
-/// </summary>
-namespace Sound {
+#include <array>
 
-	/// <summary>
-	/// BGMのIDラベル
-	/// </summary>
-	enum class BGM {
-
-		Title,
-		Menu,
+namespace Sound
+{
+	enum class BGM
+	{
+		Pause,
+		Temp,
 		Max
 	};
 
-	/// <summary>
-	/// SEのIDラベル
-	/// </summary>
-	enum class SE {
-
-		Decide,
-		Cancel,
-		Return,
-		Swing,
-		FootStep,
+	enum class SE
+	{
+		Temp,
 		Max
 	};
 }
 
-/// <summary>
-/// SEやBGMの読み込み、再生、停止等を管理するクラス
-/// </summary>
 class SoundManager
 {
-
 public:
 
-	/// <summary>
-	/// シングルトンのインスタンスを取得
-	/// </summary>
-	/// <returns></returns>
 	static SoundManager& GetInstance();
 
 	~SoundManager() = default;
 
 	/// <summary>
-	/// SEの読み込み
+	/// 更新処理
 	/// </summary>
-	void LoadSe();
+	void Update();
 
 	/// <summary>
 	/// SEの再生
 	/// </summary>
 	/// <param name="id">再生したいSEのID</param>
-	void PlaySe( Sound::SE id );
-
-	/// <summary>
-	/// BGMの読み込み
-	/// </summary>
-	void LoadBGM();
+	void PlaySe(Sound::SE id);
 
 	/// <summary>
 	/// BGMの再生
 	/// </summary>
-	/// <param name="id">再生したいBGMのID</param>
+	/// <param name="id"></param>
 	void PlayBGM(Sound::BGM id);
 
 	/// <summary>
@@ -81,36 +57,70 @@ private:
 
 	/// <summary>
 	/// コンストラクタ
-	/// シングルトンパターンのクラスならprivteにして生成できないようにする
+	/// シングルトンパターンのクラスならprivateにして生成できないようにする
 	/// </summary>
 	SoundManager();
 
-	// シングルトンパターンのクラスでは、コピーできないように『禁止』する
-	// コピー禁止
+	// シングルトンパターンのクラスでは、コピーできないように「禁止」する
+	// コピー禁止 Class a = b; / Class a(b);
 	SoundManager(const SoundManager&) = delete;
-	// コピー代入禁止
+	// コピー代入禁止	a = b;
 	SoundManager& operator=(const SoundManager&) = delete;
-	// ムーブ禁止
+	// ムーブ禁止		
 	SoundManager(SoundManager&&) = delete;
 	// ムーブ代入禁止
-	SoundManager& operator=(const SoundManager&&) = delete;
+	SoundManager& operator=(SoundManager&&) = delete;
 
-private:
+	/// <summary>
+	/// 音の読み込み
+	/// </summary>
+	/// <param name="handle">読み込んだ音を格納するハンドルの配列</param>
+	/// <param name="number">読み込む音の数</param>
+	/// <param name="key">jsonファイルの読み込みたいキーの名前</param>
+	void LoadSound(int handle[], int number, const char* key);
+
+	/// <summary>
+	/// BGMのクロスフェード処理
+	/// </summary>
+	void CrossFading();
 
 	/// <summary>
 	/// SEのハンドル
 	/// </summary>
-	int m_seHandles[ static_cast<int>(Sound::SE::Max)];
+	std::array<int, static_cast<size_t>(Sound::SE::Max)> m_seHandles;
 
 	/// <summary>
 	/// BGMのハンドル
 	/// </summary>
-	int m_bgmHandles[static_cast<int>(Sound::BGM::Max)];
+	std::array<int, static_cast<size_t>(Sound::BGM::Max)> m_bgmHandles;
 
 	/// <summary>
 	/// 再生中のBGMハンドル
 	/// </summary>
 	int m_currentBgmHandle;
 
-};
+	/// <summary>
+	/// 次に再生するBGMハンドル
+	/// </summary>
+	int m_nextBgmHandle;
 
+	/// <summary>
+	/// 再生中のBGMの音量
+	/// </summary>
+	float m_currentBgmVolume;
+
+	/// <summary>
+	/// 次に再生するBGMの音量
+	/// </summary>
+	float m_nextBgmVolume;
+
+	/// <summary>
+	/// BGMの遷移速度
+	/// </summary>
+	float m_bgmFadeSpeed;
+
+	/// <summary>
+	/// クロスフェード処理を行うかどうか
+	/// </summary>
+	bool m_isCrossFading;
+};
