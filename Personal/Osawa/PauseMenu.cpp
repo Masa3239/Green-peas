@@ -5,6 +5,7 @@
 #include "../Scene/SceneBase.h"
 #include "../Scene/SceneTitle.h"
 #include "../Utility/Color.h"
+#include "../Personal/Osawa/SettingsMenu.h"
 
 namespace
 {
@@ -13,7 +14,9 @@ namespace
 }
 
 PauseMenu::PauseMenu():
-	m_choice(Choice::Back)
+	m_menu(Menu::Pause),
+	m_choice(Choice::Back),
+	m_settingsMenu(nullptr)
 {
 }
 
@@ -23,6 +26,7 @@ PauseMenu::~PauseMenu()
 
 void PauseMenu::Init()
 {
+	m_settingsMenu = std::make_unique<SettingsMenu>();
 }
 
 void PauseMenu::End()
@@ -31,15 +35,32 @@ void PauseMenu::End()
 
 SceneBase* PauseMenu::Update()
 {
-	if (InputManager::GetInstance().IsPressed(Input::Action::Pause))
+	switch (m_menu)
 	{
-		PauseManager::GetInstance().TogglePause();
-		PauseManager::GetInstance().SetAlpha(kPauseScreenAlpha);
+	case Menu::Pause:
 
-		m_choice = Choice::Back;
+		if (InputManager::GetInstance().IsPressed(Input::Action::Pause))
+		{
+			PauseManager::GetInstance().TogglePause();
+			PauseManager::GetInstance().SetAlpha(kPauseScreenAlpha);
+
+			m_choice = Choice::Back;
+		}
+
+		return OnPause();
+
+	case Menu::Settings:
+
+		if (!m_settingsMenu->Update())
+		{
+			m_menu = Menu::Pause;
+			m_settingsMenu->End();
+		}
+
+		break;
 	}
 
-	return OnPause();
+	return nullptr;
 }
 
 void PauseMenu::Draw()
@@ -50,6 +71,11 @@ void PauseMenu::Draw()
 		DrawString(150, 300, "Resume", m_choice == Choice::Back ? Color::kRed : Color::kGray);
 		DrawString(150, 330, "Settings", m_choice == Choice::Setting ? Color::kRed : Color::kGray);
 		DrawString(150, 360, "Back to Title", m_choice == Choice::Title ? Color::kRed : Color::kGray);
+
+		if (m_menu == Menu::Settings)
+		{
+			m_settingsMenu->Draw();
+		}
 	}
 }
 
@@ -77,7 +103,8 @@ SceneBase* PauseMenu::OnPause()
 			break;
 
 		case Choice::Setting:
-
+			m_menu = Menu::Settings;
+			m_settingsMenu->Init();
 			break;
 
 		case Choice::Title:

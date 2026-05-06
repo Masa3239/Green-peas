@@ -155,8 +155,6 @@ SceneBase* SceneInGame::Update()
 		}
 	}
 
-	//m_pBuffManager->Update();
-
 	if (!PauseManager::GetInstance().IsPause())
 	{
 		m_pEnemyMgr->Update();
