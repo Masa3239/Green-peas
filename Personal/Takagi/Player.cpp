@@ -517,6 +517,8 @@ int* Player::GetWeaponGraphHandle()
 	int graph[kWeaponMaxNum];
 
 	for (int i = 0;i < kWeaponMaxNum;i++) {
+		graph[i] = -1;
+		if (m_weapons[i])
 		graph[i] = m_weapons[i]->GetGraphHandle();
 	}
 
@@ -528,6 +530,8 @@ float* Player::GetWeaponScale()
 	float scale[kWeaponMaxNum];
 
 	for (int i = 0;i < kWeaponMaxNum;i++) {
+		scale[i] = 0;
+		if(m_weapons[i])
 		scale[i] = m_weapons[i]->GetScale();
 	}
 
