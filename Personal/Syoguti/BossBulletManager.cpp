@@ -8,7 +8,7 @@ namespace {
 
 	// 画像のファイルパス
 	const char* const kBulletGraphHandlePath = ".\\Resource\\ItemTest1.png";
-	constexpr int kBulletDamage = 100;
+	constexpr int kBulletDamage = 15;
 }
 
 BossBulletManager::BossBulletManager() :
