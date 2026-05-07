@@ -4,6 +4,7 @@
 #include "../System/InputManager.h"
 #include "../Utility/Color.h"
 #include "../Scene/CharacterSelectScene.h"
+#include "../Scene/Fader.h"
 #include "../Personal/Osawa/SettingsMenu.h"
 
 namespace
@@ -43,6 +44,8 @@ void SceneTitle::End()
 
 SceneBase* SceneTitle::Update()
 {
+	if (GetFader()->IsFadingOut()) return this;
+
 	switch (m_menu)
 	{
 	case SceneTitle::Menu::Title:
@@ -63,7 +66,8 @@ SceneBase* SceneTitle::Update()
 			switch (m_choice)
 			{
 			case Choice::Start:
-				return new CharacterSelectScene();
+				GetFader()->StartFadeOut<CharacterSelectScene>();
+				break;
 
 			case Choice::Settings:
 				m_menu = Menu::Settings;

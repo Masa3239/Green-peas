@@ -18,6 +18,7 @@
 #include "../Personal/Syoguti/EnemyBoss.h"
 #include "../System/PauseManager.h"
 #include "../System/SoundManager.h"
+#include "../Scene/Fader.h"
 
 namespace
 {
@@ -107,6 +108,7 @@ void SceneInGame::Init()
 	m_pChestManager->SetItemManager(m_pItemMgr.get());
 	m_pChestManager->Init();
 
+	m_pPauseMenu->SetFader(GetFader());
 	m_pPauseMenu->Init();
 	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
 
@@ -147,11 +149,7 @@ SceneBase* SceneInGame::Update()
 	}
 	else
 	{
-		auto nextScene = m_pPauseMenu->Update();
-		if (nextScene != nullptr)
-		{
-			return nextScene;
-		}
+		m_pPauseMenu->Update();
 	}
 
 	if (!PauseManager::GetInstance().IsPause())

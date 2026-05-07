@@ -1,6 +1,10 @@
 #pragma once
-#include"CarryOver.h"
+
+#include <memory>
+#include "CarryOver.h"
+
 class ObjectManager;
+class Fader;
 
 /// <summary>
 /// 各画面の基本クラス
@@ -36,10 +40,20 @@ public:
 	virtual void End() = 0;
 
 	/// <summary>
+	/// シーンベースの更新処理
+	/// </summary>
+	SceneBase* UpdateBase();
+
+	/// <summary>
 	/// 更新処理
 	/// </summary>
 	/// <returns>自身のポインタを返す</returns>
 	virtual SceneBase* Update() { return this; }
+
+	/// <summary>
+	/// シーンベースの描画処理
+	/// </summary>
+	void DrawBase();
 
 	/// <summary>
 	/// 描画処理
@@ -55,65 +69,28 @@ public:
 	/// 描画後の処理
 	/// </summary>
 	virtual void PostDraw() {};
-
-	/// <summary>
-	/// オブジェクトマネージャーのポインタを取得する
-	/// </summary>
-	ObjectManager* GetObjectManager() const { return m_objManager; }
-
-	//-----------------------------------
-	// フェード関連の処理
-	//-----------------------------------
-
-	/// <summary>
-	/// フェードの更新
-	/// </summary>
-	void UpdateFade();
-
-	/// <summary>
-	/// フェードの描画
-	/// </summary>
-	void DrawFade() const;
-
-	/// <summary>
-	/// フェードイン中かどうかを判定
-	/// </summary>
-	/// <returns>フェードイン中ならtrue</returns>
-	bool IsFadingIn() const;
-
-	/// <summary>
-	/// フェードアウト中かどうかを判定
-	/// </summary>
-	/// <returns>フェードアウト中ならtrue</returns>
-	bool IsFadingOut() const;
-
-	/// <summary>
-	/// フェード中かどうかを判定
-	/// </summary>
-	/// <returns>フェード中ならtrue</returns>
-	bool IsFading() const;
-
-	/// <summary>
-	/// フェードアウト開始
-	/// </summary>
-	void StartFadeOut();
 	
 	/// <summary>
 	/// 持ち越しする変数を取得する関数
 	/// </summary>
 	CarryOver& GetCarryOver() { return m_carryOver; }
 
-protected:
+	/// <summary>
+	/// オブジェクトマネージャーのポインタを取得する
+	/// </summary>
+	ObjectManager* GetObjectManager() const { return m_objManager.get(); }
 
-	// フェード関連で必要な変数
-	// フェードの色
-	int m_fadeColor;
-	// フェードの輝度
-	int m_fadeBright;
-	// フェードのスピード
-	int m_fadeSpeed;
-	// フェードアウトを行っているかどうか
-	bool m_isFadeOut;
+	/// <summary>
+	/// フェーダーのゲッター
+	/// </summary>
+	/// <returns>フェーダーのポインタ</returns>
+	Fader* GetFader() const { return m_fader.get(); }
+
+	/// <summary>
+	/// 次のシーンのセッター
+	/// </summary>
+	/// <param name="next">次のシーンのポインタ</param>
+	void SetNextScene(SceneBase* next) { m_nextScene = next; }
 
 protected:
 
@@ -121,5 +98,9 @@ protected:
 
 private:
 
-	ObjectManager* m_objManager;
+	std::unique_ptr<ObjectManager> m_objManager;
+
+	std::unique_ptr<Fader> m_fader;
+
+	SceneBase* m_nextScene;
 };

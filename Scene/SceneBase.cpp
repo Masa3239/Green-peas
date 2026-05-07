@@ -4,23 +4,16 @@
 #include "../Utility/Game.h"
 #include "../System/ObjectManager.h"
 #include "../System/PauseManager.h"
+#include "../Scene/Fader.h"
 
-namespace {
-
-	// フェード速度
-	constexpr int kFadeSpeed = 5;
-}
-
-// コンストラクタ
 SceneBase::SceneBase() :
-	m_fadeColor(Color::kBlack),
-	m_fadeBright(255),
-	m_fadeSpeed(-kFadeSpeed),
-	m_isFadeOut(false),
-	m_objManager(nullptr)
+	m_objManager(nullptr),
+	m_fader(nullptr)
 {
-	m_objManager = new ObjectManager();
+	m_objManager = std::make_unique<ObjectManager>();
 	m_objManager->Init();
+
+	m_fader = std::make_unique<Fader>(this);
 }
 
 SceneBase::~SceneBase()
@@ -30,64 +23,19 @@ SceneBase::~SceneBase()
 	PauseManager::GetInstance().End();
 }
 
-// フェードの更新
-void SceneBase::UpdateFade() {
+SceneBase* SceneBase::UpdateBase()
+{
+	if (m_fader->Update()) return m_nextScene;
 
-	// フェードインアウト
-	m_fadeBright += m_fadeSpeed;
-
-	if (m_fadeBright >= 255) {
-
-		m_fadeBright = 255;
-
-		if ( m_fadeSpeed > 0 ) {
-
-			m_fadeSpeed = 0;
-		}
-	}
-
-	if ( m_fadeBright <= 0 ) {
-
-		m_fadeBright = 0;
-
-		if ( m_fadeSpeed < 0 ) {
-
-			m_fadeSpeed = 0;
-		}
-	}
+	return Update();
 }
 
-// フェードの描画
-void SceneBase::DrawFade() const {
+void SceneBase::DrawBase()
+{
+	PreDraw();
+	Draw();
+	GetObjectManager()->Draw();
+	PostDraw();
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_fadeBright);
-	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, m_fadeColor, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	m_fader->Draw();
 }
-
-// フェードイン中かどうかを判定
-bool SceneBase::IsFadingIn() const {
-
-	if (m_fadeSpeed < 0) return true;
-	return false;
-}
-
-// フェードアウト中かどうかを判定
-bool SceneBase::IsFadingOut() const {
-
-	if (m_fadeSpeed > 0) return true;
-	return false;
-}
-
-// フェード中かどうかを判定
-bool SceneBase::IsFading() const {
-
-	return IsFadingIn() || IsFadingOut();
-}
-
-/// フェードアウト開始
-void SceneBase::StartFadeOut() {
-
-	m_fadeSpeed = kFadeSpeed;
-}
-

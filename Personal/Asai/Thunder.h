@@ -112,6 +112,9 @@ private:
 	/// </summary>
 	std::vector<EnemyBase*>m_pEnemies;
 
+	/// <summary>
+	/// 画像を読み込み済みか
+	/// </summary>
 	static bool m_isLoadedGraph;
 
 	/// <summary>

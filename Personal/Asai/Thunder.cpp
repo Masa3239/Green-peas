@@ -159,7 +159,7 @@ void Thunder::Draw()
 		DrawRotaGraph(transform.position.x, transform.position.y, kGraphScale * m_scale, transform.rotation.z, m_graphHandle[m_graphFrame], TRUE);
 
 	}
-	else if (m_state == State::Infection) {
+	if (m_state == State::Infection) {
 
 		for (const auto& enemy : m_pEnemies) {
 

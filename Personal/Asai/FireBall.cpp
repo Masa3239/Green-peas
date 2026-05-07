@@ -133,11 +133,12 @@ void FireBall::Draw()
 
 	}
 
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
+
 	//画像の描画
 	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y - kOffSetDraw, graphScale * m_scale, 0, m_graphHandle[m_graphFrame], TRUE);
-
-	//丸を描画
-	//DrawCircle(GetTransform().position.x, GetTransform().position.y, collisionSize * m_scale, TRUE, 0xff0000);
+	
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 }
 
