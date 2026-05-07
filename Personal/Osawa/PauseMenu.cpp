@@ -51,25 +51,8 @@ void PauseMenu::Update()
 
 		if (InputManager::GetInstance().IsPressed(Input::Action::Pause))
 		{
-			PauseManager::GetInstance().TogglePause();
-			PauseManager::GetInstance().SetAlpha(kPauseScreenAlpha);
-
-			m_choice = Choice::Back;
-
-			if (!PauseManager::GetInstance().IsPause())
-			{
-				m_tween->StartAnim(&m_borderHeight, {
-					Animation::Keyframe{m_borderHeight, 0.0f, Animation::Ease::BackOut},
-					Animation::Keyframe{80.0f, 0.5f},
-					});
-			}
-			else
-			{
-				m_tween->StartAnim(&m_borderHeight, {
-					Animation::Keyframe{m_borderHeight, 0.0f, Animation::Ease::QuadIn},
-					Animation::Keyframe{0.0f, 0.25f},
-					});
-			}
+			Toggle();
+			
 		}
 
 		OnPause();
@@ -130,6 +113,29 @@ void PauseMenu::Draw()
 	}
 }
 
+void PauseMenu::Toggle()
+{
+	PauseManager::GetInstance().TogglePause();
+	PauseManager::GetInstance().SetAlpha(kPauseScreenAlpha);
+
+	m_choice = Choice::Back;
+
+	if (!PauseManager::GetInstance().IsPause())
+	{
+		m_tween->StartAnim(&m_borderHeight, {
+			Animation::Keyframe{m_borderHeight, 0.0f, Animation::Ease::BackOut},
+			Animation::Keyframe{80.0f, 0.5f},
+			});
+	}
+	else
+	{
+		m_tween->StartAnim(&m_borderHeight, {
+			Animation::Keyframe{m_borderHeight, 0.0f, Animation::Ease::QuadIn},
+			Animation::Keyframe{0.0f, 0.25f},
+			});
+	}
+}
+
 void PauseMenu::OnPause()
 {
 	if (!PauseManager::GetInstance().IsPause()) return;
@@ -151,7 +157,7 @@ void PauseMenu::OnPause()
 		switch (m_choice)
 		{
 		case Choice::Back:
-			PauseManager::GetInstance().TogglePause();
+			Toggle();
 			break;
 
 		case Choice::Setting:

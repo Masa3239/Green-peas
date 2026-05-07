@@ -7,12 +7,48 @@ namespace Sound
 	enum class BGM
 	{
 		Pause,
+		BGM1,
+		BGM2,
+		BGM3,
+		BGM4,
 		Max
 	};
 
 	enum class SE
 	{
 		Temp,
+		Bomerang,
+		Boss1,
+		Boss2,
+		BossBullet,
+		Bow,
+		Bullet,
+		Button,
+		Chest,
+		Confirm1,
+		Confirm2,
+		Critical,
+		CursorMove,
+		Damage1,
+		Damage2,
+		Dash,
+		Explosion,
+		Fire1,
+		Fire2,
+		Heal,
+		ItemGet1,
+		ItemGet2,
+		LevelUp,
+		Pause,
+		Damage3,
+		Damage4,
+		PowerUp,
+		Button2,
+		Damage5,
+		Sword1,
+		Sword2,
+		Sword3,
+		Thunder,
 		Max
 	};
 }

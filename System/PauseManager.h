@@ -27,6 +27,8 @@ public:
 	/// </summary>
 	void TogglePause() { m_isToggled = true; };
 
+	void SetPauseState(bool state);
+
 	/// <summary>
 	/// ƒ|[ƒY’†‚©‚Ç‚¤‚©æ“¾
 	/// </summary>

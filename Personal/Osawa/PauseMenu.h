@@ -44,6 +44,8 @@ public:
 
 private:
 
+	void Toggle();
+
 	void OnPause();
 
 	Menu m_menu;

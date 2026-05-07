@@ -25,7 +25,11 @@ SceneBase::~SceneBase()
 
 SceneBase* SceneBase::UpdateBase()
 {
-	if (m_fader->Update()) return m_nextScene;
+	if (m_fader->Update())
+	{
+		PauseManager::GetInstance().SetPauseState(false);
+		return m_nextScene;
+	}
 
 	return Update();
 }
