@@ -75,3 +75,37 @@ void PauseManager::Draw()
 	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, Color::kBlack, 1);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
+
+void PauseManager::SetPauseState(bool state)
+{
+	m_isPause = state;
+	if (state)
+	{
+		auto objects = m_objManager->GetAllGameObjects();
+
+		for (const auto& obj : objects)
+		{
+			// アクティブなすべてのゲームオブジェクトを停止する
+			if (obj->GetState() != GameObject::State::Active) continue;
+
+			obj->SetState(GameObject::State::Deactive);
+			// 元々アクティブなオブジェクトのみを配列に加える
+			m_activeGameObjects.emplace_back(obj);
+		}
+
+		m_screenGraph = MakeScreen(Game::kScreenWidth, Game::kScreenHeight);
+		GetDrawScreenGraph(0, 0, Game::kScreenWidth, Game::kScreenHeight, m_screenGraph);
+	}
+	else
+	{
+		DeleteGraph(m_screenGraph);
+		m_screenGraph = -1;
+
+		// 元々アクティブなゲームオブジェクトをアクティブに戻す
+		for (const auto& obj : m_activeGameObjects)
+		{
+			obj->SetState(GameObject::State::Active);
+		}
+		m_activeGameObjects.clear();
+	}
+}
