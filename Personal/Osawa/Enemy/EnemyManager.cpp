@@ -40,6 +40,7 @@ EnemyManager::EnemyManager(ObjectManager* objManager) :
 	m_uiMgr(nullptr),
 	m_weaponMgr(nullptr),
 	m_chestMgr(nullptr),
+	m_map(nullptr),
 	m_generateCounter(0.0f),
 	m_highestDamage(0),
 	m_numDefeated(0)
@@ -203,6 +204,7 @@ EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, int level)
 	}
 	enemy->SetPlayer(m_pPlayer);
 	enemy->SetEnemyManager(this);
+	enemy->SetMap(m_map);
 	enemy->SetLevel(level);
 	enemy->Init();
 
@@ -236,6 +238,7 @@ EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos, int level)
 	}
 	enemy->SetPlayer(m_pPlayer);
 	enemy->SetEnemyManager(this);
+	enemy->SetMap(m_map);
 	enemy->SetLevel(level);
 	enemy->Init();
 

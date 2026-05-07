@@ -5,6 +5,7 @@
 #include "../Personal/Takagi/Player.h"
 #include "../Personal/Osawa/ExpOrb.h"
 #include "../Enemy/EnemyManager.h"
+#include "../Personal/Kimura/Map/Map.h"
 
 namespace
 {
@@ -20,6 +21,8 @@ namespace
 	
 	// デスポーンする範囲
 	constexpr float kDespawnDistance = 800;
+
+	constexpr float kMapRangeOffset = 60;
 }
 
 EnemyBase::EnemyBase(ObjectManager* objManager) :
@@ -30,6 +33,7 @@ EnemyBase::EnemyBase(ObjectManager* objManager) :
 	m_variableStatus(0),
 	m_pPlayer(nullptr),
 	m_pEnemyMgr(nullptr),
+	m_pMap(nullptr),
 	m_isFixSpawn(false)
 {
 }
@@ -66,6 +70,8 @@ void EnemyBase::Update()
 	}
 
 	UpdateEnemy();
+
+	ClampInRange();
 
 	// 当たり判定の座標更新
 	m_collider.SetPosition(GetTransform().position);
@@ -150,4 +156,17 @@ void EnemyBase::CheckDamageFlagSize(int weapon, int index)
 	{
 		m_damageFlag[weapon].emplace_back(false);
 	}
+}
+
+void EnemyBase::ClampInRange()
+{
+	Vector3& pos = GetTransform().position;
+
+	if (pos.x < kMapRangeOffset) pos.x = kMapRangeOffset;
+	else
+	if (pos.x > m_pMap->GetMapBlockNumX() * 40 - kMapRangeOffset) pos.x = m_pMap->GetMapBlockNumX() * 40 - kMapRangeOffset;
+
+	if (pos.y < kMapRangeOffset) pos.y = kMapRangeOffset;
+	else
+	if (pos.y > m_pMap->GetMapBlockNumY() * 40 - kMapRangeOffset) pos.y = m_pMap->GetMapBlockNumY() * 40 - kMapRangeOffset;
 }
