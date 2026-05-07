@@ -2,6 +2,7 @@
 #include"../../../Utility/Vector3.h"
 
 class SceneBase;
+class Fader;
 
 class ResultModeSelect
 {
@@ -38,7 +39,7 @@ public:
 	/// 選択したシーンを返す関数
 	/// </summary>
 	/// <returns></returns>
-	SceneBase* CheckSelect();
+	bool CheckSelect(Fader* fader);
 private:
 	/// <summary>
 	/// 画面遷移のグラフィックハンドル

@@ -108,6 +108,8 @@ void SceneInGame::Init()
 	m_pChestManager->SetItemManager(m_pItemMgr.get());
 	m_pChestManager->Init();
 
+	m_pResultShow->SetFader(GetFader());
+
 	m_pPauseMenu->SetFader(GetFader());
 	m_pPauseMenu->SetBuffManager(m_pBuffManager.get());
 	m_pPauseMenu->Init();
@@ -142,11 +144,11 @@ SceneBase* SceneInGame::Update()
 	}
 	else if (m_pResultShow->IsResult())
 	{
-		auto nextScene = m_pResultShow->Update();;
-		if (nextScene != nullptr)
-		{
-			return nextScene;
-		}
+		/*auto nextScene = */m_pResultShow->Update();;
+		//if (nextScene != nullptr)
+		//{
+		//	return nextScene;
+		//}
 	}
 	else
 	{

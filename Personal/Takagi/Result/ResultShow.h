@@ -6,6 +6,7 @@ class ResultHead;
 class ScoreShow;
 class ResultModeSelect;
 class SceneBase;
+class Fader;
 
 class ResultShow
 {
@@ -31,7 +32,7 @@ public:
 	/// <summary>
 	/// 更新処理
 	/// </summary>
-	SceneBase* Update();
+	void Update();
 	/// <summary>
 	/// 描画処理
 	/// </summary>
@@ -41,6 +42,7 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	bool IsResult() { return m_isResult; }
+	void SetFader(Fader* fader) { m_fader = fader; }
 private:
 
 	/// <summary>
@@ -69,6 +71,6 @@ private:
 	int m_phase;
 	float m_interval;
 	bool m_isResult;
-
+	Fader* m_fader;
 };
 

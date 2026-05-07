@@ -9,6 +9,7 @@
 #include"../../../Scene/CharacterSelectScene.h"
 #include"../../../Scene/SceneTitle.h"
 #include"../../../Personal/Osawa/Scene/SceneSelection.h"
+#include"../../../Scene/Fader.h"
 namespace {
 	const char* const kResultPath = "Resource\\Result\\";
 	const char* const kGraphPath[ResultModeSelect::Max] = {
@@ -117,26 +118,30 @@ bool ResultModeSelect::IsStop()
 	return true;
 }
 
-SceneBase* ResultModeSelect::CheckSelect()
+bool ResultModeSelect::CheckSelect(Fader* fader)
 {
 	// 補間が終了していなければnullptrを返す
-	if (!m_stop)return nullptr;
+	if (!m_stop)return false;
 	// 決定ボタンを押していないときnullptrを返す
 	if (!InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
-		return nullptr;
+		return false;
 	}
 	// 選択しているシーンを返す
 	switch (m_select)
 	{
 	case Title:
-		return new SceneTitle();
+		fader->StartFadeOut<SceneTitle>();
+		//return new SceneTitle();
 		//return new SceneSelection();
+		return true;
 		break;
 	case Retry:
-		return new CharacterSelectScene();
+		fader->StartFadeOut<CharacterSelectScene>();
+		//return new CharacterSelectScene();
+		return true;
 		break;
 	default:
 		break;
 	}
-	return nullptr;
+	return false;
 }

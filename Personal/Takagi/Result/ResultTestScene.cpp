@@ -31,8 +31,7 @@ void ResultTestScene::End()
 SceneBase* ResultTestScene::Update()
 {
 	// リザルトの更新処理
-	SceneBase* nextScene =m_resultShow->Update();
-	if (nextScene)return nextScene;
+	m_resultShow->Update();
 	return this;
 }
 

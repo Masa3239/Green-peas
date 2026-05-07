@@ -9,6 +9,8 @@
 #include"../../../Scene/SceneBase.h"
 #include"../../../Scene/SceneTitle.h"
 #include"../../../System/PauseManager.h"
+#include"../../../Scene/Fader.h"
+
 namespace {
 	// 演出同士のインターバル
 	constexpr float kInterval[ResultShow::Max] = { 0.5f,0.5f };
@@ -26,7 +28,8 @@ ResultShow::ResultShow() :
 	m_modeSelect(nullptr),
 	m_phase(Back),
 	m_interval(0),
-	m_isResult(false)
+	m_isResult(false),
+	m_fader(nullptr)
 {
 	m_backBoard = std::make_unique<BackBoard>();
 
@@ -65,11 +68,11 @@ void ResultShow::End()
 	m_modeSelect->End();
 }
 
-SceneBase* ResultShow::Update()
+void ResultShow::Update()
 {
 	if (m_interval > 0) {
 		m_interval -= Time::GetInstance().GetUnscaledDeltaTime();
-		return nullptr;
+		return;
 	}
 
 	switch (m_phase)
@@ -99,16 +102,15 @@ SceneBase* ResultShow::Update()
 	case Mode:
 	{
 		m_modeSelect->Update();
-		SceneBase* nextScene = m_modeSelect->CheckSelect();
+		bool nextScene = m_modeSelect->CheckSelect(m_fader);
 		if (!nextScene)break;
 		PauseManager::GetInstance().TogglePause();
-		return nextScene;
+		
 		break;
 	}
 	default:
 		break;
 	}
-		return nullptr;
 }
 
 void ResultShow::Draw()

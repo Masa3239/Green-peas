@@ -70,11 +70,11 @@ void SceneTestTakagi::Init()
 		break;
 	}
 	m_pPlayer->SetEnemyManager(m_pEnemyManager.get());
-	m_pPlayer->Init();
 	m_pPlayer->SetCamera(m_pCamera.get());
 	m_pPlayer->SetItemManager(m_pItemManager.get());
 	m_pPlayer->SetBuffManager(m_pBuffManager.get());
 	m_pPlayer->SetMap(m_pMap.get());
+	m_pPlayer->Init();
 	m_pCamera->Init();
 	m_pMap->Init();
 	m_pEnemyMap->Init();
@@ -123,7 +123,7 @@ SceneBase* SceneTestTakagi::Update()
 		m_pBuffManager->Update();
 	}
 	else if (m_pResultShow->IsResult()) {
-		nextScene = m_pResultShow->Update();
+		m_pResultShow->Update();
 	}
 	else {
 		//nextScene = m_pPauseMenu->Update();
