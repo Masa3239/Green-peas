@@ -35,7 +35,7 @@ public:
 	/// </summary>
 	void End();
 
-	int GetMaxConbo()const { return m_maxConbo; }
+	int GetMaxConbo()const { return m_maxCombo; }
 
 	void SetEnemyManager(EnemyManager* pEnemyMgr) { m_pEnemyMgr = pEnemyMgr; }
 
@@ -54,7 +54,7 @@ private:
 	/// <summary>
 	/// 最大コンボ数
 	/// </summary>
-	int m_maxConbo;
+	int m_maxCombo;
 
 	/// <summary>
 	/// 1F前の倒した敵の数

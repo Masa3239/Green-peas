@@ -312,20 +312,19 @@ void BuffManager::AdaptBuff(const Buff::Type& buffType)
 	}
 }
 
-int* BuffManager::GetBuffLevel()
+int BuffManager::GetBuffLevel(const Buff::Type& buffType)
 {
-	int levels[static_cast<int>(kBuffMax)];
-	for (int i = 0;i < kBuffMax;i++) {
-		levels[i] = m_buff.level[static_cast<int>(m_buffType[i])];
-	}
-	return levels;
+	if (buffType == Buff::Type::Max)return 0;
+	int level;
+	level = m_buff.level[static_cast<int>(buffType)];
+	return level;
 }
 
-int* BuffManager::GetBuffIcon()
+int BuffManager::GetBuffIcon(const Buff::Type& buffType)
 {
-	int icons[static_cast<int>(kBuffMax)];
-	for (int i = 0;i < kBuffMax;i++) {
-		icons[i] = m_iconHandle[static_cast<int>(m_buffType[i])];
-	}
-	return icons;
+	if (buffType == Buff::Type::Max)return 0;
+	int icon;
+	icon = m_iconHandle[static_cast<int>(buffType)];
+	return icon;
 }
+

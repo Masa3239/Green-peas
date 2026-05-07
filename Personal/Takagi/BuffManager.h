@@ -60,8 +60,8 @@ public:
 	/// </summary>
 	/// <param name="buffType"></param>
 	void AdaptBuff(const Buff::Type& buffType);
-	int* GetBuffLevel();
-	int* GetBuffIcon();
+	int GetBuffLevel(const Buff::Type& buffType);
+	int GetBuffIcon(const Buff::Type& buffType);
 private:
 	/// <summary>
 	/// プレイヤーのポインタ

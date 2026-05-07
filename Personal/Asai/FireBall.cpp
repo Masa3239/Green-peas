@@ -72,6 +72,8 @@ void FireBall::Init()
 void FireBall::Update()
 {
 
+	if (!m_isActive)return;
+
 	switch (m_state)
 	{
 	case FireBall::State::Ball:

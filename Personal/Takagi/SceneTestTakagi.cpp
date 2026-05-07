@@ -126,7 +126,7 @@ SceneBase* SceneTestTakagi::Update()
 		nextScene = m_pResultShow->Update();
 	}
 	else {
-		nextScene = m_pPauseMenu->Update();
+		//nextScene = m_pPauseMenu->Update();
 		
 	}
 	if (nextScene != nullptr)
