@@ -12,6 +12,7 @@
 #include"../../Utility/Vector3.h"
 #include<string>
 #include"../../Utility/Game.h"
+#include"../../Utility/Time.h"
 namespace{
 	const char* const kIconPath = "Resource\\Iccons\\skill_";
 	const char* const kPing = ".png";
@@ -54,6 +55,7 @@ namespace{
 	constexpr int kProceedHeight = 500;
 	constexpr int kButtonHeight = 550;
 	constexpr float kExpUp = 0.5f;
+	constexpr float kResponse = 0.7f;
 
 }
 
@@ -70,7 +72,8 @@ BuffManager::BuffManager() :
 	m_selectHandle(-1),
 	m_select(0),
 	m_buff(),
-	m_fontHandle(-1)
+	m_fontHandle(-1),
+	m_response(0)
 {
 	// アイコン・テキスト画像の読み込み
 	std::string path = kIconPath;
@@ -123,8 +126,10 @@ void BuffManager::End()
 
 void BuffManager::Update()
 {
-
-
+	float time = Time::GetInstance().GetDeltaTime();
+	if (m_response > 0) {
+		m_response -= time;
+	}
 
 	switch (m_phase)
 	{
@@ -132,6 +137,7 @@ void BuffManager::Update()
 
 		RandomBuff();
 		if (InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
+			if (m_response > 0)break;
 			m_phase = Phase::Select;
 			m_select = 0;
 		}
@@ -219,6 +225,9 @@ void BuffManager::BuffSelectStart()
 	m_buffType[1] = Buff::Type::Max;
 	m_buffType[2] = Buff::Type::Max;
 	m_selected = Buff::Type::Max;
+
+	m_response = kResponse;
+
 }
 Buff::Type BuffManager::BuffSelect()
 {
@@ -301,4 +310,22 @@ void BuffManager::AdaptBuff(const Buff::Type& buffType)
 	default:
 		break;
 	}
+}
+
+int* BuffManager::GetBuffLevel()
+{
+	int levels[static_cast<int>(kBuffMax)];
+	for (int i = 0;i < kBuffMax;i++) {
+		levels[i] = m_buff.level[static_cast<int>(m_buffType[i])];
+	}
+	return levels;
+}
+
+int* BuffManager::GetBuffIcon()
+{
+	int icons[static_cast<int>(kBuffMax)];
+	for (int i = 0;i < kBuffMax;i++) {
+		icons[i] = m_iconHandle[static_cast<int>(m_buffType[i])];
+	}
+	return icons;
 }

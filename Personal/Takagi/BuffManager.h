@@ -60,6 +60,8 @@ public:
 	/// </summary>
 	/// <param name="buffType"></param>
 	void AdaptBuff(const Buff::Type& buffType);
+	int* GetBuffLevel();
+	int* GetBuffIcon();
 private:
 	/// <summary>
 	/// プレイヤーのポインタ
@@ -113,5 +115,9 @@ private:
 	/// フォトハンドル
 	/// </summary>
 	int m_fontHandle;
+	/// <summary>
+	/// 入力に反応する
+	/// </summary>
+	float m_response;
 };
 
