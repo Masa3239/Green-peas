@@ -512,6 +512,17 @@ void Player::ExpUp(float value)
 	m_gauges[static_cast<int>(GaugeType::Exp)]->Increase(value);
 }
 
+int* Player::GetWeaponGraphHandle()
+{
+	int graph[kWeaponMaxNum];
+
+	for (int i = 0;i < kWeaponMaxNum;i++) {
+		graph[i] = m_weapons[i]->GetGraphHandle();
+	}
+
+	return graph;
+}
+
 bool Player::CheckCanDash()
 {
 	// ダッシュ可能かどうかを調べる

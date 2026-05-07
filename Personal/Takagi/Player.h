@@ -21,6 +21,7 @@ namespace {
 	constexpr int kPlayerFrame = 4;
 	// プレイヤーのアニメーションで何枚目のフレームを使うか
 	constexpr int kFrame[kPlayerFrame] = { 0,1,2,1 };
+
 	constexpr int kWeaponMaxNum = 2;
 }
 
@@ -180,6 +181,7 @@ public: // ゲッター・セッター=======================
 	bool CheckAnger() { return m_anger; }
 	float GetExp() { return m_exp; }
 	void SetExp(float exp) { m_exp = exp; }
+	int* GetWeaponGraphHandle();
 private:
 	/// <summary>
 	/// ダッシュ可能かどうかを調べる関数
