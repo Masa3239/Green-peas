@@ -19,7 +19,7 @@ namespace {
 	constexpr float kMainWeaponScale = 1.0f;
 
 	//装備していない武器の表示座標
-	constexpr Vector3 kSubWeponPos = { kMainWeponPos.x + 50,kMainWeponPos.y + 25,kMainWeponPos.z };
+	constexpr Vector3 kSubWeponPos = { kMainWeponPos.x + 75,kMainWeponPos.y + 25,kMainWeponPos.z };
 
 	//装備していない武器の大きさ
 	constexpr float kSubWeponRadius = kMainWeponRadius / 2;
@@ -98,16 +98,10 @@ void PlayerWeaponUI::SetPlayer(Player* pPlayer)
 void PlayerWeaponUI::DrawFrame()
 {
 
-	//枠の透明度を設定する
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
-
 	//装備中の武器の枠を描画する
-	DrawCircle(kMainWeponPos.x, kMainWeponPos.y, kMainWeponRadius, Color::kWhite, TRUE);
+	DrawCircle(kMainWeponPos.x, kMainWeponPos.y, kMainWeponRadius, Color::kWhite, FALSE);
 	//装備していない武器の枠を描画する
-	DrawCircle(kSubWeponPos.x, kSubWeponPos.y, kSubWeponRadius, Color::kWhite, TRUE);
-
-	//透明度を元に戻す
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawCircle(kSubWeponPos.x, kSubWeponPos.y, kSubWeponRadius, Color::kWhite, FALSE);
 
 }
 
