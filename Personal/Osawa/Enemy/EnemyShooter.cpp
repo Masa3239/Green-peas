@@ -5,6 +5,7 @@
 #include "../Utility/Time.h"
 #include "../Chara/Collision.h"
 #include "../Enemy/EnemyBullet.h"
+#include "../System/SoundManager.h"
 
 namespace
 {
@@ -185,6 +186,8 @@ void EnemyShooter::Attack()
 		bullet->Create(GetTransform().position, rot);
 
 		m_attackCooltimeCounter = kBulletAttackCooltime;
+
+		SoundManager::GetInstance().PlaySe(Sound::SE::Bullet);
 
 		break;
 	}

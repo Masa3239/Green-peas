@@ -3,6 +3,7 @@
 #include "../Utility/Time.h"
 #include "../Chara/AnimationController2D.h"
 #include "../Chara/Collision.h"
+#include "../System/SoundManager.h"
 
 namespace
 {
@@ -85,6 +86,8 @@ void EnemyMelee::UpdateEnemy()
 		if (GetCollider().CheckCollision(GetPlayer()->GetCircle()))
 		{
 			Attack();
+
+			SoundManager::GetInstance().PlaySe(Sound::SE::Damage1);
 
 			m_attackCooltimeCounter = kMeleeAttackCooltime;
 		}

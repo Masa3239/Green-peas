@@ -101,7 +101,7 @@ public:
 
 	EnemyBoss* GetEnemyBoss() const { return m_enemyBoss.get(); }
 
-	bool GetHighestDamage() const { return m_highestDamage; }
+	int GetHighestDamage() const { return m_highestDamage; }
 
 	ChestManager* GetChestManager() const { return m_chestMgr; }
 	void SetChestManager(ChestManager* chestMgr) { m_chestMgr = chestMgr; }
