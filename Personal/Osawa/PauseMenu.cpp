@@ -75,8 +75,8 @@ void PauseMenu::Update()
 
 void PauseMenu::Draw()
 {
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 192);
-	DrawBox(0, 0, m_borderHeight * 2.3f, 800, Color::kBlack, true);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 191);
+	DrawBox(100, 0, 300, m_borderHeight * 8, Color::kBlack, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	DrawBox(0, 0, 800, m_borderHeight, Color::kBlack, true);
@@ -85,9 +85,9 @@ void PauseMenu::Draw()
 
 	if (PauseManager::GetInstance().IsPause())
 	{
-		DrawString(150, 300, "Resume", m_choice == Choice::Back ? Color::kRed : Color::kGray);
-		DrawString(150, 330, "Settings", m_choice == Choice::Setting ? Color::kRed : Color::kGray);
-		DrawString(150, 360, "Back to Title", m_choice == Choice::Title ? Color::kRed : Color::kGray);
+		DrawString(130, 250, "Resume", m_choice == Choice::Back ? Color::kRed : Color::kGray);
+		DrawString(200, 300, "Settings", m_choice == Choice::Setting ? Color::kRed : Color::kGray);
+		DrawString(140, 350, "Back to Title", m_choice == Choice::Title ? Color::kRed : Color::kGray);
 
 		std::vector<std::pair<int, int>> buffs;
 		for (int i = 0; i < kBuffMax; i++)
