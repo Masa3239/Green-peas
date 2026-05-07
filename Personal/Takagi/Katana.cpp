@@ -112,8 +112,12 @@ void Katana::Draw()
 		reverseX = true;
 		rad = -kDrawRadian;
 	}
-	if(m_effectFrame>kCameraUpdate)
-	DrawRotaGraph(drawPos.x, drawPos.y, 0.6f, rad, m_graphHandle, TRUE,reverseX);
+	if (m_effectFrame > kCameraUpdate) {
+		if (m_catch)
+			m_circle.DebugDraw();
+		if (m_active)
+			DrawRotaGraph(drawPos.x, drawPos.y, 0.6f, rad, m_graphHandle, TRUE, reverseX);
+	}
 	//m_circle.DebugDraw();
 	//m_catchCol.DebugDraw();
 }
