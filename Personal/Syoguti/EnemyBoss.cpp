@@ -33,7 +33,7 @@ namespace {
 	constexpr int kMaxHp = 50000;
 
 	// ボスの攻撃力
-	constexpr int kAttackPower = 30;
+	constexpr int kAttackPower = 25;
 
 	// ランダムに行動を決める時のインターバル
 	constexpr float kRandomInterval = 2.0f;
@@ -333,11 +333,11 @@ bool EnemyBoss::Damage(const int damage, int weapon, int index)
 
 	if (!SealReleaseFlag()) {
 
-		m_speed += kAngrySpeed;
+		//m_speed += kAngrySpeed;
 		m_sealRelease = true;
 		m_isAngry = true;
-		m_angrySpeed = 4;
-		m_action = BossAction::LongRangeAttack;
+		m_angrySpeed = 2;
+		m_action = BossAction::CloseRangeAttack;
 	}
 
 	// 足りない分を追加
