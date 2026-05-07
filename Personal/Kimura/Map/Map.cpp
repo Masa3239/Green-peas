@@ -15,7 +15,7 @@ namespace {
 	// CSVファイルパス（worldid / stageIidで変化）
 	const char* const kMapCsv = "Resource\\Map%d_%d.csv";
 
-	constexpr Vector3 kBoxSize = { 20,20,0 };
+	constexpr Vector3 kBoxSize = { 40,40,0 };
 	constexpr int kBlockSize = 40;
 }
 
