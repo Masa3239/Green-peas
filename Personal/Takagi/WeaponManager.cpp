@@ -77,9 +77,9 @@ void WeaponManager::End()
 void WeaponManager::Update()
 {
 
-	if (InputManager::GetInstance().IsPressed(Input::Action::Weapon)) {
-		CreateRandom(m_pPlayer->GetTransform().position);
-	}
+	//if (InputManager::GetInstance().IsPressed(Input::Action::Weapon)) {
+	//	CreateRandom(m_pPlayer->GetTransform().position);
+	//}
 
 	for (auto& weapon : m_weapons) {
 		weapon->UpdateCatchCol();
