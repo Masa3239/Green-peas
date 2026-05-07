@@ -165,6 +165,7 @@ void WeaponManager::DeleteOldest()
 	if (m_weapons.size() < kWeaponPopMax)return;
 	for (int i = 0;i < kWeaponPopMax;i++) {
 		if (m_weapons[i]->GetChatch())continue;
+		m_weapons[i]->SetState(GameObject::State::Dead);
 		m_weapons.erase(m_weapons.begin() + i);
 		return;
 	}

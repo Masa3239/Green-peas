@@ -32,6 +32,9 @@ ThunderWand::ThunderWand(ObjectManager* objManager) :
 ThunderWand::~ThunderWand()
 {
 	DeleteGraph(m_graphHandle);
+	for (auto& bullets : m_pThunders) {
+		bullets->SetState(GameObject::State::Dead);
+	}
 }
 
 void ThunderWand::Init()
