@@ -60,6 +60,8 @@ public:
 
 	void GenerateMinimap(Camera* pCamera, Map* pMap);
 
+	int  const GetMaxCombo()const;
+
 	void SetPlayer(Player* pPlayer);
 
 	void SetEnemyManager(EnemyManager* pEnemyManager);

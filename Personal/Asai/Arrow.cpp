@@ -21,7 +21,7 @@ namespace {
 	//当たり判定のサイズ
 	constexpr float kCollisionSize = 20.0f;
 	//スピード
-	constexpr float kSpeed = 300.0f;
+	constexpr float kSpeed = 450.0f;
 	//最大移動距離
 	constexpr float kMaxMoveDistance = 500.0f;
 

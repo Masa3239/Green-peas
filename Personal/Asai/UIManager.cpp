@@ -103,6 +103,11 @@ void UIManager::GenerateMinimap(Camera* pCamera, Map* pMap)
 
 }
 
+int const UIManager::GetMaxCombo() const
+{
+	return m_pCombo->GetMaxConbo();
+}
+
 void UIManager::SetPlayer(Player* pPlayer)
 {
 
