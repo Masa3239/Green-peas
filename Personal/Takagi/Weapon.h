@@ -87,6 +87,7 @@ public:
 	bool GetChatch() { return m_catch; }
 	bool GetChargeFlag() { return m_chargeFlag; }
 	bool CheckCameraUpdate() { return m_camUpdate; }
+	int GetGraphHandle() { return m_graphHandle; }
 protected:
 	/// <summary>
 	/// 武器のグラフィックハンドル
