@@ -85,11 +85,11 @@ void SettingsMenu::Draw()
 
 	int vol;
 
-	vol = static_cast<int>(m_bgmVolume * 100);
+	vol = static_cast<int>(std::round(m_bgmVolume * 100));
 	DrawString(300, 300, "BGM Volume: ", m_choice == Choice::BGMVol ? Color::kRed : Color::kGray);
 	DrawString(450, 300, (std::to_string(vol) + "%").c_str(), m_choice == Choice::BGMVol ? Color::kRed : Color::kGray);
 
-	vol = static_cast<int>(m_seVolume * 100);
+	vol = static_cast<int>(std::round(m_seVolume * 100));
 	DrawString(300, 350, "SE Volume: ", m_choice == Choice::SEVol ? Color::kRed : Color::kGray);
 	DrawString(450, 350, (std::to_string(vol) + "%").c_str(), m_choice == Choice::SEVol ? Color::kRed : Color::kGray);
 }
