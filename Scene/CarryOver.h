@@ -28,6 +28,10 @@ public:
 	/// 最大ダメージ
 	/// </summary>
 	int maxDamage;
+	/// <summary>
+	/// 敵を倒した数
+	/// </summary>
+	int kill;
 
 public:
 	/// <summary>

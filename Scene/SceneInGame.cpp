@@ -68,6 +68,7 @@ void SceneInGame::Init()
 	m_pPlayer->SetEnemyManager(m_pEnemyMgr.get());
 	m_pPlayer->SetItemManager(m_pItemMgr.get());
 	m_pPlayer->SetBuffManager(m_pBuffManager.get());
+	m_pPlayer->SetMap(m_pMap.get());
 	m_pPlayer->Init();
 
 	m_pMap->Init();
@@ -168,12 +169,15 @@ SceneBase* SceneInGame::Update()
 		m_pChestManager->Update();
 		m_pChestManager->CheckHitCollision(m_pPlayer->GetCircle());
 
+		m_carryOver.maxCombo = m_pUIMgr->GetMaxCombo();
+		m_carryOver.maxDamage = m_pEnemyMgr->GetHighestDamage();
+		m_carryOver.kill = m_pEnemyMgr->GetDefeatedNum();
+
 		if (m_pEnemyMgr->GetEnemyBoss()->GetIsDead())
 		{
 			m_carryOver.isClear = Score::Result::Clear;
 			m_pResultShow->Init(m_carryOver);
 		}
-
 		// プレイヤーが死亡していたら
 		if (m_pPlayer->IsDead())
 		{
