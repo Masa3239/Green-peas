@@ -49,7 +49,7 @@ void SceneManager::Update() {
 	if (!m_pScene) return;
 
 	// シーンの切り替えもしくは更新
-	SceneBase* pScene = m_pScene->Update();
+	SceneBase* pScene = m_pScene->UpdateBase();
 	m_pScene->GetObjectManager()->Update();
 	CarryOver carryOver = m_pScene->GetCarryOver();
 
@@ -80,13 +80,7 @@ void SceneManager::Draw() {
 
 	PauseManager::GetInstance().Draw();
 
-	m_pScene->PreDraw();
-
-	m_pScene->Draw();
-
-	m_pScene->GetObjectManager()->Draw();
-
-	m_pScene->PostDraw();
+	m_pScene->DrawBase();
 
 	PauseManager::GetInstance().Update();
 }
