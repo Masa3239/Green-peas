@@ -7,7 +7,6 @@ namespace Sound
 	enum class BGM
 	{
 		Pause,
-		Temp,
 		Max
 	};
 
