@@ -56,14 +56,31 @@ public:
 
 private:
 
+	/// <summary>
+	/// ミニマップの描画
+	/// </summary>
 	void DrawMiniMap();
 
+	/// <summary>
+	/// プレイヤーの描画
+	/// </summary>
 	void DrawPlayer();
 
+	/// <summary>
+	/// アイテムの描画
+	/// </summary>
 	void DrawItem();
 
+	/// <summary>
+	/// 敵の描画
+	/// </summary>
 	void DrawEnemy();
 
+	/// <summary>
+	/// ミニマップ座標に変換する
+	/// </summary>
+	/// <param name="pos">ワールド座標</param>
+	/// <returns>ミニマップの座標</returns>
 	Vector3 ToMinimapPos(const Vector3 pos);
 
 private:
