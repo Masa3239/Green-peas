@@ -380,6 +380,9 @@ private:
 	/// </summary>
 	float m_angrySpeed;
 
+	/// <summary>
+	/// 怒ったかどうか
+	/// </summary>
 	bool m_isAngry;
 };
 

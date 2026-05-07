@@ -1,9 +1,46 @@
 {
-    "bgmFilePath": [
-        "BGM_Pause.ogg"
-    ],
+  "bgmFilePath": [
+    "BGM_Pause.ogg",
+    "MusMus-BGM-168.mp3",
+    "MusMus-BGM-169.mp3",
+    "MusMus-BGM-170.mp3",
+    "MusMus-BGM-171.mp3"
+  ],
     "folderPath": "Resource\\Sound\\",
-    "seFilePath": [
-        "SE_001.mp3"
-    ]
+  "seFilePath": [
+    "SE_001.mp3",
+    "bomerang.mp3",
+    "boss1.mp3",
+    "boss2.mp3",
+    "bossBullet.mp3",
+    "bow.mp3",
+    "bullet.mp3",
+    "button.mp3",
+    "chest.mp3",
+    "confirm1.mp3",
+    "confirm2.mp3",
+    "critical.mp3",
+    "cursorMove.mp3",
+    "damaged1.mp3",
+    "damaged7.mp3",
+    "dash.mp3",
+    "explosion.mp3",
+    "fire1.mp3",
+    "fire2.mp3",
+    "heal.mp3",
+    "ItemGet1.mp3",
+    "ItemGet2.mp3",
+    "levelUp.mp3",
+    "pause.mp3",
+    "se_damage3.mp3",
+    "se_dead.mp3",
+    "se_powerup.mp3",
+    "se_suitsuku01.mp3",
+    "se_zasyu01.mp3",
+    "swordAttack1.mp3",
+    "swordAttack2.mp3",
+    "swordAttack3.mp3",
+    "thunder.mp3"
+
+  ]
 }
