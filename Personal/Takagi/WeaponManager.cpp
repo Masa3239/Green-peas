@@ -78,7 +78,7 @@ void WeaponManager::End()
 void WeaponManager::Update()
 {
 
-	if (InputManager::GetInstance().IsPressed(Input::Action::Weapon)) {
+	if (InputManager::GetInstance().IsDown(Input::Action::Anger1)) {
 		CreateRandom(m_pPlayer->GetTransform().position);
 	}
 
