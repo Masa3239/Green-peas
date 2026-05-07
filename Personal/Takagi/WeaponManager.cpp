@@ -20,6 +20,7 @@
 #include"../../Utility/Input.h"
 namespace {
 	constexpr float kCreatae = 1.5f;
+	constexpr int kWeaponPopMax=5;
 }
 WeaponManager::WeaponManager():
 	m_weapons(),
@@ -77,9 +78,9 @@ void WeaponManager::End()
 void WeaponManager::Update()
 {
 
-	//if (InputManager::GetInstance().IsPressed(Input::Action::Weapon)) {
-	//	CreateRandom(m_pPlayer->GetTransform().position);
-	//}
+	if (InputManager::GetInstance().IsPressed(Input::Action::Weapon)) {
+		CreateRandom(m_pPlayer->GetTransform().position);
+	}
 
 	for (auto& weapon : m_weapons) {
 		weapon->UpdateCatchCol();
@@ -133,7 +134,7 @@ void WeaponManager::Create(const Vector3& pos, int weaponType)
 	m_weapons[m_weapons.size()-1]->Init();
 	m_weapons[m_weapons.size()-1]->SetPos(pos);
 	m_weapons[m_weapons.size()-1]->SetChatch(false);
-
+	DeleteOldest();
 }
 
 void WeaponManager::CreateRandom(const Vector3& pos)
@@ -157,4 +158,14 @@ bool WeaponManager::CheckCanPick()
 	}
 
 	return false;
+}
+
+void WeaponManager::DeleteOldest()
+{
+	if (m_weapons.size() < kWeaponPopMax)return;
+	for (int i = 0;i < kWeaponPopMax;i++) {
+		if (m_weapons[i]->GetChatch())continue;
+		m_weapons.erase(m_weapons.begin() + i);
+		return;
+	}
 }

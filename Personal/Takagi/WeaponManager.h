@@ -23,6 +23,7 @@ public:
 	void Create(const Vector3& pos, int weaponType);
 	void CreateRandom(const Vector3& pos);
 	bool CheckCanPick();
+	void DeleteOldest();
 private:
 	std::vector<std::unique_ptr<Weapon>> m_weapons;
 	Player* m_pPlayer;

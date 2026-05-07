@@ -523,6 +523,17 @@ int* Player::GetWeaponGraphHandle()
 	return graph;
 }
 
+float* Player::GetWeaponScale()
+{
+	float scale[kWeaponMaxNum];
+
+	for (int i = 0;i < kWeaponMaxNum;i++) {
+		scale[i] = m_weapons[i]->GetScale();
+	}
+
+	return scale;
+}
+
 bool Player::CheckCanDash()
 {
 	// ダッシュ可能かどうかを調べる

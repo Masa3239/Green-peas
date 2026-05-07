@@ -24,6 +24,7 @@ public:
 	void CheckCollision()override;
 	void SetScale(float scale)override { m_scale = scale; }
 	int GetWeaponType()override { return Weapon::Boomerang; }
+	float GetScale()override;
 private:
 	Transform m_attack;
 	float m_speed;

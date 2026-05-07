@@ -15,6 +15,7 @@ namespace {
 	// チャージ判定にする時間
 	constexpr float kChargeTime = 0.5f;
 	constexpr int kBulletNum = 50;
+	constexpr float kNormalScale = 1;
 }
 class Weapon:public GameObject
 {
@@ -88,6 +89,7 @@ public:
 	bool GetChargeFlag() { return m_chargeFlag; }
 	bool CheckCameraUpdate() { return m_camUpdate; }
 	int GetGraphHandle() { return m_graphHandle; }
+	virtual float GetScale() { return kNormalScale; }
 protected:
 	/// <summary>
 	/// 武器のグラフィックハンドル

@@ -137,3 +137,8 @@ void Boomerang::CheckCollision()
     m_pEnemyMgr->CheckHitEnemies(m_circle, damage, criticalRate, criticalDamage, Weapon::Boomerang, 0);
 
 }
+
+float Boomerang::GetScale()
+{
+    return kGraphScale;
+}
