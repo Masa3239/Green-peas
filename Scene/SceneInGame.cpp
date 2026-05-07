@@ -109,6 +109,7 @@ void SceneInGame::Init()
 	m_pChestManager->Init();
 
 	m_pPauseMenu->SetFader(GetFader());
+	m_pPauseMenu->SetBuffManager(m_pBuffManager.get());
 	m_pPauseMenu->Init();
 	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
 
@@ -222,10 +223,11 @@ void SceneInGame::PostDraw()
 		{
 			m_pResultShow->Draw();
 		}
-		else
-		{
-			m_pPauseMenu->Draw();
-		}
+	}
+
+	if (!m_pBuffManager->IsSelect() && !m_pResultShow->IsResult())
+	{
+		m_pPauseMenu->Draw();
 	}
 
 	clsDx();

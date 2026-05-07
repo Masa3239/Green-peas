@@ -5,6 +5,8 @@
 class SceneBase;
 class Fader;
 class SettingsMenu;
+class Tween;
+class BuffManager;
 
 class PauseMenu
 {
@@ -36,6 +38,8 @@ public:
 
 	void Draw();
 
+	void SetBuffManager(BuffManager* buffMgr) { m_buffMgr = buffMgr; }
+
 	void SetFader(Fader* fader) { m_fader = fader; }
 
 private:
@@ -48,5 +52,11 @@ private:
 
 	std::unique_ptr<SettingsMenu> m_settingsMenu;
 
+	std::unique_ptr<Tween> m_tween;
+
+	BuffManager* m_buffMgr;
+
 	Fader* m_fader;
+
+	float m_borderHeight;
 };
