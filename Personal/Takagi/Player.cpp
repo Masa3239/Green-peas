@@ -72,7 +72,7 @@ Player::Player(ObjectManager* objManager) :
 	m_moveVector({ 0,0,0 }),
 	m_direction(MyMath::FourDirection::Front),
 	m_animFrame(0),
-	m_camera(nullptr),
+	m_pCamera(nullptr),
 	m_cameraTransform(),
 	m_circle(),
 	m_pEnemyMgr(nullptr),
@@ -137,15 +137,18 @@ void Player::Init()
 	m_gauges[static_cast<int>(GaugeType::Hp)]->SetValue(m_status.HP, Gauge::Value::Max);
 	m_gauges[static_cast<int>(GaugeType::Stamina)]->SetValue(m_status.Stamina, Gauge::Value::Max);
 	m_cameraTransform.Reset();
+	m_cameraTransform = GetTransform();
 	m_exp = 1;
 	m_oldPos = GetTransform().position;
+	m_pCamera->SetPos(GetTransform().position);
+
 }
 
 void Player::End()
 {
-	m_camera->End();
-	m_camera = nullptr;
-	delete m_camera;
+	m_pCamera->End();
+	m_pCamera = nullptr;
+	delete m_pCamera;
 	for (auto& weapons : m_weapons) {
 		if (!weapons)continue;
 		weapons->End();
@@ -175,7 +178,7 @@ void Player::Update()
 			m_pItemMgr->CheckHitCollision(GetCircle());
 		}
 	}
-	m_camera->Update(m_cameraTransform);
+	m_pCamera->Update(m_cameraTransform);
 	// 時間が止まっていなければ移動処理を呼ぶ
 	if (Time::GetInstance().GetDeltaTime()) {
 		Move();
@@ -198,11 +201,11 @@ void Player::Update()
 	if (m_gauges[static_cast<int>(GaugeType::Anger)]->CheckMax() &&
 		CheckAngerButton()) {
 		m_anger = true;
-		m_camera->ChangeAnger();
+		m_pCamera->ChangeAnger();
 	}
 	if (m_gauges[static_cast<int>(GaugeType::Anger)]->CheckMin()) {
 		m_anger = false;
-		m_camera->ChangeFollow();
+		m_pCamera->ChangeFollow();
 
 	}if (m_anger) {
 		m_gauges[static_cast<int>(GaugeType::Anger)]->Decrease(kAngerDecValue * m_deltaTime);
@@ -444,7 +447,7 @@ void Player::Damage(float value)
 	// 最大・最小値よりも大ききくならないようにする
 	m_gauges[static_cast<int>(GaugeType::Anger)]->Clamp();
 	// カメラを揺らす
-	m_camera->StartDamage(kCameraShake);
+	m_pCamera->StartDamage(kCameraShake);
 }
 
 void Player::Heal(float value)

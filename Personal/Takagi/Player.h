@@ -116,7 +116,7 @@ public:
 	void AddBuff(PlayerBuff& playerBuff);
 public: // ゲッター・セッター=======================
 	virtual Character::Job GetPlayerJob() { return Character::Job::Warrior; };
-	void SetCamera(Camera* camera) { m_camera = camera; }
+	void SetCamera(Camera* camera) { m_pCamera = camera; }
 	/// <summary>
 	/// プレイヤーの角度を取得する関数
 	/// </summary>
@@ -233,7 +233,7 @@ protected:
 	std::unique_ptr<Gauge> m_gauges[static_cast<int>(GaugeType::Max)];
 	Weapon* m_weapons[kWeaponMaxNum];
 
-	Camera* m_camera;
+	Camera* m_pCamera;
 	Transform m_cameraTransform;
 
 	/// <summary>

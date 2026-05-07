@@ -10,7 +10,7 @@ Hunter::Hunter(ObjectManager* objManager) :
 	m_moveVector = { 0,0,0 };
 	m_direction = MyMath::FourDirection::Front;
 	m_animFrame = 0;
-	m_camera = nullptr;
+	m_pCamera = nullptr;
 	m_cameraTransform.Reset();
 	m_pEnemyMgr = nullptr;
 	m_pItemMgr = nullptr;
