@@ -37,7 +37,7 @@ public:
 	void PostDraw()override;
 private:
 	std::unique_ptr<RotateCharacter> m_characters;
-	std::unique_ptr<Gear> m_gear;
+	//std::unique_ptr<Gear> m_gear;
 	int m_graphHanedle[static_cast<int>(Character::Job::Max)];
 
 };
