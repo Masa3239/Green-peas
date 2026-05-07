@@ -22,7 +22,7 @@ namespace {
 Combo::Combo():
 	m_fontHandle(-1),
 	m_combo(0),
-	m_maxConbo(0),
+	m_maxCombo(0),
 	m_prevDefeatedNum(0),
 	m_receptionTimer(0),
 	m_alpha(0),
@@ -56,7 +56,7 @@ void Combo::Update()
 		//アルファ値を最大に設定する
 		m_alpha = kMaxAlpha;
 		//コンボの最大チェック
-		if (m_maxConbo < m_combo)m_maxConbo = m_combo;
+		if (m_maxCombo < m_combo)m_maxCombo = m_combo;
 
 	}
 
@@ -101,6 +101,14 @@ void Combo::Draw()
 
 void Combo::DebugDraw()
 {
+
+	printfDx("\n");
+
+	printfDx("Combo %d\n", m_combo);
+	printfDx("MaxCombo %d\n", m_maxCombo);
+
+	printfDx("\n");
+
 }
 
 void Combo::End()

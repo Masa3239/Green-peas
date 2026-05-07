@@ -3,11 +3,12 @@
 #include<vector>
 #include<memory>
 
+#include <cassert>
 #include"../Asai/PlayerAngerBar.h"
 #include"../Asai/PlayerExpBar.h"
 #include"../Asai/PlayerHpBar.h"
 #include"../Asai/PlayerStaminaBar.h"
-#include <cassert>
+#include"../Asai/PlayerWeaponUI.h"
 
 PlayerUIManager::PlayerUIManager():
 	m_pUIs()
@@ -39,6 +40,12 @@ void PlayerUIManager::Init()
 	assert(expBar);
 	//配列に追加
 	m_pUIs.push_back(std::move(expBar));
+
+	//武器のUIを追加
+	std::unique_ptr<PlayerUIBase> weaponUI = std::make_unique<PlayerWeaponUI>();
+	assert(weaponUI);
+	//配列に追加
+	m_pUIs.push_back(std::move(weaponUI));
 
 	for (auto& UI : m_pUIs) {
 
