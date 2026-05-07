@@ -136,11 +136,9 @@ void BuffManager::Update()
 	case Phase::Start:
 
 		RandomBuff();
-		if (InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
 			if (m_response > 0)break;
 			m_phase = Phase::Select;
 			m_select = 0;
-		}
 		break;
 	case Phase::Select:
 		{
