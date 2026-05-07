@@ -109,17 +109,18 @@ void PauseMenu::Draw()
 		std::vector<std::pair<int, int>> buffs;
 		for (int i = 0; i < kBuffMax; i++)
 		{
-			int level = m_buffMgr->GetBuffLevel()[i];
-			if (level == 0) continue;
+			int level = m_buffMgr->GetBuffLevel(static_cast<Buff::Type>(i));
+			if (level <= 0) continue;
 
-			int graph = m_buffMgr->GetBuffIcon()[i];
+			int graph = m_buffMgr->GetBuffIcon(static_cast<Buff::Type>(i));
 			auto data = std::make_pair(level, graph);
 			buffs.emplace_back(data);
 		}
 		for (int i = 0; i < buffs.size(); i++)
 		{
-			DrawRotaGraph(20 * i, 600, 0.2f, 0, buffs[i].second, false);
-			DrawString(20 * i, 600, ("LV" + std::to_string(buffs[i].first)).c_str(), Color::kWhite);
+			DrawRotaGraph(40 + 60 * i, 560, 0.1f, 0, buffs[i].second, false);
+			DrawBox(38 + 60 * i, 578, 75 + 60 * i, 620, Color::kBlack, true);
+			DrawString(40 + 60 * i, 580, ("LV" + std::to_string(buffs[i].first)).c_str(), Color::kWhite);
 		}
 
 		if (m_menu == Menu::Settings)
