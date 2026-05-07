@@ -109,11 +109,7 @@ SceneBase* SceneTestOsawa::Update()
 {
 	if (!m_pBuffManager->IsSelect())
 	{
-		auto nextScene = m_pPauseMenu->Update();
-		if (nextScene != nullptr)
-		{
-			return nextScene;
-		}
+		m_pPauseMenu->Update();
 	}
 
 	m_pBuffManager->Update();

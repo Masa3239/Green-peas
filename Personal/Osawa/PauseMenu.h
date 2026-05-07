@@ -3,6 +3,7 @@
 #include <memory>
 
 class SceneBase;
+class Fader;
 class SettingsMenu;
 
 class PauseMenu
@@ -31,17 +32,21 @@ public:
 
 	void End();
 
-	SceneBase* Update();
+	void Update();
 
 	void Draw();
 
+	void SetFader(Fader* fader) { m_fader = fader; }
+
 private:
 
-	SceneBase* OnPause();
+	void OnPause();
 
 	Menu m_menu;
 
 	int m_choice;
 
 	std::unique_ptr<SettingsMenu> m_settingsMenu;
+
+	Fader* m_fader;
 };
