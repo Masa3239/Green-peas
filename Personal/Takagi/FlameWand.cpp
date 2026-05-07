@@ -37,6 +37,9 @@ FlameWand::FlameWand(ObjectManager* objManager):
 FlameWand::~FlameWand()
 {
 	DeleteGraph(m_graphHandle);
+	for (auto& bullets : m_pFires) {
+		bullets->SetState(GameObject::State::Dead);
+	}
 }
 
 void FlameWand::Init()

@@ -38,6 +38,9 @@ Bow::Bow(ObjectManager* objManager) :
 Bow::~Bow()
 {
 	DeleteGraph(m_graphHandle);
+	for (auto& bullets : m_pArrows) {
+		bullets->SetState(GameObject::State::Dead);
+	}
 }
 
 void Bow::Init()
