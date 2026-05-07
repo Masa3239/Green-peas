@@ -9,6 +9,7 @@
 
 class Player;
 class EnemyManager;
+class Map;
 
 class EnemyBase : public GameObject
 {
@@ -92,6 +93,8 @@ public:
 	EnemyManager* GetEnemyManager() const { return m_pEnemyMgr; }
 	void SetEnemyManager(EnemyManager* enemyMgr) { m_pEnemyMgr = enemyMgr; }
 
+	void SetMap(Map* map) { m_pMap = map; }
+
 protected:
 
 	/// <summary>
@@ -113,6 +116,11 @@ private:
 	/// ダメージフラグの範囲外を使おうとしたら範囲を追加する
 	/// </summary>
 	void CheckDamageFlagSize(int weapon, int index);
+
+	/// <summary>
+	/// マップ範囲内に収める
+	/// </summary>
+	void ClampInRange();
 
 	/// <summary>
 	/// コライダー
@@ -139,6 +147,8 @@ private:
 	Player* m_pPlayer;
 
 	EnemyManager* m_pEnemyMgr;
+
+	Map* m_pMap;
 
 	/// <summary>
 	/// 固定生成かどうか
