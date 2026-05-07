@@ -122,8 +122,14 @@ private:
 	/// </summary>
 	static std::vector<int>m_graphHandle;
 
+	/// <summary>
+	/// 画像のフレーム
+	/// </summary>
 	float m_graphFrame;
 
+	/// <summary>
+	/// 画像の更新までのカウンター
+	/// </summary>
 	float m_graphCounter;
 
 };

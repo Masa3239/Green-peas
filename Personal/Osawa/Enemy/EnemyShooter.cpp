@@ -84,6 +84,7 @@ void EnemyShooter::End()
 	for (auto& bullet : m_bullets)
 	{
 		bullet->End();
+		bullet->SetState(State::Dead);
 	}
 }
 
