@@ -20,7 +20,7 @@
 #include"../../Utility/Input.h"
 namespace {
 	constexpr float kCreatae = 1.5f;
-	constexpr int kWeaponPopMax=5;
+	constexpr int kWeaponPopMax=20;
 }
 WeaponManager::WeaponManager():
 	m_weapons(),
