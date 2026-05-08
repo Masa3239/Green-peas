@@ -14,7 +14,7 @@ namespace
 	// 基礎ステータス
 	constexpr EnemyBase::StatusParam kStatus = { 25, 25, 5, 5, 5 };
 	// レベルごとの増加量
-	constexpr int kHpPerLevel = 8;
+	constexpr int kHpPerLevel = 15;
 	constexpr int kAtkPerLevel = 1.03f;
 	constexpr int kDefPerLevel = 5;
 
