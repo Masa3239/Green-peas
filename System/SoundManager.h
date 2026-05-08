@@ -56,6 +56,8 @@ namespace Sound
 		FailedRotation,
 		Katana,
 		Buff,
+		Rotation1,
+		Rotation2,
 		Max
 	};
 }
