@@ -497,14 +497,16 @@ void Player::SetEnemyManager(EnemyManager* enemyManager)
 
 void Player::SetWeapon(Weapon* weapon)
 {
-	if (!m_weapons[1]) {
+	if (m_weapons[0]&&!m_weapons[1]) {
 		m_weapons[1] = weapon;
+		m_weapons[1]->SetChatch(true);
+		return;
 	}
-	if (m_weapons[0]) {
+	else if (m_weapons[0]) {
 		m_weapons[0]->SetChatch(false);
 	}
 	m_weapons[0] = weapon;
-
+	m_weapons[0]->SetChatch(true);
 }
 
 void Player::ExpUp(float value)
@@ -525,15 +527,12 @@ int* Player::GetWeaponGraphHandle()
 	return graph;
 }
 
-float* Player::GetWeaponScale()
+float Player::GetWeaponScale(int weaponNum)
 {
-	float scale[kWeaponMaxNum];
-
-	for (int i = 0;i < kWeaponMaxNum;i++) {
-		scale[i] = 0;
-		if(m_weapons[i])
-		scale[i] = m_weapons[i]->GetScale();
-	}
+	float scale=0;
+	if(m_weapons[weaponNum])
+		scale = m_weapons[weaponNum]->GetScale();
+	
 
 	return scale;
 }

@@ -182,7 +182,7 @@ public: // ゲッター・セッター=======================
 	float GetExp() { return m_exp; }
 	void SetExp(float exp) { m_exp = exp; }
 	int* GetWeaponGraphHandle();
-	float* GetWeaponScale();
+	float GetWeaponScale(int weaponNum);
 private:
 	/// <summary>
 	/// ダッシュ可能かどうかを調べる関数

@@ -122,6 +122,7 @@ void BossKey::Update()
 		if (m_animationTimer > 0.0f) break;
 
 		m_pEnemyMgr->GetEnemyBoss()->SealReleaseFlag();
+		m_pEnemyMgr->GetEnemyBoss()->SetBossSeFlag();
 
 		SetState(State::Dead);
 

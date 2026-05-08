@@ -91,7 +91,8 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 	m_isDead(false),
 	m_speed(0),
 	m_angrySpeed(1),
-	m_isAngry(false)
+	m_isAngry(false),
+	m_seBossFlag(false)
 {
 	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
 	for (int i = 0; i < static_cast<int>(BossStatus::Max); i++) {
@@ -140,7 +141,8 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_isDead(false),
 	m_speed(0),
 	m_angrySpeed(1),
-	m_isAngry(false)
+	m_isAngry(false),
+	m_seBossFlag(false)
 {
 
 	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
@@ -228,6 +230,15 @@ void EnemyBoss::Update()
 	// すでに倒されていたら呼ばない
 	if (CheckDeadFlag()) return;
 
+	if (m_seBossFlag) {
+
+		SoundManager::GetInstance().StopBGM();
+		SoundManager::GetInstance().PlayBGM(Sound::BGM::BGM1);
+		// 封印解除SEを鳴らす
+		SoundManager::GetInstance().PlaySe(Sound::SE::Boss1);
+		m_seBossFlag = false;
+	}
+
 	m_pBossBulletMgr->Update();
 
 	m_pBossBulletMgr->CheckHitCollision(m_pPlayer->GetCircle());
@@ -289,7 +300,7 @@ void EnemyBoss::Draw()
 			m_closeRangeAttackCollision.DebugDraw();
 		}
 
-		DrawCircle(m_targetPos.x, m_targetPos.y, 10, 0xff0000);
+		DrawCircle(m_targetPos.x, m_targetPos.y, 10, 0x0000ff);
 		if (!CheckDeadFlag()) return;
 		Dead();
 	}
@@ -341,6 +352,7 @@ bool EnemyBoss::Damage(const int damage, int weapon, int index)
 	if (!SealReleaseFlag()) {
 
 		//m_speed += kAngrySpeed;
+		m_seBossFlag = true;
 		m_sealRelease = true;
 		m_isAngry = true;
 		m_angrySpeed = 2;

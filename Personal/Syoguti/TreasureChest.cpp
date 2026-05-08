@@ -3,6 +3,7 @@
 #include "../../Utility/Transform.h"
 #include "DxLib.h"
 #include "../../Utility/Time.h"
+#include "../../System/SoundManager.h"
 
 namespace {
 
@@ -76,6 +77,7 @@ void TreasureChest::Draw()
 void TreasureChest::Open()
 {
     m_isOpen = true;
+    SoundManager::GetInstance().PlaySe(Sound::SE::Chest);
 }
 
 void TreasureChest::OpenAnimation()

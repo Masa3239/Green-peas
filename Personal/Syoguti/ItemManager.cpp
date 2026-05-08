@@ -8,8 +8,8 @@
 namespace {
 
 	// 画像のファイルパス
-	const char* const kHpHealItemGraphHandlePath = ".\\Resource\\Item\\small Potions.png";
-	const char* const kAttackUpItemGraphHandlePath = ".\\Resource\\Item\\small Potions2.png";
+	const char* const kHpHealItemGraphHandlePath = ".\\Resource\\Item\\small Potions2.png";
+	const char* const kAttackUpItemGraphHandlePath = ".\\Resource\\Item\\small Potions.png";
 }
 
 ItemManager::ItemManager() :

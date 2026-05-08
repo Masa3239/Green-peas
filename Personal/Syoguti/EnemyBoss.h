@@ -112,6 +112,13 @@ public:
 	void const SetPlayer(Player* player) { m_pPlayer = player; }
 
 	/// <summary>
+	/// ボスの封印解除Seをセットするセッター関数
+	/// </summary>
+	/// <param name="flag"></param>
+	/// <returns></returns>
+	void const SetBossSeFlag() { m_seBossFlag = true; }
+
+	/// <summary>
 	/// ボスの当たり判定を取得するゲッター関数
 	/// </summary>
 	/// <returns></returns>
@@ -389,5 +396,10 @@ private:
 	/// 怒ったかどうか
 	/// </summary>
 	bool m_isAngry;
+
+	/// <summary>
+	/// ボスの封印解除SE
+	/// </summary>
+	bool m_seBossFlag;
 };
 

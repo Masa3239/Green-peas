@@ -20,6 +20,7 @@ public:
 	void Shot(const Transform& transform);
 	void SetScale(float scale)override { m_scale = scale; }
 	int GetWeaponType()override { return Weapon::Bow; }
+	void SetBulletHandle(std::vector<int> handles)override;
 private:
 	//bool attack;
 	//float m_desireRadian;
