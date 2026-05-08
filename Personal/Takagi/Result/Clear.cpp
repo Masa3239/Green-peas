@@ -3,6 +3,7 @@
 #include"../../../Utility/Time.h"
 #include<DxLib.h>
 #include"../../../System/InputManager.h"
+#include"../../../System/SoundManager.h"
 
 namespace {
 	// スクリーンの中心座標
@@ -37,6 +38,7 @@ Clear::~Clear()
 
 void Clear::Init()
 {
+	SoundManager::GetInstance().PlayBGM(Sound::BGM::Clear);
 }
 
 void Clear::End()
