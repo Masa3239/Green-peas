@@ -49,6 +49,11 @@ namespace Sound
 		Sword2,
 		Sword3,
 		Thunder,
+		BuffDecision,
+		CharactorButton,
+		CharactorSelect,
+		FailedRotation,
+		Katana,
 		Max
 	};
 }
