@@ -187,7 +187,7 @@ void EnemyShooter::Attack()
 
 		m_attackCooltimeCounter = kBulletAttackCooltime;
 
-		SoundManager::GetInstance().PlaySe(Sound::SE::Bullet);
+		SoundManager::GetInstance().PlaySe(Sound::SE::Fire2);
 
 		break;
 	}

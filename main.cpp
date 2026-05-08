@@ -59,7 +59,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		SoundManager::GetInstance().Update();
 
+#ifdef _DEBUG
 		printfDx("FPS %f", 1.0f / Time::GetInstance().GetDeltaTime());
+#endif
 
 		// •`‰ææ‚ğØ‚è‘Ö‚¦‚é
 		ScreenFlip();
