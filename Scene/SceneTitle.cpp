@@ -34,6 +34,8 @@ void SceneTitle::Init()
 
 	m_background = std::make_unique<TitleBackground>(GetObjectManager());
 	m_background->Init();
+
+	SoundManager::GetInstance().PlayBGM(Sound::BGM::Pause);
 }
 
 void SceneTitle::End()
