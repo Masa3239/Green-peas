@@ -87,7 +87,7 @@ void EnemyMelee::UpdateEnemy()
 		{
 			Attack();
 
-			SoundManager::GetInstance().PlaySe(Sound::SE::Damage1);
+			SoundManager::GetInstance().PlaySe(Sound::SE::Damage2);
 
 			m_attackCooltimeCounter = kMeleeAttackCooltime;
 		}
