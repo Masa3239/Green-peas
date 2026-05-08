@@ -229,6 +229,11 @@ private:
 	int m_graphHandle[static_cast<int>(BossStatus::Max)][kCharactorMotionNum];
 
 	/// <summary>
+	/// 封印解除の画像ハンドル
+	/// </summary>
+	int m_sealGraphHandle;
+
+	/// <summary>
 	/// モーション制御用のカウンタ
 	/// </summary>
 	int m_motionCounter;
