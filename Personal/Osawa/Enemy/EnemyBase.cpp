@@ -6,6 +6,7 @@
 #include "../Personal/Osawa/ExpOrb.h"
 #include "../Enemy/EnemyManager.h"
 #include "../Personal/Kimura/Map/Map.h"
+#include "../System/SoundManager.h"
 
 namespace
 {
@@ -137,6 +138,8 @@ void EnemyBase::Dead()
 		exp->SetPlayer(m_pPlayer);
 		exp->GetTransform().position = GetTransform().position;
 	}
+
+	SoundManager::GetInstance().PlaySe(Sound::SE::Damage2);
 }
 
 bool EnemyBase::ResetDamageFlag(int weapon, int index)
