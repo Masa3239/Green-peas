@@ -40,7 +40,12 @@
     "swordAttack1.mp3",
     "swordAttack2.mp3",
     "swordAttack3.mp3",
-    "thunder.mp3"
+    "thunder.mp3",
+    "BuffDecisionSE.mp3",
+    "charactorButton.mp3",
+    "charaSelectSE.mp3",
+    "FailedRotationSE.mp3",
+    "Katana.mp3"
 
   ]
 }

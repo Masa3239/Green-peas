@@ -86,6 +86,8 @@ void Arrow::Draw()
 		transform.rotation.z + kOffSetRadian, 
 		m_graphHandle, TRUE);
 
+	printfDx("%d\n", m_graphHandle);
+
 #ifdef _DEBUG
 	//DrawCircle(GetTransform().position.x, GetTransform().position.y, kCollisionSize * m_scale, TRUE, 0xffff00);
 
