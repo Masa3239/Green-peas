@@ -150,11 +150,11 @@ void FireBall::DebugDraw()
 void FireBall::End()
 {
 
-	for (auto& fire : m_graphHandle) {
+	//for (auto& fire : m_graphHandle) {
 
-		DeleteGraph(fire);
+	//	DeleteGraph(fire);
 
-	}
+	//}
 
 }
 

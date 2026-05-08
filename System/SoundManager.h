@@ -11,6 +11,7 @@ namespace Sound
 		BGM2,
 		BGM3,
 		BGM4,
+		Clear,
 		Max
 	};
 

@@ -114,9 +114,9 @@ void Arrow::DebugDraw()
 void Arrow::End()
 {
 	//画像の破棄
-	DeleteGraph(m_graphHandle);
+	//DeleteGraph(m_graphHandle);
 
-	m_graphHandle = -1;
+	//m_graphHandle = -1;7
 
 }
 
