@@ -55,6 +55,7 @@ namespace Sound
 		CharactorSelect,
 		FailedRotation,
 		Katana,
+		Buff,
 		Max
 	};
 }

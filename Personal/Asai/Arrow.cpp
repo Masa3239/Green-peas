@@ -92,7 +92,7 @@ void Arrow::Draw()
 	//DrawCircle(GetTransform().position.x, GetTransform().position.y, kCollisionSize * m_scale, TRUE, 0xffff00);
 
 	//当たり判定の描画
-	m_circle.DebugDraw();
+	//m_circle.DebugDraw();
 
 #else
 
