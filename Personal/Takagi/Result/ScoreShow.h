@@ -7,6 +7,7 @@ public:
 		Job,
 		Damage,
 		Combo,
+		Kill,
 		Max,
 	};
 	ScoreShow();
