@@ -66,9 +66,7 @@ void Map::Draw()
 {
 	//二次元配列から描画する
 	for (int i = 0; i < m_mapBlockNumY; i++) {
-
 		for (int j = 0; j < m_mapBlockNumX; j++) {
-			
 			// 空マスは描画しない
 			if (m_mapData[i][j] != MapChip::Space) {
 				DrawRotaGraph(j * kMapBlockSize + (kMapBlockSize / 2),
@@ -78,26 +76,6 @@ void Map::Draw()
 			}
 		}
 	}
-	//ブロックの判定
-	/*
-	for (int y = 0; y < m_mapBlockNumY; y++)
-	{
-		for (int x = 0; x < m_mapBlockNumX; x++)
-		{
-			if (IsWall(x, y))
-			{
-				DrawBox(
-					x * kMapBlockSize,
-					y * kMapBlockSize,
-					(x + 1) * kMapBlockSize,
-					(y + 1) * kMapBlockSize,
-					GetColor(255, 0, 0), // 赤
-					FALSE
-				);
-			}
-		}
-	}
-	 */
 }
 
 void Map::Finalize()
