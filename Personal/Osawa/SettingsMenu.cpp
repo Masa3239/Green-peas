@@ -3,6 +3,7 @@
 #include "../System/InputManager.h"
 #include "../System/JsonManager.h"
 #include "../Utility/Color.h"
+#include "../System/SoundManager.h"
 
 namespace
 {
@@ -44,16 +45,19 @@ bool SettingsMenu::Update()
 	if (InputManager::GetInstance().IsPressed(Input::Action::Up))
 	{
 		m_choice--;
+		SoundManager::GetInstance().PlaySe(Sound::SE::CursorMove);
 	}
 	if (InputManager::GetInstance().IsPressed(Input::Action::Down))
 	{
 		m_choice++;
+		SoundManager::GetInstance().PlaySe(Sound::SE::CursorMove);
 	}
 
 	m_choice = (Choice::Length + m_choice) % Choice::Length;
 
 	switch (m_choice)
 	{
+	SoundManager::GetInstance().PlaySe(Sound::SE::Confirm2);
 	case Choice::BGMVol:
 		if (InputManager::GetInstance().IsPressed(Input::Action::Right)) m_bgmVolume += 0.1f;
 		if (InputManager::GetInstance().IsPressed(Input::Action::Left)) m_bgmVolume -= 0.1f;
@@ -69,6 +73,7 @@ bool SettingsMenu::Update()
 
 	if (InputManager::GetInstance().IsPressed(Input::Action::Cancel))
 	{
+		SoundManager::GetInstance().PlaySe(Sound::SE::Confirm2);
 		return false;
 	}
 
