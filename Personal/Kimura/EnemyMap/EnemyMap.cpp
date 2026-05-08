@@ -59,6 +59,7 @@ void EnemyMap::Finalize()
 
 bool EnemyMap::LoadCSVToMapData(int worldNum, int stageNum)
 {
+	m_spawnList.clear();
 	char fileNameCSV[256];
 	// CSVファイル名生成（ワールド・ステージ指定）
 	sprintf_s(fileNameCSV, 256, kEnemyMapCsv, worldNum, stageNum);
