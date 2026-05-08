@@ -12,6 +12,13 @@ namespace
 	constexpr float kLiveTime = 5.0f;
 
 	constexpr float kColliderRadius = 3.0f;
+
+	const char* const kGraphPath = "Resource\\Puppeteer Projectile.png";
+
+	Animation::Animation2DData kAnimData =
+	{
+		0, 10.0f, true, false
+	};
 }
 
 EnemyBullet::EnemyBullet(ObjectManager* objManager, int damage) :
@@ -25,11 +32,15 @@ EnemyBullet::EnemyBullet(ObjectManager* objManager, int damage) :
 void EnemyBullet::Init()
 {
 	SetState(State::Deactive);
+
+	m_animationController.Init();
+	m_animationController.RegisterGraphHandle(0, kGraphPath, 4, 4, 1, 20, 20);
+	m_animationController.PlayAnimation(kAnimData);
 }
 
 void EnemyBullet::End()
 {
-
+	m_animationController.End();
 }
 
 void EnemyBullet::Update()
@@ -61,14 +72,23 @@ void EnemyBullet::Update()
 		SetState(State::Deactive);
 	}
 
+	if (m_animationController.IsForcePlay())
+	{
+		m_animationController.Update();
+		return;
+	}
+	m_animationController.Update();
+
 	SetDrawOrder(transform.position.y);
 }
 
 void EnemyBullet::Draw()
 {
-	const auto& transform = GetTransform();
+	const auto& pos = GetTransform().position;
+	float dir = GetTransform().rotation.z;
 
-	DrawCircle(transform.position.x, transform.position.y, 5, 0x62be73);
+	//DrawCircle(transform.position.x, transform.position.y, 5, 0x62be73);
+	DrawRotaGraph(pos.x, pos.y, 1, dir, m_animationController.GetCurrentGraph(), 1);
 
 #ifdef _DEBUG
 	m_collider.DebugDraw();
