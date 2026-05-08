@@ -34,10 +34,6 @@ namespace {
 
 }
 
-bool FireBall::m_isLoadedGraph = false;
-
-std::vector<int> FireBall::m_graphHandle;
-
 FireBall::FireBall(ObjectManager* objManager) :
 	BulletBase(objManager),
 	m_state(State::Ball),
@@ -50,9 +46,6 @@ FireBall::FireBall(ObjectManager* objManager) :
 
 void FireBall::Init()
 {
-
-	//読み込んでいたらリターン
-	if (m_isLoadedGraph)return;
 
 	int buf[81];
 
@@ -67,8 +60,6 @@ void FireBall::Init()
 	}
 
 	//SoundManager::GetInstance()
-
-	m_isLoadedGraph = true;
 
 }
 
@@ -162,8 +153,6 @@ void FireBall::End()
 		DeleteGraph(fire);
 
 	}
-
-	m_isLoadedGraph = false;
 
 }
 
