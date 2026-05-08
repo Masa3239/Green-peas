@@ -38,6 +38,8 @@ void Arrow::Init()
 
 	m_isActive = false;
 
+	return;
+
 	//画像の読み込み
 	m_graphHandle = LoadGraph(kGraphHandlePath);
 
