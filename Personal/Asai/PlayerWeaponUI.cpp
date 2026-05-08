@@ -16,7 +16,7 @@ namespace {
 	constexpr float kMainWeponRadius = 50.0f;
 
 	//装備中の武器の拡大率
-	constexpr float kMainWeaponScale = 1.4f;
+	constexpr float kMainWeaponScale = 1.7f;
 
 	//装備していない武器の表示座標
 	constexpr Vector3 kSubWeponPos = { kMainWeponPos.x + 75,kMainWeponPos.y + 25,kMainWeponPos.z };
@@ -85,13 +85,21 @@ void PlayerWeaponUI::SetPlayer(Player* pPlayer)
 
 	}
 
-	auto scale = pPlayer->GetWeaponScale();
 
 	for (int i = 0;i < kWeaponMaxNum;i++) {
 
-		m_weaponScale[i] = scale[i];
+		m_weaponScale[i] = pPlayer->GetWeaponScale(i);
 
 	}
+
+
+	//auto scale = pPlayer->GetWeaponScale();
+
+	//for (int i = 0;i < kWeaponMaxNum;i++) {
+
+	//	m_weaponScale[i] = scale[i];
+
+	//}
 
 }
 
