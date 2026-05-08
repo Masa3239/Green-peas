@@ -192,11 +192,11 @@ void Thunder::DebugDraw()
 void Thunder::End()
 {
 
-	for (auto& thunder : m_graphHandle) {
+	//for (auto& thunder : m_graphHandle) {
 
-		DeleteGraph(thunder);
+	//	DeleteGraph(thunder);
 
-	}
+	//}
 
 }
 
