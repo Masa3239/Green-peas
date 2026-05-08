@@ -26,7 +26,7 @@ namespace {
 		"  Job     : ",
 		"MaxDamage : ",
 		"  Combo   : ",
-		"  kill    : ",
+		"  Kill    : ",
 	};
 	const char* const kJobName[static_cast<int>(Character::Job::Max)] = {
 		"Warrior",
