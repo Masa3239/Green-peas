@@ -45,6 +45,8 @@ void PlayerAngerBar::Draw()
 
     float angerGaugeHeight = (kGaugeBottom - 3) - (kGaugeTop + 3);
 
+    DrawLine(kGaugeLeft, kGaugeTop + 3, kGaugeRight, kGaugeTop + 3, 0xff0000);
+
     DrawExtendGraph(kGaugeLeft,
         kGaugeBottom - 3 - (angerGaugeHeight * m_rate),
         kGaugeRight,
