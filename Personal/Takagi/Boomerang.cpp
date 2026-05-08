@@ -5,6 +5,7 @@
 #include"../../Utility/Color.h"
 #include"../Osawa/Enemy/EnemyManager.h"
 #include"../../System/InputManager.h"
+#include "../../System/SoundManager.h"
 
 namespace {
     constexpr float kSpeed = 50000;

@@ -38,6 +38,7 @@ void PlayerExpBar::Init()
 
 	//フォントを作成
 	m_fontHandle = CreateFontToHandle(NULL, 25, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
+	m_fontHandle = CreateFontToHandle("KozMinPr6N-Regular", 25, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 }
 
 void PlayerExpBar::Update()

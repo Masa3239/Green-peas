@@ -43,6 +43,9 @@ WeaponManager::WeaponManager():
 
 WeaponManager::~WeaponManager()
 {
+	for (int i = 0;i < kBulletWeaponNum;i++)
+		for (int& handle : m_BulletHandle[i])
+		DeleteGraph(handle);
 }
 
 void WeaponManager::Init()
@@ -84,9 +87,9 @@ void WeaponManager::End()
 void WeaponManager::Update()
 {
 
-	if (InputManager::GetInstance().IsDown(Input::Action::Anger1)) {
-		CreateRandom(m_pPlayer->GetTransform().position);
-	}
+	//if (InputManager::GetInstance().IsDown(Input::Action::Anger1)) {
+	//	CreateRandom(m_pPlayer->GetTransform().position);
+	//}
 
 	for (auto& weapon : m_weapons) {
 		weapon->UpdateCatchCol();
