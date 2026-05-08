@@ -148,12 +148,20 @@ void BuffManager::Update()
 			if (m_response > 0)break;
 			m_phase = Phase::Select;
 			m_select = 0;
-		break;
+			SoundManager::GetInstance().PlaySe(Sound::SE::BuffDecision);
+			break;
 	case Phase::Select:
 		{
 		if (!InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
 			break;
 		}
+	if (InputManager::GetInstance().IsPressed(Input::Action::Left)) {
+		m_select--;
+	}
+	if (InputManager::GetInstance().IsPressed(Input::Action::Right)) {
+
+		m_select++;
+	}
 		m_selected = BuffSelect();
 		AdaptBuff(m_selected);
 		m_phase = Phase::End;
@@ -172,13 +180,7 @@ void BuffManager::Update()
 		break;
 	}
 
-	if (InputManager::GetInstance().IsPressed(Input::Action::Left)) {
-		m_select--;
-	}
-	if (InputManager::GetInstance().IsPressed(Input::Action::Right)) {
-
-		m_select++;
-	}
+	
 	m_select = (kBuffSelectNum + m_select) % kBuffSelectNum;
 	if (!PauseManager::GetInstance().IsPause()) return;
 }
@@ -214,7 +216,7 @@ void BuffManager::Draw()
 		// バフのアイコンを表示
 		DrawRotaGraph((Game::kScreenWidth * 0.5f) + kDistance * (i - 1), kIconHeight, 0.15f, 0, m_iconHandle[static_cast<int>(m_buffType[i])], FALSE);
 	}
-
+	if (m_phase == Phase::Start)return;
 	// 進行テキストの表示
 	DrawRotaGraph((Game::kScreenWidth * 0.5f) , kProceedHeight, 0.15f, 0, m_proceedHandle[static_cast<int>(m_phase)], TRUE);
 	// 進行ボタンの表示
@@ -272,6 +274,8 @@ void BuffManager::RandomBuff()
 			}
 		}
 	}
+	SoundManager::GetInstance().PlaySe(Sound::SE::BuffDecision);
+
 }
 
 bool BuffManager::IsSelect()

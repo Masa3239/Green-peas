@@ -46,7 +46,10 @@
     "charactorButton.mp3",
     "charaSelectSE.mp3",
     "FailedRotationSE.mp3",
-    "Katana.mp3"
+    "Katana.mp3",
+    "Buff.mp3",
+    "Failed_Tilt.mp3",
+    "Failed_Tilt2.mp3"
 
   ]
 }

@@ -10,6 +10,7 @@
 #include"../../../Scene/SceneTitle.h"
 #include"../../../Personal/Osawa/Scene/SceneSelection.h"
 #include"../../../Scene/Fader.h"
+#include "../../../System/SoundManager.h"
 namespace {
 	const char* const kResultPath = "Resource\\Result\\";
 	const char* const kGraphPath[ResultModeSelect::Max] = {
@@ -93,6 +94,7 @@ void ResultModeSelect::Update()
 	if (!IsStop())return;
 	if (InputManager::GetInstance().IsPressed(Input::Action::Left)) {
 		m_select--;
+
 	}
 	if (InputManager::GetInstance().IsPressed(Input::Action::Right)) {
 		m_select++;
