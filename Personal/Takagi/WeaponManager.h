@@ -7,6 +7,12 @@ class Weapon;
 class Player;
 class EnemyManager;
 
+namespace {
+	constexpr int kBulletHandleNum = 10;
+	constexpr int kBulletWeaponNum = Weapon::Max - Weapon::Bow;
+
+}
+
 class WeaponManager
 {
 public:
@@ -24,11 +30,15 @@ public:
 	void CreateRandom(const Vector3& pos);
 	bool CheckCanPick();
 	void DeleteOldest();
+	void LoadGraphHandle();
 private:
 	std::vector<std::unique_ptr<Weapon>> m_weapons;
 	Player* m_pPlayer;
 	ObjectManager* m_objManager;
 	EnemyManager* m_enemyManager;
 	float m_createCount;
+
+	std::vector<int> m_BulletHandle[kBulletWeaponNum];
+
 };
 

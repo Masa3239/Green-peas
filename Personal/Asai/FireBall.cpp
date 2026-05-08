@@ -92,7 +92,7 @@ void FireBall::Update()
 
 void FireBall::Draw()
 {
-
+	return;
 	if (!m_isActive)return;
 
 	//当たり判定の大きさ

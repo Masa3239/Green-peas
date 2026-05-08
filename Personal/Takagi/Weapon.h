@@ -90,6 +90,7 @@ public:
 	bool CheckCameraUpdate() { return m_camUpdate; }
 	int GetGraphHandle() { return m_graphHandle; }
 	virtual float GetScale() { return kNormalScale; }
+	virtual void SetBulletHandle(std::vector<int> handles) {};
 protected:
 	/// <summary>
 	/// 武器のグラフィックハンドル

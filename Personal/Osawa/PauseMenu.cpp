@@ -11,6 +11,7 @@
 #include "../Personal/Osawa/Easing/Tween.h"
 #include "../Personal/Takagi/BuffManager.h"
 #include "../Scene/Fader.h"
+#include "../System/SoundManager.h"
 
 namespace
 {
@@ -52,7 +53,6 @@ void PauseMenu::Update()
 		if (InputManager::GetInstance().IsPressed(Input::Action::Pause))
 		{
 			Toggle();
-			
 		}
 
 		OnPause();
@@ -144,16 +144,19 @@ void PauseMenu::OnPause()
 	if (InputManager::GetInstance().IsPressed(Input::Action::Up))
 	{
 		m_choice--;
+		SoundManager::GetInstance().PlaySe(Sound::SE::CursorMove);
 	}
 	if (InputManager::GetInstance().IsPressed(Input::Action::Down))
 	{
 		m_choice++;
+		SoundManager::GetInstance().PlaySe(Sound::SE::CursorMove);
 	}
 
 	m_choice = (Choice::Length + m_choice) % Choice::Length;
 
 	if (InputManager::GetInstance().IsPressed(Input::Action::Confirm))
 	{
+		SoundManager::GetInstance().PlaySe(Sound::SE::Confirm2);
 		switch (m_choice)
 		{
 		case Choice::Back:

@@ -2,6 +2,7 @@
 
 #include "../Object/GameObject.h"
 #include "../Chara/Collision.h"
+#include "../Chara/AnimationController2D.h"
 
 class Player;
 
@@ -56,4 +57,6 @@ private:
 	Player* m_pPlayer;
 
 	int m_damage;
+
+	AnimationController2D m_animationController;
 };

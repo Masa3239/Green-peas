@@ -7,6 +7,7 @@
 #include "../Utility/Time.h"
 #include "../Utility/MyMath.h"
 #include "../BossKey.h"
+#include "../System/SoundManager.h"
 
 namespace
 {
@@ -138,6 +139,7 @@ void EnemyMiniBoss::UpdateEnemy()
 
 			if (GetCollider().CheckCollision(GetPlayer()->GetCircle()))
 			{
+				SoundManager::GetInstance().PlaySe(Sound::SE::Damage2);
 				Attack();
 			}
 
@@ -165,7 +167,12 @@ void EnemyMiniBoss::UpdateEnemy()
 		vec = Vector3(vec.x * c - vec.y * s, vec.x * s + vec.y * c, 0.0f);
 		move = vec * Time::GetInstance().GetDeltaTime() * kArcSpeed;
 
-		if (m_attackCooltimeCounter <= 0) Attack();
+		if (m_attackCooltimeCounter <= 0)
+		{
+			Attack();
+
+			SoundManager::GetInstance().PlaySe(Sound::SE::Fire2);
+		}
 
 		break;
 	}
@@ -174,7 +181,12 @@ void EnemyMiniBoss::UpdateEnemy()
 
 		move = (targetPos - myPos).GetNormalize() * -kDistanceSpeed;
 
-		if (m_attackCooltimeCounter <= 0) Attack();
+		if (m_attackCooltimeCounter <= 0)
+		{
+			Attack();
+
+			SoundManager::GetInstance().PlaySe(Sound::SE::Fire2);
+		}
 
 		break;
 	}

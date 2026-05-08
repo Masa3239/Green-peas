@@ -27,6 +27,12 @@ ThunderWand::ThunderWand(ObjectManager* objManager) :
 	m_chargeFlag = false;
 	m_camUpdate = true;
 
+	for (auto& thunders : m_pThunders) {
+		thunders = nullptr;
+		thunders = new Thunder(GetObjectManager());
+		thunders->Init();
+		thunders->SetEnemyManager(m_pEnemyMgr);
+	}
 }
 
 ThunderWand::~ThunderWand()
@@ -40,12 +46,6 @@ ThunderWand::~ThunderWand()
 void ThunderWand::Init()
 {
 
-	for (auto& thunders : m_pThunders) {
-		thunders = nullptr;
-		thunders = new Thunder(GetObjectManager());
-		thunders->Init();
-		thunders->SetEnemyManager(m_pEnemyMgr);
-	}
 	m_swingState = Swing::Normal;
 }
 
@@ -124,6 +124,13 @@ void ThunderWand::Shot(const Transform& transform)
 		PlayerStatus status = m_playerStatus * m_weaponStatus;
 		status.CriticalRate = m_playerStatus.CriticalRate + m_weaponStatus.CriticalRate;
 		m_pThunders[i]->SetStatus(status);
+		m_pThunders[i]->SetEnemyManager(m_pEnemyMgr);
 		break;
 	}
+}
+void ThunderWand::SetBulletHandle(std::vector<int> handles)
+{
+
+	for (auto& thunders : m_pThunders)
+		thunders->SetGraphHandle(handles);
 }
