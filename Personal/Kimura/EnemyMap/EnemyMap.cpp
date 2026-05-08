@@ -40,6 +40,8 @@ void EnemyMap::Init()
 
 void EnemyMap::End()
 {
+	// 既存データをクリア
+	m_spawnList.clear();
 }
 
 EnemyMap* EnemyMap::Update()
@@ -63,8 +65,7 @@ bool EnemyMap::LoadCSVToMapData(int worldNum, int stageNum)
 	
 	std::ifstream ifs(fileNameCSV);
 	std::string buf;
-	// 既存データをクリア
-	m_spawnList.clear();
+	
 	// y座標
 	int y = 0;
 	// 1行ずつ読み込み
