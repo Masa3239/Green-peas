@@ -47,6 +47,8 @@ FireBall::FireBall(ObjectManager* objManager) :
 void FireBall::Init()
 {
 
+	return;
+
 	int buf[81];
 
 	LoadDivGraph(kGraphHandlePath, 81, 9, 9, 190, 190, buf);

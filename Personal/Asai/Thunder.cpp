@@ -70,6 +70,8 @@ Thunder::Thunder(ObjectManager* objManager):
 void Thunder::Init()
 {
 
+	return;
+
 	for (int i = 0;i < 10;i++) {
 
 		int graphHandle = LoadGraph(kGraphPaths[i]);
