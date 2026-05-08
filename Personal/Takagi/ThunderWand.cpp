@@ -87,6 +87,7 @@ bool ThunderWand::Attack()
 {
 	if (m_swingState != Swing::Normal)return false;
 	if (!InputManager::GetInstance().IsReleased(Input::Action::Attack))return false;
+	SoundManager::GetInstance().PlaySe(Sound::SE::Thunder);
 	Transform shot = m_drawTransform;
 	Shot(shot);
 	m_swing.Reset();

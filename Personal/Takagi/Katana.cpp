@@ -138,7 +138,7 @@ bool Katana::Attack()
 	m_effectTransform.position = RadToPos(m_effectTransform.rotation.z, kEffectDistance, GetTransform().position);
 	m_circle.SetRadius(kAttackRadius * m_scale);
 	m_circle.SetPosition(m_effectTransform.position);
-	SoundManager::GetInstance().PlaySe(Sound::SE::Sword1);
+	SoundManager::GetInstance().PlaySe(Sound::SE::Katana);
 	if (m_charge >= kChargeTime) {
 		m_weaponStatus *= kChargeStatus;
 		m_effectFrame = 0;

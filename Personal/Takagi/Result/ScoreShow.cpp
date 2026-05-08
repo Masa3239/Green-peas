@@ -6,6 +6,7 @@
 #include"../Player.h"
 #include<string>
 #include"../../../System/InputManager.h"
+#include "../../../System/SoundManager.h"
 namespace {
 	// スクリーンの中心座標
 	constexpr Vector3 kScreenHalf = { Game::kScreenWidth * 0.5f,Game::kScreenHeight * 0.5f,0 };

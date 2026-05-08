@@ -74,6 +74,7 @@ void Bow::Draw()
 bool Bow::Attack()
 {
 	if (!InputManager::GetInstance().IsReleased(Input::Action::Attack))return false;
+	SoundManager::GetInstance().PlaySe(Sound::SE::Bow);
 	Transform shot = m_drawTransform;
 	Shot(shot);
 	if (true) {

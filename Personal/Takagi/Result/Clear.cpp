@@ -3,6 +3,7 @@
 #include"../../../Utility/Time.h"
 #include<DxLib.h>
 #include"../../../System/InputManager.h"
+#include "../../../System/SoundManager.h"
 
 namespace {
 	// スクリーンの中心座標

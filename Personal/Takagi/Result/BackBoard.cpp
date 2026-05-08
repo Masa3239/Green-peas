@@ -6,6 +6,7 @@
 #include<math.h>
 #include<DxLib.h>
 #include"../../../System/InputManager.h"
+#include "../../../System/SoundManager.h"
 namespace {
 	constexpr Vector3 kScreenHalf = { Game::kScreenWidth * 0.5f,Game::kScreenHeight * 0.5f,0 };
 	// 2点間のX座標の距離
