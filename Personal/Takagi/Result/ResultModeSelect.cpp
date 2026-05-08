@@ -94,10 +94,12 @@ void ResultModeSelect::Update()
 	if (!IsStop())return;
 	if (InputManager::GetInstance().IsPressed(Input::Action::Left)) {
 		m_select--;
+		SoundManager::GetInstance().PlaySe(Sound::SE::CursorMove);
 
 	}
 	if (InputManager::GetInstance().IsPressed(Input::Action::Right)) {
 		m_select++;
+		SoundManager::GetInstance().PlaySe(Sound::SE::CursorMove);
 	}
 	m_select = MyMath::Clamp(m_select, 0, Max - 1);
 }

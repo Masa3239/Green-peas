@@ -10,6 +10,8 @@
 #include"../../../Scene/SceneTitle.h"
 #include"../../../System/PauseManager.h"
 #include"../../../Scene/Fader.h"
+#include "../../../System/SoundManager.h"
+
 
 namespace {
 	// 演出同士のインターバル
@@ -105,7 +107,8 @@ void ResultShow::Update()
 		bool nextScene = m_modeSelect->CheckSelect(m_fader);
 		if (!nextScene)break;
 		PauseManager::GetInstance().TogglePause();
-		
+		SoundManager::GetInstance().PlaySe(Sound::SE::CharactorButton);
+
 		break;
 	}
 	default:
