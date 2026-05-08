@@ -51,10 +51,6 @@ namespace {
 
 }
 
-bool Thunder::m_isLoadedGraph;
-
-std::vector<int> Thunder::m_graphHandle;
-
 Thunder::Thunder(ObjectManager* objManager):
 	BulletBase(objManager),
 	m_index(0),
@@ -64,6 +60,7 @@ Thunder::Thunder(ObjectManager* objManager):
 	m_infectionTimer(0),
 	m_pEnemyMgr(nullptr),
 	m_pEnemies(),
+	m_graphHandle(),
 	m_graphFrame(0),
 	m_graphCounter(0)
 {
@@ -73,8 +70,6 @@ Thunder::Thunder(ObjectManager* objManager):
 void Thunder::Init()
 {
 
-	if (m_isLoadedGraph)return;
-
 	for (int i = 0;i < 10;i++) {
 
 		int graphHandle = LoadGraph(kGraphPaths[i]);
@@ -82,8 +77,6 @@ void Thunder::Init()
 		m_graphHandle.push_back(graphHandle);
 
 	}
-
-	m_isLoadedGraph = true;
 
 }
 
@@ -202,8 +195,6 @@ void Thunder::End()
 		DeleteGraph(thunder);
 
 	}
-
-	m_isLoadedGraph = false;
 
 }
 

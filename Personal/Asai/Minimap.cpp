@@ -167,10 +167,12 @@ void Minimap::DrawEnemy()
 		//中ボスの座標をミニマップ座標に変換
 		miniBoss = ToMinimapPos(miniBoss);
 		//中ボスを描画
-		DrawCircle(miniBoss.x, miniBoss.y, 2, Color::kRed, TRUE);
-
+		DrawCircle(miniBoss.x, miniBoss.y, 20, Color::kRed, TRUE);
+		printfDx("miniBoss.x %f\n", miniBoss.x);
+		printfDx("miniBoss.y %f\n", miniBoss.y);
 	}
 
+	printfDx("%d\n", m_pEnemyMgr->GetMiniBossPositions().size());
 	//ボスの座標をミニマップ座標に変換
 	const Vector3 bossPos = ToMinimapPos(m_pEnemyMgr->GetEnemyBoss()->GetTransform().position);
 

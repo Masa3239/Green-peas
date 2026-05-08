@@ -3,6 +3,7 @@
 
 #include<DxLib.h>
 #include<math.h>
+#include"../../System/SoundManager.h"
 #include"../../Utility/Time.h"
 
 namespace {
@@ -64,6 +65,8 @@ void FireBall::Init()
 		m_graphHandle.push_back(buf[i]);
 
 	}
+
+	//SoundManager::GetInstance()
 
 	m_isLoadedGraph = true;
 
