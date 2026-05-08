@@ -6,8 +6,12 @@
 #include "../../Utility/Time.h"
 #include "../Takagi/Player.h"
 #include "BossBulletManager.h"
+#include "../../System/SoundManager.h"
 
 namespace {
+
+	// 封印状態の画像のファイルパス
+	const char* const kSealGraphPath = ".\\Resource\\Dino Rex\\columbus_egg.png";
 
 	// 画像のサイズ
 	constexpr float kGraphScale = 1.0f;
@@ -57,6 +61,7 @@ namespace {
 }
 
 EnemyBoss::EnemyBoss(ObjectManager* objManager) :
+	m_sealGraphHandle(-1),
 	m_motionCounter(0),
 	m_motionFrame(0),
 	m_direction(-1),
@@ -105,6 +110,7 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 }
 
 EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
+	m_sealGraphHandle(-1),
 	m_motionCounter(0),
 	m_motionFrame(0),
 	m_direction(-1),
@@ -162,7 +168,8 @@ void EnemyBoss::Init()
 		m_efffectGraphHandle[i] = -1;
 	}
 
-
+	m_sealGraphHandle = LoadGraph(kSealGraphPath);
+	
 	// ボスのアイドルアニメーション
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_idle.png",
 		5, 5, 1, 128, 128, m_graphHandle[static_cast<int>(BossStatus::Idle)]);
@@ -205,6 +212,7 @@ void EnemyBoss::End()
 		DeleteGraph(m_efffectGraphHandle[i]);
 	}
 
+	DeleteGraph(m_sealGraphHandle);
 	m_pBossBulletMgr->End();
 }
 
@@ -223,7 +231,6 @@ void EnemyBoss::Update()
 	m_pBossBulletMgr->Update();
 
 	m_pBossBulletMgr->CheckHitCollision(m_pPlayer->GetCircle());
-
 	
 	m_closeRangeAttackCollision.SetPosition(GetTransform().position);
 
@@ -262,8 +269,8 @@ void EnemyBoss::Draw()
 
 	// 封印状態なら
 	if (!m_sealRelease) {
-		// 封印状態の画像を描画(仮)
-		DrawCircle(GetTransform().position.x, GetTransform().position.y, 10, 0xff0000);
+		// 封印状態の画像を描画
+		DrawRotaGraph(GetTransform().position.x, GetTransform().position.y, kGraphScale * 0.5f, 0.0f, m_sealGraphHandle, TRUE);
 	}
 	// 封印が解除されたなら
 	else
@@ -349,6 +356,8 @@ bool EnemyBoss::Damage(const int damage, int weapon, int index)
 	m_damageFlag[weapon][index] = true;
 
 	m_currentHp -= damage;
+
+	SoundManager::GetInstance().PlaySe(Sound::SE::Damage4);
 
 	return true;
 }
@@ -547,6 +556,7 @@ void EnemyBoss::LongRangeAttack()
 	m_status = BossStatus::LongRangeAttack;
 
 	if (m_isAngry) {
+		SoundManager::GetInstance().PlaySe(Sound::SE::BossBullet);
 		// 弾を生成する
 		m_pBossBulletMgr->Create(BossBulletBase::BulletType::Normal, GetTransform().position);
 	}
@@ -556,6 +566,7 @@ void EnemyBoss::LongRangeAttack()
 
 		if (m_shotTimer >= kShotInterval) {
 
+			SoundManager::GetInstance().PlaySe(Sound::SE::BossBullet);
 			// 弾を生成する
 			m_pBossBulletMgr->Create(BossBulletBase::BulletType::Normal, GetTransform().position);
 			m_shotTimer = 0.0f;
@@ -600,6 +611,7 @@ void EnemyBoss::Dead()
 
 	if (m_isEffect) {
 
+		SoundManager::GetInstance().PlaySe(Sound::SE::Explosion);
 		if (m_effectMotionCounter % 5 == 0) {
 
 			// アニメーションのフレームをプラス

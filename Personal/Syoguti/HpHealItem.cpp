@@ -70,6 +70,8 @@ void HpHealItem::Draw()
 void HpHealItem::ItemAbility(Player* player)
 {
 	m_pPlayer = player;
-	m_pPlayer->Heal(kHealValue);
+	float healValue = player->GetGaugeMaxValue(Player::GaugeType::Hp);
+	healValue * 0.2f;
+	m_pPlayer->Heal(healValue);
 	// printfDx("HPが回復しました\n");
 }
