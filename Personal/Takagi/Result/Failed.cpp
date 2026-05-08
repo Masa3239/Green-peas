@@ -36,6 +36,8 @@ Failed::~Failed()
 
 void Failed::Init()
 {
+	SoundManager::GetInstance().PlaySe(Sound::SE::FailedRotation);
+
 }
 
 void Failed::End()
@@ -78,6 +80,8 @@ void Failed::Update()
 		m_interval += time;
 		if (m_interval < kInteval)break;
 		m_phase = Max;
+		SoundManager::GetInstance().PlaySe(Sound::SE::CursorMove);
+
 		break;
 	case Max:
 		m_transform.rotation.z += kRotateSpeed * time * 0.1f;
