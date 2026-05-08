@@ -1,4 +1,5 @@
-#include "DxLib.h"
+#include <DxLib.h>
+#include <Psapi.h>
 #include "Utility/Game.h"
 #include "Utility/Input.h"
 #include "Utility/GameSetting.h"
@@ -60,7 +61,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		SoundManager::GetInstance().Update();
 
 #ifdef _DEBUG
-		printfDx("FPS %f", 1.0f / Time::GetInstance().GetDeltaTime());
+		printfDx("FPS %f\n", 1.0f / Time::GetInstance().GetDeltaTime());
+		PROCESS_MEMORY_COUNTERS_EX pmc;
+		GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+		printfDx("Memory %d MB\n", pmc.WorkingSetSize / 1024 / 1024);
 #endif
 
 		// ï`âÊêÊÇêÿÇËë÷Ç¶ÇÈ
