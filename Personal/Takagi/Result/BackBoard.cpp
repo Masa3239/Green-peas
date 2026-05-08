@@ -112,10 +112,10 @@ void BackBoard::Update()
 void BackBoard::Draw()
 {
 	DrawRotaGraph(m_between.position.x, m_between.position.y, 3, m_between.rotation.z, m_backBoardHandle, TRUE);
-	for (int i = 0; i < Max; i++) {
-		DrawCircle(m_sidePos[i].x, m_sidePos[i].y, 10, 0x00ff00);
-	}
-	DrawCircle(m_between.position.x, m_between.position.y, 10, 0x0000ff);
+	//for (int i = 0; i < Max; i++) {
+	//	DrawCircle(m_sidePos[i].x, m_sidePos[i].y, 10, 0x00ff00);
+	//}
+	//DrawCircle(m_between.position.x, m_between.position.y, 10, 0x0000ff);
 }
 
 bool BackBoard::IsFinish()

@@ -13,6 +13,7 @@
 #include<string>
 #include"../../Utility/Game.h"
 #include"../../Utility/Time.h"
+#include "../../System/SoundManager.h"
 namespace{
 	const char* const kIconPath = "Resource\\Iccons\\skill_";
 	const char* const kPing = ".png";
@@ -112,7 +113,15 @@ BuffManager::~BuffManager()
 	for (int& handle:m_iconHandle) {
 		DeleteGraph(handle);
 	}
+	for (int& handle: m_proceedHandle) {
+		DeleteGraph(handle);
+	}
+	for (int& handle: m_textHandle) {
+		DeleteGraph(handle);
+	}
+	DeleteGraph(m_buttonHandle);
 	DeleteGraph(m_selectHandle);
+	DeleteGraph(m_backHandle);
 	DeleteFontToHandle(m_fontHandle);
 }
 

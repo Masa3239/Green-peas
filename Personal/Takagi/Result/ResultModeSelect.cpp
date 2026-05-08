@@ -56,6 +56,10 @@ ResultModeSelect::ResultModeSelect():
 
 ResultModeSelect::~ResultModeSelect()
 {
+	for (int& mode : m_modeHandle)
+		DeleteGraph(mode);
+	for (int& surround : m_surroundHandle)
+		DeleteGraph(surround);
 }
 
 void ResultModeSelect::Init()

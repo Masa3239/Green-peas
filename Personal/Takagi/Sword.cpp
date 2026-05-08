@@ -12,6 +12,7 @@
 #include"PlayerStatus.h"
 #include"RadToPos.h"
 #include"../../System/InputManager.h"
+#include "../../System/SoundManager.h"
 namespace {
 	const char* const kGraphPath = "Resource\\Golden Sword.png";
 	const char* const kSlashPath = "Resource\\pipo-btleffect001.png";
@@ -73,6 +74,8 @@ Sword::Sword(ObjectManager* objManager) :
 Sword::~Sword()
 {
 	DeleteGraph(m_graphHandle);
+	for (int& effect : m_effectHandle)
+		DeleteGraph(effect);
 }
 
 void Sword::Init()
@@ -218,6 +221,7 @@ bool Sword::Attack()
 		m_charge += Time::GetInstance().GetDeltaTime();
 	}
 	if (!InputManager::GetInstance().IsReleased(Input::Action::Attack))return false;
+	SoundManager::GetInstance().PlaySe(Sound::SE::Sword1);
 	m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Sword, 0);
 	m_desireRadian = m_attackRadian + kSwingRadian;
 	m_swing.rotation.z = m_desireRadian;

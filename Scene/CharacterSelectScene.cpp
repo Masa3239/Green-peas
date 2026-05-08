@@ -7,6 +7,7 @@
 #include"../Personal/Takagi/BuffManager.h"
 #include"SceneInGame.h"
 #include"../Personal/Takagi/CharaSelect/Gear.h"
+#include "../System/SoundManager.h"
 CharacterSelectScene::CharacterSelectScene()
 {
 	GetCarryOver().Reset();
@@ -35,6 +36,7 @@ SceneBase* CharacterSelectScene::Update()
 	//m_gear->Update();
 	GetCarryOver().characterJob = m_characters->GetSelectJob();
 	if (InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
+		SoundManager::GetInstance().PlaySe(Sound::SE::CharactorButton);
 		return new SceneInGame;
 	}
 	//if (Gamepad::GetInstance().IsDown(XINPUT_BUTTON_START)) {

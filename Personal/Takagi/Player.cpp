@@ -23,6 +23,7 @@
 #include"../../System/Input/Gamepad.h"
 #include"BuffManager.h"
 #include"../Kimura/Map/Map.h"
+#include "../../System/SoundManager.h"
 namespace {
 	
 	// 通常の移動速度
@@ -448,6 +449,7 @@ void Player::Damage(float value)
 	m_gauges[static_cast<int>(GaugeType::Anger)]->Clamp();
 	// カメラを揺らす
 	m_pCamera->StartDamage(kCameraShake);
+	SoundManager::GetInstance().PlaySe(Sound::SE::Damage1);
 }
 
 void Player::Heal(float value)

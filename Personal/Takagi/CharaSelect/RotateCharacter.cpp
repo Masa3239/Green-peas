@@ -6,6 +6,7 @@
 #include"../RadToPos.h"
 #include"../../../Utility/Time.h"
 #include"../../../System/InputManager.h"
+#include "../../../System/SoundManager.h"
 namespace {
 	/// <summary>
 	/// キャラクターの職業の最大数(キャストするのがめんどくさいため用意)
@@ -89,10 +90,12 @@ void RotateCharacter::Update()
 	if (InputManager::GetInstance().IsPressed(Input::Action::Left)) {
 		//m_desireRadian += kCharaRadian * MyMath::ToRadian;
 		m_angleNum++;
+		SoundManager::GetInstance().PlaySe(Sound::SE::CharactorSelect);
 	}
 	else if (InputManager::GetInstance().IsPressed(Input::Action::Right)) {
 		//m_desireRadian -= kCharaRadian * MyMath::ToRadian;
 		m_angleNum--;
+		SoundManager::GetInstance().PlaySe(Sound::SE::CharactorSelect);
 	}
 	m_angleNum = (m_radians.size() + m_angleNum) % m_radians.size();
 	m_desireRadian = m_radians[m_angleNum]+ kInitRadian;
