@@ -1,6 +1,6 @@
 #pragma once
 #include"Weapon.h"
-
+#include<vector>
 class FireBall;
 
 class FlameWand:public Weapon
@@ -20,6 +20,7 @@ public:
 	void Shot(const Transform& transform);
 	void SetScale(float scale)override { m_scale = scale; }
 	int GetWeaponType()override { return Weapon::Flame; }
+	void SetBulletHandle(std::vector<int> handles)override;
 private:
 	FireBall* m_pFires[kBulletNum];
 	Transform m_desireTransform;

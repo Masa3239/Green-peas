@@ -122,3 +122,9 @@ void Bow::Shot(const Transform& transform)
 		break;
 	}
 }
+void Bow::SetBulletHandle(std::vector<int> handles)
+{
+
+	for (auto& arrows : m_pArrows)
+		arrows->SetGraphHandle(handles[0]);
+}

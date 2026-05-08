@@ -5,6 +5,7 @@
 #include"RadToPos.h"
 #include"../../System/InputManager.h"
 #include"../../Utility/Time.h"
+#include<vector>
 namespace {
 	const char* const kHandlePath = "Resource\\Ruby Staff.png";
 	constexpr PlayerStatus kStatus = { 0,0,8,0,0,0,3,2 };
@@ -18,11 +19,6 @@ FlameWand::FlameWand(ObjectManager* objManager):
 	m_pFires(),
 	m_desireTransform()
 {
-	for (auto& fires : m_pFires) {
-		fires = nullptr;
-		fires = new FireBall(objManager);
-		fires->Init();
-	}
 	m_scale = 1;
 	m_graphHandle = -1;
 	m_graphHandle = LoadGraph(kHandlePath);
@@ -32,6 +28,16 @@ FlameWand::FlameWand(ObjectManager* objManager):
 	m_chargeFlag = false;
 	m_camUpdate = true;
 	m_swingState = Swing::Normal;
+	
+
+
+	for (auto& fires : m_pFires) {
+		fires = nullptr;
+		fires = new FireBall(objManager);
+		fires->Init();
+	}
+	
+
 }
 
 FlameWand::~FlameWand()
@@ -40,6 +46,7 @@ FlameWand::~FlameWand()
 	for (auto& bullets : m_pFires) {
 		bullets->SetState(GameObject::State::Dead);
 	}
+
 }
 
 void FlameWand::Init()
@@ -145,4 +152,11 @@ void FlameWand::Shot(const Transform& transform)
 		m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Flame, i);
 		break;
 	}
+}
+
+void FlameWand::SetBulletHandle(std::vector<int> handles)
+{
+
+	for(auto& fires:m_pFires)
+	fires->SetGraphHandle(handles);
 }
