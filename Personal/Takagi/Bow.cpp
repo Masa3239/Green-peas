@@ -6,6 +6,7 @@
 #include"../Osawa/Enemy/EnemyManager.h"
 #include"RadToPos.h"
 #include"../../System/InputManager.h"
+#include "../../System/SoundManager.h"
 namespace {
 	constexpr float kDrawRadian = 45 * MyMath::ToRadian;
 	const char* const kHandlePath = "Resource\\Bow.png";

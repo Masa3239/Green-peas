@@ -30,6 +30,7 @@ Failed::Failed():
 
 Failed::~Failed()
 {
+	DeleteGraph(m_graphHandle);
 }
 
 void Failed::Init()

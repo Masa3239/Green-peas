@@ -5,6 +5,7 @@
 //#include"../../System/InputPad.h"
 #include"../../System/InputManager.h"
 #include"../../Utility/MyMath.h"
+#include "../../System/SoundManager.h"
 namespace {
 	const char* const kEffectPath = "Resource\\pipo-btleffect161.png";
 	const char* const kWeaponPath = "Resource\\tile009.png";
@@ -137,6 +138,7 @@ bool Katana::Attack()
 	m_effectTransform.position = RadToPos(m_effectTransform.rotation.z, kEffectDistance, GetTransform().position);
 	m_circle.SetRadius(kAttackRadius * m_scale);
 	m_circle.SetPosition(m_effectTransform.position);
+	SoundManager::GetInstance().PlaySe(Sound::SE::Sword1);
 	if (m_charge >= kChargeTime) {
 		m_weaponStatus *= kChargeStatus;
 		m_effectFrame = 0;

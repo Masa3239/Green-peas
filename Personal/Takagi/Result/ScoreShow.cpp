@@ -60,6 +60,7 @@ ScoreShow::ScoreShow(const CarryOver& carryOver) :
 
 ScoreShow::~ScoreShow()
 {
+	DeleteFontToHandle(m_fontHandle);
 }
 
 void ScoreShow::Init()

@@ -4,6 +4,7 @@
 #include"../Osawa/Enemy/EnemyManager.h"
 #include"../../Utility/Time.h"
 #include"../../Utility/Mymath.h"
+#include "../../System/SoundManager.h"
 namespace {
 	const char* const kHandlePath = "Resource\\Topaz Staff.png";
 	constexpr PlayerStatus kStatus = { 0,0,20,0,0,0,11,2 };

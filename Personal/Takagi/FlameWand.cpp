@@ -6,6 +6,7 @@
 #include"../../System/InputManager.h"
 #include"../../Utility/Time.h"
 #include<vector>
+#include "../../System/SoundManager.h"
 namespace {
 	const char* const kHandlePath = "Resource\\Ruby Staff.png";
 	constexpr PlayerStatus kStatus = { 0,0,8,0,0,0,3,2 };
