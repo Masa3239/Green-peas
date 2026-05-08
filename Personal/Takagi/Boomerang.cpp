@@ -111,6 +111,7 @@ bool Boomerang::Attack()
 {
     if (m_attackFlag)return false;
     if (!InputManager::GetInstance().IsPressed(Input::Action::Attack))return false;
+    SoundManager::GetInstance().PlaySe(Sound::SE::Bomerang);
     m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Boomerang, 0);
     m_attack.position = GetTransform().position;
     m_attack.rotation.z = GetTransform().rotation.z;

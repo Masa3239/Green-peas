@@ -115,6 +115,7 @@ bool FlameWand::Attack()
 {
 	if (m_swingState != Swing::Normal)return false;
 	if (!InputManager::GetInstance().IsReleased(Input::Action::Attack))return false;
+	SoundManager::GetInstance().PlaySe(Sound::SE::Fire1);
 
 	m_desireTransform.position = RadToPos(GetTransform().rotation.z, kSwingDistance);
 	m_desireTransform.rotation.z = GetTransform().rotation.z+DX_PI_F/2;
