@@ -10,6 +10,7 @@
 #include"ThunderWand.h"
 #include<vector>
 #include<memory>
+#include<string>
 #include"../../Object/GameObject.h"
 #include"../../System/ObjectManager.h"
 #include"../../Utility/Time.h"
@@ -21,11 +22,23 @@
 namespace {
 	constexpr float kCreatae = 1.5f;
 	constexpr int kWeaponPopMax=20;
+	const char* const kBulletHandlePath[kBulletWeaponNum] = {
+		"Resource\\arrow.png",
+		"Resource\\lightning\\",
+		"Resource\\FIREBALL EFFECT 1.png",
+	};
 }
 WeaponManager::WeaponManager():
 	m_weapons(),
 	m_pPlayer(nullptr)
 {
+	std::vector <int>s;
+	std::vector <int>ss;
+	for (int i = 0;i < 2;i++) {
+		//s.push_back(0);
+		ss.push_back(1);
+	}
+	s = ss;
 }
 
 WeaponManager::~WeaponManager()
@@ -34,20 +47,8 @@ WeaponManager::~WeaponManager()
 
 void WeaponManager::Init()
 {
-	//// プレイヤーのポインタがないとき警告
-	//if (!m_pPlayer) {
-
-	//	assert(false && "playerのポインタがない");
-	//}
+	LoadGraphHandle();
 	
-	//m_weapons.push_back(std::make_unique<FlameWand>(m_objManager));
-	//m_weapons.push_back(std::make_unique<Boomerang>(m_objManager));
-	//for (auto& weapons : m_weapons) {
-	//	weapons->SetEnemyManager(m_enemyManager);
-	//	weapons->SetChatch(true);
-	//}
-	//m_pPlayer->SetWeapon(m_weapons[0].get());
-	//m_pPlayer->SetWeapon(m_weapons[1].get());
 	int weaponType = Weapon::Sword;
 	switch (m_pPlayer->GetPlayerJob())
 	{
@@ -67,8 +68,13 @@ void WeaponManager::Init()
 	Create(m_pPlayer->GetTransform().position, weaponType);
 	CheckCanPick();
 
-
-
+		std::vector <int>s;
+	std::vector <int>ss;
+	for (int i = 0;i < 2;i++) {
+		s.push_back(0);
+		ss.push_back(1);
+	}
+	s = ss;
 }
 
 void WeaponManager::End()
@@ -112,29 +118,34 @@ void WeaponManager::Create(const Vector3& pos, int weaponType)
 	case Weapon::Sword:
 		m_weapons.push_back(std::make_unique<Sword>(m_objManager));
 		break;
-	case Weapon::Bow:
-		m_weapons.push_back(std::make_unique<Bow>(m_objManager));
+	case Weapon::Katana:
+		m_weapons.push_back(std::make_unique<Katana>(m_objManager));
 		break;
 	case Weapon::Boomerang:
 		m_weapons.push_back(std::make_unique<Boomerang>(m_objManager));
 		break;
-	case Weapon::Katana:
-		m_weapons.push_back(std::make_unique<Katana>(m_objManager));
-		break;
-	case Weapon::Flame:
-		m_weapons.push_back(std::make_unique<FlameWand>(m_objManager));
+	case Weapon::Bow:
+		m_weapons.push_back(std::make_unique<Bow>(m_objManager));
+		m_weapons[m_weapons.size() - 1]->SetBulletHandle(m_BulletHandle[0]);
 		break;
 	case Weapon::Volt:
 		m_weapons.push_back(std::make_unique<ThunderWand>(m_objManager));
+		m_weapons[m_weapons.size() - 1]->SetBulletHandle(m_BulletHandle[1]);
+		break;
+	case Weapon::Flame:
+		m_weapons.push_back(std::make_unique<FlameWand>(m_objManager));
+		m_weapons[m_weapons.size() - 1]->SetBulletHandle(m_BulletHandle[2]);
 		break;
 	default:
 		break;
 	}
 	m_weapons[m_weapons.size()-1]->SetEnemyManager(m_enemyManager);
-	m_weapons[m_weapons.size()-1]->Init();
+	m_weapons[m_weapons.size() - 1]->Init();
 	m_weapons[m_weapons.size()-1]->SetPos(pos);
 	m_weapons[m_weapons.size()-1]->SetChatch(false);
 	DeleteOldest();
+
+
 }
 
 void WeaponManager::CreateRandom(const Vector3& pos)
@@ -168,5 +179,29 @@ void WeaponManager::DeleteOldest()
 		m_weapons[i]->SetState(GameObject::State::Dead);
 		m_weapons.erase(m_weapons.begin() + i);
 		return;
+	}
+}
+
+void WeaponManager::LoadGraphHandle()
+{
+
+	int buf[81];
+	buf[0] = LoadGraph(kBulletHandlePath[0]);
+	m_BulletHandle[0].push_back(buf[0]);
+	std::string thunderPath="";
+	for (int i = 0;i < 11;i++) {
+		thunderPath = kBulletHandlePath[1] + std::to_string(i);
+		thunderPath += ".png";
+		buf[i] = LoadGraph(thunderPath.c_str());
+		m_BulletHandle[1].push_back(buf[i]);
+	}
+	
+	LoadDivGraph(kBulletHandlePath[2], 81, 9, 9, 190, 190, buf);
+	for (int i = 0;i < 63;i++) {
+
+		if (i <= 8)continue;
+
+		m_BulletHandle[2].push_back(buf[i]);
+
 	}
 }
