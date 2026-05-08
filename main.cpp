@@ -17,6 +17,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	GameSetting::InitWindow();
 
+	SetWindowIconID(101);
+
 	if (DxLib_Init() == -1) {	// DXƒ‰ƒCƒuƒ‰ƒŠ‰Šú‰»ˆ—
 
 		return -1;				// ‰Šú‰»‚É¸”s‚µ‚½‚ç‹­§I—¹
