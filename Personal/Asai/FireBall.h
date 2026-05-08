@@ -67,6 +67,8 @@ public:
 	/// </summary>
 	void ResetDamageInterval() { m_fieldDamageIntervalTimer = 0; }
 
+	void SetGraphHandle(std::vector<int>graphHandle) { m_graphHandle = graphHandle; }
+
 private:
 
 	/// <summary>
@@ -106,9 +108,7 @@ private:
 	/// </summary>
 	float m_fieldDamageIntervalTimer;
 
-	static bool m_isLoadedGraph;
-
-	static std::vector<int>m_graphHandle;
+	std::vector<int>m_graphHandle;
 
 	float m_graphFrame;
 

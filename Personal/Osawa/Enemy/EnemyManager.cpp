@@ -297,8 +297,16 @@ void EnemyManager::CheckDead()
 		EnemyBase* enemy = iter->get();
 		if (enemy->GetHP() <= 0)
 		{
+			// 中ボスだったら中ボスの配列からも削除する
+			EnemyMiniBoss* miniboss = dynamic_cast<EnemyMiniBoss*>(enemy);
+			if (miniboss != nullptr)
+			{
+				m_miniBosses.erase(std::find(m_miniBosses.begin(), m_miniBosses.end(), miniboss));
+			}
+			
 			iter = m_enemies.erase(iter);
 			m_numDefeated++;
+
 			continue;
 		}
 

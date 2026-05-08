@@ -3,6 +3,7 @@
 
 #include<DxLib.h>
 #include<math.h>
+#include"../../System/SoundManager.h"
 #include"../../Utility/Time.h"
 
 namespace {
@@ -33,10 +34,6 @@ namespace {
 
 }
 
-bool FireBall::m_isLoadedGraph = false;
-
-std::vector<int> FireBall::m_graphHandle;
-
 FireBall::FireBall(ObjectManager* objManager) :
 	BulletBase(objManager),
 	m_state(State::Ball),
@@ -50,8 +47,7 @@ FireBall::FireBall(ObjectManager* objManager) :
 void FireBall::Init()
 {
 
-	//読み込んでいたらリターン
-	if (m_isLoadedGraph)return;
+	return;
 
 	int buf[81];
 
@@ -65,7 +61,7 @@ void FireBall::Init()
 
 	}
 
-	m_isLoadedGraph = true;
+	//SoundManager::GetInstance()
 
 }
 
@@ -159,8 +155,6 @@ void FireBall::End()
 		DeleteGraph(fire);
 
 	}
-
-	m_isLoadedGraph = false;
 
 }
 

@@ -9,11 +9,11 @@
 namespace {
 	constexpr Vector3 kScreenHalf = { Game::kScreenWidth * 0.5f,Game::kScreenHeight * 0.5f,0 };
 	// 2点間のX座標の距離
-	constexpr float kDistance = 200;
+	constexpr float kDistance = 320;
 	// 左側の座標の初期座標
 	constexpr Vector3 kAcrossInitPos[BackBoard::Max] = {
 		{ kScreenHalf.x - kDistance,-300,0 },
-		{ kScreenHalf.x + kDistance,-350,0 },
+		{ kScreenHalf.x + kDistance,-300,0 },
 	};
 	// バウンドする量
 	constexpr float kBounce = -0.3f;
@@ -22,6 +22,9 @@ namespace {
 	// 落下速度
 	constexpr float kFallSpeed = 10.0f;
 	const char* const kGraphPath = "Resource\\Result\\BackBoard.png";
+	// 落下開始の時間
+	constexpr float kFallStart[BackBoard::Max] = { 0.0f,0.1f };
+
 }
 
 BackBoard::BackBoard():
@@ -34,6 +37,7 @@ BackBoard::BackBoard():
 	m_backBoardHandle = LoadGraph(kGraphPath);
 	for (int i = 0; i < Max;i++) {
 		m_sidePos[i] = kAcrossInitPos[i];
+		m_fallStart[i] = kFallStart[i];
 	}
 	for (float& speed : m_fallSpeed) {
 		speed = 0;
@@ -74,8 +78,14 @@ void BackBoard::Update()
 
 	// フレーム間の経過時間をキャッシュ
 	float time = Time::GetInstance().GetUnscaledDeltaTime();
+	for (int i = 0;i < Max;i++) {
+		m_fallStart[i] -= time;
+		if (m_fallStart[i] <= 0)
+			m_fallStart[i] = 0;
+	}
 	// 両方の座標の更新処理
 	for (int i = 0; i < Max; i++) {
+		if (m_fallStart[i])continue;
 		// 落下速度を更新
 		m_fallSpeed[i] += kFallSpeed * time;
 		// 座標に落下速度を加算
@@ -102,10 +112,10 @@ void BackBoard::Update()
 void BackBoard::Draw()
 {
 	DrawRotaGraph(m_between.position.x, m_between.position.y, 3, m_between.rotation.z, m_backBoardHandle, TRUE);
-	//for (int i = 0; i < Max; i++) {
-	//	DrawCircle(m_sidePos[i].x, m_sidePos[i].y, 10, 0x00ff00);
-	//}
-	//DrawCircle(m_between.position.x, m_between.position.y, 10, 0x0000ff);
+	for (int i = 0; i < Max; i++) {
+		DrawCircle(m_sidePos[i].x, m_sidePos[i].y, 10, 0x00ff00);
+	}
+	DrawCircle(m_between.position.x, m_between.position.y, 10, 0x0000ff);
 }
 
 bool BackBoard::IsFinish()

@@ -16,15 +16,17 @@ namespace {
 	// スコア表示の座標
 	constexpr Vector3 kTextPos[ScoreShow::Max] = {
 		{kScreenHalf.x - 300,kScreenHalf.y - 100,0},
-		{kTextPos[0].x,kTextPos[0].y + 80,0},
-		{kTextPos[0].x,kTextPos[1].y + 80,0},
+		{kTextPos[0].x,kTextPos[0].y + 60,0},
+		{kTextPos[0].x,kTextPos[1].y + 60,0},
+		{kTextPos[0].x,kTextPos[2].y + 60,0},
 	};
 	// 数値の描画座標
 	constexpr float kScorePosX = 300;
 	const char* const kScoreName[ScoreShow::Max] = {
-		"   Job    : ",
+		"  Job     : ",
 		"MaxDamage : ",
 		"  Combo   : ",
+		"  kill    : ",
 	};
 	const char* const kJobName[static_cast<int>(Character::Job::Max)] = {
 		"Warrior",
@@ -83,27 +85,50 @@ void ScoreShow::Update()
 			m_phase = Damage;
 			m_interval = kInterval;
 		break;
-	case Damage:
+	case Damage: {
+
 		if (m_showScore.maxDamage == m_score.maxDamage) {
 			m_interval = kInterval;
 			m_phase = Combo;
 			break;
 		}
-		m_showScore.maxDamage += static_cast<int>(m_score.maxDamage * time * 0.5f);
+		float value = static_cast<int>(m_score.maxDamage * time * 0.5f);
+		value = MyMath::Clamp(value, 1.0f, value);
+		m_showScore.maxDamage += value;
 		m_showScore.maxDamage = MyMath::Clamp(m_showScore.maxDamage, 0, m_score.maxDamage);
 		if (skip)m_showScore.maxDamage = m_score.maxDamage;
 		break;
-	case Combo:
+	}
+	case Combo: {
+
 		if (m_showScore.maxCombo == m_score.maxCombo) {
 			m_interval = kInterval;
-			m_phase = Max;
+			m_phase = Kill;
 			break;
 		}
-		m_showScore.maxCombo += static_cast<int>(m_score.maxCombo * time * 0.5f);
+		float value = static_cast<int>(m_score.maxCombo * time * 0.5f);
+		value = MyMath::Clamp(value, 1.0f, value);
+		m_showScore.maxCombo += value;
 		m_showScore.maxCombo = MyMath::Clamp(m_showScore.maxCombo, 0, m_score.maxCombo);
 		if (skip)m_showScore.maxCombo = m_score.maxCombo;
 
 		break;
+	}
+	case Kill: {
+
+		if (m_showScore.kill == m_score.kill) {
+			m_interval = kInterval;
+			m_phase = Max;
+			break;
+		}
+		float value = static_cast<int>(m_score.kill * time * 0.5f);
+		value = MyMath::Clamp(value, 1.0f, value);
+		m_showScore.kill += value;
+		m_showScore.kill = MyMath::Clamp(m_showScore.kill, 0, m_score.kill);
+		if (skip)m_showScore.kill = m_score.kill;
+
+		break;
+	}
 	case Max:
 		break;
 	default:
@@ -129,6 +154,9 @@ void ScoreShow::Draw()
 			break;
 		case Combo:
 			score = std::to_string(m_showScore.maxCombo);
+			break;
+		case Kill:
+			score = std::to_string(m_showScore.kill);
 			break;
 		default:
 			break;

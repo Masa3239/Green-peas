@@ -63,6 +63,8 @@ public:
 
 	void SetIndex(int index) { m_index = index; }
 
+	void SetGraphHandle(std::vector<int>graphHandle) { m_graphHandle = graphHandle; }
+
 private:
 
 	/// <summary>
@@ -113,14 +115,9 @@ private:
 	std::vector<EnemyBase*>m_pEnemies;
 
 	/// <summary>
-	/// 画像を読み込み済みか
-	/// </summary>
-	static bool m_isLoadedGraph;
-
-	/// <summary>
 	/// 
 	/// </summary>
-	static std::vector<int>m_graphHandle;
+	std::vector<int>m_graphHandle;
 
 	/// <summary>
 	/// 画像のフレーム

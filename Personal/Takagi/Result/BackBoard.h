@@ -1,6 +1,9 @@
 #pragma once
 #include"../../../Utility/Transform.h"
 #include"../../../Utility/Vector3.h"
+/// <summary>
+/// 2つの座標を使って角度を求める
+/// </summary>
 class BackBoard
 {
 public:
@@ -39,13 +42,20 @@ private:
 	int m_backBoardHandle;
 
 	/// <summary>
-	/// 左側の座標
+	/// 左右の座標
 	/// </summary>
 	Vector3 m_sidePos[Max];
+	/// <summary>
+	/// 左右の落下速度
+	/// </summary>
 	float m_fallSpeed[Max];
 	/// <summary>
 	/// 背景を描画するトランスフォーム
 	/// </summary>
 	Transform m_between;
+	/// <summary>
+	/// 落下開始の時間
+	/// </summary>
+	float m_fallStart[Max];
 };
 
