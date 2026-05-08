@@ -155,13 +155,6 @@ void BuffManager::Update()
 		if (!InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {
 			break;
 		}
-	if (InputManager::GetInstance().IsPressed(Input::Action::Left)) {
-		m_select--;
-	}
-	if (InputManager::GetInstance().IsPressed(Input::Action::Right)) {
-
-		m_select++;
-	}
 		m_selected = BuffSelect();
 		AdaptBuff(m_selected);
 		m_phase = Phase::End;
@@ -180,7 +173,15 @@ void BuffManager::Update()
 		break;
 	}
 
-	
+	if (InputManager::GetInstance().IsPressed(Input::Action::Left)) {
+		m_select--;
+		SoundManager::GetInstance().PlaySe(Sound::SE::CursorMove);
+	}
+	if (InputManager::GetInstance().IsPressed(Input::Action::Right)) {
+
+		m_select++;
+		SoundManager::GetInstance().PlaySe(Sound::SE::CursorMove);
+	}
 	m_select = (kBuffSelectNum + m_select) % kBuffSelectNum;
 	if (!PauseManager::GetInstance().IsPause()) return;
 }
@@ -274,7 +275,7 @@ void BuffManager::RandomBuff()
 			}
 		}
 	}
-	SoundManager::GetInstance().PlaySe(Sound::SE::BuffDecision);
+	SoundManager::GetInstance().PlaySe(Sound::SE::Buff);
 
 }
 
