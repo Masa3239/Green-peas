@@ -40,8 +40,8 @@ namespace
 		{ EnemyShooter::AnimType::ERun, 10.0f, true, false},
 	};
 
-	const char* const kGraphPathIdle = "Resource\\Spiked Slime\\Slime_Spiked_Idle.png";
-	const char* const kGraphPathRun = "Resource\\Spiked Slime\\Slime_Spiked_Run.png";
+	const char* const kGraphPathIdle = "Resource\\Puppeteer Weapon.png";
+	const char* const kGraphPathRun = "Resource\\Puppeteer Attack.png";
 }
 
 EnemyShooter::EnemyShooter(ObjectManager* objManager) :
@@ -74,8 +74,8 @@ void EnemyShooter::Init()
 	}
 
 	m_animationController.Init();
-	m_animationController.RegisterGraphHandle(AnimType::EIdle, kGraphPathIdle, 4, 4, 1, 64, 64);
-	m_animationController.RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 4, 4, 1, 64, 64);
+	m_animationController.RegisterGraphHandle(AnimType::EIdle, kGraphPathIdle, 1, 1, 1, 25, 25);
+	m_animationController.RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 5, 5, 1, 25, 25);
 }
 
 void EnemyShooter::End()
