@@ -21,7 +21,6 @@ BossBullet::BossBullet(ObjectManager* objManager) :
     m_animIndex(0),
     m_animTimer(0)
 {
-
 	m_collision = Collision::Circle(GetTransform().position, kCircleRadius);
 }
 
@@ -36,6 +35,7 @@ void BossBullet::Init()
         printfDx("Player is null!\n");
         return;
     }
+
     // 自分の位置
     Vector3 myPos = GetTransform().position;
 
@@ -64,7 +64,7 @@ void BossBullet::End()
 
 void BossBullet::Update()
 {
-
+    
     // 座標の更新
     GetTransform().position += m_velocity;
 

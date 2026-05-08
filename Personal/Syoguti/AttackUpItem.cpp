@@ -5,6 +5,7 @@
 #include "../Takagi/Player.h"
 #include "../Takagi/PlayerStatus.h"
 #include "../Takagi/PlayerBuff.h"
+#include "../../System/SoundManager.h"
 
 namespace {
 
@@ -75,5 +76,6 @@ void AttackUpItem::ItemAbility(Player* player)
 	m_pPlayer = player;
 	PlayerBuff buff = { kAtatckUp,30,false };
 	m_pPlayer->AddBuff(buff);
+	SoundManager::GetInstance().PlaySe(Sound::SE::PowerUp);
 	// printfDx("攻撃力が上がりました\n");
 }

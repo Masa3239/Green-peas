@@ -3,6 +3,7 @@
 #include "../../Utility/Transform.h"
 #include "DxLib.h"
 #include "../Takagi/Player.h"
+#include "../../System/SoundManager.h"
 
 namespace {
 	
@@ -15,7 +16,7 @@ namespace {
 	// 画像のオフセットYの値
 	constexpr float kGraphOffsetY = 10.0f;
 
-	constexpr int kHealValue = 50;
+	constexpr int kRatio = 0.5f;
 }
 
 HpHealItem::HpHealItem(ObjectManager* objManager):
@@ -70,8 +71,15 @@ void HpHealItem::Draw()
 void HpHealItem::ItemAbility(Player* player)
 {
 	m_pPlayer = player;
+
+	// プレイヤーの最大体力を取得
 	float healValue = player->GetGaugeMaxValue(Player::GaugeType::Hp);
-	healValue * 0.2f;
+
+	// プレイヤーの最大体力に割合をかけた値を用意
+	healValue *= kRatio;
+
+	// 回復処理を呼ぶ
 	m_pPlayer->Heal(healValue);
-	// printfDx("HPが回復しました\n");
+	SoundManager::GetInstance().PlaySe(Sound::SE::Heal);
+	
 }
