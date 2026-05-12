@@ -57,6 +57,7 @@ void EnemyManager::Init()
 
 	m_enemyBoss = std::make_unique<EnemyBoss>(GetObjectManager(), Vector3(5000, 300, 0));
 	m_enemyBoss->SetPlayer(m_pPlayer);
+	m_enemyBoss->SetMap(m_map);
 	m_enemyBoss->Init();
 }
 

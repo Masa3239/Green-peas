@@ -8,7 +8,7 @@
 #include <memory>
 
 class Player;
-
+class Map;
 class BossBulletManager;
 
 namespace {
@@ -110,6 +110,13 @@ public:
 	/// <param name="player"></param>
 	/// <returns></returns>
 	void const SetPlayer(Player* player) { m_pPlayer = player; }
+
+	/// <summary>
+	/// マップのポインタをセットするセッター関数
+	/// </summary>
+	/// <param name="map"></param>
+	/// <returns></returns>
+	void const SetMap(Map* map) { m_pMap = map; }
 
 	/// <summary>
 	/// ボスの封印解除Seをセットするセッター関数
@@ -338,6 +345,11 @@ private:
 	Player* m_pPlayer;
 
 	/// <summary>
+	/// マップのポインタ
+	/// </summary>
+	Map* m_pMap;
+
+	/// <summary>
 	/// ボスの弾のポインタ
 	/// </summary>
 	std::unique_ptr<BossBulletManager> m_pBossBulletMgr;
@@ -401,5 +413,6 @@ private:
 	/// ボスの封印解除SE
 	/// </summary>
 	bool m_seBossFlag;
+
 };
 

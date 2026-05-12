@@ -5,6 +5,7 @@
 #include "../../Utility/MyRandom.h"
 #include "../../Utility/Time.h"
 #include "../Takagi/Player.h"
+#include "../Kimura/Map/Map.h"
 #include "BossBulletManager.h"
 #include "../../System/SoundManager.h"
 
@@ -58,6 +59,9 @@ namespace {
 	// エフェクトのサイズ
 	constexpr float kEffectScale = 5.0f * kGraphScale;
 
+	constexpr float kMapRangeOffset = 60.0f;
+
+
 }
 
 EnemyBoss::EnemyBoss(ObjectManager* objManager) :
@@ -81,6 +85,7 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 	m_getRandomTime(0.0f),
 	m_targetPos(0.0f, 0.0f, 0.0f),
 	m_pPlayer(nullptr),
+	m_pMap(nullptr),
 	m_pBossBulletMgr(nullptr),
 	m_effectTimer(0.0f),
 	m_effectCount(0),
@@ -92,8 +97,7 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager) :
 	m_speed(0),
 	m_angrySpeed(1),
 	m_isAngry(false),
-	m_seBossFlag(false)
-{
+	m_seBossFlag(false){
 	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
 	for (int i = 0; i < static_cast<int>(BossStatus::Max); i++) {
 
@@ -131,6 +135,7 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_getRandomTime(0.0f),
 	m_targetPos(0.0f, 0.0f, 0.0f),
 	m_pPlayer(nullptr),
+	m_pMap(nullptr),
 	m_pBossBulletMgr(nullptr),
 	m_effectTimer(0.0f),
 	m_effectCount(0),
@@ -221,6 +226,14 @@ void EnemyBoss::End()
 void EnemyBoss::Update()
 {
 
+	if (GetTransform().position.x < kMapRangeOffset) GetTransform().position.x = kMapRangeOffset;
+	else
+		if (GetTransform().position.x > m_pMap->GetMapBlockNumX() * 40 - kMapRangeOffset) GetTransform().position.x = m_pMap->GetMapBlockNumX() * 40 - kMapRangeOffset;
+
+	if (GetTransform().position.y < kMapRangeOffset) GetTransform().position.y = kMapRangeOffset;
+	else
+		if (GetTransform().position.y > m_pMap->GetMapBlockNumY() * 40 - kMapRangeOffset) GetTransform().position.y = m_pMap->GetMapBlockNumY() * 40 - kMapRangeOffset;
+
 	// 当たり判定の更新
 	m_collsion.SetPosition(GetTransform().position);
 
@@ -264,9 +277,9 @@ void EnemyBoss::Update()
 		m_getRandomTime = 0.0f;
 	}
 
-	Action();
-
 	Status();
+
+	Action();
 
 	AttackUp();
 }
@@ -472,11 +485,26 @@ void EnemyBoss::GetRandomAction()
 	m_action = nextAction;
 
 
-	m_targetPos = TargetPos(m_pPlayer->GetTransform().position);
+	// 範囲内になるまで繰り返す
+	while (true) {
+
+		m_targetPos = TargetPos(m_pPlayer->GetTransform().position);
+
+		// 範囲内なら終了
+		if (m_targetPos.x >= kMapRangeOffset &&
+			m_targetPos.x <= m_pMap->GetMapBlockNumX() * 40 - kMapRangeOffset &&
+			m_targetPos.y >= kMapRangeOffset &&
+			m_targetPos.y <= m_pMap->GetMapBlockNumY() * 40 - kMapRangeOffset) {
+
+			break;
+		}
+	}
 }
 
 bool EnemyBoss::ApproachPlayer(const Vector3& playerPos)
 {
+
+	
 
 	// 方向ベクトル
 	Vector3 direction = playerPos - GetTransform().position;
@@ -498,11 +526,13 @@ bool EnemyBoss::ApproachPlayer(const Vector3& playerPos)
 
 	// 移動
 	GetTransform().position += direction * m_speed * Time::GetInstance().GetDeltaTime();
+
 	return false;
 }
 
 bool EnemyBoss::LeavePlayer(const Vector3& playerPos)
 {
+
 	// 方向ベクトル
 	Vector3 direction = playerPos - GetTransform().position;
 
@@ -522,6 +552,7 @@ bool EnemyBoss::LeavePlayer(const Vector3& playerPos)
 	m_direction = (playerPos.x >= GetTransform().position.x) ? -1 : 1;
 	// 移動
 	GetTransform().position += direction * m_speed * Time::GetInstance().GetDeltaTime();
+
 	return false;
 }
 

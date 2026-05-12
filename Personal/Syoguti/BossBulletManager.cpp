@@ -58,16 +58,16 @@ void BossBulletManager::End()
 
 void BossBulletManager::Update()
 {
-	for (auto& e : m_bullets) {
-		e->Update();
-	}
+	//for (auto& e : m_bullets) {
+	//	e->Update();
+	//}
 }
 
 void BossBulletManager::Draw()
 {
-	for (auto& e : m_bullets) {
-		e->Draw();
-	}
+	//for (auto& e : m_bullets) {
+	//	e->Draw();
+	//}
 }
 
 void BossBulletManager::Create(BossBulletBase::BulletType type, Vector3 position)
