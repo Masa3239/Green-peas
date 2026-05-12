@@ -103,6 +103,7 @@ void ResultShow::Update()
 		break;
 	case Mode:
 	{
+		if (m_fader->IsFadingOut())break;
 		m_modeSelect->Update();
 		bool nextScene = m_modeSelect->CheckSelect(m_fader);
 		if (!nextScene)break;
