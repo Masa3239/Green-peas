@@ -36,7 +36,7 @@ namespace {
 
 	// ボスの最大体力
 	//constexpr int kMaxHp = 100000000;
-	constexpr int kMaxHp = 2147483647;
+	constexpr int kMaxHp = 50000000;
 
 	// ボスの攻撃力
 	constexpr int kAttackPower = 25;
@@ -363,7 +363,7 @@ bool EnemyBoss::Damage(const int damage)
 bool EnemyBoss::Damage(const int damage, int weapon, int index)
 {
 
-	if (!m_sealRelease && m_currentHp < kMaxHp - 5000) {
+	if (!m_sealRelease && m_currentHp < kMaxHp - 95000) {
 
 		//m_speed += kAngrySpeed;
 		m_seBossFlag = true;
