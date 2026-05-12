@@ -7,6 +7,7 @@ class PlayerUIManager;
 class PopUpTextManager;
 class Combo;
 class Minimap;
+class BossHpBar;
 
 class Camera;
 class Map;
@@ -93,6 +94,11 @@ private:
 	/// ミニマップクラス
 	/// </summary>
 	std::unique_ptr<Minimap>m_pMinimap;
+
+	/// <summary>
+	/// ボスの体力を表示クラス
+	/// </summary>
+	std::unique_ptr<BossHpBar>m_pBossHpBar;
 
 	Player* m_pPlayer;
 

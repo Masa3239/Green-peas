@@ -28,7 +28,8 @@ namespace {
 }
 
 Arrow::Arrow(ObjectManager* objManager):
-	BulletBase(objManager)
+	BulletBase(objManager),
+	m_graphHandle(-1)
 {
 	m_circle = Collision::Circle(GetTransform().position, kCollisionSize);
 }
