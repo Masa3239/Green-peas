@@ -58,16 +58,12 @@ void BossBulletManager::End()
 
 void BossBulletManager::Update()
 {
-	//for (auto& e : m_bullets) {
-	//	e->Update();
-	//}
+	CheckIsDead();
 }
 
 void BossBulletManager::Draw()
 {
-	//for (auto& e : m_bullets) {
-	//	e->Draw();
-	//}
+
 }
 
 void BossBulletManager::Create(BossBulletBase::BulletType type, Vector3 position)
@@ -111,6 +107,19 @@ void BossBulletManager::Remove(int index)
 	m_bullets[index]->End();
 
 	m_bullets.erase(m_bullets.begin() + index);
+}
+
+void BossBulletManager::CheckIsDead()
+{
+
+
+	// 空きがあれば前詰めする前提の処理
+	for (int i = m_bullets.size() - 1; i >= 0; i--) {
+
+		if (!m_bullets[i]->GetIsDead()) continue;
+
+		Remove(i);
+	}
 }
 
 bool BossBulletManager::CheckHitCollision(const Collision::Shape& other)

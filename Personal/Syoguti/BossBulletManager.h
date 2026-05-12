@@ -47,19 +47,6 @@ public:
 	void Draw();
 
 	/// <summary>
-	/// 弾の生成
-	/// </summary>
-	/// <param name="type"></param>
-	/// <param name="position"></param>
-	void Create(BossBulletBase::BulletType type, Vector3 position);
-
-	/// <summary>
-	/// 指定したインデックスの弾を削除
-	/// </summary>
-	/// <param name="index"></param>
-	void Remove(int index);
-
-	/// <summary>
 	/// 引数の形状と弾が当たっているか調べる
 	/// </summary>
 	/// <param name="other"></param>
@@ -77,6 +64,26 @@ public:
 	/// </summary>
 	/// <param name="player"></param>
 	void SetPlayer(Player* player) { m_pPlayer = player; }
+
+	/// <summary>
+	/// 弾の生成
+	/// </summary>
+	/// <param name="type"></param>
+	/// <param name="position"></param>
+	void Create(BossBulletBase::BulletType type, Vector3 position);
+private:
+
+
+	/// <summary>
+	/// 指定したインデックスの弾を削除
+	/// </summary>
+	/// <param name="index"></param>
+	void Remove(int index);
+
+	/// <summary>
+	/// 弾が死んでいるかチェック
+	/// </summary>
+	void CheckIsDead();
 
 private:
 

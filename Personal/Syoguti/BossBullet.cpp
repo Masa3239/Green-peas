@@ -3,6 +3,7 @@
 #include "../../Utility/Transform.h"
 #include <DxLib.h>
 #include "../Takagi/Player.h"
+#include "../../Utility/Time.h"
 
 namespace {
 
@@ -14,6 +15,11 @@ namespace {
 
     // 弾のスピード
     constexpr float kBulletSpeed = 5.0f;
+
+    // 弾の消える距離
+    constexpr float kDidtance = 1000.0f;
+
+    constexpr float kDeadTime = 5.0f;
 }
 
 BossBullet::BossBullet(ObjectManager* objManager) :
@@ -65,6 +71,14 @@ void BossBullet::End()
 void BossBullet::Update()
 {
     
+    m_removeTimer += Time::GetInstance().GetDeltaTime();
+
+    if (m_removeTimer >= kDeadTime) {
+
+        m_isDead = true;
+        m_removeTimer = 0.0f;
+    }
+
     // 座標の更新
     GetTransform().position += m_velocity;
 

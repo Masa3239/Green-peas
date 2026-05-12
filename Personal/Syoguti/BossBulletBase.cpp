@@ -4,7 +4,9 @@ BossBulletBase::BossBulletBase(ObjectManager* objManager) :
 	GameObject(objManager),
 	m_velocity(0.0f, 0.0f, 0.0f),
 	m_collision(),
-	m_pPlayer(nullptr) 
+	m_pPlayer(nullptr),
+	m_removeTimer(0.0f),
+	m_isDead(false)
 {
 	for (int i = 0; i < kAnimationNum; i++)
 	{

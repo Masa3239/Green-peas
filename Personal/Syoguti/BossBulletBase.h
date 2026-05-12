@@ -70,6 +70,12 @@ public:
 	/// <returns></returns>
 	virtual const Collision::Circle GetCollision() { return m_collision; }
 
+	/// <summary>
+	/// 消えるかどうかを取得するゲッター関数
+	/// </summary>
+	/// <returns></returns>
+	virtual const bool GetIsDead() { return m_isDead; }
+
 protected:
 
 	/// <summary>
@@ -91,6 +97,16 @@ protected:
 	/// プレイヤーのポインタ
 	/// </summary>
 	Player* m_pPlayer;
+
+	/// <summary>
+	/// 弾を消すまでの時間
+	/// </summary>
+	float m_removeTimer;
+
+	/// <summary>
+	/// 弾が消えるかどうか
+	/// </summary>
+	bool m_isDead;
 
 };
 
