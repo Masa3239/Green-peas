@@ -118,6 +118,6 @@ private:
 	/// <summary>
 	/// 入力に反応する
 	/// </summary>
-	float m_response;
+	float m_randomSelect;
 };
 
