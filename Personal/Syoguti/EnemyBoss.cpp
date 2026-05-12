@@ -363,7 +363,7 @@ bool EnemyBoss::Damage(const int damage)
 bool EnemyBoss::Damage(const int damage, int weapon, int index)
 {
 
-	if (!m_sealRelease && m_currentHp < 95000) {
+	if (!m_sealRelease && m_currentHp < kMaxHp - 5000) {
 
 		//m_speed += kAngrySpeed;
 		m_seBossFlag = true;
