@@ -94,10 +94,13 @@ void ScoreShow::Update()
 			m_phase = Combo;
 			break;
 		}
+		SoundManager::GetInstance().PlaySe(Sound::SE::CharactorButton);
+
 		float value = static_cast<int>(m_score.maxDamage * time * 0.5f);
 		value = MyMath::Clamp(value, 1.0f, value);
 		m_showScore.maxDamage += value;
 		m_showScore.maxDamage = MyMath::Clamp(m_showScore.maxDamage, 0, m_score.maxDamage);
+
 		if (skip)m_showScore.maxDamage = m_score.maxDamage;
 		break;
 	}
