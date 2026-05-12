@@ -189,6 +189,201 @@
     <ClCompile Include="Personal\Takagi\PlayerBuff.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Personal\Asai\Minimap.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\Thunder.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\Enemy\EnemyBullet.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\Enemy\EnemyMiniBoss.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\Enemy\EnemyShooter.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Katana.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\WeaponManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\InputManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Device\InputDeviceBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Device\InputDeviceGamepad.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Device\InputDeviceKeyboard.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Device\InputDeviceMouse.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Format\InputFormatBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Format\InputFormatGamepadButton.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Format\InputFormatGamepadThumb.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Format\InputFormatGamepadTrigger.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Format\InputFormatKeyboard.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Format\InputFormatMouseButton.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Format\InputFormatMouseDelta.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Format\InputFormatMouseWheel.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Gamepad.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Keyboard.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Modifier\InputModifierDeadzone.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Modifier\InputModifierNegate.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Modifier\InputModifierSwizzleAxis.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Mouse.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\FlameWand.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\ThunderWand.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\ExpOrb.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\PauseManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Input\Modifier\InputModifierConcurrent.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Syoguti\BossBullet.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Syoguti\BossBulletBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Syoguti\BossBulletManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\BossKey.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\PauseMenu.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Hunter.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Warrior.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Wizard.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneTitle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\Combo.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Kimura\EnemyMap\EnemyMap.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\BuffManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\CharacterSelectScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\Easing\AnimationCurve.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\Easing\Tween.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Syoguti\TreasureChest.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Syoguti\ChestManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Result\BackBoard.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Result\Clear.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Result\Failed.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Result\ResultHead.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Result\ResultModeSelect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Result\ResultShow.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Result\ResultTestScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\Result\ScoreShow.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\CharaSelect\Gear.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Takagi\CharaSelect\RotateCharacter.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\SettingsMenu.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\TitleBackground.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="System\JsonManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Chara\AnimationController2D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Fader.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Asai\PlayerWeaponUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Personal\Osawa\Enemy\EnemySlime.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Image\Cloud.png">
@@ -243,6 +438,84 @@
       <Filter>リソース ファイル</Filter>
     </Image>
     <Image Include="Resource\MapChip.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\15_Ready_to_use_Treasure_Chests_Spritesheet.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Boomerang.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Bow.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\CharaSelectUI\1.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dead_anin.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Fire.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Golden Sword.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Hammer.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\HUD_Boss.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\LongSword.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\pipo-btleffect001.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\pipo-btleffect161.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\pipo-charachip_otaku01.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dino Rex\_Preview.gif">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dino Rex\_Thumbnail.gif">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dino Rex\dino_rex_ability_black.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dino Rex\dino_rex_ability_red.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dino Rex\dino_rex_ability_yellow.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dino Rex\dino_rex_attack_A.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dino Rex\dino_rex_attack_B_1_start.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dino Rex\dino_rex_attack_B_2_loop.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dino Rex\dino_rex_attack_B_3_end.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dino Rex\dino_rex_hurt.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dino Rex\dino_rex_idle.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dino Rex\dino_rex_move.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resource\Dino Rex\dino_rex_stomp.png">
       <Filter>リソース ファイル</Filter>
     </Image>
   </ItemGroup>
@@ -457,13 +730,237 @@
     <ClInclude Include="Personal\Takagi\RadToPos.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Personal\Asai\Minimap.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\Thunder.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Enemy\EnemyBullet.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Enemy\EnemyMiniBoss.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Enemy\EnemyShooter.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Katana.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\WeaponManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\InputManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Device\InputDeviceBase.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Device\InputDeviceGamepad.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Device\InputDeviceKeyboard.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Device\InputDeviceMouse.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Format\InputFormatBase.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Format\InputFormatGamepadButton.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Format\InputFormatGamepadThumb.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Format\InputFormatGamepadTrigger.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Format\InputFormatKeyboard.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Format\InputFormatMouseButton.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Format\InputFormatMouseDelta.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Format\InputFormatMouseWheel.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Gamepad.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Keyboard.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Literal\InputActions.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Literal\InputProperty.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Literal\KeyCodes.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Modifier\IInputModifier.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Modifier\InputModifierDeadzone.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Modifier\InputModifierNegate.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Modifier\InputModifierSwizzleAxis.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Mouse.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\FlameWand.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\ThunderWand.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\ExpOrb.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\PauseManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Input\Modifier\InputModifierConcurrent.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Syoguti\BossBullet.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Syoguti\BossBulletBase.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Syoguti\BossBulletManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\BossKey.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\PauseMenu.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Hunter.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Warrior.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Wizard.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneTitle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\Combo.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Kimura\EnemyMap\EnemyMap.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Kimura\EnemyMap\EnemySpawnData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\BuffManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\BuffType.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\CarryOver.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\CharacterSelectScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Easing\AnimationCurve.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Easing\Keyframe.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Easing\Tween.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Syoguti\TreasureChest.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Syoguti\ChestManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Result\BackBoard.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Result\Clear.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Result\Failed.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Result\ResultHead.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Result\ResultModeSelect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Result\ResultShow.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Result\ResultTestScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\Result\ScoreShow.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\CharaSelect\Gear.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Takagi\CharaSelect\RotateCharacter.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\SettingsMenu.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\TitleBackground.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="System\JsonManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Chara\Animation2D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Chara\AnimationController2D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Fader.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Asai\PlayerWeaponUI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Personal\Osawa\Enemy\EnemySlime.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="okjuigh.txt" />
+    <Text Include="Resource\15_Ready_to_use_Treasure_Chests_Text_File.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mapdata\Map1_1.csv" />
     <None Include="Resource\Map1_1.csv" />
     <None Include="Resource\Map1_2.csv" />
+    <None Include="Resource\SoundPath.json" />
   </ItemGroup>
 </Project>

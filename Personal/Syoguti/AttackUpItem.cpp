@@ -74,6 +74,7 @@ void AttackUpItem::Draw()
 void AttackUpItem::ItemAbility(Player* player)
 {
 	m_pPlayer = player;
+	// 攻撃力アップのバフを30秒間、永続ではない
 	PlayerBuff buff = { kAtatckUp,30,false };
 	m_pPlayer->AddBuff(buff);
 	SoundManager::GetInstance().PlaySe(Sound::SE::PowerUp);

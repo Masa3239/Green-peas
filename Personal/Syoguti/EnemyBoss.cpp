@@ -35,7 +35,8 @@ namespace {
 	constexpr float kPlayerOffsetPos = 200.0f;
 
 	// ボスの最大体力
-	constexpr int kMaxHp = 100000000;
+	//constexpr int kMaxHp = 100000000;
+	constexpr int kMaxHp = 2147483647;
 
 	// ボスの攻撃力
 	constexpr int kAttackPower = 25;
