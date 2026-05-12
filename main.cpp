@@ -24,6 +24,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return -1;				// 初期化に失敗したら強制終了
 	}
 
+	printfDx("Now loading...");
+
 	// 乱数生成クラスの初期化
 	MyRandom::Init();
 
@@ -44,6 +46,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// 描画先を裏面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
+
 
 	// メインループ
 	while (ProcessMessage() == 0) {
