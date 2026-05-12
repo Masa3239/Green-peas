@@ -210,7 +210,6 @@ EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, int level)
 	enemy->SetEnemyManager(this);
 	enemy->SetMap(m_map);
 	enemy->SetLevel(level);
-	enemy->Init();
 
 	// ¶¬À•W‚ª”ÍˆÍ“à‚É‚È‚é‚Ü‚ÅŒJ‚è•Ô‚·
 	Vector3 playerPos = m_pPlayer->GetTransform().position;
@@ -226,6 +225,8 @@ EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, int level)
 		if (pos.x >= 40 && pos.y >= 40 && pos.x < m_map->GetMapBlockNumX() * 40 - 40 && pos.y < m_map->GetMapBlockNumY() * 40 - 40) break;
 	}
 	enemy->GetTransform().position = pos;
+
+	enemy->Init();
 
 	if (type == EnemyType::Miniboss) m_miniBosses.emplace_back(dynamic_cast<EnemyMiniBoss*>(enemy.get()));
 	return m_enemies.emplace_back(std::move(enemy)).get();
@@ -245,9 +246,10 @@ EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos, int level)
 	enemy->SetEnemyManager(this);
 	enemy->SetMap(m_map);
 	enemy->SetLevel(level);
-	enemy->Init();
 
 	enemy->GetTransform().position = pos;
+
+	enemy->Init();
 
 	if (type == EnemyType::Miniboss) m_miniBosses.emplace_back(dynamic_cast<EnemyMiniBoss*>(enemy.get()));
 	return m_enemies.emplace_back(std::move(enemy)).get();

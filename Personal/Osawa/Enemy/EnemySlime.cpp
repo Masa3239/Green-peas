@@ -55,6 +55,8 @@ void EnemySlime::Init()
 	m_animationController.RegisterGraphHandle(AnimType::EIdle, kGraphPathIdle, 4, 4, 1, 64, 64);
 	m_animationController.RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 4, 4, 1, 64, 64);
 	m_animationController.RegisterGraphHandle(AnimType::EAttack, kGraphPathAttack, 4, 4, 1, 64, 64);
+
+	EnemyBase::Init();
 }
 
 void EnemySlime::End()
