@@ -34,7 +34,7 @@ namespace {
 	constexpr float kPlayerOffsetPos = 200.0f;
 
 	// ボスの最大体力
-	constexpr int kMaxHp = 50000;
+	constexpr int kMaxHp = 100000;
 
 	// ボスの攻撃力
 	constexpr int kAttackPower = 25;
@@ -337,7 +337,7 @@ bool EnemyBoss::CheckHitCloseRangeAttackCollison(const Collision::Shape& other)
 bool EnemyBoss::Damage(const int damage)
 {
 
-	if (!SealReleaseFlag()) {
+	if (!m_sealRelease) {
 
 		m_speed += kAngrySpeed;
 		m_sealRelease = true;
@@ -349,7 +349,7 @@ bool EnemyBoss::Damage(const int damage)
 bool EnemyBoss::Damage(const int damage, int weapon, int index)
 {
 
-	if (!SealReleaseFlag()) {
+	if (!m_sealRelease && m_currentHp < 95000) {
 
 		//m_speed += kAngrySpeed;
 		m_seBossFlag = true;
@@ -688,7 +688,7 @@ void EnemyBoss::AttackUp()
 {
 
 	if (m_currentHp > kMaxHp / 2) return;
-	m_attackPower * 2;
+	m_attackPower *= 2;
 }
 
 
