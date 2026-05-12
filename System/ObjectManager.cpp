@@ -1,5 +1,6 @@
 #include "ObjectManager.h"
 #include "../Object/GameObject.h"
+#include <cassert>
 
 ObjectManager::ObjectManager() :
 	m_isUpdatingGameObject(false)
@@ -99,12 +100,16 @@ void ObjectManager::DeactiveAllGameObject()
 
 void ObjectManager::UpdateGameObjects()
 {
+	try
+	{
+
 	// ゲームオブジェクトを更新する
 	m_isUpdatingGameObject = true;
 	for (const auto& obj : m_gameObjects)
 	{
-		if (obj->GetState() != GameObject::State::Active) continue;
-		obj->Update();
+		
+			if (obj->GetState() != GameObject::State::Active) continue;
+			obj->Update();
 	}
 	for (const auto& obj : m_gameObjects)
 	{
@@ -119,6 +124,12 @@ void ObjectManager::UpdateGameObjects()
 		m_gameObjects.emplace_back(obj);
 	}
 	m_pendingGameObjects.clear();
+
+	}
+	catch (const std::exception& e)
+	{
+		assert(false && "例のエラー");
+	}
 }
 
 void ObjectManager::RemoveDeadGameObjects()

@@ -116,7 +116,7 @@ void SceneInGame::Init()
 	m_pPauseMenu->Init();
 	PauseManager::GetInstance().SetObjectManager(GetObjectManager());
 
-	SoundManager::GetInstance().PlayBGM(Sound::BGM::Pause);
+	SoundManager::GetInstance().PlayBGM(Sound::BGM::BGM2);
 }
 
 void SceneInGame::End()
