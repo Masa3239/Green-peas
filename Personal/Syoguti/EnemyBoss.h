@@ -105,6 +105,12 @@ public:
 	int GetBossCurrentHp() { return m_currentHp; }
 
 	/// <summary>
+	/// 封印解除されたかどうかを取得するゲッター関数
+	/// </summary>
+	/// <returns></returns>
+	int GetSealReleaseFlag() { return m_sealRelease; }
+
+	/// <summary>
 	/// プレイヤーのポインタをセットするセッター関数
 	/// </summary>
 	/// <param name="player"></param>
