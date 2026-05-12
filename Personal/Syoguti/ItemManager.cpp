@@ -73,8 +73,7 @@ void ItemManager::CreateRandom(Vector3 position)
 
 	int type = MyRandom::Int(0, static_cast<int>(ItemBase::ItemType::Max) - 1);
 
-	Create(ItemBase::ItemType::Defence, position);
-	//Create(static_cast<ItemBase::ItemType>(type), position);
+	Create(static_cast<ItemBase::ItemType>(type), position);
 }
 
 void ItemManager::Create(ItemBase::ItemType type, Vector3 position)
