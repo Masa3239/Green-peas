@@ -4,8 +4,10 @@
 #include"../Asai/PopUpTextManager.h"
 #include"../Asai/Combo.h"
 #include"../Asai/Minimap.h"
+#include"../Asai/BossHpBar.h"
 
 #include<DxLib.h>
+#include"../Syoguti/EnemyBoss.h"
 #include"../Syoguti/ChestManager.h"
 #include"../Takagi/Player.h"
 
@@ -37,6 +39,9 @@ void UIManager::Init()
 	m_pMinimap = std::make_unique<Minimap>();
 	m_pMinimap->Init();
 
+	m_pBossHpBar = std::make_unique<BossHpBar>();
+	m_pBossHpBar->Init();
+
 }
 
 void UIManager::Update()
@@ -50,6 +55,8 @@ void UIManager::Update()
 	m_pCombo->Update();
 
 	m_pMinimap->Update();
+
+	m_pBossHpBar->Update();
 
 }
 
@@ -65,6 +72,8 @@ void UIManager::ScreenDraw()
 	m_pCombo->Draw();
 
 	m_pMinimap->Draw();
+
+	m_pBossHpBar->Draw();
 
 }
 
@@ -93,6 +102,7 @@ void UIManager::End()
 	m_pPopUpTextMgr->End();
 	m_pCombo->End();
 	m_pMinimap->End();
+	m_pBossHpBar->End();
 
 }
 
@@ -125,6 +135,8 @@ void UIManager::SetEnemyManager(EnemyManager* pEnemyManager)
 	m_pCombo->SetEnemyManager(m_pEnemyManager);
 
 	m_pMinimap->SetEnemyManager(m_pEnemyManager);
+
+	m_pBossHpBar->SetEnemyManager(m_pEnemyManager);
 
 }
 
