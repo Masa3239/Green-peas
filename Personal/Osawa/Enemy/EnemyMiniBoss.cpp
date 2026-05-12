@@ -75,6 +75,8 @@ void EnemyMiniBoss::Init()
 	GetCollider() = Collision::AABB{Vector3::zero, kColliderSize};
 
 	LoadDivGraph(kGraphPath, kAnimFrameNum, kAnimFrameNum, 1, 384, 128, m_graphs);
+
+	EnemyBase::Init();
 }
 
 void EnemyMiniBoss::End()

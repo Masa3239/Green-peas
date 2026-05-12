@@ -43,6 +43,11 @@ EnemyBase::~EnemyBase()
 {
 }
 
+void EnemyBase::Init()
+{
+	m_collider.SetPosition(GetTransform().position);
+}
+
 void EnemyBase::Update()
 {
 	m_collider.SetPosition(GetTransform().position);

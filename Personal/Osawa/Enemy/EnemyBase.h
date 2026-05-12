@@ -30,6 +30,8 @@ public:
 	EnemyBase(ObjectManager* objManager);
 	virtual ~EnemyBase();
 
+	virtual void Init() override;
+
 	/// <summary>
 	/// XVˆ—
 	/// </summary>

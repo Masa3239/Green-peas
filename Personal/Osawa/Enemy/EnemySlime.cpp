@@ -1,4 +1,4 @@
-#include "EnemyMelee.h"
+#include "EnemySlime.h"
 #include "../Personal/Takagi/Player.h"
 #include "../Utility/Time.h"
 #include "../Chara/AnimationController2D.h"
@@ -18,19 +18,19 @@ namespace
 	constexpr int kAtkPerLevel = 1.03f;
 	constexpr int kDefPerLevel = 5;
 
-	Animation::Animation2DData kAnimData[EnemyMelee::AnimType::Length] =
+	Animation::Animation2DData kAnimData[EnemySlime::AnimType::Length] =
 	{
-		{ EnemyMelee::AnimType::EIdle, 6.0f, true, false},
-		{ EnemyMelee::AnimType::ERun, 6.0f, true, false},
-		{ EnemyMelee::AnimType::EAttack, 6.0f, false, true},
+		{ EnemySlime::AnimType::EIdle, 12.0f, true, false},
+		{ EnemySlime::AnimType::ERun, 12.0f, true, false},
+		{ EnemySlime::AnimType::EAttack, 12.0f, false, true},
 	};
 
-	const char* const kGraphPathIdle = "Resource\\Golem Reinforced\\Golem_Armor_Idle.png";
-	const char* const kGraphPathRun = "Resource\\Golem Reinforced\\Golem_Armor_Run.png";
-	const char* const kGraphPathAttack = "Resource\\Golem Reinforced\\Golem_Armor_AttackB.png";
+	const char* const kGraphPathIdle = "Resource\\Spiked Slime\\Slime_Spiked_Idle.png";
+	const char* const kGraphPathRun = "Resource\\Spiked Slime\\Slime_Spiked_Run.png";
+	const char* const kGraphPathAttack = "Resource\\Spiked Slime\\Slime_Spiked_Ability.png";
 }
 
-EnemyMelee::EnemyMelee(ObjectManager* objManager) :
+EnemySlime::EnemySlime(ObjectManager* objManager) :
 	EnemyBase(objManager),
 	m_attackCooltimeCounter(0.0f),
 	m_animationController(),
@@ -38,11 +38,11 @@ EnemyMelee::EnemyMelee(ObjectManager* objManager) :
 {
 }
 
-EnemyMelee::~EnemyMelee()
+EnemySlime::~EnemySlime()
 {
 }
 
-void EnemyMelee::Init()
+void EnemySlime::Init()
 {
 	StatusParam status = kStatus;
 	status.hp += kHpPerLevel * GetLevel();
@@ -54,17 +54,17 @@ void EnemyMelee::Init()
 	m_animationController.Init();
 	m_animationController.RegisterGraphHandle(AnimType::EIdle, kGraphPathIdle, 4, 4, 1, 64, 64);
 	m_animationController.RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 4, 4, 1, 64, 64);
-	m_animationController.RegisterGraphHandle(AnimType::EAttack, kGraphPathAttack, 8, 4, 2, 64, 64);
+	m_animationController.RegisterGraphHandle(AnimType::EAttack, kGraphPathAttack, 4, 4, 1, 64, 64);
 
 	EnemyBase::Init();
 }
 
-void EnemyMelee::End()
+void EnemySlime::End()
 {
 	m_animationController.End();
 }
 
-void EnemyMelee::UpdateEnemy()
+void EnemySlime::UpdateEnemy()
 {
 	UpdateAnimation();
 
@@ -75,7 +75,7 @@ void EnemyMelee::UpdateEnemy()
 	else
 	{
 		auto player = GetPlayer();
-	
+
 		const Vector3& targetPos = player->GetTransform().position;
 		Vector3& myPos = GetTransform().position;
 
@@ -96,11 +96,9 @@ void EnemyMelee::UpdateEnemy()
 	}
 }
 
-void EnemyMelee::Draw()
+void EnemySlime::Draw()
 {
 	Vector3 pos = GetTransform().position;
-	
-	unsigned int color = (GetMyState() & EnemyBase::kStatePalsy) ? 0xffff00 : 0xff0000;
 
 	DrawRotaGraph(pos.x, pos.y, 1, 0, m_animationController.GetCurrentGraph(), 1, GetPlayer()->GetTransform().position.x < pos.x);
 
@@ -109,12 +107,12 @@ void EnemyMelee::Draw()
 #endif
 }
 
-void EnemyMelee::Attack()
+void EnemySlime::Attack()
 {
 	GetPlayer()->Damage(GetStatusParam().attack);
 }
 
-void EnemyMelee::UpdateAnimation()
+void EnemySlime::UpdateAnimation()
 {
 	if (m_animationController.IsForcePlay())
 	{
@@ -139,11 +137,11 @@ void EnemyMelee::UpdateAnimation()
 	{
 		ChangeAnimation(next);
 	}
-
+	
 	m_animationController.Update();
 }
 
-void EnemyMelee::ChangeAnimation(AnimType next)
+void EnemySlime::ChangeAnimation(AnimType next)
 {
 	m_currentAnimation = next;
 

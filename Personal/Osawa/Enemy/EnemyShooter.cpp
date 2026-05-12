@@ -76,6 +76,8 @@ void EnemyShooter::Init()
 	m_animationController.Init();
 	m_animationController.RegisterGraphHandle(AnimType::EIdle, kGraphPathIdle, 1, 1, 1, 25, 25);
 	m_animationController.RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 5, 5, 1, 25, 25);
+
+	EnemyBase::Init();
 }
 
 void EnemyShooter::End()

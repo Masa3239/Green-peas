@@ -14,6 +14,7 @@
 
 #include "EnemyMelee.h"
 #include "EnemyShooter.h"
+#include "EnemySlime.h"
 #include "EnemyMiniBoss.h"
 #include <DxLib.h>
 
@@ -76,10 +77,12 @@ void EnemyManager::Update()
 	if ((m_generateCounter <= 0 || m_enemies.size() <= kMinEnemyNum) && m_enemies.size() <= kMaxEnemyNum)
 	{
 		// “G‚ð¶¬
-		if (MyRandom::Int(0, 1) == 0)
+		if (MyRandom::Int(0, 2) == 0)
 			GenerateEnemy(EnemyType::Melee, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
-		else
+		else if (MyRandom::Int(0, 2) == 1)
 			GenerateEnemy(EnemyType::Shooter, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
+		else
+			GenerateEnemy(EnemyType::Slime, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
 
 		m_generateCounter = kGenerateDuration;
 	}
@@ -202,12 +205,12 @@ EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, int level)
 	case EnemyManager::EnemyType::Melee:	enemy = std::make_unique<EnemyMelee>(GetObjectManager()); break;
 	case EnemyManager::EnemyType::Shooter:	enemy = std::make_unique<EnemyShooter>(GetObjectManager()); break;
 	case EnemyManager::EnemyType::Miniboss:	enemy = std::make_unique<EnemyMiniBoss>(GetObjectManager()); break;
+	case EnemyManager::EnemyType::Slime:	enemy = std::make_unique<EnemySlime>(GetObjectManager()); break;
 	}
 	enemy->SetPlayer(m_pPlayer);
 	enemy->SetEnemyManager(this);
 	enemy->SetMap(m_map);
 	enemy->SetLevel(level);
-	enemy->Init();
 
 	// ¶¬À•W‚ª”ÍˆÍ“à‚É‚È‚é‚Ü‚ÅŒJ‚è•Ô‚·
 	Vector3 playerPos = m_pPlayer->GetTransform().position;
@@ -224,6 +227,8 @@ EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, int level)
 	}
 	enemy->GetTransform().position = pos;
 
+	enemy->Init();
+
 	if (type == EnemyType::Miniboss) m_miniBosses.emplace_back(dynamic_cast<EnemyMiniBoss*>(enemy.get()));
 	return m_enemies.emplace_back(std::move(enemy)).get();
 }
@@ -236,14 +241,16 @@ EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos, int level)
 	case EnemyManager::EnemyType::Melee:	enemy = std::make_unique<EnemyMelee>(GetObjectManager()); break;
 	case EnemyManager::EnemyType::Shooter:	enemy = std::make_unique<EnemyShooter>(GetObjectManager()); break;
 	case EnemyManager::EnemyType::Miniboss:	enemy = std::make_unique<EnemyMiniBoss>(GetObjectManager()); break;
+	case EnemyManager::EnemyType::Slime:	enemy = std::make_unique<EnemySlime>(GetObjectManager()); break;
 	}
 	enemy->SetPlayer(m_pPlayer);
 	enemy->SetEnemyManager(this);
 	enemy->SetMap(m_map);
 	enemy->SetLevel(level);
-	enemy->Init();
 
 	enemy->GetTransform().position = pos;
+
+	enemy->Init();
 
 	if (type == EnemyType::Miniboss) m_miniBosses.emplace_back(dynamic_cast<EnemyMiniBoss*>(enemy.get()));
 	return m_enemies.emplace_back(std::move(enemy)).get();

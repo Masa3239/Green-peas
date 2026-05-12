@@ -28,6 +28,7 @@ public:
 		Melee,		// ‹ß‹——£
 		Shooter,	// ‰“‹——£
 		Miniboss,	// ’†ƒ{ƒX
+		Slime,
 	};
 
 	/// <summary>
