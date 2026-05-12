@@ -410,6 +410,7 @@
     <ClInclude Include="Personal\Osawa\Scene\SceneTempResult.h" />
     <ClInclude Include="Personal\Takagi\WeaponManager.h" />
     <ClInclude Include="Personal\Takagi\Wizard.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\CarryOver.h" />
     <ClInclude Include="Scene\CharacterSelectScene.h" />
     <ClInclude Include="Scene\Fader.h" />
@@ -463,10 +464,14 @@
     <Text Include="Resource\15_Ready_to_use_Treasure_Chests_Text_File.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DXLibProject.aps" />
     <None Include="Mapdata\Map1_1.csv" />
     <None Include="Resource\Map1_1.csv" />
     <None Include="Resource\Map1_2.csv" />
     <None Include="Resource\SoundPath.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DXLibProject.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
