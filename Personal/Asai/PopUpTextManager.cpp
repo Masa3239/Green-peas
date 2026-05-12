@@ -4,6 +4,15 @@
 #include"../../Utility/Vector3.h"
 
 #include"../Asai/PopUpText.h"
+#include"../../Utility/MyRandom.h"
+
+namespace {
+
+	constexpr int kCreatePosMaxMargin = 50;
+
+	constexpr float kRadianMax = MyMath::DegToRad(360);
+
+}
 
 PopUpTextManager::PopUpTextManager():
 	m_pTexts(),
@@ -109,7 +118,21 @@ void PopUpTextManager::CreateText(Vector3 position, int amount, PopUpUI::TextTyp
 		if (text->GetIsActive())continue;
 
 		text->Init();
-		text->SetPos(position);
+
+		//最大オフセットからどれくらいずらすか
+		float rate = MyRandom::Float01();
+		//生成位置の角度をランダムで決める
+		float radian = MyRandom::Float(0, kRadianMax);
+
+		//生成位置のオフセット
+		Vector3 offSetPos{
+
+			sinf(radian) * kCreatePosMaxMargin * rate,
+			cosf(radian) * kCreatePosMaxMargin* rate,
+			0
+		};
+
+		text->SetPos(position + offSetPos);
 		text->SetData(amount, m_textFonts[static_cast<int>(type)], type);
 
 		return;
