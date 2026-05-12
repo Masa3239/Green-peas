@@ -106,6 +106,16 @@ private:
 	int m_attackUpItemGraphHandle;
 
 	/// <summary>
+	/// 防御力アップアイテムの画像のグラフハンドル
+	/// </summary>
+	int m_defenceUpItemGraphHandle;
+
+	/// <summary>
+	/// 一掃アイテムの画像のグラフハンドル
+	/// </summary>
+	int m_wipeoutItemGraphHandle;
+
+	/// <summary>
 	/// オブジェクトマネージャーのポインタ
 	/// </summary>
 	ObjectManager* m_pObjectMgr;

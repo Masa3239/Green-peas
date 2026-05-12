@@ -1,6 +1,8 @@
 #include "ItemManager.h"
 #include "HpHealItem.h"
 #include "AttackUpItem.h"
+#include "../Osawa/DefenceItem.h"
+#include "../Osawa/WipeOutItem.h"
 #include "../../Utility/MyRandom.h"
 
 #include "DxLib.h"
@@ -10,11 +12,15 @@ namespace {
 	// 画像のファイルパス
 	const char* const kHpHealItemGraphHandlePath = ".\\Resource\\Item\\small Potions2.png";
 	const char* const kAttackUpItemGraphHandlePath = ".\\Resource\\Item\\small Potions.png";
+	const char* const kDefenceUpItemGraphHandlePath = "Resource\\Item\\DifenceUp Potions.png";
+	const char* const kWipeOutItemGraphHandlePath = "";
 }
 
 ItemManager::ItemManager() :
 	m_hpHealItemGraphHandle(-1),
 	m_attackUpItemGraphHandle(-1),
+	m_defenceUpItemGraphHandle(-1),
+	m_wipeoutItemGraphHandle(-1),
 	m_pObjectMgr(nullptr),
 	m_pPlayer(nullptr)
 {
@@ -26,6 +32,8 @@ void ItemManager::Init()
 	// 画像のファイルパスを取得
 	m_hpHealItemGraphHandle = LoadGraph(kHpHealItemGraphHandlePath);
 	m_attackUpItemGraphHandle = LoadGraph(kAttackUpItemGraphHandlePath);
+	m_defenceUpItemGraphHandle = LoadGraph(kDefenceUpItemGraphHandlePath);
+	m_wipeoutItemGraphHandle = LoadGraph(kWipeOutItemGraphHandlePath);
 }
 
 void ItemManager::End()
@@ -40,6 +48,8 @@ void ItemManager::End()
 
 	DeleteGraph(m_hpHealItemGraphHandle);
 	DeleteGraph(m_attackUpItemGraphHandle);
+	DeleteGraph(m_defenceUpItemGraphHandle);
+	DeleteGraph(m_wipeoutItemGraphHandle);
 }
 
 void ItemManager::Update()
@@ -63,7 +73,8 @@ void ItemManager::CreateRandom(Vector3 position)
 
 	int type = MyRandom::Int(0, static_cast<int>(ItemBase::ItemType::Max) - 1);
 
-	Create(static_cast<ItemBase::ItemType>(type), position);
+	Create(ItemBase::ItemType::Defence, position);
+	//Create(static_cast<ItemBase::ItemType>(type), position);
 }
 
 void ItemManager::Create(ItemBase::ItemType type, Vector3 position)
@@ -90,6 +101,20 @@ void ItemManager::Create(ItemBase::ItemType type, Vector3 position)
 		items = std::make_unique<AttackUpItem>(m_pObjectMgr, position);
 		// グラフハンドルを攻撃力アップアイテムに設定
 		graphHandle = m_attackUpItemGraphHandle;
+		break;
+
+	case ItemBase::ItemType::Defence:
+		// AttackUpItemのコンストラクタを呼んで座標を指定
+		items = std::make_unique<DefenceItem>(m_pObjectMgr, position);
+		// グラフハンドルを攻撃力アップアイテムに設定
+		graphHandle = m_defenceUpItemGraphHandle;
+		break;
+
+	case ItemBase::ItemType::WipeOut:
+		// AttackUpItemのコンストラクタを呼んで座標を指定
+		items = std::make_unique<WipeOutItem>(m_pObjectMgr, position);
+		// グラフハンドルを攻撃力アップアイテムに設定
+		graphHandle = m_wipeoutItemGraphHandle;
 		break;
 
 	default:

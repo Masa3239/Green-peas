@@ -21,6 +21,8 @@ public:
 
 		Heal,
 		Attack,
+		Defence,
+		WipeOut,
 		Max
 	};
 
