@@ -13,6 +13,7 @@ namespace {
 	//表示するY座標
 	constexpr int kPosY = Game::kScreenHeight - 40;
 
+	//フェード開始時間
 	constexpr float kFadeStartTime = 2.0f;
 
 	//最大のアルファ値
@@ -64,10 +65,13 @@ void Combo::Update()
 	//受付時間を加算
 	m_receptionTimer += Time::GetInstance().GetDeltaTime();
 
+	//フェード開始時間になっていたら
 	if (m_receptionTimer > kFadeStartTime) {
 
+		//割合を求める
 		float rate = MyMath::Rate(m_receptionTimer - kFadeStartTime, kReceptionTime - kFadeStartTime);
 
+		//アルファ値を設定する
 		m_alpha = kMaxAlpha * (1.0f - rate);
 	}
 

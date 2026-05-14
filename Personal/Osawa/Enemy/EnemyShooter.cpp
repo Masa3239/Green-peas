@@ -1,5 +1,6 @@
 #include "EnemyShooter.h"
 #include <cmath>
+#include <vector>
 #include <DxLib.h>
 #include "../Personal/Takagi/Player.h"
 #include "../Utility/Time.h"
@@ -34,7 +35,7 @@ namespace
 	constexpr int kAtkPerLevel = 1.03f;
 	constexpr int kDefPerLevel = 5;
 
-	Animation::Animation2DData kAnimData[EnemyShooter::AnimType::Length] =
+	std::vector<Animation::Animation2DData> kAnimData =
 	{
 		{ EnemyShooter::AnimType::EIdle, 10.0f, true, false},
 		{ EnemyShooter::AnimType::ERun, 10.0f, true, false},
@@ -47,9 +48,7 @@ namespace
 EnemyShooter::EnemyShooter(ObjectManager* objManager) :
 	EnemyBase(objManager),
 	m_action(Action::Idle),
-	m_attackCooltimeCounter(0.0f),
-	m_animationController(),
-	m_currentAnimation(AnimType::EIdle)
+	m_attackCooltimeCounter(0.0f)
 {
 }
 
@@ -73,17 +72,16 @@ void EnemyShooter::Init()
 		bullet->Init();
 	}
 
-	m_animationController.Init();
-	m_animationController.RegisterGraphHandle(AnimType::EIdle, kGraphPathIdle, 1, 1, 1, 25, 25);
-	m_animationController.RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 5, 5, 1, 25, 25);
+	GetAnimator().Init();
+	GetAnimator().RegisterGraphHandle(AnimType::EIdle, kGraphPathIdle, 1, 1, 1, 25, 25);
+	GetAnimator().RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 5, 5, 1, 25, 25);
+	SetAnimationData(kAnimData);
 
 	EnemyBase::Init();
 }
 
 void EnemyShooter::End()
 {
-	m_animationController.End();
-
 	for (auto& bullet : m_bullets)
 	{
 		bullet->End();
@@ -93,8 +91,6 @@ void EnemyShooter::End()
 
 void EnemyShooter::UpdateEnemy()
 {
-	UpdateAnimation();
-
 	auto player = GetPlayer();
 	
 	const Vector3& targetPos = player->GetTransform().position;
@@ -165,7 +161,7 @@ void EnemyShooter::Draw()
 {
 	Vector3 pos = GetTransform().position;
 
-	DrawRotaGraph(pos.x, pos.y, 1, 0, m_animationController.GetCurrentGraph(), 1, GetPlayer()->GetTransform().position.x < pos.x);
+	DrawRotaGraph(pos.x, pos.y, 1, 0, GetAnimator().GetCurrentGraph(), 1, GetPlayer()->GetTransform().position.x < pos.x);
 
 #ifdef _DEBUG
 	GetCollider().DebugDraw();
@@ -195,14 +191,8 @@ void EnemyShooter::Attack()
 	}
 }
 
-void EnemyShooter::UpdateAnimation()
+void EnemyShooter::BranchAnimation()
 {
-	if (m_animationController.IsForcePlay())
-	{
-		m_animationController.Update();
-		return;
-	}
-
 	AnimType next = AnimType::EIdle;
 
 	if (m_action != Action::Idle)
@@ -210,17 +200,5 @@ void EnemyShooter::UpdateAnimation()
 		next = AnimType::ERun;
 	}
 
-	if (m_currentAnimation != next)
-	{
-		ChangeAnimation(next);
-	}
-
-	m_animationController.Update();
-}
-
-void EnemyShooter::ChangeAnimation(AnimType next)
-{
-	m_currentAnimation = next;
-
-	m_animationController.PlayAnimation(kAnimData[next]);
+	ChangeAnimation(next);
 }

@@ -1,18 +1,18 @@
 #include "Camera.h"
 #include"../Utility/Transform.h"
-#include"../../Utility/Game.h"
 
 #include<DxLib.h>
+#include"../../Utility/Game.h"
 #include"../../Utility/Time.h"
 #include"../../Utility/MyRandom.h"
-
+#include"../../Utility/MyMath.h"
 #include"../Kimura/Map/Map.h"
 #include"../Kimura/Map/MapManager.h"
 
 namespace {
 
 	//カメラの補間
-	constexpr float kFollowLatency = 3.0f;
+	constexpr float kFollowLatency = 6.0f;
 	//振動の大きさ
 	constexpr float kShakeMoveMax = 6;
 	//怒り状態でのカメラの振動
@@ -26,6 +26,7 @@ Camera::Camera():
 	m_worldScreen(-1),
 	m_pMap(nullptr),
 	m_shakeDuration(0),
+	m_shakeTimer(0),
 	m_worldScreenLeft(0),
 	m_worldScreenRight(0),
 	m_worldScreenTop(0),
@@ -115,8 +116,6 @@ void Camera::StartDamage(float shakeDuration)
 	m_shakeDuration = shakeDuration;
 	//ステータスを変更
 	m_state = CameraState::Type::Damage;
-	//振動の幅を最大に設定
-	m_shakeMargin = kShakeMoveMax;
 	//タイマーをセット
 	m_shakeTimer = m_shakeDuration;
 
@@ -150,7 +149,7 @@ void Camera::Lerp(Transform cameraPos)
 {
 
 	//カメラの移動
-	m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency * Time::GetInstance().GetDeltaTime() + m_transform.position;
+	m_transform.position = (cameraPos.position - m_transform.position) * MyMath::Clamp(kFollowLatency * Time::GetInstance().GetDeltaTime(),0.0f,1.0f) + m_transform.position;
 
 }
 

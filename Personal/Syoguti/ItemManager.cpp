@@ -13,7 +13,7 @@ namespace {
 	const char* const kHpHealItemGraphHandlePath = ".\\Resource\\Item\\small Potions2.png";
 	const char* const kAttackUpItemGraphHandlePath = ".\\Resource\\Item\\small Potions.png";
 	const char* const kDefenceUpItemGraphHandlePath = "Resource\\Item\\DifenceUp Potions.png";
-	const char* const kWipeOutItemGraphHandlePath = "";
+	const char* const kWipeOutItemGraphHandlePath = ".\\Resource\\Item\\tile_0105.png";
 }
 
 ItemManager::ItemManager() :

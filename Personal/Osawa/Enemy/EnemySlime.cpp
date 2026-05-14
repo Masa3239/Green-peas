@@ -1,4 +1,5 @@
 #include "EnemySlime.h"
+#include <vector>
 #include "../Personal/Takagi/Player.h"
 #include "../Utility/Time.h"
 #include "../Chara/AnimationController2D.h"
@@ -18,7 +19,7 @@ namespace
 	constexpr int kAtkPerLevel = 1.03f;
 	constexpr int kDefPerLevel = 5;
 
-	Animation::Animation2DData kAnimData[EnemySlime::AnimType::Length] =
+	std::vector<Animation::Animation2DData> kAnimData =
 	{
 		{ EnemySlime::AnimType::EIdle, 12.0f, true, false},
 		{ EnemySlime::AnimType::ERun, 12.0f, true, false},
@@ -32,9 +33,7 @@ namespace
 
 EnemySlime::EnemySlime(ObjectManager* objManager) :
 	EnemyBase(objManager),
-	m_attackCooltimeCounter(0.0f),
-	m_animationController(),
-	m_currentAnimation(AnimType::EIdle)
+	m_attackCooltimeCounter(0.0f)
 {
 }
 
@@ -51,23 +50,21 @@ void EnemySlime::Init()
 	status.defence += kDefPerLevel * GetLevel();
 	SetStatusParam(status);
 
-	m_animationController.Init();
-	m_animationController.RegisterGraphHandle(AnimType::EIdle, kGraphPathIdle, 4, 4, 1, 64, 64);
-	m_animationController.RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 4, 4, 1, 64, 64);
-	m_animationController.RegisterGraphHandle(AnimType::EAttack, kGraphPathAttack, 4, 4, 1, 64, 64);
+	GetAnimator().Init();
+	GetAnimator().RegisterGraphHandle(AnimType::EIdle, kGraphPathIdle, 4, 4, 1, 64, 64);
+	GetAnimator().RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 4, 4, 1, 64, 64);
+	GetAnimator().RegisterGraphHandle(AnimType::EAttack, kGraphPathAttack, 4, 4, 1, 64, 64);
+	SetAnimationData(kAnimData);
 
 	EnemyBase::Init();
 }
 
 void EnemySlime::End()
 {
-	m_animationController.End();
 }
 
 void EnemySlime::UpdateEnemy()
 {
-	UpdateAnimation();
-
 	if (m_attackCooltimeCounter > 0)
 	{
 		m_attackCooltimeCounter -= Time::GetInstance().GetDeltaTime();
@@ -100,7 +97,7 @@ void EnemySlime::Draw()
 {
 	Vector3 pos = GetTransform().position;
 
-	DrawRotaGraph(pos.x, pos.y, 1, 0, m_animationController.GetCurrentGraph(), 1, GetPlayer()->GetTransform().position.x < pos.x);
+	DrawRotaGraph(pos.x, pos.y, 1, 0, GetAnimator().GetCurrentGraph(), 1, GetPlayer()->GetTransform().position.x < pos.x);
 
 #ifdef _DEBUG
 	GetCollider().DebugDraw();
@@ -112,14 +109,8 @@ void EnemySlime::Attack()
 	GetPlayer()->Damage(GetStatusParam().attack);
 }
 
-void EnemySlime::UpdateAnimation()
+void EnemySlime::BranchAnimation()
 {
-	if (m_animationController.IsForcePlay())
-	{
-		m_animationController.Update();
-		return;
-	}
-
 	AnimType next = AnimType::EIdle;
 
 	if (m_attackCooltimeCounter <= 0)
@@ -133,17 +124,5 @@ void EnemySlime::UpdateAnimation()
 		else next = AnimType::ERun;
 	}
 
-	if (m_currentAnimation != next)
-	{
-		ChangeAnimation(next);
-	}
-	
-	m_animationController.Update();
-}
-
-void EnemySlime::ChangeAnimation(AnimType next)
-{
-	m_currentAnimation = next;
-
-	m_animationController.PlayAnimation(kAnimData[next]);
+	ChangeAnimation(next);
 }

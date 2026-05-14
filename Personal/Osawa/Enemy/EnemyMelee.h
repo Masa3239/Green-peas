@@ -1,7 +1,6 @@
 #pragma once
 
 #include "EnemyBase.h"
-#include "../Chara/AnimationController2D.h"
 
 class EnemyMelee : public EnemyBase
 {
@@ -40,20 +39,20 @@ public:
 
 protected:
 
+	/// <summary>
+	/// 攻撃処理
+	/// </summary>
 	void Attack() override;
 
+	/// <summary>
+	/// アニメーションの切り替え処理
+	/// </summary>
+	void BranchAnimation() override;
+
 private:
-
-	void UpdateAnimation();
-
-	void ChangeAnimation(AnimType next);
 
 	/// <summary>
 	/// 攻撃クールタイムのカウンター
 	/// </summary>
 	float m_attackCooltimeCounter;
-
-	AnimationController2D m_animationController;
-
-	AnimType m_currentAnimation;
 };

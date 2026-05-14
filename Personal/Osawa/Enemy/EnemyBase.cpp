@@ -31,6 +31,8 @@ EnemyBase::EnemyBase(ObjectManager* objManager) :
 	m_level(0),
 	m_variableStatus(0),
 	m_isFixSpawn(false),
+	m_animator(),
+	m_currentAnimation(0),
 	m_collider(Collision::AABB{ Vector3(), kColliderSize }),
 	m_damageFlag(),
 	m_pPlayer(nullptr),
@@ -42,6 +44,11 @@ EnemyBase::EnemyBase(ObjectManager* objManager) :
 void EnemyBase::Init()
 {
 	m_collider.SetPosition(GetTransform().position);
+}
+
+void EnemyBase::End()
+{
+	m_animator.End();
 }
 
 void EnemyBase::Update()
@@ -56,6 +63,8 @@ void EnemyBase::Update()
 
 	// 当たり判定の座標更新
 	m_collider.SetPosition(GetTransform().position);
+
+	UpdateAnimation();
 	
 	SetDrawOrder(GetTransform().position.y);
 }
@@ -95,6 +104,25 @@ void EnemyBase::ResetDamageFlag(int weapon, int index)
 
 	// フラグを下ろす
 	m_damageFlag[weapon][index] = false;
+}
+
+void EnemyBase::ChangeAnimation(int next)
+{
+	if (next >= m_animData.size()) return;
+	if (m_currentAnimation == next) return;
+
+	m_currentAnimation = next;
+	m_animator.PlayAnimation(m_animData[next]);
+}
+
+void EnemyBase::UpdateAnimation()
+{
+	if (!m_animator.IsForcePlay())
+	{
+		BranchAnimation();
+	}
+
+	m_animator.Update();
 }
 
 bool EnemyBase::CheckActive()

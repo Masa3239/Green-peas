@@ -290,6 +290,7 @@ void EnemyManager::CheckDead()
 
 		enemy->Dead();
 		enemy->SetState(GameObject::State::Dead);
+		enemy->End();
 
 		if (MyRandom::Judge(kWeaponDropChange))
 		{

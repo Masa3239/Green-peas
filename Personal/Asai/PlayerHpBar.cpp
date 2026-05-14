@@ -2,9 +2,9 @@
 #include"../Asai/PlayerUIBase.h"
 
 #include<DxLib.h>
+#include<string>
 #include"../../Utility/MyMath.h"
 #include"../../Utility/Game.h"
-
 #include"../Takagi/Player.h"
 
 namespace {
@@ -21,7 +21,8 @@ namespace {
 
 }
 
-PlayerHpBar::PlayerHpBar()
+PlayerHpBar::PlayerHpBar():
+	m_font()
 {
 }
 
@@ -30,6 +31,8 @@ void PlayerHpBar::Init()
 
 	//画像の読み込み予定
 	m_graphHandle = LoadGraph(kGraphHandlePath);
+
+	m_font = CreateFontToHandle(NULL, 15, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 
 }
 
@@ -51,6 +54,13 @@ void PlayerHpBar::Draw()
 
 	//画像の描画
 	DrawExtendGraph(kGaugeRight - 10 - (hpGaugeWidth * m_rate), kGaugeTop, kGaugeRight - 10, kGaugeBottom, m_graphHandle, FALSE);
+
+	std::string value = std::to_string(static_cast<int>(m_value));
+	std::string max = std::to_string(static_cast<int>(m_max));
+
+	std::string draw = value + "/" + max;
+
+	DrawStringToHandle(kGaugeRight - 80, kGaugeTop + 10, draw.c_str(), 0xffffff, m_font);
 
 	//DrawBox(kGaugeRight - 10 - (hpGaugeWidth * m_rate),
 	//	kGaugeTop,
