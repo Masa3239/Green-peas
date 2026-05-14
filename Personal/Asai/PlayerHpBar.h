@@ -40,6 +40,4 @@ public:
 
 private:
 
-	int m_prevHp;
-
 };

@@ -21,8 +21,7 @@ namespace {
 
 }
 
-PlayerHpBar::PlayerHpBar():
-	m_prevHp(0)
+PlayerHpBar::PlayerHpBar()
 {
 }
 
