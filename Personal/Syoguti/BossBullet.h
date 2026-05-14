@@ -2,6 +2,9 @@
 #include "BossBulletBase.h"
 #include "../../Utility/Transform.h"
 
+/// <summary>
+/// 敵の弾のクラス
+/// </summary>
 class BossBullet : public BossBulletBase
 {
 

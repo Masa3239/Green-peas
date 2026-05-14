@@ -15,16 +15,18 @@ namespace {
 
 	constexpr int kCharactorMotionNum = 32;
 	constexpr int kEffectMotionNum = 32;
-	//constexpr int kCharactorStatusNum = static_cast<int>(EnemyBoss::BossStatus::Max);
 }
 
+/// <summary>
+/// ボスのクラス
+/// </summary>
 class EnemyBoss : public GameObject
 {
 
 public:
 
 	// ボスの状態(アニメーション)
-	enum class BossStatus {
+	enum class BossAnimation {
 
 		Idle,
 		CloseRangeAttack,
@@ -45,10 +47,6 @@ public:
 
 public:
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	EnemyBoss(ObjectManager* objManager);
 
 	/// <summary>
 	/// 引数ありのコンストラクタ
@@ -240,13 +238,12 @@ private:
 	void AttackUp();
 
 	
-
 private:
 
 	/// <summary>
 	/// 画像のハンドル
 	/// </summary>
-	int m_graphHandle[static_cast<int>(BossStatus::Max)][kCharactorMotionNum];
+	int m_graphHandle[static_cast<int>(BossAnimation::Max)][kCharactorMotionNum];
 
 	/// <summary>
 	/// 封印解除の画像ハンドル
@@ -284,15 +281,13 @@ private:
 	float m_shotTimer;
 
 	/// <summary>
-	/// 座標
-	/// </summary>
-	// Transform m_transform;
-
-	/// <summary>
 	/// 円の当たり判定
 	/// </summary>
 	Collision::Circle m_collsion;
 
+	/// <summary>
+	/// 武器の配列
+	/// </summary>
 	std::array<std::vector<bool>, Weapon::Max> m_damageFlag;
 
 	/// <summary>
@@ -328,7 +323,7 @@ private:
 	/// <summary>
 	/// ボスのステータス
 	/// </summary>
-	BossStatus m_status;
+	BossAnimation m_status;
 
 	/// <summary>
 	/// ボスの行動
@@ -419,6 +414,11 @@ private:
 	/// ボスの封印解除SE
 	/// </summary>
 	bool m_seBossFlag;
+
+	/// <summary>
+	/// 近距離攻撃が当たったかどうか
+	/// </summary>
+	bool m_isAttackHit;
 
 };
 

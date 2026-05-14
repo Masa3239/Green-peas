@@ -11,6 +11,8 @@ namespace {
 
 	constexpr int kMotionNum = 32;
 }
+
+// ボスの弾を管理するクラス
 class BossBulletManager
 {
 

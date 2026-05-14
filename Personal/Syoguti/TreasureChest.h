@@ -7,7 +7,9 @@ namespace {
 
 	constexpr int kTreasureChestMotionNum = 21;
 }
-
+/// <summary>
+/// 宝箱のクラス
+/// </summary>
 class TreasureChest : public GameObject
 {
 
@@ -55,11 +57,6 @@ public :
 	void OpenAnimation();
 
 	/// <summary>
-	/// 宝箱が開き終わった
-	/// </summary>
-	void Opened();
-
-	/// <summary>
 	/// グラフィックハンドルをセットするセッター関数
 	/// </summary>
 	/// <param name="graphHandle"></param>
@@ -71,14 +68,6 @@ public :
 	/// </summary>
 	/// <returns></returns>
 	const Collision::Circle& GetCollision() const { return m_collision; }
-
-	/// <summary>
-	/// 宝箱を消すフラグを取得するゲッター関数
-	/// </summary>
-	/// <returns></returns>
-	const bool& GetRemoveFlag() const { return m_isRemove; }
-
-	const bool& GetOpenedFlag() const { return m_isOpened; }
 
 	/// <summary>
 	/// スポーンできるかどうか
@@ -127,11 +116,6 @@ private:
 	/// 宝箱が開き終わってからの時間
 	/// </summary>
 	float m_openedTimer;
-
-	/// <summary>
-	/// 削除するかどうか
-	/// </summary>
-	bool m_isRemove;
 
 	/// <summary>
 	/// アイテムがスポーンしたかどうか

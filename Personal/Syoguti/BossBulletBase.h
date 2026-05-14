@@ -11,6 +11,9 @@ namespace {
 	constexpr int kAnimationNum = 32;
 }
 
+/// <summary>
+/// ボスの弾のベースクラス
+/// </summary>
 class BossBulletBase : public GameObject
 {
 
@@ -30,6 +33,9 @@ public:
 	/// <param name="objManager"></param>
 	BossBulletBase(ObjectManager* objManager);
 
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	virtual ~BossBulletBase() = default;
 
 	/// <summary>

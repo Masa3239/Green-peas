@@ -11,14 +11,12 @@ namespace {
 	constexpr float kGraphScale = 1.0f;
 
 	// 円の当たり判定の半径
-	constexpr float kCircleRadius = 20.0f * kGraphScale;
+	constexpr float kCircleRadius = 50.0f * kGraphScale;
 
     // 弾のスピード
     constexpr float kBulletSpeed = 5.0f;
 
-    // 弾の消える距離
-    constexpr float kDidtance = 1000.0f;
-
+    // 弾が消えるまでの時間
     constexpr float kDeadTime = 5.0f;
 }
 
@@ -36,11 +34,6 @@ BossBullet::~BossBullet()
 
 void BossBullet::Init()
 {
-    if (!m_pPlayer)
-    {
-        printfDx("Player is null!\n");
-        return;
-    }
 
     // 自分の位置
     Vector3 myPos = GetTransform().position;
@@ -61,7 +54,7 @@ void BossBullet::Init()
     GetTransform().rotation.z = atan2(dir.y, dir.x);
 
     // 当たり判定
-    m_collision.SetRadius(50.0f);
+    m_collision.SetRadius(kCircleRadius);
 }
 
 void BossBullet::End()
@@ -71,6 +64,7 @@ void BossBullet::End()
 void BossBullet::Update()
 {
     
+    // タイマーを加算
     m_removeTimer += Time::GetInstance().GetDeltaTime();
 
     if (m_removeTimer >= kDeadTime) {
@@ -85,6 +79,7 @@ void BossBullet::Update()
 	// 中心座標をセット
 	m_collision.SetPosition(GetTransform().position);
 
+    // アニメーションのタイマーを加算
     m_animTimer++;
 
     if (m_animTimer >= 5) {

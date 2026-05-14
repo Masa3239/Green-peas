@@ -18,7 +18,7 @@ namespace {
 	// 画像のオフセットYの値
 	constexpr float kGraphOffsetY = 10.0f;
 
-	// constexpr float kPoewrUpValue = 0.2f;
+	// プレイヤーの攻撃力を上げるために必要な変数
 	constexpr PlayerStatus kAtatckUp = { 0,0,0.2f,0,0,0,0,0 };
 }
 
@@ -53,8 +53,6 @@ void AttackUpItem::Init()
 
 void AttackUpItem::End()
 {
-	// 画像の破棄
-	// DeleteGraph(m_graphHandle);
 }
 
 void AttackUpItem::Update()
@@ -78,5 +76,4 @@ void AttackUpItem::ItemAbility(Player* player)
 	PlayerBuff buff = { kAtatckUp,30,false };
 	m_pPlayer->AddBuff(buff);
 	SoundManager::GetInstance().PlaySe(Sound::SE::PowerUp);
-	// printfDx("攻撃力が上がりました\n");
 }

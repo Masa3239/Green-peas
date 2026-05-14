@@ -35,7 +35,6 @@ namespace {
 	constexpr float kPlayerOffsetPos = 200.0f;
 
 	// ボスの最大体力
-	//constexpr int kMaxHp = 100000000;
 	constexpr int kMaxHp = 50000000;
 
 	// ボスの攻撃力
@@ -62,57 +61,6 @@ namespace {
 
 	constexpr float kMapRangeOffset = 60.0f;
 
-
-}
-
-EnemyBoss::EnemyBoss(ObjectManager* objManager) :
-	m_sealGraphHandle(-1),
-	m_motionCounter(0),
-	m_motionFrame(0),
-	m_direction(-1),
-	m_shotTimer(0.0f),
-	m_isCloseTheAttack(false),
-	m_isCloseTheAttackDamege(false),
-	GameObject(objManager),
-	m_collsion(GetTransform().position, kCircleRadius),
-	m_closeRangeAttackCollision(GetTransform().position, kCloseRangeCollisionSize),
-	m_maxHp(kMaxHp),
-	m_currentHp(kMaxHp),
-	m_attackPower(kAttackPower),
-	m_getKey(0),
-	m_sealRelease(false),
-	m_status(BossStatus::Idle),
-	m_action(BossAction::Idle),
-	m_getRandomTime(0.0f),
-	m_targetPos(0.0f, 0.0f, 0.0f),
-	m_pPlayer(nullptr),
-	m_pMap(nullptr),
-	m_pBossBulletMgr(nullptr),
-	m_effectTimer(0.0f),
-	m_effectCount(0),
-	m_effectMotionCounter(0),
-	m_effectMotionFrame(0),
-	m_isEffect(false),
-	m_effectPos(0.0f, 0.0f, 0.0f),
-	m_isDead(false),
-	m_speed(0),
-	m_angrySpeed(1),
-	m_isAngry(false),
-	m_seBossFlag(false){
-	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
-	for (int i = 0; i < static_cast<int>(BossStatus::Max); i++) {
-
-		for (int j = 0;j < kCharactorMotionNum; j++) {
-			m_graphHandle[i][j] = -1;
-		}
-	}
-
-	for (int i = 0; i < kEffectMotionNum; i++) {
-
-		m_efffectGraphHandle[i] = -1;
-	}
-
-	GetTransform().Reset();
 }
 
 EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
@@ -131,7 +79,7 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_attackPower(kAttackPower),
 	m_getKey(0),
 	m_sealRelease(false),
-	m_status(BossStatus::Idle),
+	m_status(BossAnimation::Idle),
 	m_action(BossAction::Idle),
 	m_getRandomTime(0.0f),
 	m_targetPos(0.0f, 0.0f, 0.0f),
@@ -148,11 +96,23 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_speed(0),
 	m_angrySpeed(1),
 	m_isAngry(false),
-	m_seBossFlag(false)
+	m_seBossFlag(false),
+	m_isAttackHit(false)
 {
 
 	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
 
+	for (int i = 0; i < static_cast<int>(BossAnimation::Max); i++) {
+
+		for (int j = 0;j < kCharactorMotionNum; j++) {
+			m_graphHandle[i][j] = -1;
+		}
+	}
+
+	for (int i = 0; i < kEffectMotionNum; i++) {
+
+		m_efffectGraphHandle[i] = -1;
+	}
 	GetTransform().Reset();
 	GetTransform().position = position;
 }
@@ -164,40 +124,29 @@ void EnemyBoss::Init()
 	m_pBossBulletMgr->SetPlayer(m_pPlayer);
 	m_pBossBulletMgr->Init();
 
-	for (int i = 0; i < static_cast<int>(BossStatus::Max); i++) {
-
-		for (int j = 0;j < kCharactorMotionNum; j++) {
-			m_graphHandle[i][j] = -1;
-		}
-	}
-
-	for (int i = 0; i < kEffectMotionNum; i++) {
-
-		m_efffectGraphHandle[i] = -1;
-	}
-
 	m_sealGraphHandle = LoadGraph(kSealGraphPath);
 	
 	// ボスのアイドルアニメーション
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_idle.png",
-		5, 5, 1, 128, 128, m_graphHandle[static_cast<int>(BossStatus::Idle)]);
+		5, 5, 1, 128, 128, m_graphHandle[static_cast<int>(BossAnimation::Idle)]);
 
 	// ボスが離れるアニメーション
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_move.png",
-		8, 8, 1, 384, 128, m_graphHandle[static_cast<int>(BossStatus::LeaveMove)]);
+		8, 8, 1, 384, 128, m_graphHandle[static_cast<int>(BossAnimation::LeaveMove)]);
 
 	// ボスが近づくアニメーション
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_attack_B_2_loop.png",
-		5, 5, 1, 384, 128, m_graphHandle[static_cast<int>(BossStatus::ApproachMove)]);
+		5, 5, 1, 384, 128, m_graphHandle[static_cast<int>(BossAnimation::ApproachMove)]);
 
 	// ボスの近距離攻撃のアニメーション
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_attack_A.png",
-		21, 21, 1, 384, 128, m_graphHandle[static_cast<int>(BossStatus::CloseRangeAttack)]);
+		21, 21, 1, 384, 128, m_graphHandle[static_cast<int>(BossAnimation::CloseRangeAttack)]);
 
 	// ボスの遠距離攻撃のアニメーション
 	LoadDivGraph(".\\Resource\\Dino Rex\\dino_rex_ability_black.png",
-		25, 25, 1, 384, 128, m_graphHandle[static_cast<int>(BossStatus::LongRangeAttack)]);
+		25, 25, 1, 384, 128, m_graphHandle[static_cast<int>(BossAnimation::LongRangeAttack)]);
 
+	//ボスの爆発エフェクト
 	LoadDivGraph(".\\Resource\\Explosion\\Fire_III_Flame_C_80x48.png",
 		6, 6, 1, 80, 48, m_efffectGraphHandle);
 
@@ -206,7 +155,7 @@ void EnemyBoss::Init()
 void EnemyBoss::End()
 {
 
-	for (int i = 0; i < static_cast<int>(EnemyBoss::BossStatus::Max); i++) {
+	for (int i = 0; i < static_cast<int>(EnemyBoss::BossAnimation::Max); i++) {
 
 		for (int j = 0; j < kCharactorMotionNum; j++) {
 
@@ -217,6 +166,7 @@ void EnemyBoss::End()
 
 	for (int i = 0; i < kEffectMotionNum; i++) {
 
+		// 画像の破棄
 		DeleteGraph(m_efffectGraphHandle[i]);
 	}
 
@@ -227,12 +177,16 @@ void EnemyBoss::End()
 void EnemyBoss::Update()
 {
 
+	// ボスが画面の左側に出ないようする
 	if (GetTransform().position.x < kMapRangeOffset) GetTransform().position.x = kMapRangeOffset;
 	else
+		// ボスが画面の右側に出ないようにする
 		if (GetTransform().position.x > m_pMap->GetMapBlockNumX() * 40 - kMapRangeOffset) GetTransform().position.x = m_pMap->GetMapBlockNumX() * 40 - kMapRangeOffset;
 
+	// ボスが画面の上側に出ないようにする
 	if (GetTransform().position.y < kMapRangeOffset) GetTransform().position.y = kMapRangeOffset;
 	else
+		// ボスが画面の下側に出ないようにする
 		if (GetTransform().position.y > m_pMap->GetMapBlockNumY() * 40 - kMapRangeOffset) GetTransform().position.y = m_pMap->GetMapBlockNumY() * 40 - kMapRangeOffset;
 
 	// 当たり判定の更新
@@ -259,18 +213,26 @@ void EnemyBoss::Update()
 	
 	m_closeRangeAttackCollision.SetPosition(GetTransform().position);
 
+	// ボスの近距離攻撃とプレイヤーが当たっていたら
 	if (CheckHitCloseRangeAttackCollison(m_pPlayer->GetCircle())) {
 
-		m_pPlayer->Damage(m_attackPower);
+
+		if (!m_isAttackHit) {
+
+			// プレイヤーのダメージ処理を呼ぶ
+			m_pPlayer->Damage(m_attackPower);
+		}
+		m_isAttackHit = true;
 	}
 
 	// Idle状態なら
-	if (m_status == BossStatus::Idle) {
+	if (m_status == BossAnimation::Idle) {
 
 		// 時間を計測
 		m_getRandomTime += Time::GetInstance().GetDeltaTime();
 	}
 
+	// 一定時間を超えたら
 	if (m_getRandomTime >= kRandomInterval) {
 
 		// ランダムで行動を決める
@@ -288,8 +250,6 @@ void EnemyBoss::Update()
 void EnemyBoss::Draw()
 {
 
-	//printfDx("ボス%d\n", static_cast<int>(m_status));
-	//printfDx("ボスの現在の体力%d\n", m_currentHp);
 	m_pBossBulletMgr->Draw();
 
 	// 封印状態なら
@@ -314,8 +274,9 @@ void EnemyBoss::Draw()
 			m_closeRangeAttackCollision.DebugDraw();
 		}
 
-		DrawCircle(m_targetPos.x, m_targetPos.y, 10, 0x0000ff);
+		// 死んでいなければこの先は呼ばない
 		if (!CheckDeadFlag()) return;
+		
 		Dead();
 	}
 
@@ -416,6 +377,9 @@ void EnemyBoss::Action()
 			// 近距離攻撃をする
 			CloseRangeAttack();
 		}
+		else {
+			m_isAttackHit = false;
+		}
 		break;
 	case EnemyBoss::BossAction::LongRangeAttack:
 
@@ -444,7 +408,7 @@ void EnemyBoss::Status()
 		m_motionFrame++;
 
 		// 近距離攻撃のダメージ判定のフラグの決める
-		m_isCloseTheAttackDamege = (m_status == BossStatus::CloseRangeAttack &&
+		m_isCloseTheAttackDamege = (m_status == BossAnimation::CloseRangeAttack &&
 			m_motionFrame >= kCloseRangeDamageStartFrame && m_motionFrame <= kCloseRangeDamageEndFrame) ? true : false;
 
 		//アニメーションがなければ
@@ -452,13 +416,13 @@ void EnemyBoss::Status()
 
 			switch (m_status)
 			{
-			case EnemyBoss::BossStatus::Idle:
-			case EnemyBoss::BossStatus::ApproachMove:
-			case EnemyBoss::BossStatus::LeaveMove:
+			case EnemyBoss::BossAnimation::Idle:
+			case EnemyBoss::BossAnimation::ApproachMove:
+			case EnemyBoss::BossAnimation::LeaveMove:
 				break;
-			case EnemyBoss::BossStatus::LongRangeAttack:
-			case EnemyBoss::BossStatus::CloseRangeAttack:
-				m_status = BossStatus::Idle;
+			case EnemyBoss::BossAnimation::LongRangeAttack:
+			case EnemyBoss::BossAnimation::CloseRangeAttack:
+				m_status = BossAnimation::Idle;
 				m_action = BossAction::Idle;
 				m_isCloseTheAttack = false;
 				break;
@@ -514,7 +478,7 @@ bool EnemyBoss::ApproachPlayer(const Vector3& playerPos)
 	if (direction.GetSqLength() <= 3000.0f) return true;
 
 	// アニメーションをApproachMoveにする
-	m_status = BossStatus::ApproachMove;
+	m_status = BossAnimation::ApproachMove;
 
 	// 正規化
 	direction = direction.GetNormalize();
@@ -541,7 +505,7 @@ bool EnemyBoss::LeavePlayer(const Vector3& playerPos)
 	if (direction.GetSqLength() <= 100.0f) return true;
 
 	// アニメーションをLeaveMoveにする
-	m_status = BossStatus::LeaveMove;
+	m_status = BossAnimation::LeaveMove;
 
 	// 正規化
 	direction = direction.GetNormalize();
@@ -589,7 +553,7 @@ void EnemyBoss::CloseRangeAttack()
 	m_isCloseTheAttack = true;
 
 	// アニメーションをCloseRangeAttackにする
-	m_status = BossStatus::CloseRangeAttack;
+	m_status = BossAnimation::CloseRangeAttack;
 	printfDx("近距離攻撃\n");
 }
 
@@ -597,7 +561,7 @@ void EnemyBoss::LongRangeAttack()
 {
 	
 	// アニメーションをLongRangeAttackにする
-	m_status = BossStatus::LongRangeAttack;
+	m_status = BossAnimation::LongRangeAttack;
 
 	if (m_isAngry) {
 		SoundManager::GetInstance().PlaySe(Sound::SE::BossBullet);

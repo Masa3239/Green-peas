@@ -61,7 +61,6 @@ void ItemManager::Update()
 
 void ItemManager::Draw()
 {
-	// printfDx("数 : %d\n",m_items.size());
 
 	for (auto& e : m_items) {
 		e->Draw();
@@ -74,6 +73,7 @@ void ItemManager::CreateRandom(Vector3 position)
 	int type = MyRandom::Int(0, static_cast<int>(ItemBase::ItemType::Max) - 1);
 
 	Create(static_cast<ItemBase::ItemType>(type), position);
+
 }
 
 void ItemManager::Create(ItemBase::ItemType type, Vector3 position)
@@ -102,17 +102,19 @@ void ItemManager::Create(ItemBase::ItemType type, Vector3 position)
 		graphHandle = m_attackUpItemGraphHandle;
 		break;
 
+		// Defenceなら
 	case ItemBase::ItemType::Defence:
-		// AttackUpItemのコンストラクタを呼んで座標を指定
+		// DefenceItemのコンストラクタを呼んで座標を指定
 		items = std::make_unique<DefenceItem>(m_pObjectMgr, position);
-		// グラフハンドルを攻撃力アップアイテムに設定
+		// グラフハンドルを防御力アップアイテムに設定
 		graphHandle = m_defenceUpItemGraphHandle;
 		break;
 
+		// WipeOutなら
 	case ItemBase::ItemType::WipeOut:
-		// AttackUpItemのコンストラクタを呼んで座標を指定
+		// WipeOutItemのコンストラクタを呼んで座標を指定
 		items = std::make_unique<WipeOutItem>(m_pObjectMgr, position);
-		// グラフハンドルを攻撃力アップアイテムに設定
+		// グラフハンドルを敵を一層するアイテムに設定
 		graphHandle = m_wipeoutItemGraphHandle;
 		break;
 
@@ -139,10 +141,6 @@ void ItemManager::Remove(int index)
 
 		return;
 	}
-
-	// 指定したアイテムを削除
-	// m_items[index]->End();
-
 	// eraseを使うと配列のindex番目の要素を削除しても
 	// 自動で後ろにある要素を前詰めされる
 	m_items.erase(m_items.begin() + index);

@@ -77,11 +77,6 @@ public:
 
 
 protected:
-
-	/// <summary>
-	/// 画像の座標
-	/// </summary>
-	//Transform m_transform;
 	
 	/// <summary>
 	/// 画像ハンドル

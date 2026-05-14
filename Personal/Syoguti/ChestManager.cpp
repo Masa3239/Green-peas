@@ -6,6 +6,7 @@
 
 namespace {
 
+	// 宝箱からアイテムを出す位置を調整するオフセット
 	constexpr Vector3 kOffsetX = {50.0f, 0.0f, 0.0f};
 }
 
@@ -50,17 +51,17 @@ void ChestManager::Update()
 
 		m_chests[i]->Update();
 
-		// 開き終わった瞬間に武器生成
+		// 開き終わった瞬間にアイテム生成
 		if (m_chests[i]->CanSpawn()) {
 
 			// アイテムを出す位置を決める
 			Vector3 posWeapon = m_chests[i]->GetTransform().position + kOffsetX;
 			Vector3 posItem = m_chests[i]->GetTransform().position - kOffsetX;
+			// 出すアイテムをランダムに決める
 			m_pWeaponMgr->CreateRandom(posWeapon);
 			m_pItemMgr->CreateRandom(posItem);
 
 			m_chests[i]->SetSpawned();
-			//Remove(i);
 		}
 	}
 }
@@ -80,6 +81,7 @@ void ChestManager::Create(Vector3 position)
 	chest = std::make_unique<TreasureChest>(m_pObjectMgr);
 	
 	for (int i = 0;i < kTreasureChestMotionNum;i++) {
+		// 画像をセットする
 		chest->SetGraphHandle(m_graphHandle[i], i);
 	}
 	chest->Init();
@@ -112,8 +114,6 @@ bool ChestManager::CheckHitCollision(const Collision::Shape& other)
 
 		m_chests[i]->Open();
 
-		// Remove(i);
-				
 		// 当たっていたらtrueを返す
 		return true;
 	}

@@ -8,6 +8,8 @@ namespace {
 
 	// 画像のファイルパス
 	const char* const kBulletGraphHandlePath = ".\\Resource\\ItemTest1.png";
+
+	// 弾のダメージの値
 	constexpr int kBulletDamage = 15;
 }
 
@@ -33,8 +35,6 @@ void BossBulletManager::Init()
 	LoadDivGraph(".\\Resource\\Pixel Art VFX - Blood Mage - FREE Version\\VFX3\\sprite-sheet.png",
 		4, 4, 1, 128, 128, m_bulletGraphHandle[static_cast<int>(BossBulletBase::BulletType::Normal)]);
 
-	// 画像の読み込み
-	// m_bulletGraphHandle = LoadGraph(kBulletGraphHandlePath);
 }
 
 void BossBulletManager::End()
@@ -53,7 +53,7 @@ void BossBulletManager::End()
 			DeleteGraph(m_bulletGraphHandle[i][j]);
 		}
 	}
-	// DeleteGraph(m_bulletGraphHandle);
+	
 }
 
 void BossBulletManager::Update()
@@ -68,25 +68,33 @@ void BossBulletManager::Draw()
 
 void BossBulletManager::Create(BossBulletBase::BulletType type, Vector3 position)
 {
+
 	std::unique_ptr<BossBulletBase> bullets;
+
+	// 引数でもらったtypeで処理を分ける
 	switch (type)
 	{
+	// typeがNormalなら
 	case BossBulletBase::BulletType::Normal:
+
 		bullets = std::make_unique<BossBullet>(m_pObjectMgr);
-		//graphHandle = m_bulletGraphHandle;
 		break;
 	default:
 		break;
 	}
 
+	// bulletsになにも入っていなければreturn
 	if (!bullets) return;
 
 	// プレイヤーのポインタをセット
 	bullets->SetPlayer(m_pPlayer);
-	// 座標を引数の値にする
+	// 座標を引数でもらったpositionの当たりにする
 	bullets->GetTransform().position = position;
+
 	bullets->Init();
+
 	for (int i = 0;i < kMotionNum;i++) {
+		// 画像をセットする
 		bullets->SetGraphHandle(m_bulletGraphHandle[static_cast<int>(type)][i], i);
 	}
 
@@ -132,6 +140,8 @@ bool BossBulletManager::CheckHitCollision(const Collision::Shape& other)
 		if (!m_bullets[i]->GetCollision().CheckCollision(other)) continue;
 
 		if (m_pPlayer) {
+
+			// プレイヤーにダメージを与える
 			m_pPlayer->Damage(kBulletDamage);
 		}
 		

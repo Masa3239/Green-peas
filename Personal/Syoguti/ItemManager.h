@@ -7,6 +7,9 @@
 
 class Player;
 
+/// <summary>
+/// アイテムを管理するマネージャークラス
+/// </summary>
 class ItemManager
 {
 
@@ -42,6 +45,10 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// ランダムにアイテムを決める
+	/// </summary>
+	/// <param name="position"></param>
 	void CreateRandom(Vector3 position);
 
 	/// <summary>

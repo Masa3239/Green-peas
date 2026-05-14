@@ -2,6 +2,9 @@
 #include "ItemBase.h"
 #include "../../Utility/Transform.h"
 
+/// <summary>
+/// プレイヤーの体力を回復するアイテムのクラス
+/// </summary>
 class HpHealItem : public ItemBase 
 {
 
@@ -47,12 +50,6 @@ public:
 	/// アイテムの効果
 	/// </summary>
 	void ItemAbility(Player* player) override;
-
-	/// <summary>
-	/// グラフハンドルをセットするセッター関数
-	/// </summary>
-	/// <param name="graphHandlePath"></param>
-	// void SetGraphHandle(int graphHandle) override{ m_graphHandle = graphHandle; }
 
 };
 

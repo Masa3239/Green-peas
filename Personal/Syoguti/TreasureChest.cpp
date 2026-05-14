@@ -16,8 +16,6 @@ namespace {
     // 画像の位置を調整するオフセットYの値
     constexpr int kOffsetPosY = 10;
 
-    // 宝箱を削除するまでの時間
-    constexpr float kRemoveTimer = 3.0f;
 }
 
 TreasureChest::TreasureChest(ObjectManager* objectMgr) :
@@ -27,7 +25,6 @@ TreasureChest::TreasureChest(ObjectManager* objectMgr) :
     m_isOpen(false),
     m_isOpened(false),
     m_openedTimer(0.0f),
-    m_isRemove(false),
     m_isSpawned(false)
 {
     for (int i = 0; i < kTreasureChestMotionNum; i++) {
@@ -54,8 +51,6 @@ void TreasureChest::Update()
 {
 
     OpenAnimation();
-
-    Opened();
 
     // 座標の更新
     m_collision.SetPosition(GetTransform().position);
@@ -106,22 +101,5 @@ void TreasureChest::OpenAnimation()
     // 宝箱が空き終わったのでtrue
     m_isOpened = true;
     
-}
-
-void TreasureChest::Opened()
-{
-
-    // 宝箱が開き終わってなければreturn
-    if (!m_isOpened) return;
-
-    // 時間を計測
-    m_openedTimer += Time::GetInstance().GetDeltaTime();
-
-    // タイマーがkRemoveTimerより小さければreturn
-    if (m_openedTimer < kRemoveTimer) return;
-
-    // 削除するフラグをtrueにする
-    m_isRemove = true;
-        
 }
 

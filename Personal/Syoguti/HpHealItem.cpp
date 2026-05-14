@@ -16,6 +16,7 @@ namespace {
 	// 画像のオフセットYの値
 	constexpr float kGraphOffsetY = 10.0f;
 
+	// 体力回復に使う割合
 	constexpr int kRatio = 0.5f;
 }
 
@@ -49,8 +50,6 @@ void HpHealItem::Init()
 
 void HpHealItem::End()
 {
-	// 画像の破棄
-	// DeleteGraph(m_graphHandle);
 }
 
 void HpHealItem::Update()

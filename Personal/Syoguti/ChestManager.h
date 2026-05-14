@@ -9,13 +9,20 @@ class TreasureChest;
 class WeaponManager;
 class ItemManager;
 
+// 宝箱を管理するクラス
 class ChestManager
 {
 
 public:
 
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	ChestManager();
 
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	~ChestManager();
 
 	/// <summary>
