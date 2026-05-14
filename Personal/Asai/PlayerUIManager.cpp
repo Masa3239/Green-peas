@@ -3,7 +3,6 @@
 #include<vector>
 #include<memory>
 
-#include <cassert>
 #include"../Asai/PlayerAngerBar.h"
 #include"../Asai/PlayerExpBar.h"
 #include"../Asai/PlayerHpBar.h"
@@ -18,34 +17,19 @@ PlayerUIManager::PlayerUIManager():
 void PlayerUIManager::Init()
 {
 	//HPのUIを追加
-	std::unique_ptr<PlayerUIBase> hpBar = std::make_unique<PlayerHpBar>();
-	assert(hpBar);
-	//配列に追加
-	m_pUIs.push_back(std::move(hpBar));
+	m_pUIs.emplace_back(std::make_unique<PlayerHpBar>());
 
 	//怒りゲージのUIを追加
-	std::unique_ptr<PlayerUIBase>angerBar = std::make_unique<PlayerAngerBar>();
-	assert(angerBar);
-	//配列に追加
-	m_pUIs.push_back(std::move(angerBar));
+	m_pUIs.emplace_back(std::make_unique<PlayerAngerBar>());
 
 	//スタミナゲージのUIを追加
-	std::unique_ptr<PlayerUIBase>staminaBar = std::make_unique<PlayerStaminaBar>();
-	assert(staminaBar);
-	//配列に追加
-	m_pUIs.push_back(std::move(staminaBar));
+	m_pUIs.emplace_back(std::make_unique<PlayerStaminaBar>());
 
 	//経験ゲージのUIを追加
-	std::unique_ptr<PlayerUIBase>expBar = std::make_unique<PlayerExpBar>();
-	assert(expBar);
-	//配列に追加
-	m_pUIs.push_back(std::move(expBar));
+	m_pUIs.emplace_back(std::make_unique<PlayerExpBar>());
 
 	//武器のUIを追加
-	std::unique_ptr<PlayerUIBase> weaponUI = std::make_unique<PlayerWeaponUI>();
-	assert(weaponUI);
-	//配列に追加
-	m_pUIs.push_back(std::move(weaponUI));
+	m_pUIs.emplace_back(std::make_unique<PlayerWeaponUI>());
 
 	for (auto& UI : m_pUIs) {
 

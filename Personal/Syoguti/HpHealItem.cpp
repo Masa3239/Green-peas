@@ -17,7 +17,7 @@ namespace {
 	constexpr float kGraphOffsetY = 10.0f;
 
 	// 体力回復に使う割合
-	constexpr int kRatio = 0.5f;
+	constexpr float kRatio = 0.5f;
 }
 
 HpHealItem::HpHealItem(ObjectManager* objManager):

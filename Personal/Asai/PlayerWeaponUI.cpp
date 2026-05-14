@@ -25,7 +25,7 @@ namespace {
 	constexpr float kSubWeponRadius = kMainWeponRadius / 2;
 
 	//装備していない武器の拡大率
-	constexpr float kSubWeaponScale = 0.5f;
+	constexpr float kSubWeaponScale = kMainWeaponScale / 2;
 
 }
 

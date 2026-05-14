@@ -9,13 +9,13 @@
 
 namespace {
 
-	constexpr int kGaugeLeft = 10;
+	constexpr int kGaugeLeft = 70;
 
-	constexpr int kGaugeRight = Game::kScreenWidth - 200;
+	constexpr int kGaugeRight = Game::kScreenWidth - 140;
 
 	constexpr int kGaugeTop = 10;
 
-	constexpr int kGaugeBottom = kGaugeTop + 50;
+	constexpr int kGaugeBottom = kGaugeTop + 30;
 
 }
 
@@ -38,7 +38,7 @@ void BossHpBar::Update()
 	if (!m_pEnemyMgr)return;
 
 	//封印されていたらスルー
-	if (!m_pEnemyMgr->GetEnemyBoss()->GetSealReleaseFlag())return;
+	//if (!m_pEnemyMgr->GetEnemyBoss()->GetSealReleaseFlag())return;
 
 	//現在のHPを取得
 	m_currentHp = m_pEnemyMgr->GetEnemyBoss()->GetBossCurrentHp();
@@ -52,7 +52,9 @@ void BossHpBar::Draw()
 	if (!m_pEnemyMgr)return;
 
 	//封印されていたらスルー
-	if (!m_pEnemyMgr->GetEnemyBoss()->GetSealReleaseFlag())return;
+	//if (!m_pEnemyMgr->GetEnemyBoss()->GetSealReleaseFlag())return;
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
 
 	DrawBox(kGaugeLeft, kGaugeTop, kGaugeRight, kGaugeBottom, 0xffffff, TRUE);
 
@@ -65,13 +67,15 @@ void BossHpBar::Draw()
 		0xff0000, TRUE
 	);
 
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 	std::string hp = std::to_string(m_currentHp);
 
 	std::string maxHp = std::to_string(m_maxHp);
 
 	std::string draw = hp + "/" + maxHp;
 
-	DrawStringToHandle(kGaugeRight / 2 + 99, kGaugeTop + 30, draw.c_str(), 0xffffff, m_hpFont);
+	DrawStringToHandle(kGaugeRight / 2 + 99, kGaugeTop + 10, draw.c_str(), 0xffffff, m_hpFont);
 
 }
 

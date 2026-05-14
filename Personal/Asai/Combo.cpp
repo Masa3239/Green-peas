@@ -2,15 +2,16 @@
 #include"../Osawa/Enemy/EnemyManager.h"
 
 #include<string>
+#include"../../Utility/Game.h"
 #include"../../Utility/Time.h"
 
 namespace {
 	//コンボの受付時間
 	constexpr float kReceptionTime = 5;
 	//表示するX座標
-	constexpr int kPosX = 30;
+	constexpr int kPosX = 180;
 	//表示するY座標
-	constexpr int kPosY = 10;
+	constexpr int kPosY = Game::kScreenHeight - 40;
 
 	constexpr float kFadeStartTime = 2.0f;
 

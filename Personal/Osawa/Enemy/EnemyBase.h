@@ -28,7 +28,7 @@ public:
 	};
 
 	EnemyBase(ObjectManager* objManager);
-	virtual ~EnemyBase();
+	virtual ~EnemyBase() = default;
 
 	virtual void Init() override;
 
