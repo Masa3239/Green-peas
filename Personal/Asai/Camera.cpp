@@ -5,13 +5,14 @@
 #include"../../Utility/Game.h"
 #include"../../Utility/Time.h"
 #include"../../Utility/MyRandom.h"
+#include"../../Utility/MyMath.h"
 #include"../Kimura/Map/Map.h"
 #include"../Kimura/Map/MapManager.h"
 
 namespace {
 
 	//カメラの補間
-	constexpr float kFollowLatency = 3.0f;
+	constexpr float kFollowLatency = 6.0f;
 	//振動の大きさ
 	constexpr float kShakeMoveMax = 6;
 	//怒り状態でのカメラの振動
@@ -148,7 +149,7 @@ void Camera::Lerp(Transform cameraPos)
 {
 
 	//カメラの移動
-	m_transform.position = (cameraPos.position - m_transform.position) * kFollowLatency * Time::GetInstance().GetDeltaTime() + m_transform.position;
+	m_transform.position = (cameraPos.position - m_transform.position) * MyMath::Clamp(kFollowLatency * Time::GetInstance().GetDeltaTime(),0.0f,1.0f) + m_transform.position;
 
 }
 
