@@ -1,13 +1,14 @@
 #include "EnemyMiniBoss.h"
+#include <vector>
 #include <DxLib.h>
-#include "../Personal/Takagi/Player.h"
-#include "../Personal/Syoguti/ChestManager.h"
+#include "../BossKey.h"
 #include "../Enemy/EnemyBullet.h"
 #include "../Enemy/EnemyManager.h"
+#include "../Personal/Takagi/Player.h"
+#include "../Personal/Syoguti/ChestManager.h"
+#include "../System/SoundManager.h"
 #include "../Utility/Time.h"
 #include "../Utility/MyMath.h"
-#include "../BossKey.h"
-#include "../System/SoundManager.h"
 
 namespace
 {
@@ -40,15 +41,18 @@ namespace
 	constexpr int kAtkPerLevel = 1.03f;
 	constexpr int kDefPerLevel = 1;
 
+	std::vector<Animation::Animation2DData> kAnimData =
+	{
+		{ EnemyMiniBoss::AnimType::ERun, 6.0f, true, true},
+	};
+
 	const char* const kGraphPath = "Resource\\Bosses_Dino_Tri\\Dino Tri\\dino_tri_move.png";
 }
 
 EnemyMiniBoss::EnemyMiniBoss(ObjectManager* objManager) :
 	EnemyBase(objManager),
 	m_action(Action::Idle),
-	m_attackCooltimeCounter(0.0f),
-	m_animFrame(0),
-	m_animFrameCounter(0)
+	m_attackCooltimeCounter(0.0f)
 {
 }
 
@@ -74,18 +78,17 @@ void EnemyMiniBoss::Init()
 
 	GetCollider() = Collision::AABB{Vector3::zero, kColliderSize};
 
-	LoadDivGraph(kGraphPath, kAnimFrameNum, kAnimFrameNum, 1, 384, 128, m_graphs);
+	GetAnimator().Init();
+	GetAnimator().RegisterGraphHandle(AnimType::ERun, kGraphPath, 8, 8, 1, 384, 128);
+	SetAnimationData(kAnimData);
+
+	GetAnimator().PlayAnimation(kAnimData[0]);
 
 	EnemyBase::Init();
 }
 
 void EnemyMiniBoss::End()
 {
-	for (auto& graph : m_graphs)
-	{
-		DeleteGraph(graph);
-	}
-
 	for (auto& bullet : m_bullets)
 	{
 		bullet->End();
@@ -201,27 +204,13 @@ void EnemyMiniBoss::UpdateEnemy()
 	{
 		m_attackCooltimeCounter -= Time::GetInstance().GetDeltaTime();
 	}
-
-	if (m_animFrameCounter > 0)
-	{
-		m_animFrameCounter -= Time::GetInstance().GetDeltaTime();
-	}
-	else
-	{
-		m_animFrame++;
-		m_animFrameCounter = 0.1f;
-
-		if (m_animFrame >= kAnimFrameNum) m_animFrame = 0;
-	}
 }
 
 void EnemyMiniBoss::Draw()
 {
 	Vector3& pos = GetTransform().position;
 	
-	unsigned int color = (GetMyState() & EnemyBase::kStatePalsy) ? 0xffff00 : 0xff0000;
-
-	DrawRotaGraph(pos.x, pos.y - 32, 1, 0, m_graphs[m_animFrame], 1, GetPlayer()->GetTransform().position.x < pos.x);
+	DrawRotaGraph(pos.x, pos.y - 32, 1, 0, GetAnimator().GetCurrentGraph(), 1, GetPlayer()->GetTransform().position.x < pos.x);
 
 #ifdef _DEBUG
 	GetCollider().DebugDraw();
@@ -271,4 +260,11 @@ void EnemyMiniBoss::Attack()
 			break;
 		}
 	}
+}
+
+void EnemyMiniBoss::BranchAnimation()
+{
+	AnimType next = AnimType::ERun;
+
+	ChangeAnimation(next);
 }

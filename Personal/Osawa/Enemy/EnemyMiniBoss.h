@@ -12,6 +12,12 @@ public:
 	EnemyMiniBoss(ObjectManager* objManager);
 	~EnemyMiniBoss();
 
+	enum AnimType
+	{
+		ERun,
+		Length
+	};
+
 	/// <summary>
 	/// 初期化処理
 	/// </summary>
@@ -32,15 +38,26 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	/// <summary>
+	/// 死亡処理
+	/// </summary>
 	void Dead() override;
 
 protected:
 
+	/// <summary>
+	/// 攻撃処理
+	/// </summary>
 	void Attack() override;
 
-	constexpr static unsigned int kMaxBulletNum = 10;
+	/// <summary>
+	/// アニメーションの切り替え処理
+	/// </summary>
+	void BranchAnimation() override;
 
-	constexpr static int kAnimFrameNum = 8;
+private:
+
+	constexpr static unsigned int kMaxBulletNum = 10;
 
 	enum class Action
 	{
@@ -63,10 +80,4 @@ protected:
 	/// 弾の配列
 	/// </summary>
 	std::array<std::unique_ptr<EnemyBullet>, kMaxBulletNum> m_bullets;
-
-	int m_animFrame;
-
-	float m_animFrameCounter;
-
-	int m_graphs[kAnimFrameNum];
 };
