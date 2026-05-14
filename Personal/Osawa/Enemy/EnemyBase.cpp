@@ -14,8 +14,8 @@ namespace
 
 	constexpr int kMaxHp = 30;
 
-	// プレイヤーが怒り状態で倒された場合の回復量
-	constexpr int kHealNum = 1;
+	// プレイヤーが怒り状態で倒された場合の回復割合
+	constexpr float kHealRate = 0.01f;
 
 	// プレイヤーを認識する距離
 	constexpr float kStartRecognitionDistance = 600;
@@ -116,7 +116,8 @@ void EnemyBase::Dead()
 	// もしプレイヤーが怒り状態だったら回復させる
 	if (m_pPlayer->CheckAnger())
 	{
-		m_pPlayer->Heal(kHealNum);
+		float maxHp = m_pPlayer->GetGaugeMaxValue(Player::GaugeType::Hp);
+		m_pPlayer->Heal(maxHp * kHealRate);
 	}
 
 	// 経験値の倍率を取得
