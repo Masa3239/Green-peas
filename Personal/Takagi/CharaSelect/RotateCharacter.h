@@ -3,6 +3,7 @@
 #include"../../../Utility/Transform.h"
 #include<vector>
 namespace {
+
 	constexpr int kGraphNum = 8;
 }
 

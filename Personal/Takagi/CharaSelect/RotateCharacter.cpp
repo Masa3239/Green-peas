@@ -43,33 +43,41 @@ namespace {
 	/// <summary>
 	/// 初期の角度
 	/// </summary>
-	constexpr float kInitRadian=90*MyMath::ToRadian;
+	constexpr float kInitRadian=DX_PI_F/2;
 }
 RotateCharacter::RotateCharacter():
 	m_graphHandle(),
 	m_animFrame(),
 	m_transform(),
 	m_axisTransform(),
-	m_desireRadian(kInitRadian)
+	m_desireRadian(0),
+	m_sort(),
+	m_radians(),
+	m_radianNum(0)
 {
 	// 変数の初期化
 	for (int i = 0; i < kCharaMaxNum; i++) {
 		for (int j = 0; j < kGraphNum; j++) {
+			// グラフィックハンドルの初期化
 			m_graphHandle[i][j] = -1;
 			m_graphHandle[i][j] = -1;
 			m_graphHandle[i][j] = -1;
 		}
+		// フレーム数のリセット
 		m_animFrame[i] = 0;
+		// キャラ描画時のトランスフォームの初期化
 		m_transform[i].Reset();
 	}
+	// 軸のトランスフォームのリセット
 	m_axisTransform.Reset();
 	// 軸の座標を設定
 	m_axisTransform.position = kAxisPos;
-	m_axisTransform.rotation.y = kInitRadian;
 
-	// キャ5ラそれぞれの角度の設定
+	// キャラそれぞれの角度の設定
 	float charaRadian = 0;
+	// キャラごとの初期設定
 	for (int i = 0; i < kCharaMaxNum; i++) {
+		// キャラの描画位置が等間隔になるように角度の設定を行う
 		m_transform[i].rotation.y = charaRadian * MyMath::ToRadian;
 		charaRadian += kCharaRadian;
 		charaRadian = MyMath::NormalizeAngle(charaRadian);
@@ -83,7 +91,6 @@ RotateCharacter::RotateCharacter():
 			m_graphHandle[i][j] = graph[i][j];
 		}
 	}
-	m_radianNum = 0;
 }
 
 RotateCharacter::~RotateCharacter()
@@ -100,22 +107,35 @@ void RotateCharacter::End()
 
 void RotateCharacter::Update()
 {
-
+	// フレーム間の時間をキャッシュ
 	float time = Time::GetInstance().GetDeltaTime();
+	// 左を押したら
 	if (InputManager::GetInstance().IsPressed(Input::Action::Left)) {
+		// 角度を変更
 		m_radianNum++;
+		// サウンドを再生
 		SoundManager::GetInstance().PlaySe(Sound::SE::CharactorSelect);
 	}
+	// 右を押したら
 	else if (InputManager::GetInstance().IsPressed(Input::Action::Right)) {
+		// 角度を変更
 		m_radianNum--;
+		// サウンドを再生
 		SoundManager::GetInstance().PlaySe(Sound::SE::CharactorSelect);
 	}
+	// 角度が循環するように
 	m_radianNum = (m_radians.size() + m_radianNum) % m_radians.size();
+	// 選択しているキャラに角度が合うようにする
 	m_desireRadian = m_radians[m_radianNum]+ kInitRadian;
+	// 角度を補完する
 	float lerp = m_desireRadian - m_axisTransform.rotation.y;
 	lerp = MyMath::NormalizeRadian(lerp);
-	lerp *= time * 10;
+	// 補間の量が1を超えないようにする
+	lerp *= MyMath::Clamp(time * 10, 0.0f, 1.0f);
+	// 角度を少しずつ動かす
 	m_axisTransform.rotation.y += lerp;
+
+	// 角度に応じてキャラクター画像の描画位置を動かす
 	float radian = 0;
 	for (int i = 0; i < kCharaMaxNum; i++) {
 		radian = m_transform[i].rotation.y + m_axisTransform.rotation.y;
@@ -123,17 +143,18 @@ void RotateCharacter::Update()
 		m_transform[i].position.z = m_transform[i].position.y;
 		m_transform[i].position.y = 0;
 	}
-	//m_axisTransform.rotation.y += 45 * MyMath::ToRadian * time;
 }
 
 void RotateCharacter::Draw()
 {
+	// キャラクターのZ座標を格納するローカル変数
 	float sortPosZ[kCharaMaxNum];
 	for (int i = 0; i < kCharaMaxNum; i++) {
 		m_sort[i] = i;
 		sortPosZ[i] = m_transform[i].position.z;
 	}
 
+	// 奥から順番に描画できるように入れ替える
 	for (int i = 0; i < kCharaMaxNum; i++) {
 		for (int j = 0; j < kCharaMaxNum-1; j++) {
 			if (sortPosZ[j] <= sortPosZ[j + 1])continue;
@@ -148,14 +169,16 @@ void RotateCharacter::Draw()
 	}
 
 
-
-	Vector3 pos;
+	// キャラクターの描画座標を格納するローカル変数
+	Vector3 pos = { 0.0f,0.0f,0.0f };
+	// キャラクターの数だけ繰り返す
 	for (int i = 0; i < kCharaMaxNum; i++) {
+		// キャラクターの描画座標を格納
 		pos = m_transform[m_sort[i]].position + kAxisPos;
+		// 遠近に応じた拡大率を求める
 		float perspective = (kPerspective + m_transform[m_sort[i]].position.z)/ kPerspective;
-		DrawRotaGraph(pos.x, pos.y, 4*perspective, 0, m_graphHandle[m_sort[i]][0], TRUE);
-		//printfDx("%d番目 : %d\n", i, m_sort[i]);
-		//printfDx("%d番目Z: %f\n", i, m_transform[i].position.z);
+		// キャラクター画像の描画をする
+		DrawRotaGraph(pos.x, pos.y, kScale *perspective, 0, m_graphHandle[m_sort[i]][0], TRUE);
 	}
 }
 
