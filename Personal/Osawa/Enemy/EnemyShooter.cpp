@@ -87,6 +87,8 @@ void EnemyShooter::End()
 		bullet->End();
 		bullet->SetState(State::Dead);
 	}
+
+	EnemyBase::End();
 }
 
 void EnemyShooter::UpdateEnemy()

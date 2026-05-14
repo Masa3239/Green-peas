@@ -90,6 +90,8 @@ void EnemyMiniBoss::End()
 	{
 		bullet->End();
 	}
+
+	EnemyBase::End();
 }
 
 void EnemyMiniBoss::UpdateEnemy()

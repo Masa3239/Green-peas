@@ -61,6 +61,7 @@ void EnemySlime::Init()
 
 void EnemySlime::End()
 {
+	EnemyBase::End();
 }
 
 void EnemySlime::UpdateEnemy()
