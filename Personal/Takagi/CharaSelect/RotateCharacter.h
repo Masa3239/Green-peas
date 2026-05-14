@@ -59,7 +59,13 @@ private:
 	/// 並べ替えの順番
 	/// </summary>
 	int m_sort[static_cast<int>(Character::Job::Max)];
+	/// <summary>
+	/// キャラクターが画面の中心にくる角度の配列
+	/// </summary>
 	std::vector<float>m_radians;
-	int m_angleNum;
+	/// <summary>
+	/// 角度の配列の何個目か
+	/// </summary>
+	int m_radianNum;
 };
 

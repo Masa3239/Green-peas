@@ -17,17 +17,32 @@ namespace {
 	/// </summary>
 	constexpr float kCharaRadian = 360 / kCharaMaxNum;
 	/// <summary>
-	/// キャラクターのファイルパス
+	/// キャラクター画像のファイルパス
 	/// </summary>
 	const char*const kGraphPath[kCharaMaxNum] = {
 		"Resource\\pipo-charachip_otaku01.png" ,
 		"Resource\\pipo-halloweenchara2016_01.png" ,
 		"Resource\\pipo-xmaschara02.png"
 	};
-	constexpr float kScale = 6;
-	constexpr float kPers = 400;
+	/// <summary>
+	/// 表示する際の基本の大きさ
+	/// </summary>
+	constexpr float kScale = 4;
+	/// <summary>
+	/// 遠近によって変更する描画の大きさの基準
+	/// </summary>
+	constexpr float kPerspective = 400;
+	/// <summary>
+	/// 軸の中心からの距離
+	/// </summary>
 	constexpr float kDistance = 300;
+	/// <summary>
+	/// 軸の座標
+	/// </summary>
 	constexpr Vector3 kAxisPos = { Game::kScreenWidth * 0.5f,Game::kScreenHeight * 0.5f,0 };
+	/// <summary>
+	/// 初期の角度
+	/// </summary>
 	constexpr float kInitRadian=90*MyMath::ToRadian;
 }
 RotateCharacter::RotateCharacter():
@@ -68,7 +83,7 @@ RotateCharacter::RotateCharacter():
 			m_graphHandle[i][j] = graph[i][j];
 		}
 	}
-	m_angleNum = 0;
+	m_radianNum = 0;
 }
 
 RotateCharacter::~RotateCharacter()
@@ -88,17 +103,15 @@ void RotateCharacter::Update()
 
 	float time = Time::GetInstance().GetDeltaTime();
 	if (InputManager::GetInstance().IsPressed(Input::Action::Left)) {
-		//m_desireRadian += kCharaRadian * MyMath::ToRadian;
-		m_angleNum++;
+		m_radianNum++;
 		SoundManager::GetInstance().PlaySe(Sound::SE::CharactorSelect);
 	}
 	else if (InputManager::GetInstance().IsPressed(Input::Action::Right)) {
-		//m_desireRadian -= kCharaRadian * MyMath::ToRadian;
-		m_angleNum--;
+		m_radianNum--;
 		SoundManager::GetInstance().PlaySe(Sound::SE::CharactorSelect);
 	}
-	m_angleNum = (m_radians.size() + m_angleNum) % m_radians.size();
-	m_desireRadian = m_radians[m_angleNum]+ kInitRadian;
+	m_radianNum = (m_radians.size() + m_radianNum) % m_radians.size();
+	m_desireRadian = m_radians[m_radianNum]+ kInitRadian;
 	float lerp = m_desireRadian - m_axisTransform.rotation.y;
 	lerp = MyMath::NormalizeRadian(lerp);
 	lerp *= time * 10;
@@ -139,8 +152,8 @@ void RotateCharacter::Draw()
 	Vector3 pos;
 	for (int i = 0; i < kCharaMaxNum; i++) {
 		pos = m_transform[m_sort[i]].position + kAxisPos;
-		float pers = (kPers + m_transform[m_sort[i]].position.z)/ kPers;
-		DrawRotaGraph(pos.x, pos.y, 4*pers, 0, m_graphHandle[m_sort[i]][0], TRUE);
+		float perspective = (kPerspective + m_transform[m_sort[i]].position.z)/ kPerspective;
+		DrawRotaGraph(pos.x, pos.y, 4*perspective, 0, m_graphHandle[m_sort[i]][0], TRUE);
 		//printfDx("%d番目 : %d\n", i, m_sort[i]);
 		//printfDx("%d番目Z: %f\n", i, m_transform[i].position.z);
 	}
