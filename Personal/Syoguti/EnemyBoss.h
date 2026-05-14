@@ -219,13 +219,6 @@ private:
 	void Dead();
 
 	/// <summary>
-	/// ボスが倒された時のエフェクト
-	/// </summary>
-	/// <param name="position"></param>
-	/// <returns></returns>
-	Vector3 DeadEffect(Vector3 position);
-
-	/// <summary>
 	/// ダメージフラグの範囲外を使おうとしたら範囲を追加する
 	/// </summary>
 	/// <param name="weapon"></param>
@@ -309,7 +302,6 @@ private:
 	/// ボスの攻撃力
 	/// </summary>
 	int m_attackPower;
-	int m_attackPowerO;
 
 	/// <summary>
 	/// 鍵の数

@@ -43,8 +43,7 @@ AttackUpItem::AttackUpItem(ObjectManager* objManager, Vector3 position):
 
 AttackUpItem::~AttackUpItem()
 {
-	m_pPlayer = nullptr;
-	delete m_pPlayer;
+
 }
 
 void AttackUpItem::Init()

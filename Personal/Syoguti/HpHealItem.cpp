@@ -40,8 +40,7 @@ HpHealItem::HpHealItem(ObjectManager* objManager,Vector3 position) :
 
 HpHealItem::~HpHealItem()
 {
-	m_pPlayer = nullptr;
-	delete m_pPlayer;
+
 }
 
 void HpHealItem::Init()

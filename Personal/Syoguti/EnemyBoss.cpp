@@ -179,10 +179,6 @@ void EnemyBoss::End()
 void EnemyBoss::Update()
 {
 
-	if (m_attackPower != m_attackPowerO) {
-		m_attackPowerO = m_attackPower;
-	}
-
 
 	// ボスが画面の左側に出ないようする
 	if (GetTransform().position.x < kMapRangeOffset) GetTransform().position.x = kMapRangeOffset;
@@ -331,7 +327,7 @@ bool EnemyBoss::Damage(const int damage)
 bool EnemyBoss::Damage(const int damage, int weapon, int index)
 {
 
-	// 封印宙に一定以上のダメージを受けたら
+	// 封印中に一定以上のダメージを受けたら
 	if (!m_sealRelease && m_currentHp < kMaxHp - kAngryHp) {
 
 		m_seBossFlag = true;
@@ -608,9 +604,6 @@ void EnemyBoss::Dead()
 		// エフェクトを描画する
 		m_isEffect = true;
 
-		// ランダムでエフェクトの座標を決める
-		// m_effectPos = DeadEffect(GetTransform().position);
-
 		// エフェクトを出した回数をプラス
 		m_effectCount++;
 
@@ -654,23 +647,6 @@ void EnemyBoss::Dead()
 
 }
 
-Vector3 EnemyBoss::DeadEffect(Vector3 position)
-{
-
-	// ランダムで座標を取得
-	int randomX = MyRandom::Int(-40, 40);
-	int randomY = MyRandom::Int(-40, 10);
-
-	// エフェクトを出す座標
-	Vector3 effectPos;
-
-	effectPos.x = position.x + randomX;
-	effectPos.y = position.y + randomY;
-	effectPos.z = position.z;
-
-	return effectPos;
-}
-
 void EnemyBoss::CheckDamageFlagSize(int weapon, int index)
 {
 	if (index < m_damageFlag[weapon].size()) return;
@@ -686,10 +662,9 @@ void EnemyBoss::AttackUp()
 
 	if (m_currentHp > kMaxHp / 2) return;
 
-	if (!m_isAttackHit) {
-		m_isPowerUp = true;
-		m_attackPower *= 2;
-	}
+	if (m_isAttackHit) return;
+	m_isPowerUp = true;
+	m_attackPower *= 2;
 }
 
 
