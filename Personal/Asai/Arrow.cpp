@@ -39,11 +39,6 @@ void Arrow::Init()
 
 	m_isActive = false;
 
-	return;
-
-	//画像の読み込み
-	m_graphHandle = LoadGraph(kGraphHandlePath);
-
 }
 
 void Arrow::Update()
@@ -114,11 +109,6 @@ void Arrow::DebugDraw()
 
 void Arrow::End()
 {
-	//画像の破棄
-	//DeleteGraph(m_graphHandle);
-
-	//m_graphHandle = -1;7
-
 }
 
 void Arrow::Shot(Transform transform)

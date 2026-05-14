@@ -21,7 +21,8 @@ namespace {
 
 }
 
-PlayerHpBar::PlayerHpBar()
+PlayerHpBar::PlayerHpBar():
+	m_font()
 {
 }
 

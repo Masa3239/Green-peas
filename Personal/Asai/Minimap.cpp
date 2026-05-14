@@ -164,15 +164,12 @@ void Minimap::DrawEnemy()
 
 	//全ての中ボスを描画
 	for (auto miniBoss : m_pEnemyMgr->GetMiniBossPositions()) {
-		printfDx("miniBoss.x %f\n", miniBoss.x);
-		printfDx("miniBoss.y %f\n", miniBoss.y);
 		//中ボスの座標をミニマップ座標に変換
 		miniBoss = ToMinimapPos(miniBoss);
 		//中ボスを描画
 		DrawCircle(miniBoss.x, miniBoss.y, 5, Color::kRed, TRUE);
 	}
 
-	printfDx("%d\n", m_pEnemyMgr->GetMiniBossPositions().size());
 	//ボスの座標をミニマップ座標に変換
 	const Vector3 bossPos = ToMinimapPos(m_pEnemyMgr->GetEnemyBoss()->GetTransform().position);
 
@@ -184,14 +181,14 @@ void Minimap::DrawEnemy()
 Vector3 Minimap::ToMinimapPos(const Vector3 pos)
 {
 
-	Vector3 vector;
+	Vector3 miniMapPos;
 
 	float rateX = MyMath::Rate(pos.x, m_mapSizeX);
 	float rateY = MyMath::Rate(pos.y, m_mapSizeY);
 
-	vector.x = kLeftPos + (kSizeX * rateX);
-	vector.y = kTopPos + (kSizeY * rateY);
+	miniMapPos.x = kLeftPos + (kSizeX * rateX);
+	miniMapPos.y = kTopPos + (kSizeY * rateY);
 
-	return vector;
+	return miniMapPos;
 
 }
