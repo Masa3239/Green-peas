@@ -70,7 +70,12 @@ public:
 	/// <returns>敵に触れていたらtrue</returns>
 	bool CheckHitEnemies(const Collision::Shape& shape, const float damage, const float criticalChance, const float criticalDamage, int weapon, int index);
 
-	bool ResetEnemyDamageFlag(int weapon, int index);
+	/// <summary>
+	/// 敵のダメージフラグを下ろす
+	/// </summary>
+	/// <param name="weapon">武器ID</param>
+	/// <param name="index">複数時の武器のインデックス</param>
+	void ResetEnemyDamageFlag(int weapon, int index);
 
 	/// <summary>
 	/// 中ボスの座標を取得

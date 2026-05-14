@@ -62,12 +62,6 @@ public:
 	/// ダメージを与える
 	/// </summary>
 	/// <param name="damage">ダメージ量</param>
-	/// <returns>ダメージを与えられたらtrue</returns>
-	bool Damage(const int damage);
-	/// <summary>
-	/// ダメージを与える
-	/// </summary>
-	/// <param name="damage">ダメージ量</param>
 	/// <param name="weapon">武器のID</param>
 	/// <param name="index">武器のインデックス</param>
 	/// <returns>ダメージを与えられたらtrue</returns>
@@ -78,12 +72,18 @@ public:
 	/// </summary>
 	virtual void Dead();
 
-	bool ResetDamageFlag(int weapon, int index);
+	/// <summary>
+	/// ダメージフラグを下ろす
+	/// </summary>
+	/// <param name="weapon">武器ID</param>
+	/// <param name="index">複数時の武器のインデックス</param>
+	void ResetDamageFlag(int weapon, int index);
 
 	int GetLevel() const { return m_level; }
 	void SetLevel(const int level) { m_level = level; }
 
 	const StatusParam& GetStatusParam() const { return m_statusParam; }
+	void SetStatusParam(const StatusParam& status) { m_statusParam = status; }
 
 	Player* GetPlayer() const { return m_pPlayer; }
 	void SetPlayer(Player* player) { m_pPlayer = player; }
@@ -104,8 +104,6 @@ protected:
 	/// </summary>
 	virtual void Attack() = 0;
 
-	void SetStatusParam(const StatusParam& status) { m_statusParam = status; }
-
 private:
 
 	/// <summary>
@@ -117,7 +115,7 @@ private:
 	/// <summary>
 	/// ダメージフラグの範囲外を使おうとしたら範囲を追加する
 	/// </summary>
-	void CheckDamageFlagSize(int weapon, int index);
+	void ResizeDamageFlag(int weapon, int index);
 
 	/// <summary>
 	/// マップ範囲内に収める
@@ -125,18 +123,20 @@ private:
 	void ClampInRange();
 
 	/// <summary>
-	/// コライダー
+	/// 経験値を生成する
 	/// </summary>
-	Collision::AABB m_collider;
-
-	std::array<std::vector<bool>, Weapon::Max> m_damageFlag;
-
-	int m_level;
+	/// <param name="amount">経験値量</param>
+	void GenerateExp(int amount);
 
 	/// <summary>
-	/// パラメータ
+	/// ステータス
 	/// </summary>
 	StatusParam m_statusParam;
+
+	/// <summary>
+	/// 敵の強化レベル
+	/// </summary>
+	int m_level;
 
 	/// <summary>
 	/// 状態異常
@@ -144,16 +144,22 @@ private:
 	unsigned int m_variableStatus;
 
 	/// <summary>
-	/// プレイヤーのポインタ
-	/// </summary>
-	Player* m_pPlayer;
-
-	EnemyManager* m_pEnemyMgr;
-
-	Map* m_pMap;
-
-	/// <summary>
 	/// 固定生成かどうか
 	/// </summary>
 	bool m_isFixSpawn;
+
+	/// <summary>
+	/// コライダー
+	/// </summary>
+	Collision::AABB m_collider;
+
+	/// <summary>
+	/// 武器ごとのダメージフラグ
+	/// falseのときにはダメージを受けない
+	/// </summary>
+	std::array<std::vector<bool>, Weapon::Max> m_damageFlag;
+
+	Player* m_pPlayer;
+	EnemyManager* m_pEnemyMgr;
+	Map* m_pMap;
 };

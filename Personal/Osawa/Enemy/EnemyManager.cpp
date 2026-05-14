@@ -173,7 +173,7 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 	return result;
 }
 
-bool EnemyManager::ResetEnemyDamageFlag(int weapon, int index)
+void EnemyManager::ResetEnemyDamageFlag(int weapon, int index)
 {
 	for (const auto& enemy : m_enemies)
 	{
@@ -181,8 +181,6 @@ bool EnemyManager::ResetEnemyDamageFlag(int weapon, int index)
 	}
 
 	m_enemyBoss->ResetDamageFlag(weapon, index);
-
-	return false;
 }
 
 std::vector<Vector3> EnemyManager::GetMiniBossPositions() const
