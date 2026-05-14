@@ -7,20 +7,17 @@
 #include<sstream>
 
 namespace {
-
 	// CSVファイルパス（worldid / stageIidで変化）
 	const char* const kEnemyMapCsv = "Resource\\EnemyMap%d_%d.csv";
 
 	// 1マスのサイズ
 	constexpr int kCellSize = 40;
-
 }
 
 EnemyMap::EnemyMap() :
 	m_worldid(0),
 	m_stageid(0)
 {
-	
 }
 
 EnemyMap::~EnemyMap()
@@ -29,7 +26,6 @@ EnemyMap::~EnemyMap()
 
 void EnemyMap::Init()
 {
-
 	//IDの設定
 	m_worldid = 1;
 	m_stageid = 1;
@@ -50,10 +46,6 @@ EnemyMap* EnemyMap::Update()
 }
 
 void EnemyMap::Draw()
-{
-}
-
-void EnemyMap::Finalize()
 {
 }
 
@@ -95,6 +87,7 @@ bool EnemyMap::LoadCSVToMapData(int worldNum, int stageNum)
 			case 1: data.type = EnemyManager::EnemyType::Melee; break;  // 近接敵
 			case 2: data.type = EnemyManager::EnemyType::Shooter; break;// 遠距離敵
 			case 3: data.type = EnemyManager::EnemyType::Miniboss; break; // 中ボス
+			case 4: data.type = EnemyManager::EnemyType::Slime; break; // スライム
 			default:
 				continue; // 未定義は無視
 			}

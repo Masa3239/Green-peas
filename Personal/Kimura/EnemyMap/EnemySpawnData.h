@@ -7,7 +7,6 @@
 
 #include<string>//Split関数で使用する
 
-
 struct EnemySpawnData
 {
 	EnemyManager::EnemyType type;

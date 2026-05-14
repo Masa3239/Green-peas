@@ -35,8 +35,7 @@ void SceneTestKimura::End()
 }
 
 SceneBase* SceneTestKimura::Update()
-{
-	
+{	
 	m_pMap->Update();
 	m_pEnemymap->Update();
 	return this;

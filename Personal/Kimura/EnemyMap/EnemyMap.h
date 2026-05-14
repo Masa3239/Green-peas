@@ -35,13 +35,8 @@ public:
 	/// </summary>
 	void Draw();
 
-	void Finalize();
-
-	void DebugShow();
-
 	// CSVを読み込んで敵配置データを作成
 	bool LoadCSVToMapData(int worldNum, int stageNum);
-
 
     // CSVから読み込んだ敵スポーンデータ一覧を取得する
     //敵の種類と座標が入ったリスト
@@ -59,6 +54,5 @@ private:
 	int m_stageid;          //読み込むマップのステージID
 
 	std::vector<EnemySpawnData> m_spawnList;
-
 
 };

@@ -138,86 +138,8 @@ bool Map::IsWall(int mapX, int mapY) {
  }
 }
 
-bool Map::IsWallByWorld(float worldX, float worldY) { 
-	// ワールド座標 → マップ座標へ変換
-	int mapX = static_cast<int>(worldX) / kMapBlockSize; 
-	int mapY = static_cast<int>(worldY) / kMapBlockSize;
-	// 変換後のマスが壁かどうかを判定
-	return IsWall(mapX, mapY); 
-}
-
-// 円形コライダーが壁に当たっているか判定
-bool Map::IsWallCircle(const Collision::Circle& circle)
-{
-	// 円の中心位置を取得
-    Vector3 pos = circle.GetPosition();
-	// 半径を取得
-    float r = circle.GetRadius();
-	// 円がカバーする範囲を「マップ座標」に変換
-    int left   = (pos.x - r) / kMapBlockSize;
-    int right  = (pos.x + r) / kMapBlockSize;
-    int top    = (pos.y - r) / kMapBlockSize;
-    int bottom = (pos.y + r) / kMapBlockSize;
-	// 範囲内のマスを総当たりでチェック
-    for (int y = top; y <= bottom; y++)
-    {
-        for (int x = left; x <= right; x++)
-        {
-			// 1マスでも壁があれば衝突扱い
-            if (IsWall(x, y))
-            {
-                return true;
-            }
-        }
-    }
-	// 壁がなければ通過可能
-    return false;
-}
-
-// 矩形（AABB）が壁に当たっているか判定
-bool Map::IsWallAABB(const Collision::AABB& box)
-{
-	// AABBの最小・最大座標（左下・右上）を取得
-	Vector3 min = box.GetMinPos();
-	Vector3 max = box.GetMaxPos();
-	// マップ座標に変換
-	int left = min.x / kMapBlockSize;
-	int right = max.x / kMapBlockSize;
-	int top = min.y / kMapBlockSize;
-	int bottom = max.y / kMapBlockSize;
-	// 範囲内のマスを総当たりでチェック
-	for (int y = top; y <= bottom; y++)
-	{
-		for (int x = left; x <= right; x++)
-		{
-			// 1マスでも壁があれば衝突扱い
-			if (IsWall(x, y))
-			{
-				return true;
-			}
-		}
-	}
-	// 壁がなければ通過可能
-	return false;
-}
-
-// 形状（円 or AABB）に応じて壁判定を振り分ける
 bool Map::IsWallShape(const Collision::Shape& shape)
 {
-	/*
-	//// shapeが円だった場合
-	//if (const Collision::Circle* c = dynamic_cast<const Collision::Circle*>(&shape))
-	//{
-	//	return IsWallCircle(*c);
-	//}
-	//// shapeがAABBだった場合
-	//if (const Collision::AABB* b = dynamic_cast<const Collision::AABB*>(&shape))
-	//{
-	//	return IsWallAABB(*b);
-	//}
-	//// どちらでもない形状はとりあえず非衝突扱い
-	//return false;
-	*/
 	Collision::AABB box = Collision::AABB(Vector3(), kBoxSize);
 	Vector3 centerPos;
 	// 範囲内のマスを総当たりでチェック
@@ -239,13 +161,6 @@ bool Map::IsWallShape(const Collision::Shape& shape)
 	}
 	// 壁がなければ通過可能
 	return false;
-}
-
-// この形状が移動可能かどうか判定する
-bool Map::CanMove(const Collision::Shape& shape)
-{
-	// 壁に当たっていない = 移動可能
-	return !IsWallShape(shape);
 }
 
 //1行の文字列をカンマで分割する
