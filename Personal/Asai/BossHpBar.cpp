@@ -25,7 +25,9 @@ BossHpBar::BossHpBar():
 	m_pEnemyMgr(nullptr),
 	m_currentHp(),
 	m_maxHp(0),
-	m_rate(0)
+	m_rate(0),
+	m_hpFont(-1),
+	m_maxHpFont("")
 {
 }
 
