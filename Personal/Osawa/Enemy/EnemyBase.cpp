@@ -39,10 +39,6 @@ EnemyBase::EnemyBase(ObjectManager* objManager) :
 {
 }
 
-EnemyBase::~EnemyBase()
-{
-}
-
 void EnemyBase::Init()
 {
 	m_collider.SetPosition(GetTransform().position);
@@ -130,8 +126,8 @@ bool EnemyBase::ApplyDespawnRange(float sqDistance)
 
 	if (sqDistance < kDespawnDistance * kDespawnDistance) return false;
 	
-	//m_pEnemyMgr->RemoveEnemy(this);
-	return false;
+	m_pEnemyMgr->RemoveEnemy(this);
+	return true;
 }
 
 void EnemyBase::ClampInRange()
