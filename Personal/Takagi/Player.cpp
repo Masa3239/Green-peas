@@ -150,7 +150,7 @@ void Player::End()
 {
 	m_pCamera->End();
 	m_pCamera = nullptr;
-	delete m_pCamera;
+	//delete m_pCamera;
 	for (auto& weapons : m_weapons) {
 		if (!weapons)continue;
 		weapons->End();
@@ -161,11 +161,11 @@ void Player::End()
 			DeleteGraph(handle);
 	}
 	m_pItemMgr = nullptr;
-	delete m_pItemMgr;
+	//delete m_pItemMgr;
 
 	if (m_pMap) {
 		m_pMap = nullptr;
-		delete m_pMap;
+		//delete m_pMap;
 	}
 }
 
