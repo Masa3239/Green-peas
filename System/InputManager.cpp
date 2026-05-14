@@ -86,11 +86,6 @@ bool InputManager::Initialize()
 	Bind(Input::Action::Weapon, Input::Device::Keyboard, KeyCode::Button::Q);
 	Bind(Input::Action::Weapon, Input::Device::Gamepad, KeyCode::Button::GpFaceUp);
 
-	//Bind(Input::Action::Anger1, Input::Device::Gamepad, KeyCode::Button::GpLeftTrigger);
-	Bind(Input::Action::Anger2, Input::Device::Gamepad, KeyCode::Button::GpRightTrigger);
-	Bind(Input::Action::Anger3, Input::Device::Gamepad, KeyCode::Button::GpRightShoulder);
-	Bind(Input::Action::Anger4, Input::Device::Gamepad, KeyCode::Button::GpLeftShoulder);
-
 	Bind(Input::Action::Anger1, Input::Device::Gamepad, KeyCode::Button::GpLeftTrigger,
 		{ std::make_shared<InputModifierConcurrent>(std::vector{ KeyCode::Button::GpRightTrigger })
 		});
