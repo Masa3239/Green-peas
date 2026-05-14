@@ -151,11 +151,6 @@ private:
 	float m_shakeTimer;
 
 	/// <summary>
-	/// 振動の強さ
-	/// </summary>
-	float m_shakeMargin;
-
-	/// <summary>
 	/// ワールドスクリーンの左端
 	/// </summary>
 	float m_worldScreenLeft;
