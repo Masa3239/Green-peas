@@ -55,7 +55,6 @@ Thunder::Thunder(ObjectManager* objManager):
 	BulletBase(objManager),
 	m_index(0),
 	m_state(State::Ball),
-	m_fieldElapsedTime(0),
 	m_infectionCount(0),
 	m_infectionTimer(0),
 	m_pEnemyMgr(nullptr),
@@ -69,17 +68,6 @@ Thunder::Thunder(ObjectManager* objManager):
 
 void Thunder::Init()
 {
-
-	return;
-
-	for (int i = 0;i < 10;i++) {
-
-		int graphHandle = LoadGraph(kGraphPaths[i]);
-
-		m_graphHandle.push_back(graphHandle);
-
-	}
-
 }
 
 void Thunder::Update()
@@ -126,9 +114,6 @@ void Thunder::Draw()
 		break;
 	}
 
-	//丸を描画
-	//DrawCircle(GetTransform().position.x, GetTransform().position.y, collisionSize * m_scale, TRUE, 0xffff00);
-
 	//画像変更のタイマーを加算
 	m_graphCounter += Time::GetInstance().GetDeltaTime();
 
@@ -169,7 +154,7 @@ void Thunder::Draw()
 #ifdef _DEBUG
 
 	//当たり判定の描画
-	m_circle.DebugDraw();
+	//m_circle.DebugDraw();
 
 #else
 
@@ -191,12 +176,6 @@ void Thunder::DebugDraw()
 
 void Thunder::End()
 {
-
-	//for (auto& thunder : m_graphHandle) {
-
-	//	DeleteGraph(thunder);
-
-	//}
 
 }
 

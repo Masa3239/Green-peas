@@ -1,4 +1,5 @@
 #pragma once
+#include<string>
 #include"../../Utility/Transform.h"
 
 namespace PopUpUI {
@@ -74,7 +75,7 @@ private:
 	/// <summary>
 	/// 表示する数字の値
 	/// </summary>
-	int m_amount;
+	std::string m_amount;
 
 	/// <summary>
 	/// フォント

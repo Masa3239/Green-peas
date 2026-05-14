@@ -141,6 +141,7 @@ void Player::Init()
 	m_cameraTransform = GetTransform();
 	m_exp = 1;
 	m_oldPos = GetTransform().position;
+
 	m_pCamera->SetPos(GetTransform().position);
 
 }

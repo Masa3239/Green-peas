@@ -128,7 +128,7 @@ bool ResultModeSelect::IsStop()
 
 bool ResultModeSelect::CheckSelect(Fader* fader)
 {
-	// 補間が終了していなければnullptrを返す
+	// 補間が終了していなければfalseを返す
 	if (!m_stop)return false;
 	// 決定ボタンを押していないときnullptrを返す
 	if (!InputManager::GetInstance().IsPressed(Input::Action::Confirm)) {

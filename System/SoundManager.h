@@ -11,7 +11,6 @@ namespace Sound
 		BGM2,
 		BGM3,
 		BGM4,
-		Clear,
 		Max
 	};
 
@@ -50,14 +49,15 @@ namespace Sound
 		Sword2,
 		Sword3,
 		Thunder,
+		Katana,
+		Buff,
 		BuffDecision,
 		CharactorButton,
 		CharactorSelect,
 		FailedRotation,
-		Katana,
-		Buff,
 		Rotation1,
 		Rotation2,
+		Clear,
 		Max
 	};
 }

@@ -38,7 +38,7 @@ Clear::~Clear()
 
 void Clear::Init()
 {
-	SoundManager::GetInstance().PlayBGM(Sound::BGM::Clear);
+	SoundManager::GetInstance().PlaySe(Sound::SE::Clear);
 }
 
 void Clear::End()

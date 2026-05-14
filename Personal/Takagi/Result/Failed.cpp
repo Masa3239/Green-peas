@@ -37,7 +37,6 @@ Failed::~Failed()
 void Failed::Init()
 {
 	SoundManager::GetInstance().PlaySe(Sound::SE::FailedRotation);
-
 }
 
 void Failed::End()

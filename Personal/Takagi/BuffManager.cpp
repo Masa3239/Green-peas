@@ -74,7 +74,7 @@ BuffManager::BuffManager() :
 	m_select(0),
 	m_buff(),
 	m_fontHandle(-1),
-	m_response(0)
+	m_randomSelect(0)
 {
 	// アイコン・テキスト画像の読み込み
 	std::string path = kIconPath;
@@ -136,8 +136,8 @@ void BuffManager::End()
 void BuffManager::Update()
 {
 	float time = Time::GetInstance().GetDeltaTime();
-	if (m_response > 0) {
-		m_response -= time;
+	if (m_randomSelect > 0) {
+		m_randomSelect -= time;
 	}
 
 	switch (m_phase)
@@ -145,7 +145,7 @@ void BuffManager::Update()
 	case Phase::Start:
 
 		RandomBuff();
-			if (m_response > 0)break;
+			if (m_randomSelect > 0)break;
 			m_phase = Phase::Select;
 			m_select = 0;
 			SoundManager::GetInstance().PlaySe(Sound::SE::BuffDecision);
@@ -236,7 +236,7 @@ void BuffManager::BuffSelectStart()
 	m_buffType[2] = Buff::Type::Max;
 	m_selected = Buff::Type::Max;
 
-	m_response = kResponse;
+	m_randomSelect = kResponse;
 
 }
 Buff::Type BuffManager::BuffSelect()
