@@ -113,14 +113,47 @@ private:
 	void RemoveState(unsigned int state) { m_variableStatus &= ~state; }
 
 	/// <summary>
-	/// ダメージフラグの範囲外を使おうとしたら範囲を追加する
+	/// 動きの更新をするかチェック
 	/// </summary>
-	void ResizeDamageFlag(int weapon, int index);
+	bool CheckActive();
+
+	/// <summary>
+	/// 固定生成の敵に認識範囲を適用する
+	/// </summary>
+	bool ApplyRecognitionRange(float sqDistance);
+
+	/// <summary>
+	/// 自然生成の敵にデスポーン範囲を適用する
+	/// </summary>
+	bool ApplyDespawnRange(float sqDistance);
 
 	/// <summary>
 	/// マップ範囲内に収める
 	/// </summary>
 	void ClampInRange();
+
+	/// <summary>
+	/// マヒ状態にする
+	/// </summary>
+	/// <param name="weapon">武器ID</param>
+	/// <returns>すでにマヒ状態ならtrue</returns>
+	bool Paralyze(const int weapon);
+
+	/// <summary>
+	/// ダメージフラグの範囲外を使おうとしたら範囲を追加する
+	/// </summary>
+	void ResizeDamageFlag(int weapon, int index);
+
+	/// <summary>
+	/// プレイヤーが怒り状態のとき、
+	/// プレイヤーを回復させる
+	/// </summary>
+	void HealPlayer();
+
+	/// <summary>
+	/// 経験値のドロップ処理
+	/// </summary>
+	void DropExp();
 
 	/// <summary>
 	/// 経験値を生成する

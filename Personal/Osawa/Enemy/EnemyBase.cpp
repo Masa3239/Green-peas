@@ -12,8 +12,6 @@ namespace
 {
 	constexpr Vector3 kColliderSize{ 25, 40, 0 };
 
-	constexpr int kMaxHp = 30;
-
 	// プレイヤーが怒り状態で倒された場合の回復割合
 	constexpr float kHealRate = 0.01f;
 
@@ -23,6 +21,7 @@ namespace
 	// デスポーンする範囲
 	constexpr float kDespawnDistance = 800;
 
+	// 一番端の座標
 	constexpr float kMapRangeOffset = 60;
 }
 
@@ -53,28 +52,7 @@ void EnemyBase::Update()
 {
 	m_collider.SetPosition(GetTransform().position);
 	
-	auto player = GetPlayer();
-
-	const Vector3& playerPos = player->GetTransform().position;
-	Vector3& myPos = GetTransform().position;
-
-	float sqDistance = (playerPos - myPos).GetSqLength();
-
-	// 固定生成なら認識範囲を適用する
-	if (m_isFixSpawn)
-	{
-		// 認識範囲外なら終了
-		if (sqDistance >= kStartRecognitionDistance * kStartRecognitionDistance) return;
-	}
-	// 自然生成ならデスポーン範囲を適用する
-	else
-	{
-		if (sqDistance >= kDespawnDistance * kDespawnDistance)
-		{
-			m_pEnemyMgr->RemoveEnemy(this);
-			return;
-		}
-	}
+	if (!CheckActive()) return;
 
 	UpdateEnemy();
 
@@ -88,24 +66,18 @@ void EnemyBase::Update()
 
 bool EnemyBase::Damage(const int damage, int weapon, int index)
 {
-	// 雷攻撃を受けたなら
-	if (weapon == Weapon::Volt)
-	{
-		// 痺れ状態ならダメージを受けない
-		if (GetMyState() & kStatePalsy) return false;
+	if (Paralyze(weapon)) return false;
 
-		// 痺れ状態にする
-		AddState(kStatePalsy);
-	}
-
-	// 足りない分を追加
+	// 足りない配列を追加
 	ResizeDamageFlag(weapon, index);
 
 	// すでにその武器がダメージを与えていたら失敗
 	if (m_damageFlag[weapon][index]) return false;
 
+	// ダメージフラグを立てる
 	m_damageFlag[weapon][index] = true;
 
+	// ダメージを受ける
 	m_statusParam.hp -= damage;
 
 	return true;
@@ -113,27 +85,9 @@ bool EnemyBase::Damage(const int damage, int weapon, int index)
 
 void EnemyBase::Dead()
 {
-	// もしプレイヤーが怒り状態だったら回復させる
-	if (m_pPlayer->CheckAnger())
-	{
-		float maxHp = m_pPlayer->GetGaugeMaxValue(Player::GaugeType::Hp);
-		m_pPlayer->Heal(maxHp * kHealRate);
-	}
+	HealPlayer();
 
-	// 経験値の倍率を取得
-	m_statusParam.exp *= m_pPlayer->GetExp();
-
-	// 経験値を10個分と1個分だけで生成する
-	int num10 = m_statusParam.exp / 10;
-	int num1 = m_statusParam.exp % 10;
-	for (int i = 0; i < num10; i++)
-	{
-		GenerateExp(10);
-	}
-	for (int i = 0; i < num1; i++)
-	{
-		GenerateExp(1);
-	}
+	DropExp();
 
 	SoundManager::GetInstance().PlaySe(Sound::SE::Damage2);
 }
@@ -147,16 +101,37 @@ void EnemyBase::ResetDamageFlag(int weapon, int index)
 	m_damageFlag[weapon][index] = false;
 }
 
-void EnemyBase::ResizeDamageFlag(int weapon, int index)
+bool EnemyBase::CheckActive()
 {
-	// 範囲内なら変更をする必要はないため早期リターン
-	if (index < m_damageFlag[weapon].size()) return;
+	const Vector3& playerPos = GetPlayer()->GetTransform().position;
+	const Vector3& myPos = GetTransform().position;
+	float sqDistance = (playerPos - myPos).GetSqLength();
 
-	// 足りない分を追加
-	for (int i = 0; i < index - m_damageFlag[weapon].size() + 1; i++)
-	{
-		m_damageFlag[weapon].emplace_back(false);
-	}
+	if (ApplyRecognitionRange(sqDistance)) return false;
+	if (ApplyDespawnRange(sqDistance)) return false;
+
+	return true;
+}
+
+bool EnemyBase::ApplyRecognitionRange(float sqDistance)
+{
+	// 固定生成ではないなら早期リターン
+	if (!m_isFixSpawn) return false;
+
+	if (sqDistance < kStartRecognitionDistance * kStartRecognitionDistance) return false;
+
+	return true;
+}
+
+bool EnemyBase::ApplyDespawnRange(float sqDistance)
+{
+	// 自然生成ではないなら早期リターン
+	if (m_isFixSpawn) return false;
+
+	if (sqDistance < kDespawnDistance * kDespawnDistance) return false;
+	
+	m_pEnemyMgr->RemoveEnemy(this);
+	return false;
 }
 
 void EnemyBase::ClampInRange()
@@ -174,6 +149,60 @@ void EnemyBase::ClampInRange()
 
 	if (pos.y < topEdge) pos.y = topEdge;
 	else if (pos.y > bottomEdge) pos.y = bottomEdge;
+}
+
+bool EnemyBase::Paralyze(const int weapon)
+{
+	// 雷攻撃を受けてないなら早期リターン
+	if (weapon != Weapon::Volt) return false;
+	
+	// 痺れ状態ならダメージを受けない
+	if (GetMyState() & kStatePalsy) return true;
+
+	// 痺れ状態にする
+	AddState(kStatePalsy);
+
+	return false;
+}
+
+void EnemyBase::ResizeDamageFlag(int weapon, int index)
+{
+	// 範囲内なら変更をする必要はないため早期リターン
+	if (index < m_damageFlag[weapon].size()) return;
+
+	// 足りない分を追加
+	for (int i = m_damageFlag[weapon].size() - 1; i < index; i++)
+	{
+		m_damageFlag[weapon].emplace_back(false);
+	}
+}
+
+void EnemyBase::HealPlayer()
+{
+	// もしプレイヤーが怒り状態ではなかったら早期リターン
+	if (!m_pPlayer->CheckAnger()) return;
+	
+	// HPを割合で回復
+	float maxHp = m_pPlayer->GetGaugeMaxValue(Player::GaugeType::Hp);
+	m_pPlayer->Heal(maxHp * kHealRate);
+}
+
+void EnemyBase::DropExp()
+{
+	// 経験値の倍率を取得
+	m_statusParam.exp *= m_pPlayer->GetExp();
+
+	// 経験値を10個分と1個分だけで生成する
+	int num10 = m_statusParam.exp / 10;
+	int num1 = m_statusParam.exp % 10;
+	for (int i = 0; i < num10; i++)
+	{
+		GenerateExp(10);
+	}
+	for (int i = 0; i < num1; i++)
+	{
+		GenerateExp(1);
+	}
 }
 
 void EnemyBase::GenerateExp(int amount)
