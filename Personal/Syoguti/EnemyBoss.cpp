@@ -36,6 +36,7 @@ namespace {
 
 	// ボスの最大体力
 	constexpr int kMaxHp = 50000000;
+	constexpr int kAngryHp = 10000;
 
 	// ボスの攻撃力
 	constexpr int kAttackPower = 25;
@@ -97,7 +98,8 @@ EnemyBoss::EnemyBoss(ObjectManager* objManager, Vector3 position) :
 	m_angrySpeed(1),
 	m_isAngry(false),
 	m_seBossFlag(false),
-	m_isAttackHit(false)
+	m_isAttackHit(false),
+	m_isPowerUp(false)
 {
 
 	m_pBossBulletMgr = std::make_unique<BossBulletManager>();
@@ -176,6 +178,11 @@ void EnemyBoss::End()
 
 void EnemyBoss::Update()
 {
+
+	if (m_attackPower != m_attackPowerO) {
+		m_attackPowerO = m_attackPower;
+	}
+
 
 	// ボスが画面の左側に出ないようする
 	if (GetTransform().position.x < kMapRangeOffset) GetTransform().position.x = kMapRangeOffset;
@@ -324,9 +331,9 @@ bool EnemyBoss::Damage(const int damage)
 bool EnemyBoss::Damage(const int damage, int weapon, int index)
 {
 
-	if (!m_sealRelease && m_currentHp < kMaxHp - 95000) {
+	// 封印宙に一定以上のダメージを受けたら
+	if (!m_sealRelease && m_currentHp < kMaxHp - kAngryHp) {
 
-		//m_speed += kAngrySpeed;
 		m_seBossFlag = true;
 		m_sealRelease = true;
 		m_isAngry = true;
@@ -377,9 +384,6 @@ void EnemyBoss::Action()
 			// 近距離攻撃をする
 			CloseRangeAttack();
 		}
-		else {
-			m_isAttackHit = false;
-		}
 		break;
 	case EnemyBoss::BossAction::LongRangeAttack:
 
@@ -420,8 +424,9 @@ void EnemyBoss::Status()
 			case EnemyBoss::BossAnimation::ApproachMove:
 			case EnemyBoss::BossAnimation::LeaveMove:
 				break;
-			case EnemyBoss::BossAnimation::LongRangeAttack:
 			case EnemyBoss::BossAnimation::CloseRangeAttack:
+				m_isAttackHit = false;
+			case EnemyBoss::BossAnimation::LongRangeAttack:
 				m_status = BossAnimation::Idle;
 				m_action = BossAction::Idle;
 				m_isCloseTheAttack = false;
@@ -554,7 +559,6 @@ void EnemyBoss::CloseRangeAttack()
 
 	// アニメーションをCloseRangeAttackにする
 	m_status = BossAnimation::CloseRangeAttack;
-	printfDx("近距離攻撃\n");
 }
 
 void EnemyBoss::LongRangeAttack()
@@ -580,9 +584,6 @@ void EnemyBoss::LongRangeAttack()
 			m_shotTimer = 0.0f;
 		}
 	}
-
-	
-	printfDx("遠距離攻撃攻撃\n");
 }
 
 bool EnemyBoss::CheckDeadFlag()
@@ -684,7 +685,11 @@ void EnemyBoss::AttackUp()
 {
 
 	if (m_currentHp > kMaxHp / 2) return;
-	m_attackPower *= 2;
+
+	if (!m_isAttackHit) {
+		m_isPowerUp = true;
+		m_attackPower *= 2;
+	}
 }
 
 

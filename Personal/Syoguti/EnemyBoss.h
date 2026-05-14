@@ -309,6 +309,7 @@ private:
 	/// ボスの攻撃力
 	/// </summary>
 	int m_attackPower;
+	int m_attackPowerO;
 
 	/// <summary>
 	/// 鍵の数
@@ -419,6 +420,11 @@ private:
 	/// 近距離攻撃が当たったかどうか
 	/// </summary>
 	bool m_isAttackHit;
+
+	/// <summary>
+	/// パワーアップポイント
+	/// </summary>
+	bool m_isPowerUp;
 
 };
 
