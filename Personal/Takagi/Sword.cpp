@@ -94,6 +94,7 @@ void Sword::Update()
 	if (!m_catch) {
 		m_swing.position = GetTransform().position;
 		m_swing.rotation.z = GetTransform().rotation.z;
+		m_effectFrame = kEffectFrame - 1;
 		return;
 	}
 	float time = Time::GetInstance().GetDeltaTime();
