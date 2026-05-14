@@ -15,8 +15,6 @@ namespace {
 	//動く方向
 	constexpr Vector3 kMoveDirection{ 0.0f,-1.0f,0.0f };
 
-	int kDamageColor = Color::kWhite;
-
 	constexpr int kColors[static_cast<int>(PopUpUI::TextType::Max)]{
 
 		Color::kWhite,
@@ -29,7 +27,7 @@ namespace {
 
 PopUpText::PopUpText():
 	m_transform(),
-	m_amount(0),
+	m_amount(""),
 	m_fontHandle(-1),
 	m_color(0),
 	m_timer(0),
@@ -54,7 +52,7 @@ void PopUpText::Update()
 {
 
 	//デルタタイムを取得
-	float deltaTime = Time::GetInstance().GetDeltaTime();
+	const float deltaTime = Time::GetInstance().GetDeltaTime();
 
 	//タイマーを加算
 	m_timer += deltaTime;
@@ -72,11 +70,9 @@ void PopUpText::Update()
 
 void PopUpText::Draw()
 {
-	//int型をstring型に変換
-	std::string stringAmount = std::to_string(m_amount);
 
 	//テキストの表示
-	DrawStringToHandle(m_transform.position.x, m_transform.position.y, stringAmount.c_str(), m_color, m_fontHandle);
+	DrawStringToHandle(m_transform.position.x, m_transform.position.y, m_amount.c_str(), m_color, m_fontHandle);
 
 }
 
@@ -97,8 +93,10 @@ void PopUpText::End()
 void PopUpText::SetData(int amount, int fontHandle, PopUpUI::TextType type)
 {
 	//セットする
-	m_amount = amount;
 	m_fontHandle = fontHandle;
 	m_color = kColors[static_cast<int>(type)];
+
+	//int型をstring型に変換
+	m_amount = std::to_string(amount);
 
 }

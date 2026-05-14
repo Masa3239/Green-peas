@@ -27,12 +27,11 @@ PopUpTextManager::~PopUpTextManager()
 void PopUpTextManager::Init()
 {
 
-	m_pTexts.resize(200);
+	m_pTexts.resize(600);
 
 	m_textFonts.resize(static_cast<int>(PopUpUI::TextType::Max));
 	
 	m_textFonts[static_cast<int>(PopUpUI::TextType::Damage)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
-	//m_textFonts[static_cast<int>(PopUpUI::TextType::Critical)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 	m_textFonts[static_cast<int>(PopUpUI::TextType::Critical)] = CreateFontToHandle("VT323 - Regular", 50, 6, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 	m_textFonts[static_cast<int>(PopUpUI::TextType::Heal)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 
@@ -108,35 +107,55 @@ void PopUpTextManager::End()
 
 	}
 
+	for (auto& font : m_textFonts) {
+
+		DeleteFontToHandle(font);
+
+	}
+
 }
 
 void PopUpTextManager::CreateText(Vector3 position, int amount, PopUpUI::TextType type)
 {
 
+	//最大オフセットからどれくらいずらすか
+	float rate = MyRandom::Float01();
+	//生成位置の角度をランダムで決める
+	float spawnRadian = MyRandom::Float(0, kRadianMax);
+
+	//生成位置のオフセット
+	Vector3 offSetPos{
+
+		sinf(spawnRadian) * kCreatePosMaxMargin * rate,
+		cosf(spawnRadian) * kCreatePosMaxMargin * rate,
+		0
+	};
+
 	for (auto& text : m_pTexts) {
 
+		//アクティブ状態ならスルー
 		if (text->GetIsActive())continue;
 
+		//生成
 		text->Init();
-
-		//最大オフセットからどれくらいずらすか
-		float rate = MyRandom::Float01();
-		//生成位置の角度をランダムで決める
-		float radian = MyRandom::Float(0, kRadianMax);
-
-		//生成位置のオフセット
-		Vector3 offSetPos{
-
-			sinf(radian) * kCreatePosMaxMargin * rate,
-			cosf(radian) * kCreatePosMaxMargin* rate,
-			0
-		};
-
 		text->SetPos(position + offSetPos);
 		text->SetData(amount, m_textFonts[static_cast<int>(type)], type);
 
 		return;
 
 	}
+
+	//ここまできたら全てのテキストが使われている
+	
+	//新しく作成する
+	auto newText = std::make_unique<PopUpText>();
+
+	//生成
+	newText->Init();
+	newText->SetPos(position + offSetPos);
+	newText->SetData(amount, m_textFonts[static_cast<int>(type)], type);
+
+	//配列に追加
+	m_pTexts.push_back(std::move(newText));
 
 }

@@ -93,11 +93,6 @@ private:
 	State m_state;
 
 	/// <summary>
-	/// 経過時間
-	/// </summary>
-	float m_fieldElapsedTime;
-
-	/// <summary>
 	/// 伝染のカウント
 	/// </summary>
 	int m_infectionCount;
