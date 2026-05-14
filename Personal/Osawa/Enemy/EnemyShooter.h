@@ -3,7 +3,6 @@
 #include "EnemyBase.h"
 #include <array>
 #include <memory>
-#include "../Chara/AnimationController2D.h"
 
 class EnemyBullet;
 
@@ -43,7 +42,15 @@ public:
 
 protected:
 
+	/// <summary>
+	/// 攻撃処理
+	/// </summary>
 	void Attack() override;
+
+	/// <summary>
+	/// アニメーションの切り替え処理
+	/// </summary>
+	void BranchAnimation() override;
 
 private:
 
@@ -59,10 +66,6 @@ private:
 		Back,
 	};
 
-	void UpdateAnimation();
-
-	void ChangeAnimation(AnimType next);
-
 	Action m_action;
 
 	/// <summary>
@@ -74,8 +77,4 @@ private:
 	/// 弾の配列
 	/// </summary>
 	std::array<std::unique_ptr<EnemyBullet>, kMaxBulletNum> m_bullets;
-	
-	AnimationController2D m_animationController;
-
-	AnimType m_currentAnimation;
 };

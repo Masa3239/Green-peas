@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Chara/AnimationController2D.h"
 #include "../Object/GameObject.h"
 #include "../Utility/Transform.h"
 #include "../Chara/Collision.h"
@@ -31,6 +32,7 @@ public:
 	virtual ~EnemyBase() = default;
 
 	virtual void Init() override;
+	virtual void End() override;
 
 	/// <summary>
 	/// 更新処理
@@ -85,6 +87,10 @@ public:
 	const StatusParam& GetStatusParam() const { return m_statusParam; }
 	void SetStatusParam(const StatusParam& status) { m_statusParam = status; }
 
+	AnimationController2D& GetAnimator() { return m_animator; }
+
+	void SetAnimationData(const std::vector<Animation::Animation2DData>& data) { m_animData = data; }
+
 	Player* GetPlayer() const { return m_pPlayer; }
 	void SetPlayer(Player* player) { m_pPlayer = player; }
 
@@ -104,7 +110,23 @@ protected:
 	/// </summary>
 	virtual void Attack() = 0;
 
+	/// <summary>
+	/// アニメーションの切り替え処理
+	/// </summary>
+	virtual void BranchAnimation() {};
+
+	/// <summary>
+	/// アニメーションの変更
+	/// </summary>
+	/// <param name="next">変更先のアニメーション番号</param>
+	void ChangeAnimation(int next);
+
 private:
+
+	/// <summary>
+	/// アニメーションの更新処理
+	/// </summary>
+	void UpdateAnimation();
 
 	/// <summary>
 	/// 状態異常の削除
@@ -180,6 +202,21 @@ private:
 	/// 固定生成かどうか
 	/// </summary>
 	bool m_isFixSpawn;
+
+	/// <summary>
+	/// アニメーションコントローラー
+	/// </summary>
+	AnimationController2D m_animator;
+
+	/// <summary>
+	/// アニメーションデータ
+	/// </summary>
+	std::vector<Animation::Animation2DData> m_animData;
+
+	/// <summary>
+	/// 現在のアニメーション番号
+	/// </summary>
+	int m_currentAnimation;
 
 	/// <summary>
 	/// コライダー
