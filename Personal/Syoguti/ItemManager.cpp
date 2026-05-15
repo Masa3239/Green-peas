@@ -73,7 +73,6 @@ void ItemManager::CreateRandom(Vector3 position)
 {
 
 	int type = MyRandom::Int(0, static_cast<int>(ItemBase::ItemType::Max) - 1);
-	type = static_cast<int>(ItemBase::ItemType::WipeOut);
 
 	Create(static_cast<ItemBase::ItemType>(type), position);
 
