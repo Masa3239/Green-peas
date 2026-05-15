@@ -16,6 +16,9 @@ class WeaponManager;
 class ChestManager;
 class Map;
 
+/// <summary>
+/// 敵全体を管理するクラス
+/// </summary>
 class EnemyManager : public GameObject
 {
 public:
@@ -28,7 +31,7 @@ public:
 		Melee,		// 近距離
 		Shooter,	// 遠距離
 		Miniboss,	// 中ボス
-		Slime,
+		Slime,		// スライム
 	};
 
 	/// <summary>
@@ -78,11 +81,6 @@ public:
 	void ResetEnemyDamageFlag(int weapon, int index);
 
 	/// <summary>
-	/// 中ボスの座標を取得
-	/// </summary>
-	std::vector<Vector3> GetMiniBossPositions() const;
-
-	/// <summary>
 	/// 敵をプレイヤーの周りに生成する
 	/// </summary>
 	/// <param name="type">生成したい敵の種類</param>
@@ -105,9 +103,20 @@ public:
 
 	void RemoveEnemy(EnemyBase* enemy);
 
+	// ==================================================
+	// ゲッター・セッター
+	// ==================================================
+
 	EnemyBoss* GetEnemyBoss() const { return m_enemyBoss.get(); }
 
 	int GetHighestDamage() const { return m_highestDamage; }
+
+	int GetDefeatedNum() const { return m_numDefeated; }
+
+	/// <summary>
+	/// 中ボスの座標を取得
+	/// </summary>
+	std::vector<Vector3> GetMiniBossPositions() const;
 
 	ChestManager* GetChestManager() const { return m_chestMgr; }
 	void SetChestManager(ChestManager* chestMgr) { m_chestMgr = chestMgr; }
@@ -128,6 +137,21 @@ private:
 	void CheckDead();
 
 	/// <summary>
+	/// 敵の生成待機のカウンター
+	/// </summary>
+	float m_generateCounter;
+
+	/// <summary>
+	/// 最高ダメージ
+	/// </summary>
+	int m_highestDamage;
+
+	/// <summary>
+	/// 倒された敵の数
+	/// </summary>
+	int m_numDefeated;
+
+	/// <summary>
 	/// 敵の配列
 	/// </summary>
 	std::vector<std::unique_ptr<EnemyBase>> m_enemies;
@@ -143,27 +167,8 @@ private:
 	std::unique_ptr<EnemyBoss> m_enemyBoss;
 
 	Player* m_pPlayer;
-
 	UIManager* m_uiMgr;
-
 	WeaponManager* m_weaponMgr;
-
 	ChestManager* m_chestMgr;
-
 	Map* m_map;
-
-	/// <summary>
-	/// 敵の生成待機のカウンター
-	/// </summary>
-	float m_generateCounter;
-
-	/// <summary>
-	/// 最高ダメージ
-	/// </summary>
-	int m_highestDamage;
-
-public:
-	int GetDefeatedNum() const { return m_numDefeated; }
-private:
-	int m_numDefeated;
 };
