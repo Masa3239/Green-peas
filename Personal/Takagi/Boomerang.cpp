@@ -18,7 +18,7 @@ namespace {
     //const char* const kFilePath = "Resource\\Boomerang.png";
     const char* const kGraphPath = "Resource\\Hammer.png";
     constexpr float kRotationSpeed = 1080;
-    constexpr float kAttackInterval = 0.1f;
+    constexpr float kAttackInterval = 0.0f;
 
 }
 
