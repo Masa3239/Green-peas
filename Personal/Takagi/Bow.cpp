@@ -109,7 +109,9 @@ void Bow::CheckCollision()
 	for (int i = 0;i < kBulletNum;i++) {
 		if (!m_pArrows[i]->GetIsActive())continue;
 		//m_pEnemyMgr->CheckHitEnemies(m_pArrows[i]->GetCollision(), damage, criticalRate, criticalDamage);
-		m_pEnemyMgr->CheckHitEnemies(m_pArrows[i]->GetCollision(), damage, criticalRate, criticalDamage, Weapon::Bow, i);
+		if (m_pEnemyMgr->CheckHitEnemies(m_pArrows[i]->GetCollision(), damage, criticalRate, criticalDamage, Weapon::Bow, i)) {
+			m_pArrows[i]->SetIsActive(false);
+		}
 	}
 }
 
