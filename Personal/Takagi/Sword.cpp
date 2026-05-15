@@ -95,7 +95,7 @@ void Sword::Update()
 		m_swing = GetTransform();
 		m_effectFrame = kEffectFrame - 1;
 		m_swingState = Swing::Normal;
-		m_desireRadian = 0;
+		m_desireRadian = m_swing.rotation.z;
 		m_scaleEx = 1;
 		return;
 	}
