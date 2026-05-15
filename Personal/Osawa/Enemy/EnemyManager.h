@@ -81,19 +81,19 @@ public:
 	void ResetEnemyDamageFlag(int weapon, int index);
 
 	/// <summary>
-	/// “G‚ğƒvƒŒƒCƒ„[‚Ìü‚è‚É¶¬‚·‚é
+	/// ƒvƒŒƒCƒ„[‚Ìü‚è‚É“G‚ğ¶¬‚·‚é
 	/// </summary>
 	/// <param name="type">¶¬‚µ‚½‚¢“G‚Ìí—Ş</param>
 	/// <param name="level">“G‚ÌƒŒƒxƒ‹</param>
-	EnemyBase* GenerateEnemy(EnemyType type, int level);
+	EnemyBase* GenerateEnemyToPlayer(EnemyType type, int level);
 
 	/// <summary>
-	/// “G‚ğ¶¬‚·‚é
+	/// À•W‚ğw’è‚µ‚Ä“G‚ğ¶¬‚·‚é
 	/// </summary>
 	/// <param name="type">¶¬‚µ‚½‚¢“G‚Ìí—Ş</param>
 	/// <param name="pos">¶¬‚·‚éêŠ</param>
 	/// <param name="level">“G‚ÌƒŒƒxƒ‹</param>
-	EnemyBase* GenerateEnemy(EnemyType type, Vector3 pos, int level);
+	EnemyBase* GenerateEnemyToPos(EnemyType type, Vector3 pos, int level);
 
 	/// <summary>
 	/// “G‚Ì‰Šú¶¬
@@ -101,6 +101,9 @@ public:
 	/// <param name="enemyMap"></param>
 	void InitGenerate(EnemyMap* enemyMap);
 
+	/// <summary>
+	/// “G‚ğ”z—ñ‚©‚çíœ‚·‚é
+	/// </summary>
 	void RemoveEnemy(EnemyBase* enemy);
 
 	// ==================================================

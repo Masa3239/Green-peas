@@ -167,7 +167,7 @@ SceneBase* SceneTestAsai::Update()
 	}
 	if (CheckHitKey(KEY_INPUT_3)) {
 
-		enemyMgr->GenerateEnemy(EnemyManager::EnemyType::Miniboss, 1);
+		enemyMgr->GenerateEnemyToPlayer(EnemyManager::EnemyType::Miniboss, 1);
 
 	}
 
