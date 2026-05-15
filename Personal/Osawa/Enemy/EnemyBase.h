@@ -3,7 +3,7 @@
 #include "../Chara/AnimationController2D.h"
 #include "../Object/GameObject.h"
 #include "../Utility/Transform.h"
-#include "../Chara/Collision.h"
+//#include "../Chara/Collision.h"
 #include "../Personal/Takagi/Weapon.h"
 #include <array>
 #include <vector>
@@ -12,6 +12,14 @@ class Player;
 class EnemyManager;
 class Map;
 
+namespace Collision
+{
+	class Shape;
+}
+
+/// <summary>
+/// 敵の基底クラス
+/// </summary>
 class EnemyBase : public GameObject
 {
 public:
@@ -80,6 +88,10 @@ public:
 	/// <param name="index">複数時の武器のインデックス</param>
 	void ResetDamageFlag(int weapon, int index);
 
+	// ==================================================
+	// ゲッター・セッター
+	// ==================================================
+
 	int GetLevel() const { return m_level; }
 	void SetLevel(const int level) { m_level = level; }
 
@@ -95,12 +107,12 @@ public:
 
 	void SetFixSpawn(const bool flag) { m_isFixSpawn = flag; }
 
-	Collision::AABB& GetCollider() { return m_collider; }
-
 	EnemyManager* GetEnemyManager() const { return m_pEnemyMgr; }
 	void SetEnemyManager(EnemyManager* enemyMgr) { m_pEnemyMgr = enemyMgr; }
 
 	void SetMap(Map* map) { m_pMap = map; }
+
+	virtual const Collision::Shape& GetCollider() = 0;
 
 protected:
 
@@ -112,7 +124,7 @@ protected:
 	/// <summary>
 	/// アニメーションの切り替え処理
 	/// </summary>
-	virtual void BranchAnimation() {};
+	virtual void BranchAnimation() = 0;
 
 	/// <summary>
 	/// アニメーションの変更
@@ -216,11 +228,6 @@ private:
 	/// 現在のアニメーション番号
 	/// </summary>
 	int m_currentAnimation;
-
-	/// <summary>
-	/// コライダー
-	/// </summary>
-	Collision::AABB m_collider;
 
 	/// <summary>
 	/// 武器ごとのダメージフラグ

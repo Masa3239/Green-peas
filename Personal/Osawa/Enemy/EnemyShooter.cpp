@@ -35,6 +35,9 @@ namespace
 	constexpr int kAtkPerLevel = 1.03f;
 	constexpr int kDefPerLevel = 5;
 
+	// 衝突判定の大きさ
+	constexpr Vector3 kColliderSize = { 25, 40, 0 };
+
 	std::vector<Animation::Animation2DData> kAnimData =
 	{
 		{ EnemyShooter::AnimType::EIdle, 10.0f, true, false},
@@ -48,7 +51,8 @@ namespace
 EnemyShooter::EnemyShooter(ObjectManager* objManager) :
 	EnemyBase(objManager),
 	m_action(Action::Idle),
-	m_attackCooltimeCounter(0.0f)
+	m_attackCooltimeCounter(0.0f),
+	m_collider(Collision::AABB{ Vector3::zero, kColliderSize })
 {
 }
 
@@ -75,6 +79,8 @@ void EnemyShooter::Init()
 	GetAnimator().RegisterGraphHandle(AnimType::EIdle, kGraphPathIdle, 1, 1, 1, 25, 25);
 	GetAnimator().RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 5, 5, 1, 25, 25);
 	SetAnimationData(kAnimData);
+
+	m_collider.SetPosition(GetTransform().position);
 
 	EnemyBase::Init();
 }
@@ -156,6 +162,9 @@ void EnemyShooter::UpdateEnemy()
 	{
 		m_attackCooltimeCounter -= Time::GetInstance().GetDeltaTime();
 	}
+
+	// 衝突判定の座標更新
+	m_collider.SetPosition(GetTransform().position);
 }
 
 void EnemyShooter::Draw()

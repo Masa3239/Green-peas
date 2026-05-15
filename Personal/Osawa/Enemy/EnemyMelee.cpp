@@ -8,10 +8,6 @@
 
 namespace
 {
-	constexpr float kDistanceSpeed = 100.0f;
-
-	constexpr float kMeleeAttackCooltime = 1.0f;
-
 	// 基礎ステータス
 	constexpr EnemyBase::StatusParam kStatus = { 25, 25, 5, 5 };
 	// レベルごとの増加量
@@ -19,13 +15,21 @@ namespace
 	constexpr int kAtkPerLevel = 1.03f;
 	constexpr int kDefPerLevel = 5;
 
+	// 衝突判定の大きさ
+	constexpr Vector3 kColliderSize = { 25, 40, 0 };
+
+	constexpr float kDistanceSpeed = 100.0f;
+
+	constexpr float kMeleeAttackCooltime = 1.0f;
+
+	// アニメーションデータ
 	std::vector<Animation::Animation2DData> kAnimData =
 	{
 		{ EnemyMelee::AnimType::EIdle, 6.0f, true, false},
 		{ EnemyMelee::AnimType::ERun, 6.0f, true, false},
 		{ EnemyMelee::AnimType::EAttack, 6.0f, false, true},
 	};
-
+	// リソースのファイルパス
 	const char* const kGraphPathIdle = "Resource\\Golem Reinforced\\Golem_Armor_Idle.png";
 	const char* const kGraphPathRun = "Resource\\Golem Reinforced\\Golem_Armor_Run.png";
 	const char* const kGraphPathAttack = "Resource\\Golem Reinforced\\Golem_Armor_AttackB.png";
@@ -33,7 +37,8 @@ namespace
 
 EnemyMelee::EnemyMelee(ObjectManager* objManager) :
 	EnemyBase(objManager),
-	m_attackCooltimeCounter(0.0f)
+	m_attackCooltimeCounter(0.0f),
+	m_collider(Collision::AABB{ Vector3::zero, kColliderSize })
 {
 }
 
@@ -54,6 +59,8 @@ void EnemyMelee::Init()
 	GetAnimator().RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 4, 4, 1, 64, 64);
 	GetAnimator().RegisterGraphHandle(AnimType::EAttack, kGraphPathAttack, 8, 4, 2, 64, 64);
 	SetAnimationData(kAnimData);
+
+	m_collider.SetPosition(GetTransform().position);
 
 	EnemyBase::Init();
 }
@@ -91,6 +98,9 @@ void EnemyMelee::UpdateEnemy()
 			m_attackCooltimeCounter = kMeleeAttackCooltime;
 		}
 	}
+
+	// 衝突判定の座標更新
+	m_collider.SetPosition(GetTransform().position);
 }
 
 void EnemyMelee::Draw()
