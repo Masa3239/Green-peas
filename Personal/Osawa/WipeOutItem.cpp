@@ -3,6 +3,7 @@
 #include "../Chara/Collision.h"
 #include "../Takagi/Player.h"
 #include "../System/SoundManager.h"
+#include "../Osawa/Enemy/EnemyManager.h"
 
 namespace {
 
@@ -16,15 +17,20 @@ namespace {
 	constexpr float kGraphOffsetY = 10.0f;
 
 	constexpr int kRatio = 0.5f;
+	
+	// 殲滅範囲
+	constexpr float kWipeOutRange = 500;
 }
 
 WipeOutItem::WipeOutItem(ObjectManager* objManager) :
-	ItemBase(objManager)
+	ItemBase(objManager),
+	m_pEnemyMgr(nullptr)
 {
 }
 
-WipeOutItem::WipeOutItem(ObjectManager* objManager, Vector3 position) :
-	ItemBase(objManager)
+WipeOutItem::WipeOutItem(ObjectManager* objManager, Vector3 position, EnemyManager* enemyMgr) :
+	ItemBase(objManager),
+	m_pEnemyMgr(enemyMgr)
 {
 	GetTransform().position = position;
 
@@ -57,7 +63,7 @@ void WipeOutItem::ItemAbility(Player* player)
 {
 	m_pPlayer = player;
 
-
+	m_pEnemyMgr->CheckHitEnemies(Collision::Circle(GetTransform().position, kWipeOutRange), 999, 0.0f, 1.0f, 0, 0);
 
 	// プレイヤーの最大体力を取得
 	//float value = player->CheckBuffValue().Defence;

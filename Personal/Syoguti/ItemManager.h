@@ -6,6 +6,7 @@
 #include "../../System/ObjectManager.h"
 
 class Player;
+class EnemyManager;
 
 /// <summary>
 /// アイテムを管理するマネージャークラス
@@ -83,6 +84,11 @@ public:
 	void SetPlayer(Player* player) { m_pPlayer = player; }
 
 	/// <summary>
+	/// 敵のマネージャーのポインタのセッター
+	/// </summary>
+	void SetEnemyManager(EnemyManager* enemyMgr) { m_pEnemyMgr = enemyMgr; }
+
+	/// <summary>
 	/// アイテムの場所を取得するゲッター関数
 	/// </summary>
 	/// <param name="index"></param>
@@ -131,5 +137,10 @@ private:
 	/// プレイヤーのポインタ
 	/// </summary>
 	Player* m_pPlayer;
+
+	/// <summary>
+	/// 敵のマネージャーのポインタ
+	/// </summary>
+	EnemyManager* m_pEnemyMgr;
 };
 
