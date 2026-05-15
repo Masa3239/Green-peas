@@ -2,7 +2,8 @@
 #include"../../../Utility/Transform.h"
 #include"../../../Utility/Vector3.h"
 /// <summary>
-/// 2つの座標を使って角度を求める
+/// リザルトの表示時の背景の処理をするクラス
+/// 2点の座標を使って座標・角度を求めて描画する
 /// </summary>
 class BackBoard
 {
@@ -35,6 +36,10 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	bool IsFinish();
+	/// <summary>
+	/// 演出のスキップ
+	/// </summary>
+	bool CheckSkip();
 private:
 	/// <summary>
 	/// リザルト背景のグラフィックハンドル
