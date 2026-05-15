@@ -60,7 +60,11 @@ namespace {
 	// エフェクトのサイズ
 	constexpr float kEffectScale = 5.0f * kGraphScale;
 
-	constexpr float kMapRangeOffset = 60.0f;
+	// ボスのマップにめり込まないためのオフセット
+	constexpr float kMapRangeOffset = 50.0f;
+
+	// マップのブロック1つの大きさ
+	constexpr int kBlockSize = 40;
 
 }
 
@@ -184,13 +188,13 @@ void EnemyBoss::Update()
 	if (GetTransform().position.x < kMapRangeOffset) GetTransform().position.x = kMapRangeOffset;
 	else
 		// ボスが画面の右側に出ないようにする
-		if (GetTransform().position.x > m_pMap->GetMapBlockNumX() * 40 - kMapRangeOffset) GetTransform().position.x = m_pMap->GetMapBlockNumX() * 40 - kMapRangeOffset;
+		if (GetTransform().position.x > m_pMap->GetMapBlockNumX() * kBlockSize - kMapRangeOffset) GetTransform().position.x = m_pMap->GetMapBlockNumX() * 40 - kMapRangeOffset;
 
 	// ボスが画面の上側に出ないようにする
 	if (GetTransform().position.y < kMapRangeOffset) GetTransform().position.y = kMapRangeOffset;
 	else
 		// ボスが画面の下側に出ないようにする
-		if (GetTransform().position.y > m_pMap->GetMapBlockNumY() * 40 - kMapRangeOffset) GetTransform().position.y = m_pMap->GetMapBlockNumY() * 40 - kMapRangeOffset;
+		if (GetTransform().position.y > m_pMap->GetMapBlockNumY() * kBlockSize - kMapRangeOffset) GetTransform().position.y = m_pMap->GetMapBlockNumY() * 40 - kMapRangeOffset;
 
 	// 当たり判定の更新
 	m_collsion.SetPosition(GetTransform().position);
@@ -458,9 +462,9 @@ void EnemyBoss::GetRandomAction()
 
 		// 範囲内なら終了
 		if (m_targetPos.x >= kMapRangeOffset &&
-			m_targetPos.x <= m_pMap->GetMapBlockNumX() * 40 - kMapRangeOffset &&
+			m_targetPos.x <= m_pMap->GetMapBlockNumX() * kBlockSize - kMapRangeOffset &&
 			m_targetPos.y >= kMapRangeOffset &&
-			m_targetPos.y <= m_pMap->GetMapBlockNumY() * 40 - kMapRangeOffset) {
+			m_targetPos.y <= m_pMap->GetMapBlockNumY() * kBlockSize - kMapRangeOffset) {
 
 			break;
 		}
@@ -469,8 +473,6 @@ void EnemyBoss::GetRandomAction()
 
 bool EnemyBoss::ApproachPlayer(const Vector3& playerPos)
 {
-
-	
 
 	// 方向ベクトル
 	Vector3 direction = playerPos - GetTransform().position;
@@ -660,10 +662,15 @@ void EnemyBoss::CheckDamageFlagSize(int weapon, int index)
 void EnemyBoss::AttackUp()
 {
 
+	// 体力が半分より多ければreturn
 	if (m_currentHp > kMaxHp / 2) return;
 
-	if (m_isAttackHit) return;
+	// すでにパワーアップしていたらreturn
+	if (m_isPowerUp) return;
+
+	// パワーアップしたのでtrue
 	m_isPowerUp = true;
+	// 攻撃力を2倍にする
 	m_attackPower *= 2;
 }
 

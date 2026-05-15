@@ -8,6 +8,7 @@
 class TreasureChest;
 class WeaponManager;
 class ItemManager;
+class Map;
 
 // 宝箱を管理するクラス
 class ChestManager
@@ -83,6 +84,12 @@ public:
 	void SetItemManager(ItemManager* itemManager) { m_pItemMgr = itemManager; }
 
 	/// <summary>
+	/// マップのポインタ
+	/// </summary>
+	/// <param name="map"></param>
+	void SetMap(Map* map) { m_pMap = map; }
+
+	/// <summary>
 	/// 宝箱の場所を取得するゲッター関数
 	/// </summary>
 	/// <param name="index"></param>
@@ -121,5 +128,10 @@ private:
 	/// アイテムマネージャーのポインタ
 	/// </summary>
 	ItemManager* m_pItemMgr;
+
+	/// <summary>
+	/// マップのポインタ
+	/// </summary>
+	Map* m_pMap;
 };
 

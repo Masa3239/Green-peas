@@ -107,6 +107,7 @@ void SceneInGame::Init()
 	m_pChestManager->SetObjectManager(GetObjectManager());
 	m_pChestManager->SetWeaponManager(m_pWeaponManager.get());
 	m_pChestManager->SetItemManager(m_pItemMgr.get());
+	m_pChestManager->SetMap(m_pMap.get());
 	m_pChestManager->Init();
 
 	m_pResultShow->SetFader(GetFader());
