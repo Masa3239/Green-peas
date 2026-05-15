@@ -9,6 +9,12 @@ namespace {
 
 	// 宝箱からアイテムを出す位置を調整するオフセット
 	constexpr Vector3 kOffsetX = {50.0f, 0.0f, 0.0f};
+
+	// 宝箱をスポーンさせる位置
+	constexpr int kCreatChestPos = 100;
+
+	// マップのブロックのサイズ
+	constexpr int kBlockSize = 40;
 }
 
 ChestManager::ChestManager() :
@@ -88,9 +94,11 @@ void ChestManager::Create(Vector3 position)
 	}
 	chest->Init();
 
-	if (position.x < 100) position.x = position.x + 50;
+	// 宝箱の位置を調整する
+	if (position.x < kCreatChestPos) position.x = position.x + kCreatChestPos * 0.5f;
 	else
-		if (position.x > m_pMap->GetMapBlockNumX() * 40 - 100) position.x = m_pMap->GetMapBlockNumX() * 40 - 100;
+		if (position.x > m_pMap->GetMapBlockNumX() * kBlockSize - kCreatChestPos) 
+			position.x = m_pMap->GetMapBlockNumX() * kBlockSize - kCreatChestPos;
 	chest->GetTransform().position = position;
 	m_chests.push_back(std::move(chest));
 }
