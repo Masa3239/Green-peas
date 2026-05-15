@@ -188,13 +188,15 @@ void EnemyBoss::Update()
 	if (GetTransform().position.x < kMapRangeOffset) GetTransform().position.x = kMapRangeOffset;
 	else
 		// ボスが画面の右側に出ないようにする
-		if (GetTransform().position.x > m_pMap->GetMapBlockNumX() * kBlockSize - kMapRangeOffset) GetTransform().position.x = m_pMap->GetMapBlockNumX() * 40 - kMapRangeOffset;
+		if (GetTransform().position.x > m_pMap->GetMapBlockNumX() * kBlockSize - kMapRangeOffset) 
+			GetTransform().position.x = m_pMap->GetMapBlockNumX() * 40 - kMapRangeOffset;
 
 	// ボスが画面の上側に出ないようにする
 	if (GetTransform().position.y < kMapRangeOffset) GetTransform().position.y = kMapRangeOffset;
 	else
 		// ボスが画面の下側に出ないようにする
-		if (GetTransform().position.y > m_pMap->GetMapBlockNumY() * kBlockSize - kMapRangeOffset) GetTransform().position.y = m_pMap->GetMapBlockNumY() * 40 - kMapRangeOffset;
+		if (GetTransform().position.y > m_pMap->GetMapBlockNumY() * kBlockSize - kMapRangeOffset) 
+			GetTransform().position.y = m_pMap->GetMapBlockNumY() * 40 - kMapRangeOffset;
 
 	// 当たり判定の更新
 	m_collsion.SetPosition(GetTransform().position);
@@ -250,6 +252,8 @@ void EnemyBoss::Update()
 	Status();
 
 	Action();
+
+	SetDrawOrder(GetTransform().position.y);
 
 	AttackUp();
 }
