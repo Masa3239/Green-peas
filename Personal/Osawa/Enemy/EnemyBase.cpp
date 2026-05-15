@@ -27,7 +27,7 @@ namespace
 
 EnemyBase::EnemyBase(ObjectManager* objManager) :
 	GameObject(objManager),
-	m_statusParam(StatusParam{ 0, 0, 0, 0, 0 }),
+	m_statusParam(StatusParam{ 0, 0, 0, 0 }),
 	m_level(0),
 	m_variableStatus(0),
 	m_isFixSpawn(false),

@@ -13,7 +13,7 @@ namespace
 	constexpr float kMeleeAttackCooltime = 1.0f;
 
 	// 基礎ステータス
-	constexpr EnemyBase::StatusParam kStatus = { 25, 25, 5, 5, 5 };
+	constexpr EnemyBase::StatusParam kStatus = { 25, 25, 5, 5 };
 	// レベルごとの増加量
 	constexpr int kHpPerLevel = 15;
 	constexpr int kAtkPerLevel = 1.03f;
@@ -47,7 +47,6 @@ void EnemySlime::Init()
 	status.hp += kHpPerLevel * GetLevel();
 	status.maxHp = status.hp;
 	status.attack += std::pow(kAtkPerLevel, GetLevel());
-	status.defence += kDefPerLevel * GetLevel();
 	SetStatusParam(status);
 
 	GetAnimator().Init();

@@ -35,7 +35,7 @@ namespace
 	constexpr Vector3 kColliderSize = {100, 30, 0};
 
 	// 基礎ステータス
-	constexpr EnemyBase::StatusParam kStatus = { 100, 100, 1, 1, 250 };
+	constexpr EnemyBase::StatusParam kStatus = { 100, 100, 1, 250 };
 	// レベルごとの増加量
 	constexpr int kHpPerLevel = 100;
 	constexpr int kAtkPerLevel = 1.03f;
@@ -66,7 +66,6 @@ void EnemyMiniBoss::Init()
 	status.hp += kHpPerLevel * GetLevel();
 	status.maxHp = status.hp;
 	status.attack += std::pow(kAtkPerLevel, GetLevel());
-	status.defence += kDefPerLevel * GetLevel();
 	SetStatusParam(status);
 
 	for (auto& bullet : m_bullets)

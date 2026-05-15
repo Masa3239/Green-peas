@@ -24,7 +24,6 @@ public:
 		int hp;
 		int maxHp;
 		int attack;
-		int defence;
 		int exp;
 	};
 
