@@ -81,7 +81,7 @@ void BackBoard::Update()
 		// 落下開始までの時間をカウントダウン
 		m_fallStart[i] -= time;
 		// 落下開始時間の下限を0で固定
-		MyMath::Clamp(m_fallStart[i], 0.0f, m_fallStart[i]);
+		m_fallStart[i]=MyMath::Clamp(m_fallStart[i], 0.0f, m_fallStart[i]);
 	}
 	// 両方の座標の更新処理
 	for (int i = 0; i < Max; i++) {
