@@ -414,7 +414,7 @@ private:
 	bool m_isAttackHit;
 
 	/// <summary>
-	/// パワーアップポイント
+	/// パワーアップしたかどうか
 	/// </summary>
 	bool m_isPowerUp;
 

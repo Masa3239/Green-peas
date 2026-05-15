@@ -1,6 +1,7 @@
 #include "ChestManager.h"
 #include "TreasureChest.h"
 #include "../Takagi/WeaponManager.h"
+#include "../Kimura/Map/Map.h"
 #include "ItemManager.h"
 #include <DxLib.h>
 
@@ -13,7 +14,8 @@ namespace {
 ChestManager::ChestManager() :
 	m_pObjectMgr(nullptr),
 	m_pWeaponMgr(nullptr),
-	m_pItemMgr(nullptr)
+	m_pItemMgr(nullptr),
+	m_pMap(nullptr)
 {
 	for (int i = 0; i < kTreasureChestMotionNum; i++) {
 
@@ -86,6 +88,9 @@ void ChestManager::Create(Vector3 position)
 	}
 	chest->Init();
 
+	if (position.x < 100) position.x = position.x + 50;
+	else
+		if (position.x > m_pMap->GetMapBlockNumX() * 40 - 100) position.x = m_pMap->GetMapBlockNumX() * 40 - 100;
 	chest->GetTransform().position = position;
 	m_chests.push_back(std::move(chest));
 }
