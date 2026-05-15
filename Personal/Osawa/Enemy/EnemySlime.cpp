@@ -8,7 +8,7 @@
 
 namespace
 {
-	constexpr float kDistanceSpeed = 100.0f;
+	constexpr float kMoveSpeed = 100.0f;
 
 	constexpr float kMeleeAttackCooltime = 1.0f;
 
@@ -86,7 +86,7 @@ void EnemySlime::UpdateEnemy()
 
 		Vector3 vec = (targetPos - myPos).GetNormalize();
 
-		myPos += vec * kDistanceSpeed * Time::GetInstance().GetDeltaTime();
+		myPos += vec * kMoveSpeed * Time::GetInstance().GetDeltaTime();
 
 		if (GetCollider().CheckCollision(GetPlayer()->GetCircle()))
 		{

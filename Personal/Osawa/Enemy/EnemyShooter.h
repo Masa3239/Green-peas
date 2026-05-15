@@ -58,8 +58,6 @@ private:
 
 	constexpr static unsigned int kMaxBulletNum = 10;
 
-	constexpr static int kAnimFrameNum = 1;
-
 	enum class Action
 	{
 		Idle,

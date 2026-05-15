@@ -42,6 +42,11 @@ public:
 	/// <returns>自作キーコードを元のキーコードに紐づけるマップ</returns>
 	const LinkToKeyCode& GetLinkToKeyCode() const { return mLinkToKeyCode; };
 
+	/// <summary>
+	/// アナログ入力の値を取得
+	/// </summary>
+	/// <param name="keyCode">自作キーコード</param>
+	/// <returns>アナログ値</returns>
 	virtual Vector2 GetValue(const KeyCode::Button keyCode) = 0;
 
 private:
