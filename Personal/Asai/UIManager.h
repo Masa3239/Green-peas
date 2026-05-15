@@ -59,8 +59,17 @@ public:
 	/// </summary>
 	void End();
 
+	/// <summary>
+	/// ミニマップを作る関数
+	/// </summary>
+	/// <param name="pCamera"></param>
+	/// <param name="pMap"></param>
 	void GenerateMinimap(Camera* pCamera, Map* pMap);
 
+	/// <summary>
+	/// 最大コンボ数を取得する関数
+	/// </summary>
+	/// <returns></returns>
 	int  const GetMaxCombo()const;
 
 	void SetPlayer(Player* pPlayer);
@@ -71,6 +80,12 @@ public:
 
 	void SetChestManager(ChestManager* pChestManager);
 
+	/// <summary>
+	/// ポップアップテキストを生成する
+	/// </summary>
+	/// <param name="pos">生成する位置</param>
+	/// <param name="amount">生成する値</param>
+	/// <param name="type">テキストのタイプ</param>
 	void CreatePopUpText(Vector3 pos, int amount, PopUpUI::TextType type);
 
 private:

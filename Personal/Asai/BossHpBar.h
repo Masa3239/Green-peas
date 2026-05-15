@@ -3,6 +3,9 @@
 
 class EnemyManager;
 
+/// <summary>
+/// ボスのHPを表示するクラス
+/// </summary>
 class BossHpBar
 {
 

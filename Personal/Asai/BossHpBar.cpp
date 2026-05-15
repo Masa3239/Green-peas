@@ -47,6 +47,8 @@ void BossHpBar::Update()
 	//現在のHPを取得
 	m_currentHp = m_pEnemyMgr->GetEnemyBoss()->GetBossCurrentHp();
 
+	if (m_currentHp <= 0)m_currentHp = 0;
+
 	m_rate = MyMath::Rate(m_currentHp, m_maxHp);
 
 }

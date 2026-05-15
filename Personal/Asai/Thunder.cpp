@@ -149,14 +149,16 @@ void Thunder::Draw()
 			//雷の攻撃をくらっている敵だけ描画
 			DrawRotaGraph(enemyPos.x, enemyPos.y, kGraphScale * m_scale, kGraphInfectionRadian, m_graphHandle[m_graphFrame], TRUE);
 
+			DrawCircle(enemyPos.x, enemyPos.y, 20, 0xffff00, false);
+
 		}
 
 	}
-	
+	DebugDraw();
 #ifdef _DEBUG
 
 	//当たり判定の描画
-	//m_circle.DebugDraw();
+	m_circle.DebugDraw();
 
 #else
 
@@ -214,10 +216,10 @@ void Thunder::ChangeStateInfection()
 	m_state = State::Infection;
 	m_circle = Collision::Circle(GetTransform().position, kCollisionInfectionSize * m_scale);
 
-	//当たり前を更新
+	//当たり判定を更新
 	m_circle.SetPosition(GetTransform().position);
 	//当たった敵を取得
-	m_pEnemies = (m_pEnemyMgr->GetHitEnemies(m_circle, 1));
+	m_pEnemies = (m_pEnemyMgr->GetHitEnemies(m_circle, 1000));
 
 }
 
@@ -241,13 +243,7 @@ void Thunder::UpdateBall()
 	if (distance <= kMaxMoveDistance * kMaxMoveDistance)return;
 
 	//移動距離の最大になったら状態を変更
-	m_state = State::Infection;
-	m_circle = Collision::Circle(GetTransform().position, kCollisionInfectionSize * m_scale);
-
-	//当たり判定を更新
-	m_circle.SetPosition(GetTransform().position);
-	//当たった敵を取得
-	m_pEnemies = (m_pEnemyMgr->GetHitEnemies(m_circle, 1));
+	ChangeStateInfection();
 
 }
 
@@ -263,10 +259,11 @@ void Thunder::UpdateInfection()
 	//伝染回数を加算する
 	m_infectionCount++;
 
+	//雷に当たった敵を格納する
 	std::vector<EnemyBase*>enemies;
 	enemies.clear();
 
-	m_pEnemies.insert(m_pEnemies.end(), enemies.begin(), enemies.end());
+	//m_pEnemies.insert(m_pEnemies.end(), enemies.begin(), enemies.end());
 
 	//雷の当たった敵を調べる
 	for (auto& enemy : m_pEnemies) {
@@ -302,9 +299,11 @@ void Thunder::UpdateInfection()
 		}
 
 		enemies.insert(enemies.end(), check.begin(), check.end());
-		//m_pEnemies.insert(enemies.end(), check.begin(), check.end());
+		//m_pEnemies.insert(m_pEnemies.end(), check.begin(), check.end());
 
 	}
+
+	m_pEnemies.insert(m_pEnemies.end(), enemies.begin(), enemies.end());
 
 	m_pEnemyMgr->ResetEnemyDamageFlag(Weapon::Volt, m_index);
 
