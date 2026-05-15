@@ -2,6 +2,8 @@
 
 #include "../Syoguti/ItemBase.h"
 
+class EnemyManager;
+
 class WipeOutItem : public ItemBase
 {
 public:
@@ -15,7 +17,7 @@ public:
 	/// 引数ありのコンストラクタ
 	/// </summary>
 	/// <param name="position"></param>
-	WipeOutItem(ObjectManager* objManager, Vector3 position);
+	WipeOutItem(ObjectManager* objManager, Vector3 position, EnemyManager* enemyMgr);
 
 	/// <summary>
 	/// デストラクタ
@@ -46,5 +48,9 @@ public:
 	/// アイテムの効果
 	/// </summary>
 	void ItemAbility(Player* player) override;
+
+private:
+
+	EnemyManager* m_pEnemyMgr;
 };
 

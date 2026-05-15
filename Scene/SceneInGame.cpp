@@ -94,6 +94,7 @@ void SceneInGame::Init()
 
 	m_pItemMgr->SetObjectManager(GetObjectManager());
 	m_pItemMgr->SetPlayer(m_pPlayer.get());
+	m_pItemMgr->SetEnemyManager(m_pEnemyMgr.get());
 	m_pItemMgr->Init();
 
 	m_pWeaponManager->SetPlayer(m_pPlayer.get());

@@ -4,6 +4,7 @@
 #include "../Osawa/DefenceItem.h"
 #include "../Osawa/WipeOutItem.h"
 #include "../../Utility/MyRandom.h"
+#include "../Osawa/Enemy/EnemyManager.h"
 
 #include "DxLib.h"
 
@@ -22,7 +23,8 @@ ItemManager::ItemManager() :
 	m_defenceUpItemGraphHandle(-1),
 	m_wipeoutItemGraphHandle(-1),
 	m_pObjectMgr(nullptr),
-	m_pPlayer(nullptr)
+	m_pPlayer(nullptr),
+	m_pEnemyMgr(nullptr)
 {
 }
 
@@ -71,6 +73,7 @@ void ItemManager::CreateRandom(Vector3 position)
 {
 
 	int type = MyRandom::Int(0, static_cast<int>(ItemBase::ItemType::Max) - 1);
+	type = static_cast<int>(ItemBase::ItemType::WipeOut);
 
 	Create(static_cast<ItemBase::ItemType>(type), position);
 
@@ -113,7 +116,7 @@ void ItemManager::Create(ItemBase::ItemType type, Vector3 position)
 		// WipeOutなら
 	case ItemBase::ItemType::WipeOut:
 		// WipeOutItemのコンストラクタを呼んで座標を指定
-		items = std::make_unique<WipeOutItem>(m_pObjectMgr, position);
+		items = std::make_unique<WipeOutItem>(m_pObjectMgr, position, m_pEnemyMgr);
 		// グラフハンドルを敵を一層するアイテムに設定
 		graphHandle = m_wipeoutItemGraphHandle;
 		break;
