@@ -222,6 +222,11 @@ private:
 	bool m_isActive;
 
 	/// <summary>
+	/// 状態異常解除のカウンター
+	/// </summary>
+	float m_palsyCounter;
+
+	/// <summary>
 	/// アニメーションコントローラー
 	/// </summary>
 	AnimationController2D m_animator;

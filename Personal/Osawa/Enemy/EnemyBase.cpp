@@ -23,6 +23,9 @@ namespace
 
 	// 一番端の座標
 	constexpr float kMapRangeOffset = 60;
+
+	// しびれ続ける時間
+	constexpr float kPalsyTime = 0.1f;
 }
 
 EnemyBase::EnemyBase(ObjectManager* objManager) :
@@ -32,6 +35,7 @@ EnemyBase::EnemyBase(ObjectManager* objManager) :
 	m_variableStatus(0),
 	m_isFixSpawn(false),
 	m_isActive(true),
+	m_palsyCounter(0),
 	m_animator(),
 	m_currentAnimation(0),
 	m_damageFlag(),
@@ -60,6 +64,18 @@ void EnemyBase::Update()
 	ClampInRange();
 
 	UpdateAnimation();
+
+	if (m_palsyCounter > 0)
+	{
+		m_palsyCounter -= Time::GetInstance().GetDeltaTime();
+	}
+	else
+	{
+		if (m_variableStatus & kStatePalsy)
+		{
+			RemoveState(kStatePalsy);
+		}
+	}
 	
 	SetDrawOrder(GetTransform().position.y);
 }
@@ -180,6 +196,8 @@ bool EnemyBase::Paralyze(const int weapon)
 
 	// 痺れ状態にする
 	AddState(kStatePalsy);
+
+	m_palsyCounter = kPalsyTime;
 
 	return false;
 }
