@@ -57,7 +57,7 @@ namespace {
 	// 画像の表示倍率
 	constexpr float kPlayerScale = 1.5f;
 	// 初期ステータス
-	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 5, 1, 5, kSpeed, 100, 5, 1.5f);
+	constexpr PlayerStatus kInitStatus = PlayerStatus(1, 5, 1, 5, kSpeed, 100, 5, 1.0f);
 	// 成長倍率
 	constexpr PlayerStatus kGrowStatus = PlayerStatus(1, 1.05f, 1.02f, 1.02f, 1, 1, 1, 1);
 	// 怒り状態時のステータス
@@ -620,6 +620,6 @@ const PlayerStatus Player::CheckBuffValue()
 	status.Defence=m_status.Defence*status.Defence;
 	status.Speed=m_status.Speed*status.Speed;
 	status.CriticalRate=m_status.CriticalRate+status.CriticalRate;
-	status.CriticalDamage=m_status.CriticalDamage+status.CriticalDamage;
+	status.CriticalDamage=m_status.CriticalDamage*status.CriticalDamage;
 	return status;
 }
