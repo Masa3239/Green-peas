@@ -55,6 +55,7 @@ void PlayerHpBar::Draw()
 	//画像の描画
 	DrawExtendGraph(kGaugeRight - 10 - (hpGaugeWidth * m_rate), kGaugeTop, kGaugeRight - 10, kGaugeBottom, m_graphHandle, FALSE);
 
+	//0以上1以下なら1を表示する
 	if (m_value < 1 && m_value>0) {
 		m_value = 1;
 	}
@@ -65,13 +66,6 @@ void PlayerHpBar::Draw()
 	std::string draw = value + "/" + max;
 
 	DrawStringToHandle(kGaugeRight - 80, kGaugeTop + 10, draw.c_str(), 0xffffff, m_font);
-
-	//DrawBox(kGaugeRight - 10 - (hpGaugeWidth * m_rate),
-	//	kGaugeTop,
-	//	kGaugeRight - 10,
-	//	kGaugeBottom,
-	//	0x00ff00, TRUE
-	//);
 
 }
 
