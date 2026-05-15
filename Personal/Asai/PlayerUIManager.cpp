@@ -31,6 +31,7 @@ void PlayerUIManager::Init()
 	//武器のUIを追加
 	m_pUIs.emplace_back(std::make_unique<PlayerWeaponUI>());
 
+	//全ての要素を初期化
 	for (auto& UI : m_pUIs) {
 
 		UI->Init();
@@ -54,7 +55,7 @@ void PlayerUIManager::ScreenDraw()
 {
 
 	for (auto& UI : m_pUIs) {
-
+		//PlayerUI::DrawType::Screen以外ならスルー
 		if (UI->GetDrawType() != PlayerUI::DrawType::Screen)continue;
 
 		UI->Draw();
@@ -67,7 +68,7 @@ void PlayerUIManager::WorldDraw()
 {
 
 	for (auto& UI : m_pUIs) {
-
+		//PlayerUI::DrawType::World以外ならスルー
 		if (UI->GetDrawType() != PlayerUI::DrawType::World)continue;
 
 		UI->Draw();

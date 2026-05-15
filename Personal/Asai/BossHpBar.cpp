@@ -60,10 +60,13 @@ void BossHpBar::Draw()
 	//封印されていたらスルー
 	if (!m_pEnemyMgr->GetEnemyBoss()->GetSealReleaseFlag())return;
 
+	//ゲームの視認性を上げるために薄くする
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
 
+	//HPゲージの枠を描画
 	DrawBox(kGaugeLeft, kGaugeTop, kGaugeRight, kGaugeBottom, 0xffffff, TRUE);
 
+	//HPゲージを描画
 	DrawBox(kGaugeLeft + 10,
 		kGaugeTop,
 		kGaugeLeft + 10 + (kHpGaugeWidth * m_rate),
@@ -71,12 +74,14 @@ void BossHpBar::Draw()
 		0xff0000, TRUE
 	);
 
+	//元に戻す
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
+	//HPを文字に変換
 	std::string hp = std::to_string(m_currentHp);
-
+	//描画する文字を作成
 	std::string draw = hp + "/" + m_maxHpFont;
-
+	//現在HPと最大HPを描画
 	DrawStringToHandle(kGaugeRight / 2 + 99, kGaugeTop + 10, draw.c_str(), 0xffffff, m_hpFont);
 
 }
@@ -100,7 +105,7 @@ void BossHpBar::SetEnemyManager(EnemyManager* pEnemyManager)
 
 	//最大体力をセット
 	m_maxHp = m_pEnemyMgr->GetEnemyBoss()->GetBossMaxHp();
-
+	//最大HPを文字に変換
 	m_maxHpFont = std::to_string(m_maxHp);
 
 }

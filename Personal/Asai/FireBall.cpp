@@ -71,7 +71,7 @@ void FireBall::Update()
 		break;
 	}
 
-	SetDrawOrder(GetTransform().position.y);
+	SetDrawOrder(0);
 
 }
 
@@ -113,7 +113,7 @@ void FireBall::Draw()
 
 	}
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
 
 	//画像の描画
 	DrawRotaGraph(GetTransform().position.x, GetTransform().position.y - kOffSetDraw, graphScale * m_scale, 0, m_graphHandle[m_graphFrame], TRUE);
@@ -145,7 +145,8 @@ void FireBall::Shot(Transform transform)
 	m_state = State::Ball;
 	//当たり判定を変更する
 	m_circle = Collision::Circle(GetTransform().position, kCollisionBallSize * m_scale);
-
+	//トータルの移動量をリセット
+	m_totalDistance = 0;
 }
 
 void FireBall::SetScale(float scale)
@@ -183,17 +184,23 @@ void FireBall::UpdateBall()
 	//デルタタイムを取得
 	float deltaTime = Time::GetInstance().GetDeltaTime();
 
+	Vector3 move = Vector3::zero;
+	move.x = cosf(GetTransform().rotation.z);
+	move.y= sinf(GetTransform().rotation.z);
+	move = move.GetNormalize();
+	move *= kSpeed * deltaTime;
+
 	//移動
-	GetTransform().position.x += cosf(GetTransform().rotation.z) * kSpeed * deltaTime;
-	GetTransform().position.y += sinf(GetTransform().rotation.z) * kSpeed * deltaTime;
+	GetTransform().position.x += move.x;
+	GetTransform().position.y += move.y;
 
 	//当たり判定を更新
 	m_circle.SetPosition(GetTransform().position);
 
 	//移動距離を取得
-	float distance = (m_spawnPos - GetTransform().position).GetSqLength();
+	m_totalDistance += kSpeed * deltaTime;
 	//移動距離の最大値じゃないならスルー
-	if (distance <= kMaxMoveDistance * kMaxMoveDistance)return;
+	if (m_totalDistance <= kMaxMoveDistance)return;
 
 	//移動距離の最大になったら状態を変更
 	ChangeStateField();

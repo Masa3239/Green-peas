@@ -43,16 +43,34 @@ public:
 
 private:
 
+	/// <summary>
+	/// ボスの体力を取得するために用意
+	/// </summary>
 	EnemyManager* m_pEnemyMgr;
 
+	/// <summary>
+	/// 現在のHP
+	/// </summary>
 	int m_currentHp;
 
+	/// <summary>
+	///	最大のHP
+	/// </summary>
 	int m_maxHp;
 
+	/// <summary>
+	/// 最大HPと現在HPの割合
+	/// </summary>
 	float m_rate;
 
+	/// <summary>
+	/// HPのフォント
+	/// </summary>
 	int m_hpFont;
 
+	/// <summary>
+	/// 最大HPの文字を保存する
+	/// </summary>
 	std::string m_maxHpFont;
 
 };

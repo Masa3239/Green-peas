@@ -4,6 +4,7 @@
 #include"../../Utility/Vector3.h"
 
 #include"../Asai/PopUpText.h"
+#include"../../Utility/MyMath.h"
 #include"../../Utility/MyRandom.h"
 
 namespace {
@@ -27,6 +28,7 @@ PopUpTextManager::~PopUpTextManager()
 void PopUpTextManager::Init()
 {
 
+	//最初に600作る
 	m_pTexts.resize(600);
 
 	//フォントを作成
@@ -35,6 +37,7 @@ void PopUpTextManager::Init()
 	m_textFonts[static_cast<int>(PopUpUI::TextType::Critical)] = CreateFontToHandle("VT323 - Regular", 50, 6, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 	m_textFonts[static_cast<int>(PopUpUI::TextType::Heal)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 
+	//全ての要素にテキストを設定する
 	for (int i = 0;i < m_pTexts.size();i++) {
 		//テキストを作成
 		auto text = std::make_unique<PopUpText>();

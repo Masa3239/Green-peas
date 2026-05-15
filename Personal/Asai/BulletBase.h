@@ -64,6 +64,8 @@ public:
 	/// <param name="scale"></param>
 	virtual void SetScale(float scale) = 0;
 
+	virtual void SetIsActive(bool active) { m_isActive = active; }
+
 	virtual void SetStatus(PlayerStatus status) { m_playerStatus = status; }
 
 protected:
@@ -77,6 +79,11 @@ protected:
 	/// 生成された座標
 	/// </summary>
 	Vector3 m_spawnPos;
+
+	/// <summary>
+	/// トータルの移動量
+	/// </summary>
+	float m_totalDistance;
 
 	/// <summary>
 	/// アクティブ状態
