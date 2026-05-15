@@ -28,11 +28,14 @@ ThunderWand::ThunderWand(ObjectManager* objManager) :
 	m_chargeFlag = false;
 	m_camUpdate = true;
 
+	int index = 0;
 	for (auto& thunders : m_pThunders) {
 		thunders = nullptr;
 		thunders = new Thunder(GetObjectManager());
 		thunders->Init();
 		thunders->SetEnemyManager(m_pEnemyMgr);
+		thunders->SetIndex(index);
+		index++;
 	}
 }
 
