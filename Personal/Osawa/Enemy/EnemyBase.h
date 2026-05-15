@@ -107,6 +107,8 @@ public:
 
 	void SetFixSpawn(const bool flag) { m_isFixSpawn = flag; }
 
+	bool IsActive() const { return m_isActive; }
+
 	EnemyManager* GetEnemyManager() const { return m_pEnemyMgr; }
 	void SetEnemyManager(EnemyManager* enemyMgr) { m_pEnemyMgr = enemyMgr; }
 
@@ -213,6 +215,11 @@ private:
 	/// 固定生成かどうか
 	/// </summary>
 	bool m_isFixSpawn;
+
+	/// <summary>
+	/// 有効かどうか
+	/// </summary>
+	bool m_isActive;
 
 	/// <summary>
 	/// アニメーションコントローラー

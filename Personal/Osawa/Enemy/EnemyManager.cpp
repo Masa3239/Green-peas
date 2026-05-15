@@ -31,20 +31,21 @@ namespace
 	// 生成時にプレイヤーから離す距離
 	constexpr float kGenerateOffsetPos = 500.0f;
 
+	// 武器のドロップ率
 	constexpr float kWeaponDropChange = 5.0f;
 }
 
 EnemyManager::EnemyManager(ObjectManager* objManager) :
 	GameObject(objManager),
+	m_generateCounter(0.0f),
+	m_highestDamage(0),
+	m_numDefeated(0),
 	m_enemyBoss(nullptr),
 	m_pPlayer(nullptr),
 	m_uiMgr(nullptr),
 	m_weaponMgr(nullptr),
 	m_chestMgr(nullptr),
-	m_map(nullptr),
-	m_generateCounter(0.0f),
-	m_highestDamage(0),
-	m_numDefeated(0)
+	m_map(nullptr)
 {
 }
 
@@ -78,11 +79,11 @@ void EnemyManager::Update()
 	{
 		// 敵を生成
 		if (MyRandom::Int(0, 2) == 0)
-			GenerateEnemy(EnemyType::Melee, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
+			GenerateEnemyToPlayer(EnemyType::Melee, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
 		else if (MyRandom::Int(0, 2) == 1)
-			GenerateEnemy(EnemyType::Shooter, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
+			GenerateEnemyToPlayer(EnemyType::Shooter, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
 		else
-			GenerateEnemy(EnemyType::Slime, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
+			GenerateEnemyToPlayer(EnemyType::Slime, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
 
 		m_generateCounter = kGenerateDuration;
 	}
@@ -105,6 +106,8 @@ std::vector<EnemyBase*> EnemyManager::GetHitEnemies(const Collision::Shape& shap
 
 	for (const auto& enemy : m_enemies)
 	{
+		if (!enemy->IsActive()) continue;
+
 		if (enemy->GetMyState() & elimState) continue;
 
 		if (!enemy->GetCollider().CheckCollision(shape)) continue;
@@ -125,6 +128,8 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 
 	for (const auto& enemy : m_enemies)
 	{
+		if (!enemy->IsActive()) continue;
+
 		if (!enemy->GetCollider().CheckCollision(shape)) continue;
 
 		finalDamage = damage;
@@ -195,21 +200,8 @@ std::vector<Vector3> EnemyManager::GetMiniBossPositions() const
 	return positions;
 }
 
-EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, int level)
+EnemyBase* EnemyManager::GenerateEnemyToPlayer(EnemyType type, int level)
 {
-	std::unique_ptr<EnemyBase> enemy;
-	switch (type)
-	{
-	case EnemyManager::EnemyType::Melee:	enemy = std::make_unique<EnemyMelee>(GetObjectManager()); break;
-	case EnemyManager::EnemyType::Shooter:	enemy = std::make_unique<EnemyShooter>(GetObjectManager()); break;
-	case EnemyManager::EnemyType::Miniboss:	enemy = std::make_unique<EnemyMiniBoss>(GetObjectManager()); break;
-	case EnemyManager::EnemyType::Slime:	enemy = std::make_unique<EnemySlime>(GetObjectManager()); break;
-	}
-	enemy->SetPlayer(m_pPlayer);
-	enemy->SetEnemyManager(this);
-	enemy->SetMap(m_map);
-	enemy->SetLevel(level);
-
 	// 生成座標が範囲内になるまで繰り返す
 	Vector3 playerPos = m_pPlayer->GetTransform().position;
 	Vector3 pos;
@@ -223,15 +215,12 @@ EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, int level)
 		// 範囲内なら決定
 		if (pos.x >= 40 && pos.y >= 40 && pos.x < m_map->GetMapBlockNumX() * 40 - 40 && pos.y < m_map->GetMapBlockNumY() * 40 - 40) break;
 	}
-	enemy->GetTransform().position = pos;
+	auto enemy = GenerateEnemyToPos(type, pos, level);
 
-	enemy->Init();
-
-	if (type == EnemyType::Miniboss) m_miniBosses.emplace_back(dynamic_cast<EnemyMiniBoss*>(enemy.get()));
-	return m_enemies.emplace_back(std::move(enemy)).get();
+	return enemy;
 }
 
-EnemyBase* EnemyManager::GenerateEnemy(EnemyType type, Vector3 pos, int level)
+EnemyBase* EnemyManager::GenerateEnemyToPos(EnemyType type, Vector3 pos, int level)
 {
 	std::unique_ptr<EnemyBase> enemy;
 	switch (type)
@@ -260,7 +249,7 @@ void EnemyManager::InitGenerate(EnemyMap* enemyMap)
 
 	for (const auto& status : enemies)
 	{
-		auto enemy = GenerateEnemy(status.type, status.pos, status.level);
+		auto enemy = GenerateEnemyToPos(status.type, status.pos, status.level);
 		enemy->SetFixSpawn(true);
 	}
 }
@@ -281,42 +270,41 @@ void EnemyManager::RemoveEnemy(EnemyBase* enemy)
 
 void EnemyManager::CheckDead()
 {
-	// 死亡判定
-	// オブジェクトマネージャー側
-	// マネージャー側で死亡判定を行う
-	for (const auto& enemy : m_enemies)
-	{
-		if (enemy->GetHP() > 0) continue;
-
-		enemy->Dead();
-		enemy->SetState(GameObject::State::Dead);
-		enemy->End();
-
-		if (MyRandom::Judge(kWeaponDropChange))
-		{
-			int weapon = MyRandom::Int(Weapon::Sword, Weapon::Max - 1);
-			m_weaponMgr->Create(enemy->GetTransform().position, weapon);
-		}
-	}
-	// 死亡していたら配列から削除
 	for (auto iter = m_enemies.begin(); iter != m_enemies.end();)
 	{
 		EnemyBase* enemy = iter->get();
-		if (enemy->GetHP() <= 0)
-		{
-			// 中ボスだったら中ボスの配列からも削除する
-			EnemyMiniBoss* miniboss = dynamic_cast<EnemyMiniBoss*>(enemy);
-			if (miniboss != nullptr)
-			{
-				m_miniBosses.erase(std::find(m_miniBosses.begin(), m_miniBosses.end(), miniboss));
-			}
-			
-			iter = m_enemies.erase(iter);
-			m_numDefeated++;
 
+		// 死亡していなかったらスキップ
+		if (enemy->GetHP() > 0)
+		{
+			// ループ中に削除すると順番を飛ばしてしまうため
+			// 手動でイテレータをカウントアップ
+			iter++;
 			continue;
 		}
 
-		iter++;
+		// 武器をドロップ
+		if (MyRandom::Judge(kWeaponDropChange))
+		{
+			int weapon = MyRandom::Int(0, Weapon::Max - 1);
+			m_weaponMgr->Create(enemy->GetTransform().position, weapon);
+		}
+
+		// 中ボスだったら中ボスの配列からも削除する
+		EnemyMiniBoss* miniboss = dynamic_cast<EnemyMiniBoss*>(enemy);
+		if (miniboss != nullptr)
+		{
+			auto minibossIter = std::find(m_miniBosses.begin(), m_miniBosses.end(), miniboss);
+			m_miniBosses.erase(minibossIter);
+		}
+
+		enemy->Dead();
+		enemy->End();
+		enemy->SetState(GameObject::State::Dead);
+
+		m_numDefeated++;
+
+		// 敵を配列から削除する
+		iter = m_enemies.erase(iter);
 	}
 }
