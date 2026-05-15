@@ -19,6 +19,8 @@ namespace {
 
 	constexpr float kGaugeBottom = Game::kScreenHeight - 20;
 
+	constexpr float kHpGaugeWidth = (kGaugeRight - 10) - (kGaugeLeft);
+
 }
 
 PlayerHpBar::PlayerHpBar():
@@ -50,10 +52,8 @@ void PlayerHpBar::Draw()
 	//仮
 	DrawBox(kGaugeLeft, kGaugeTop, kGaugeRight, kGaugeBottom, 0xffffff, true);
 
-	float hpGaugeWidth = (kGaugeRight - 10) - (kGaugeLeft + 10);
-
 	//画像の描画
-	DrawExtendGraph(kGaugeRight - 10 - (hpGaugeWidth * m_rate), kGaugeTop, kGaugeRight - 10, kGaugeBottom, m_graphHandle, FALSE);
+	DrawExtendGraph(kGaugeRight - 10 - (kHpGaugeWidth * m_rate), kGaugeTop, kGaugeRight - 10, kGaugeBottom, m_graphHandle, FALSE);
 
 	//0以上1以下なら1を表示する
 	if (m_value < 1 && m_value>0) {

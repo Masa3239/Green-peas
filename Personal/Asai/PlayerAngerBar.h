@@ -41,7 +41,15 @@ public:
 
 private:
 
+	/// <summary>
+	/// 外の枠を表示しているか
+	/// </summary>
+	bool m_isDrawOutSideLine;
 
+	/// <summary>
+	/// 点滅の間隔タイマー
+	/// </summary>
+	float m_BbinkingTimer;
 
 };
 

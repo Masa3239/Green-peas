@@ -2,6 +2,7 @@
 
 #include<DxLib.h>
 #include"../../Utility/Game.h"
+#include"../../Utility/Time.h"
 #include"../Takagi/Player.h"
 
 namespace {
@@ -18,9 +19,13 @@ namespace {
 
     constexpr float kAngerGaugeHeight = (kGaugeBottom - 3) - (kGaugeTop);
 
+    constexpr float kBlinkingInterval = 0.2f;
+
 }
 
-PlayerAngerBar::PlayerAngerBar()
+PlayerAngerBar::PlayerAngerBar():
+    m_isDrawOutSideLine(false),
+    m_BbinkingTimer(0)
 {
 }
 
@@ -49,6 +54,25 @@ void PlayerAngerBar::Draw()
         kGaugeBottom - 3,
         m_graphHandle, TRUE
     );
+
+    //怒りゲージが溜まっていないならスルー
+    if (m_value != m_max)return;
+
+    //タイマーを加算
+    m_BbinkingTimer += Time::GetInstance().GetDeltaTime();
+
+    //描画状態のチェック
+    if (m_isDrawOutSideLine) {
+        //外の枠を表示
+        DrawBox(kGaugeLeft - 1, kGaugeTop - 1, kGaugeRight + 1, kGaugeBottom - 1, 0xff0000, false);
+    }
+
+    //点滅間隔を超えていないならスルー
+    if (m_BbinkingTimer < kBlinkingInterval)return;
+    //描画状態を切り替える
+    m_isDrawOutSideLine = !m_isDrawOutSideLine;
+    //タイマーをリセット
+    m_BbinkingTimer = 0;
 
 }
 
