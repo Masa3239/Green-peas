@@ -108,10 +108,19 @@ private:
 	/// </summary>
 	float m_fieldDamageIntervalTimer;
 
+	/// <summary>
+	/// 画像
+	/// </summary>
 	std::vector<int>m_graphHandle;
 
+	/// <summary>
+	/// 表示する画像のフレーム数
+	/// </summary>
 	float m_graphFrame;
 
+	/// <summary>
+	/// 画像のフレーム変更のカウント
+	/// </summary>
 	float m_graphCounter;
 
 };

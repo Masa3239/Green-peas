@@ -5,7 +5,9 @@
 
 #include<DxLib.h>
 #include<math.h>
+#include"../../Utility/MyRandom.h"
 #include"../../Utility/Time.h"
+#include"../Syoguti/EnemyBoss.h"
 #include"../Takagi/Weapon.h"
 
 namespace {
@@ -264,7 +266,6 @@ void Thunder::UpdateInfection()
 	std::vector<EnemyBase*>enemies;
 	enemies.clear();
 
-	//m_pEnemies.clear();
 	m_pEnemies.insert(m_pEnemies.end(), enemies.begin(), enemies.end());
 
 	//雷の当たった敵を調べる
@@ -275,7 +276,7 @@ void Thunder::UpdateInfection()
 		float damage = 0;
 		damage = m_playerStatus.Attack;
 		float criticalRate = m_playerStatus.CriticalRate;
-		float criticalDamage =m_playerStatus.CriticalDamage;
+		float criticalDamage = m_playerStatus.CriticalDamage;
 		//当たっていなければスルー
 		m_pEnemyMgr->CheckHitEnemies(circle, damage, criticalRate, criticalDamage, Weapon::Volt, m_index);
 
@@ -287,7 +288,21 @@ void Thunder::UpdateInfection()
 
 		auto check = (m_pEnemyMgr->GetHitEnemies(circle, EnemyBase::kStatePalsy));
 
+		if (m_pEnemyMgr->GetEnemyBoss()->GetCollider().CheckCollision(circle)) {
+
+			float damage = 0;
+			damage = m_playerStatus.Attack;
+			float criticalRate = m_playerStatus.CriticalRate;
+			float criticalDamage = m_playerStatus.CriticalDamage;
+
+			if (MyRandom::Judge(criticalRate))damage *= criticalDamage;
+
+			m_pEnemyMgr->GetEnemyBoss()->Damage(damage, Weapon::Volt, m_index);
+
+		}
+
 		enemies.insert(enemies.end(), check.begin(), check.end());
+		//m_pEnemies.insert(enemies.end(), check.begin(), check.end());
 
 	}
 

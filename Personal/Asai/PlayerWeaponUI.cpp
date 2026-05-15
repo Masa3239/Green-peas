@@ -92,15 +92,6 @@ void PlayerWeaponUI::SetPlayer(Player* pPlayer)
 
 	}
 
-
-	//auto scale = pPlayer->GetWeaponScale();
-
-	//for (int i = 0;i < kWeaponMaxNum;i++) {
-
-	//	m_weaponScale[i] = scale[i];
-
-	//}
-
 }
 
 void PlayerWeaponUI::DrawFrame()

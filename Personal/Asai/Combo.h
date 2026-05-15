@@ -35,6 +35,10 @@ public:
 	/// </summary>
 	void End();
 
+	/// <summary>
+	/// 最大コンボ数を取得
+	/// </summary>
+	/// <returns>最大コンボ数</returns>
 	int GetMaxConbo()const { return m_maxCombo; }
 
 	void SetEnemyManager(EnemyManager* pEnemyMgr) { m_pEnemyMgr = pEnemyMgr; }
@@ -66,6 +70,9 @@ private:
 	/// </summary>
 	float m_receptionTimer;
 
+	/// <summary>
+	/// コンボ表示のアルファ値
+	/// </summary>
 	float m_alpha;
 
 	/// <summary>

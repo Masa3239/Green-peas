@@ -8,12 +8,13 @@
 
 namespace {
 
+	//画像
 	const char* const kGraphHandlePath = ".\\Resource\\barYellow_verticalMid.png";
-
+	//表示位置のオフセット
 	constexpr Vector3 kOffSet{ 50.0f,-10.0f,0.0f };
-
+	//Xのサイズ
 	constexpr float kSizeX = 12;
-
+	//Yのサイズ
 	constexpr float kSizeY = 50;
 
 }
@@ -60,27 +61,14 @@ void PlayerStaminaBar::Draw()
 	//描画しない設定なら描画しない
 	if (m_isVisible || !m_isChanged)return;
 
-	//作成予定
-	//DrawRectGraph()
-
-	//仮
 	DrawBox(m_pos.x - kSizeX / 2, m_pos.y - kSizeY / 2, m_pos.x + kSizeX / 2, m_pos.y + kSizeY / 2, 0xffffff, true);
-
-	float staminaGaugeHeight = (m_pos.y + kSizeY / 2) - (m_pos.y - kSizeY / 2);
 
 	DrawExtendGraph(
 		m_pos.x - kSizeX / 2,
-		m_pos.y + kSizeY / 2 - (staminaGaugeHeight * m_rate),
+		m_pos.y + kSizeY / 2 - (kSizeY * m_rate),
 		m_pos.x + kSizeX / 2,
 		m_pos.y + kSizeY / 2,
 		m_graphHandle, TRUE);
-
-	//DrawBox(
-	//	m_pos.x - kSizeX / 2,
-	//	m_pos.y + kSizeY / 2 - (staminaGaugeHeight * m_rate),
-	//	m_pos.x + kSizeX / 2,
-	//	m_pos.y + kSizeY / 2,
-	//	0xffff00, TRUE);
 
 }
 

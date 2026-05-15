@@ -2,7 +2,6 @@
 
 #include<DxLib.h>
 #include"../../Utility/Game.h"
-
 #include"../Takagi/Player.h"
 
 namespace {
@@ -16,6 +15,8 @@ namespace {
     constexpr float kGaugeTop = Game::kScreenHeight / 2;
 
     constexpr float kGaugeBottom = Game::kScreenHeight - 88;
+
+    constexpr float kAngerGaugeHeight = (kGaugeBottom - 3) - (kGaugeTop);
 
 }
 
@@ -40,26 +41,14 @@ void PlayerAngerBar::Draw()
     //描画しない設定なら描画しない
     if (m_isVisible)return;
 
-    //仮
     DrawBox(kGaugeLeft, kGaugeTop, kGaugeRight, kGaugeBottom, 0xffffff, true);
 
-    float angerGaugeHeight = (kGaugeBottom - 3) - (kGaugeTop + 3);
-
-    DrawLine(kGaugeLeft, kGaugeTop + 3, kGaugeRight, kGaugeTop + 3, 0xff0000);
-
     DrawExtendGraph(kGaugeLeft,
-        kGaugeBottom - 3 - (angerGaugeHeight * m_rate),
+        kGaugeBottom - 3 - (kAngerGaugeHeight * m_rate),
         kGaugeRight,
         kGaugeBottom - 3,
         m_graphHandle, TRUE
     );
-
-    //DrawBox(kGaugeLeft,
-    //    kGaugeBottom - 3 - (angerGaugeHeight * m_rate),
-    //    kGaugeRight,
-    //    kGaugeBottom - 3,
-    //    0xff0000, TRUE
-    //);
 
 }
 

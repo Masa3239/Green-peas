@@ -42,6 +42,11 @@ public:
 	/// </summary>
 	void End();
 
+	/// <summary>
+	/// ミニマップを生成する
+	/// </summary>
+	/// <param name="pCamera"></param>
+	/// <param name="pMap"></param>
 	void GenerateMinimap(Camera* pCamera, Map* pMap);
 
 	void SetCamera(Camera* pCamera) { m_pCamera = pCamera; }

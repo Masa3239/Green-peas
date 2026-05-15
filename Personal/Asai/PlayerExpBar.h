@@ -40,8 +40,14 @@ public:
 
 private:
 
+	/// <summary>
+	/// 現在のレベル
+	/// </summary>
 	int m_level;
 
+	/// <summary>
+	/// レベル表示のフォント
+	/// </summary>
 	int m_fontHandle;
 
 };
