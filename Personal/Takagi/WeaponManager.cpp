@@ -102,7 +102,8 @@ void WeaponManager::Update()
 	//	int weaponType = MyRandom::Int(0, Weapon::Max-1);
 	//	Create(m_pPlayer->GetTransform().position, weaponType);
 	//}
-	if (Pad::IsPressed(Pad::Button::B)) {
+	//if (Pad::IsPressed(Pad::Button::B)) {
+	if (InputManager::GetInstance().IsPressed(Input::Action::PickUp)) {
 		CheckCanPick();
 	}
 }

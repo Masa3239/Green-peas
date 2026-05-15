@@ -18,7 +18,7 @@ namespace
 	// 衝突判定の大きさ
 	constexpr Vector3 kColliderSize = { 25, 40, 0 };
 
-	constexpr float kDistanceSpeed = 100.0f;
+	constexpr float kMoveSpeed = 100.0f;
 
 	constexpr float kMeleeAttackCooltime = 1.0f;
 
@@ -87,7 +87,7 @@ void EnemyMelee::UpdateEnemy()
 
 		Vector3 vec = (targetPos - myPos).GetNormalize();
 
-		myPos += vec * kDistanceSpeed * Time::GetInstance().GetDeltaTime();
+		myPos += vec * kMoveSpeed * Time::GetInstance().GetDeltaTime();
 
 		if (GetCollider().CheckCollision(GetPlayer()->GetCircle()))
 		{

@@ -61,6 +61,11 @@ public:
 	/// <returns>押下状態</returns>
 	bool IsHeld(KeyCode::Button keyCode, int frame) const;
 
+	/// <summary>
+	/// アナログ入力の値を取得
+	/// </summary>
+	/// <param name="keyCode">自作キーコード</param>
+	/// <returns>アナログ値</returns>
 	Vector2 GetValue(KeyCode::Button keyCode) const;
 
 protected:
