@@ -40,6 +40,8 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	const Collision::Shape& GetCollider() override { return m_collider; }
+
 protected:
 
 	/// <summary>
@@ -77,4 +79,9 @@ private:
 	/// 弾の配列
 	/// </summary>
 	std::array<std::unique_ptr<EnemyBullet>, kMaxBulletNum> m_bullets;
+
+	/// <summary>
+	/// 衝突判定
+	/// </summary>
+	Collision::AABB m_collider;
 };

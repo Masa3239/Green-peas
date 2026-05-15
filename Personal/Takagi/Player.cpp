@@ -507,6 +507,7 @@ void Player::SetWeapon(Weapon* weapon)
 	}
 	else if (m_weapons[0]) {
 		m_weapons[0]->SetChatch(false);
+		m_weapons[0]->SetScale(1);
 	}
 	m_weapons[0] = weapon;
 	m_weapons[0]->SetChatch(true);

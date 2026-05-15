@@ -19,6 +19,9 @@ namespace
 	constexpr int kAtkPerLevel = 1.03f;
 	constexpr int kDefPerLevel = 5;
 
+	// 衝突判定の大きさ
+	constexpr Vector3 kColliderSize = { 25, 40, 0 };
+
 	std::vector<Animation::Animation2DData> kAnimData =
 	{
 		{ EnemySlime::AnimType::EIdle, 12.0f, true, false},
@@ -33,7 +36,8 @@ namespace
 
 EnemySlime::EnemySlime(ObjectManager* objManager) :
 	EnemyBase(objManager),
-	m_attackCooltimeCounter(0.0f)
+	m_attackCooltimeCounter(0.0f),
+	m_collider(Collision::AABB{ Vector3::zero, kColliderSize })
 {
 }
 
@@ -54,6 +58,8 @@ void EnemySlime::Init()
 	GetAnimator().RegisterGraphHandle(AnimType::ERun, kGraphPathRun, 4, 4, 1, 64, 64);
 	GetAnimator().RegisterGraphHandle(AnimType::EAttack, kGraphPathAttack, 4, 4, 1, 64, 64);
 	SetAnimationData(kAnimData);
+
+	m_collider.SetPosition(GetTransform().position);
 
 	EnemyBase::Init();
 }
@@ -91,6 +97,9 @@ void EnemySlime::UpdateEnemy()
 			m_attackCooltimeCounter = kMeleeAttackCooltime;
 		}
 	}
+
+	// 衝突判定の座標更新
+	m_collider.SetPosition(GetTransform().position);
 }
 
 void EnemySlime::Draw()

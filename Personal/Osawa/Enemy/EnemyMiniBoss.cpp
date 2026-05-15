@@ -32,7 +32,8 @@ namespace
 
 	constexpr float kBulletAttackCooltime = 0.5f;
 
-	constexpr Vector3 kColliderSize = {100, 30, 0};
+	// 衝突判定の大きさ
+	constexpr Vector3 kColliderSize = { 100, 30, 0 };
 
 	// 基礎ステータス
 	constexpr EnemyBase::StatusParam kStatus = { 100, 100, 1, 250 };
@@ -52,7 +53,8 @@ namespace
 EnemyMiniBoss::EnemyMiniBoss(ObjectManager* objManager) :
 	EnemyBase(objManager),
 	m_action(Action::Idle),
-	m_attackCooltimeCounter(0.0f)
+	m_attackCooltimeCounter(0.0f),
+	m_collider(Collision::AABB{ Vector3::zero, kColliderSize })
 {
 }
 
@@ -75,13 +77,13 @@ void EnemyMiniBoss::Init()
 		bullet->Init();
 	}
 
-	GetCollider() = Collision::AABB{Vector3::zero, kColliderSize};
-
 	GetAnimator().Init();
 	GetAnimator().RegisterGraphHandle(AnimType::ERun, kGraphPath, 8, 8, 1, 384, 128);
 	SetAnimationData(kAnimData);
 
 	GetAnimator().PlayAnimation(kAnimData[0]);
+
+	m_collider.SetPosition(GetTransform().position);
 
 	EnemyBase::Init();
 }
@@ -203,6 +205,9 @@ void EnemyMiniBoss::UpdateEnemy()
 	{
 		m_attackCooltimeCounter -= Time::GetInstance().GetDeltaTime();
 	}
+
+	// 衝突判定の座標更新
+	m_collider.SetPosition(GetTransform().position);
 }
 
 void EnemyMiniBoss::Draw()

@@ -92,9 +92,11 @@ void Sword::Update()
 	m_scaleEx = 1;
 	if (m_chargeFlag)m_scaleEx = 2;
 	if (!m_catch) {
-		m_swing.position = GetTransform().position;
-		m_swing.rotation.z = GetTransform().rotation.z;
+		m_swing = GetTransform();
 		m_effectFrame = kEffectFrame - 1;
+		m_swingState = Swing::Normal;
+		m_desireRadian = 0;
+		m_scaleEx = 1;
 		return;
 	}
 	float time = Time::GetInstance().GetDeltaTime();

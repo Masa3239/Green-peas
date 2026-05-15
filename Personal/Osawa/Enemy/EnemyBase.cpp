@@ -1,5 +1,5 @@
 #include "EnemyBase.h"
-#include "../Chara/Collision.h"
+//#include "../Chara/Collision.h"
 #include "../Utility/Transform.h"
 #include "../Utility/Time.h"
 #include "../Personal/Takagi/Player.h"
@@ -33,7 +33,6 @@ EnemyBase::EnemyBase(ObjectManager* objManager) :
 	m_isFixSpawn(false),
 	m_animator(),
 	m_currentAnimation(0),
-	m_collider(Collision::AABB{ Vector3(), kColliderSize }),
 	m_damageFlag(),
 	m_pPlayer(nullptr),
 	m_pEnemyMgr(nullptr),
@@ -43,7 +42,6 @@ EnemyBase::EnemyBase(ObjectManager* objManager) :
 
 void EnemyBase::Init()
 {
-	m_collider.SetPosition(GetTransform().position);
 }
 
 void EnemyBase::End()
@@ -53,16 +51,11 @@ void EnemyBase::End()
 
 void EnemyBase::Update()
 {
-	m_collider.SetPosition(GetTransform().position);
-	
 	if (!CheckActive()) return;
 
 	UpdateEnemy();
 
 	ClampInRange();
-
-	// 当たり判定の座標更新
-	m_collider.SetPosition(GetTransform().position);
 
 	UpdateAnimation();
 	
