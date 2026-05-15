@@ -9,6 +9,7 @@ namespace {
 
 /// <summary>
 /// キャラクターを軸に合わせて回転運動させる
+/// キャラクターの数が増減しても対応できるようにする
 /// </summary>
 class RotateCharacter
 {
