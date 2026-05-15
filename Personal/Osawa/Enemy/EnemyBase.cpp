@@ -31,6 +31,7 @@ EnemyBase::EnemyBase(ObjectManager* objManager) :
 	m_level(0),
 	m_variableStatus(0),
 	m_isFixSpawn(false),
+	m_isActive(true),
 	m_animator(),
 	m_currentAnimation(0),
 	m_damageFlag(),
@@ -51,7 +52,8 @@ void EnemyBase::End()
 
 void EnemyBase::Update()
 {
-	if (!CheckActive()) return;
+	m_isActive = CheckActive();
+	if (!m_isActive) return;
 
 	UpdateEnemy();
 
