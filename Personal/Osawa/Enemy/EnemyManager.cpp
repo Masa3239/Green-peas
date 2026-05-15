@@ -36,15 +36,15 @@ namespace
 
 EnemyManager::EnemyManager(ObjectManager* objManager) :
 	GameObject(objManager),
+	m_generateCounter(0.0f),
+	m_highestDamage(0),
+	m_numDefeated(0),
 	m_enemyBoss(nullptr),
 	m_pPlayer(nullptr),
 	m_uiMgr(nullptr),
 	m_weaponMgr(nullptr),
 	m_chestMgr(nullptr),
-	m_map(nullptr),
-	m_generateCounter(0.0f),
-	m_highestDamage(0),
-	m_numDefeated(0)
+	m_map(nullptr)
 {
 }
 
@@ -105,6 +105,8 @@ std::vector<EnemyBase*> EnemyManager::GetHitEnemies(const Collision::Shape& shap
 
 	for (const auto& enemy : m_enemies)
 	{
+		if (!enemy->IsActive()) continue;
+
 		if (enemy->GetMyState() & elimState) continue;
 
 		if (!enemy->GetCollider().CheckCollision(shape)) continue;
@@ -125,6 +127,8 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 
 	for (const auto& enemy : m_enemies)
 	{
+		if (!enemy->IsActive()) continue;
+
 		if (!enemy->GetCollider().CheckCollision(shape)) continue;
 
 		finalDamage = damage;
