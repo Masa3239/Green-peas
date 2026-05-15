@@ -101,7 +101,7 @@ BuffManager::BuffManager() :
 	m_buttonHandle = LoadGraph(path.c_str());
 	m_selectHandle = LoadGraph(kSelectPath);
 	m_backHandle = LoadGraph(kBackPath);
-	m_fontHandle = CreateFontToHandle(NULL, 18, 3, DX_FONTTYPE_EDGE);
+	m_fontHandle = CreateFontToHandle(NULL, 25, 3, DX_FONTTYPE_EDGE);
 	m_buff.Reset();
 
 	m_buff.level[static_cast<int>(Buff::Type::Heal)] = -1;
@@ -211,6 +211,9 @@ void BuffManager::Draw()
 			}
 			// レベルを表示
 			DrawStringToHandle((Game::kScreenWidth * 0.5f+ offset) + kDistance * (i - 1), kLevelHeight, level.c_str(), 0x000000, m_fontHandle);
+			if(!m_buff.level[static_cast<int>(m_buffType[i])])
+		// NEW
+	DrawRotaStringToHandle((Game::kScreenWidth * 0.5f) + kDistance * (i - 1)-86, 90, 1, 1, 0, 0, DX_PI_F*-0.15f, 0xff0000, m_fontHandle, 0x000000, FALSE, "NEW");
 		}
 		// バフの説明テキストを表示
 		DrawRotaGraph((Game::kScreenWidth * 0.5f) + kDistance * (i - 1), kTextHeight, 0.03f, 0, m_textHandle[static_cast<int>(m_buffType[i])], TRUE);
@@ -222,6 +225,7 @@ void BuffManager::Draw()
 	DrawRotaGraph((Game::kScreenWidth * 0.5f) , kProceedHeight, 0.15f, 0, m_proceedHandle[static_cast<int>(m_phase)], TRUE);
 	// 進行ボタンの表示
 	DrawRotaGraph((Game::kScreenWidth * 0.5f) , kButtonHeight, 0.8f, 0, m_buttonHandle, TRUE);
+
 }
 
 void BuffManager::BuffSelectStart()
