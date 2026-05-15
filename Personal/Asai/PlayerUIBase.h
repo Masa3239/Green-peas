@@ -63,18 +63,6 @@ public:
 protected:
 
 	/// <summary>
-	/// 割合を計算
-	/// </summary>
-	virtual void CalculateRate();
-
-	/// <summary>
-	/// 割合を正規化する
-	/// </summary>
-	virtual void NormalizeRate();
-
-protected:
-
-	/// <summary>
 	/// 画像
 	/// </summary>
 	int m_graphHandle;

@@ -55,6 +55,10 @@ void PlayerHpBar::Draw()
 	//画像の描画
 	DrawExtendGraph(kGaugeRight - 10 - (hpGaugeWidth * m_rate), kGaugeTop, kGaugeRight - 10, kGaugeBottom, m_graphHandle, FALSE);
 
+	if (m_value < 1 && m_value>0) {
+		m_value = 1;
+	}
+
 	std::string value = std::to_string(static_cast<int>(m_value));
 	std::string max = std::to_string(static_cast<int>(m_max));
 

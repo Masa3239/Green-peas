@@ -41,10 +41,19 @@ public:
 
 private:
 
+	/// <summary>
+	/// スタミナゲージを表示する位置
+	/// </summary>
 	Vector3 m_pos;
 
+	/// <summary>
+	/// 1F前の値
+	/// </summary>
 	float m_prevValue;
 
+	/// <summary>
+	/// 1F前と比べて変わったか
+	/// </summary>
 	bool m_isChanged;
 
 };

@@ -7,9 +7,9 @@
 #include"../../Utility/MyRandom.h"
 
 namespace {
-
+	//生成位置の最大オフセット
 	constexpr int kCreatePosMaxMargin = 50;
-
+	//ラジアン角
 	constexpr float kRadianMax = MyMath::DegToRad(360);
 
 }
@@ -29,16 +29,16 @@ void PopUpTextManager::Init()
 
 	m_pTexts.resize(600);
 
+	//フォントを作成
 	m_textFonts.resize(static_cast<int>(PopUpUI::TextType::Max));
-	
 	m_textFonts[static_cast<int>(PopUpUI::TextType::Damage)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 	m_textFonts[static_cast<int>(PopUpUI::TextType::Critical)] = CreateFontToHandle("VT323 - Regular", 50, 6, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 	m_textFonts[static_cast<int>(PopUpUI::TextType::Heal)] = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_EDGE_8X8);
 
 	for (int i = 0;i < m_pTexts.size();i++) {
-
+		//テキストを作成
 		auto text = std::make_unique<PopUpText>();
-
+		//配列に格納
 		m_pTexts[i] = std::move(text);
 
 	}
@@ -49,7 +49,7 @@ void PopUpTextManager::Update()
 {
 
 	for (auto& text : m_pTexts) {
-
+		//非アクティブならスルー
 		if (!text->GetIsActive())continue;
 
 		text->Update();
@@ -62,7 +62,7 @@ void PopUpTextManager::Draw()
 {
 
 	for (auto& text : m_pTexts) {
-
+		//非アクティブならスルー
 		if (!text->GetIsActive())continue;
 
 		text->Draw();

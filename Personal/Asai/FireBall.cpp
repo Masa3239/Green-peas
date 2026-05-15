@@ -10,12 +10,14 @@ namespace {
 
 	const char* const kGraphHandlePath = ".\\Resource\\FIREBALL EFFECT 1.png";
 
+	//当たり判定と表示位置を一致させる
 	constexpr int kOffSetDraw = 25;
 
+	//ボール状態での画像の表示倍率
 	constexpr float kBallGraphScale = 0.7;
-
+	//フィールド状態での画像の表示倍率
 	constexpr float kFiFieldGraphScale = 1.4f;
-
+	//画像変更までの時間
 	constexpr float kGraphFrameChangeTime = 0.1f;
 
 	//当たり判定のサイズ
@@ -30,7 +32,7 @@ namespace {
 	//フィールドに残る時間
 	constexpr float kFieldLifetime = 3.0f;
 	//フィールド状態でのダメージ間隔
-	constexpr float kFieldDamageInterval = 0.5f;
+	constexpr float kFieldDamageInterval = 0.2f;
 
 }
 
@@ -46,23 +48,6 @@ FireBall::FireBall(ObjectManager* objManager) :
 
 void FireBall::Init()
 {
-
-	return;
-
-	int buf[81];
-
-	LoadDivGraph(kGraphHandlePath, 81, 9, 9, 190, 190, buf);
-
-	for (int i = 0;i < 63;i++) {
-
-		if (i <= 8)continue;
-
-		m_graphHandle.push_back(buf[i]);
-
-	}
-
-	//SoundManager::GetInstance()
-
 }
 
 void FireBall::Update()
@@ -96,17 +81,14 @@ void FireBall::Draw()
 	if (!m_isActive)return;
 
 	//当たり判定の大きさ
-	float collisionSize = 0;
 	float graphScale = 0;
 
 	switch (m_state)
 	{
 	case FireBall::State::Ball:
-		collisionSize = kCollisionBallSize;
 		graphScale = kBallGraphScale;
 		break;
 	case FireBall::State::Field:
-		collisionSize = kCollisionFieldSize;
 		graphScale = kFiFieldGraphScale;
 		break;
 	default:
@@ -149,13 +131,6 @@ void FireBall::DebugDraw()
 
 void FireBall::End()
 {
-
-	//for (auto& fire : m_graphHandle) {
-
-	//	DeleteGraph(fire);
-
-	//}
-
 }
 
 void FireBall::Shot(Transform transform)

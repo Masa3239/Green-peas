@@ -97,6 +97,9 @@ private:
 	/// </summary>
 	int m_infectionCount;
 
+	/// <summary>
+	/// 伝染時のタイマー
+	/// </summary>
 	float m_infectionTimer;
 
 	/// <summary>

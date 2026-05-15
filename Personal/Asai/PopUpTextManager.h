@@ -45,8 +45,14 @@ public:
 
 private:
 
+	/// <summary>
+	/// ポップアップテキスト
+	/// </summary>
 	std::vector<std::unique_ptr<PopUpText>>m_pTexts;
 
+	/// <summary>
+	/// テキストのフォント
+	/// </summary>
 	std::vector<int>m_textFonts;
 
 };
