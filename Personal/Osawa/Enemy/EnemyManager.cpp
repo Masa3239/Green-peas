@@ -281,42 +281,41 @@ void EnemyManager::RemoveEnemy(EnemyBase* enemy)
 
 void EnemyManager::CheckDead()
 {
-	// 死亡判定
-	// オブジェクトマネージャー側
-	// マネージャー側で死亡判定を行う
-	for (const auto& enemy : m_enemies)
-	{
-		if (enemy->GetHP() > 0) continue;
-
-		enemy->Dead();
-		enemy->SetState(GameObject::State::Dead);
-		enemy->End();
-
-		if (MyRandom::Judge(kWeaponDropChange))
-		{
-			int weapon = MyRandom::Int(Weapon::Sword, Weapon::Max - 1);
-			m_weaponMgr->Create(enemy->GetTransform().position, weapon);
-		}
-	}
-	// 死亡していたら配列から削除
 	for (auto iter = m_enemies.begin(); iter != m_enemies.end();)
 	{
 		EnemyBase* enemy = iter->get();
-		if (enemy->GetHP() <= 0)
-		{
-			// 中ボスだったら中ボスの配列からも削除する
-			EnemyMiniBoss* miniboss = dynamic_cast<EnemyMiniBoss*>(enemy);
-			if (miniboss != nullptr)
-			{
-				m_miniBosses.erase(std::find(m_miniBosses.begin(), m_miniBosses.end(), miniboss));
-			}
-			
-			iter = m_enemies.erase(iter);
-			m_numDefeated++;
 
+		// 死亡していなかったらスキップ
+		if (enemy->GetHP() > 0)
+		{
+			// ループ中に削除すると順番を飛ばしてしまうため
+			// 手動でイテレータをカウントアップ
+			iter++;
 			continue;
 		}
 
-		iter++;
+		// 武器をドロップ
+		if (MyRandom::Judge(kWeaponDropChange))
+		{
+			int weapon = MyRandom::Int(0, Weapon::Max - 1);
+			m_weaponMgr->Create(enemy->GetTransform().position, weapon);
+		}
+
+		// 中ボスだったら中ボスの配列からも削除する
+		EnemyMiniBoss* miniboss = dynamic_cast<EnemyMiniBoss*>(enemy);
+		if (miniboss != nullptr)
+		{
+			auto minibossIter = std::find(m_miniBosses.begin(), m_miniBosses.end(), miniboss);
+			m_miniBosses.erase(minibossIter);
+		}
+
+		enemy->Dead();
+		enemy->End();
+		enemy->SetState(GameObject::State::Dead);
+
+		m_numDefeated++;
+
+		// 敵を配列から削除する
+		iter = m_enemies.erase(iter);
 	}
 }
