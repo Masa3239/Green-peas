@@ -3,7 +3,6 @@
 #include <memory>
 #include <vector>
 #include "../Object/GameObject.h"
-#include "../Chara/Collision.h"
 
 class ObjectManager;
 class EnemyBase;
@@ -15,6 +14,11 @@ class EnemyMap;
 class WeaponManager;
 class ChestManager;
 class Map;
+
+namespace Collision
+{
+	class Shape;
+}
 
 /// <summary>
 /// 敵全体を管理するクラス
@@ -32,6 +36,7 @@ public:
 		Shooter,	// 遠距離
 		Miniboss,	// 中ボス
 		Slime,		// スライム
+		Length,
 	};
 
 	/// <summary>

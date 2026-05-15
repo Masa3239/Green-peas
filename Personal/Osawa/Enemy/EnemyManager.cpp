@@ -1,22 +1,20 @@
 #include "EnemyManager.h"
 #include <cmath>
 #include <memory>
+#include "../Chara/Collision.h"
 #include "EnemyBase.h"
-#include "../Utility/Time.h"
-#include "../Utility/MyMath.h"
-#include "../Personal/Takagi/Player.h"
-#include "../Personal/Takagi/WeaponManager.h"
-#include "../Personal/Asai/UIManager.h"
-#include "../Personal/Syoguti/EnemyBoss.h"
-#include "../Utility/MyRandom.h"
-#include "../Personal/Kimura/EnemyMap/EnemyMap.h"
-#include "../Personal/Kimura/Map/Map.h"
-
 #include "EnemyMelee.h"
 #include "EnemyShooter.h"
 #include "EnemySlime.h"
 #include "EnemyMiniBoss.h"
-#include <DxLib.h>
+#include "../Personal/Syoguti/EnemyBoss.h"
+#include "../Utility/Time.h"
+#include "../Personal/Takagi/Player.h"
+#include "../Personal/Takagi/WeaponManager.h"
+#include "../Personal/Asai/UIManager.h"
+#include "../Utility/MyRandom.h"
+#include "../Personal/Kimura/EnemyMap/EnemyMap.h"
+#include "../Personal/Kimura/Map/Map.h"
 
 namespace
 {
@@ -55,8 +53,6 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::Init()
 {
-	//GenerateEnemy(EnemyType::Miniboss, 1);
-
 	m_enemyBoss = std::make_unique<EnemyBoss>(GetObjectManager(), Vector3(5000, 300, 0));
 	m_enemyBoss->SetPlayer(m_pPlayer);
 	m_enemyBoss->SetMap(m_map);
@@ -65,22 +61,24 @@ void EnemyManager::Init()
 
 void EnemyManager::End()
 {
+	m_enemyBoss->End();
+
 	for (auto& enemy : m_enemies)
 	{
 		enemy->End();
 	}
-
-	m_enemyBoss->End();
 }
 
 void EnemyManager::Update()
 {
 	if ((m_generateCounter <= 0 || m_enemies.size() <= kMinEnemyNum) && m_enemies.size() <= kMaxEnemyNum)
 	{
+		int type = MyRandom::Int(0, 2);
+
 		// 敵を生成
-		if (MyRandom::Int(0, 2) == 0)
+		if (type == 0)
 			GenerateEnemyToPlayer(EnemyType::Melee, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
-		else if (MyRandom::Int(0, 2) == 1)
+		else if (type == 1)
 			GenerateEnemyToPlayer(EnemyType::Shooter, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
 		else
 			GenerateEnemyToPlayer(EnemyType::Slime, MyRandom::Int(m_pPlayer->GetLevel() - 1, m_pPlayer->GetLevel() + 1));
@@ -97,7 +95,6 @@ void EnemyManager::Update()
 
 void EnemyManager::Draw()
 {
-	printfDx("Enemy Num: %d\n", m_enemies.size());
 }
 
 std::vector<EnemyBase*> EnemyManager::GetHitEnemies(const Collision::Shape& shape, const unsigned int elimState)
@@ -122,19 +119,25 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 {
 	bool result = false;
 
+	// 最終的なダメージ
 	int finalDamage = 0;
 
+	// ダメージUIの種類
 	PopUpUI::TextType textType = PopUpUI::TextType::Damage;
 
+	// 敵ごとのダメージ判定
 	for (const auto& enemy : m_enemies)
 	{
+		// 無効化されていたらスキップ
 		if (!enemy->IsActive()) continue;
 
+		// 当たっていなければスキップ
 		if (!enemy->GetCollider().CheckCollision(shape)) continue;
 
 		finalDamage = damage;
 		textType = PopUpUI::TextType::Damage;
 
+		// クリティカル判定
 		if (GetRand(100) < criticalChance)
 		{
 			finalDamage *= criticalDamage;
@@ -144,20 +147,23 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 		// ダメージを与えられなかったらスキップ
 		if (!enemy->Damage(finalDamage, weapon, index)) continue;
 
+		// ダメージUIを表示
 		m_uiMgr->CreatePopUpText(enemy->GetTransform().position, finalDamage, textType);
 
 		// 最高ダメージを更新する
 		if (m_highestDamage < finalDamage) m_highestDamage = finalDamage;
 
-		// 誰か一人でも当たっていたらtrueになる
+		// 誰か一人でも当たっていたら衝突結果をtrueになる
 		result = true;
 	}
 
+	// ボスのダメージ判定
 	if (m_enemyBoss->GetCollider().CheckCollision(shape))
 	{
 		finalDamage = damage;
 		textType = PopUpUI::TextType::Damage;
 
+		// クリティカル判定
 		if (GetRand(100) < criticalChance)
 		{
 			finalDamage *= criticalDamage;
@@ -167,6 +173,7 @@ bool EnemyManager::CheckHitEnemies(const Collision::Shape& shape, const float da
 		// ダメージを与えられなかったらスキップ
 		if (!m_enemyBoss->Damage(finalDamage, weapon, index)) return result;
 
+		// ダメージUIを表示
 		m_uiMgr->CreatePopUpText(m_enemyBoss->GetTransform().position, finalDamage, textType);
 
 		// 最高ダメージを更新する
