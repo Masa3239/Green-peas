@@ -9,7 +9,7 @@
 namespace {
 
 	//表示される時間
-	constexpr float kActiveTime = 0.5f;
+	constexpr float kActiveTime = 0.3f;
 	//速度
 	constexpr float kSpeed = 30.0f;
 	//動く方向

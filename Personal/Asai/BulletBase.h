@@ -64,6 +64,10 @@ public:
 	/// <param name="scale"></param>
 	virtual void SetScale(float scale) = 0;
 
+	/// <summary>
+	/// アクティブ状態のセット
+	/// </summary>
+	/// <param name="active"></param>
 	virtual void SetIsActive(bool active) { m_isActive = active; }
 
 	virtual void SetStatus(PlayerStatus status) { m_playerStatus = status; }
