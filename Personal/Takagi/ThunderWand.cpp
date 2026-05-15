@@ -113,7 +113,7 @@ void ThunderWand::CheckCollision()
 	float criticalDamage = m_weaponStatus.CriticalDamage * m_playerStatus.CriticalDamage;
 	for (int i = 0;i < kBulletNum;i++) {
 		if (!m_pThunders[i]->GetIsActive())continue;
-		if (m_pEnemyMgr->CheckHitEnemies(m_pThunders[i]->GetCollision(), damage, criticalRate, criticalDamage, Weapon::Bow, i)) {
+		if (m_pEnemyMgr->CheckHitEnemies(m_pThunders[i]->GetCollision(), damage, criticalRate, criticalDamage, Weapon::Volt, i)) {
 			m_pThunders[i]->ChangeStateInfection();
 		}
 	}

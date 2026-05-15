@@ -95,7 +95,8 @@ void Sword::Update()
 		m_swing = GetTransform();
 		m_effectFrame = kEffectFrame - 1;
 		m_swingState = Swing::Normal;
-
+		m_desireRadian = m_swing.rotation.z;
+		m_scaleEx = 1;
 		return;
 	}
 	float time = Time::GetInstance().GetDeltaTime();

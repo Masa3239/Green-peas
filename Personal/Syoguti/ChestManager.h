@@ -84,7 +84,7 @@ public:
 	void SetItemManager(ItemManager* itemManager) { m_pItemMgr = itemManager; }
 
 	/// <summary>
-	/// マップのポインタ
+	/// マップのポインタをセットするセッター関数
 	/// </summary>
 	/// <param name="map"></param>
 	void SetMap(Map* map) { m_pMap = map; }
